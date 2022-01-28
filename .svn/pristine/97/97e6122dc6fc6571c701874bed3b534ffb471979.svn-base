@@ -1,0 +1,58 @@
+*******************Start**************
+Date & Time : 03/09/2021 13:50:51
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 13:55:22
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 15:43:11
+Message : Store update, insert, or delete statement affected an unexpected number of rows (0). Entities may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=472540 for information on understanding and handling optimistic concurrency exceptions.
+Source : EntityFramework
+InnerException : Store update, insert, or delete statement affected an unexpected number of rows (0). Entities may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=472540 for information on understanding and handling optimistic concurrency exceptions.
+StackTrace :    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at WBT.DLCustomerCreation.DLDebtorsCreation.UpdateTallyStatus(DebtorsDetails debtors) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLDebtorsCreation.cs:line 300
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 15:43:11
+Message : Database Updation failed
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 15:45:19
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 15:48:16
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 18:21:55
+Message : Object reference not set to an instance of an object.
+Source : WBT.DLCustomerCreation
+StackTrace :    at WBT.DLCustomerCreation.DLSalesOrders.GetSalesOrderDetails(String OrderNumber) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLSalesOrders.cs:line 504
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 18:22:01
+Message : Object reference not set to an instance of an object.
+Source : WBT.DLCustomerCreation
+StackTrace :    at WBT.DLCustomerCreation.DLSalesOrders.GetSalesOrderDetails(String OrderNumber) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLSalesOrders.cs:line 504
+*******************End**************
+*******************Start**************
+Date & Time : 03/09/2021 18:22:03
+Message : Object reference not set to an instance of an object.
+Source : WBT.DLCustomerCreation
+StackTrace :    at WBT.DLCustomerCreation.DLSalesOrders.GetSalesOrderDetails(String OrderNumber) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLSalesOrders.cs:line 504
+*******************End**************

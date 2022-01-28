@@ -1,0 +1,55 @@
+﻿@model WBT.DLCustomerCreation.ItemCompany
+@using (Ajax.BeginForm("Update", "ItemCompany", null, new AjaxOptions
+{
+    UpdateTargetId = "divList",
+    OnSuccess = "onEditSuccess_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "progress"
+}, new { @class = "form-sample" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Edit Brand Manufacturer</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                @Html.HiddenFor(model => model.ItemCompanyID)
+                                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Company Name", @autocomplete = "off", @required = "required" } })
+                                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" style="margin-top:40px;">
+                                <label> @Html.CheckBoxFor(a => a.IsActive)  Is Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $.validator.unobtrusive.parse(document);
+</script>

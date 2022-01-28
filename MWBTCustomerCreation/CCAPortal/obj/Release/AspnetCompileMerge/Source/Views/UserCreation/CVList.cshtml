@@ -1,0 +1,64 @@
+﻿@model WBT.DLCustomerCreation.DLUserCreation
+
+<div class="row">
+    <div class="col-lg-12  grid-margin strech-card">
+        <div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"> Customer List </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive pt-3" style="height:290px;">
+                        <table class="table table-bordered" id="Subtable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Customer Name
+                                    </th>
+                                    <th>Mobile Number</th>
+                                    <th>Area</th>
+                                    <th>City</th>
+                                    <th class="noExport">
+                                        @Html.CheckBox("CheckAll", true, new { id = "select_all" })
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.customers != null && Model.customers.Count() > 0)
+                                    {
+                                        int i = 0;
+                                        foreach (var item in Model.customers)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.HiddenFor(a => a.customers[i].ID)
+                                                    @Html.DisplayFor(a => a.customers[i].FirmName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(a => a.customers[i].MobileNumber)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(a => a.customers[i].BillingArea)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(a => a.customers[i].City)
+                                                </td>
+                                                <td>
+                                                    @Html.CheckBoxFor(a => a.customers[i].IsChecked, new { @class = "chkselect" })
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

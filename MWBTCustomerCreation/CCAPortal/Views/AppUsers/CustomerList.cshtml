@@ -1,0 +1,147 @@
+﻿@model WBT.DLCustomerCreation.CustomerPromotion
+@using PagedList.Mvc;
+@using WBT.Common
+
+@using (Ajax.BeginForm("Promotion", "AppUsers", null, new AjaxOptions
+{
+    OnSuccess = "onPromoSuccess_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "promoprogress"
+}, new { @class = "form-sample", @id = "frm-promote", @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <table id="dataGrid" class="table table-bordered table-striped table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    Firm Name
+                </th>
+                <th>
+                    Owner Name
+                </th>
+                <th>
+                    Mobile Number
+                </th>
+                <th style="display:none;">
+                    Email ID
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    Created Date
+                </th>
+                <th>
+                    Updated Date
+                </th>
+                <th>
+                    Ledger Type
+                </th>
+                <th>
+                    Company Type
+                </th>
+                <th>
+                    Customer Type
+                </th>
+                <th>
+                    Category Type
+                </th>
+                <th>
+                    Taxation Type
+                </th>
+                <th>
+                    Created By
+                </th>
+                <th>
+                    Updated By
+                </th>
+                <th>Action</th>
+                <th class="noExport text-center">@Html.CheckBox("CheckAll", false, new { id = "select_all" }) Check All</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                int j = 0;
+                if (Model.customerList.Count() > 0)
+                {
+                    foreach (var item in Model.customerList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].FirmName, new { @style = "border:none" })
+                                @Html.HiddenFor(a => item.CustID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].Name, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].MobileNumber, new { @style = "border:none" })
+                            </td>
+                            <td style="display:none">
+                                @Html.DisplayFor(a => a.customerList[j].EmailID, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].BillingCity, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].BillingState, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].CreationDate, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].UpdatedDate, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].LedgerType, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].CompanyType, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].CustomerType, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].TypeofCategory, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].RegistrationType, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].CreatedStr, new { @style = "border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => a.customerList[j].UpdatedStr, new { @style = "border:none" })
+                            </td>
+                            <td class="noExport">
+                                @Html.ActionLink(linkText: "Edit", actionName: "Index", controllerName: "EditCustomer", routeValues: new
+                                {
+                                    route = Helper.Encrypt(item.CustID.ToString(), "sblw-3hn8-sqoy19")
+                                },
+                                htmlAttributes: new { @class = "btn btn-success btn-xs" })
+                            </td>
+                            <td class="noExport text-center">
+                                @Html.CheckBoxFor(a => a.customerList[j].IsChecked, new { @class = "chkselect" })
+                            </td>
+                        </tr>
+                        j++;
+                    }
+                }
+
+            }
+        </tbody>
+    </table>
+    @*<div id="Paging">
+        <div class="float-left">
+            Page @(Model.allList.PageCount < Model.allList.PageNumber ? 0 : Model.allList.PageNumber)
+            of @Model.allList.PageCount
+        </div>
+        <div class="pagination pagination-sm m-0 float-right">
+            @Html.PagedListPager(Model.allList, page => Url.Action("GetList", new { page, pageSize = ViewBag.PageSizeList }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "dvList", LoadingElementId = "progress", OnSuccess = "pageChanged" }))
+        </div>
+    </div>*@
+}

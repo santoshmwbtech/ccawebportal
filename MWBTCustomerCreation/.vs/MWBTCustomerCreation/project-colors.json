@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "504e16a8-6008-4a52-aa13-ab517095e87e": {
+      "ProjectGuid": "504e16a8-6008-4a52-aa13-ab517095e87e",
+      "DisplayName": "CCAPortal",
+      "ColorIndex": 0
+    },
+    "957afd6a-998f-409e-8411-42dcc69f7465": {
+      "ProjectGuid": "957afd6a-998f-409e-8411-42dcc69f7465",
+      "DisplayName": "WindowsService_TallyDebtors",
+      "ColorIndex": 1
+    },
+    "035658cf-c04c-4ad1-8d3c-a1d57a182042": {
+      "ProjectGuid": "035658cf-c04c-4ad1-8d3c-a1d57a182042",
+      "DisplayName": "StartService",
+      "ColorIndex": 2
+    },
+    "77dd8cb5-1b70-4623-a747-60a6d0ac2f72": {
+      "ProjectGuid": "77dd8cb5-1b70-4623-a747-60a6d0ac2f72",
+      "DisplayName": "WBT.DLCustomerCreation",
+      "ColorIndex": 3
+    },
+    "4cdc0744-2f51-4ac7-a522-6e25fd599145": {
+      "ProjectGuid": "4cdc0744-2f51-4ac7-a522-6e25fd599145",
+      "DisplayName": "WBT.Common",
+      "ColorIndex": 4
+    },
+    "95dcd13b-f809-40e5-931a-2a6167f984e4": {
+      "ProjectGuid": "95dcd13b-f809-40e5-931a-2a6167f984e4",
+      "DisplayName": "WBT.Entity",
+      "ColorIndex": 5
+    },
+    "578ec339-623f-43ed-8b7d-00272136a734": {
+      "ProjectGuid": "578ec339-623f-43ed-8b7d-00272136a734",
+      "DisplayName": "WindowsService_SalesOrder",
+      "ColorIndex": 6
+    }
+  },
+  "NextColorIndex": 7
+}

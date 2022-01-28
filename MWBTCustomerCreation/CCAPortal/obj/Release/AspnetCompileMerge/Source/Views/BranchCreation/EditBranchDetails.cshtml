@@ -1,0 +1,366 @@
+﻿@model WBT.DLCustomerCreation.BranchDetails
+
+@using (Ajax.BeginForm("UpdateBranchDetails", "BranchCreation", null, new AjaxOptions
+{
+    UpdateTargetId = "divBranchList",
+    OnBegin = "onEditBegin_Ajax",
+    OnComplete = "onEditCompleteCreate_Ajax",
+    OnSuccess = "onEditSuccess_Ajax",
+    OnFailure = "onFailure_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "progress"
+}, new { @class = "form-sample", @enctype = "multipart/form-data" }))
+
+{
+    @Html.AntiForgeryToken()
+
+    <section>
+        <div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"> Edit Branch </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Firm Name</label>
+                                @Html.HiddenFor(model => model.BranchID)
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Branch Name", @required = "required", @autocomplete = "new-password", @maxlength = "255" })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>State</label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(model => model.BranchState, (SelectList)ViewBag.StateList, "Select State", new { @class = "form-control listbox", @placeholder = "Select State", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.BranchState, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>City</label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(model => model.BranchCity, (SelectList)ViewBag.CityList, "Search City", new { @required = "Required", @class = "form-control dropdowns", @autocomplete = "off" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.BranchCity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Contact Person</label>
+                                @Html.TextBoxFor(model => model.ContactPerson, new { @class = "form-control", @placeholder = "Contact Person Name", @required = "required", @autocomplete = "new-password", @maxlength = "255" })
+                                @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                @Html.TextBoxFor(model => model.Mobile, new { @class = "form-control", @placeholder = "Mobile Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "10" })
+                                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Alternate Number</label>
+                                @Html.TextBoxFor(model => model.AlternateNumber, new { @class = "form-control", @placeholder = "Alternate Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "10" })
+                                @Html.ValidationMessageFor(model => model.AlternateNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Telephone Number</label>
+                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @placeholder = "Telephone Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "10" })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Fax Number</label>
+                                @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", @placeholder = "Fax Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return allowNumericSpaceSpclChar(event);", @maxlength = "15" })
+                                @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>EmailId</label>
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email Id", @required = "required", @autocomplete = "new-password", @maxlength = "100" })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger validation_Msg validation_alignment_reight" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Website</label>
+                                @Html.TextBoxFor(model => model.Website, new { @class = "form-control", @placeholder = "Website address", @required = "required ", @autocomplete = "new-password", @maxlength = "50" })
+                                @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                @Html.TextBoxFor(model => model.BankName, new { @class = "form-control", @placeholder = "Bank Name ", @required = "required", @autocomplete = "new-password", @maxlength = "100" })
+                                @Html.ValidationMessageFor(model => model.BankName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Account Number:</label>
+                                @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", @placeholder = "Account Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "50" })
+                                @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Bank City</label>
+                                @Html.TextBoxFor(model => model.BankCity, new { @class = "form-control", @placeholder = "BankCity", @required = "required", @autocomplete = "new-password", @maxlength = "50" })
+                                @Html.ValidationMessageFor(model => model.BankCity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Bank Branch Name</label>
+                                @Html.TextBoxFor(model => model.BankBranchName, new { @class = "form-control", @placeholder = "Bank Branch Name", @required = "required", @autocomplete = "new-password", @maxlength = "100" })
+                                @Html.ValidationMessageFor(model => model.BankBranchName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>IFSC Code</label>
+                                @Html.TextBoxFor(model => model.IFSCCode, new { @class = "form-control", @placeholder = "IFSC Code", @required = "required", @autocomplete = "new-password", @onkeypress = "return allowAlphaNumericSpace(event);", @maxlength = "11" })
+                                @Html.ValidationMessageFor(model => model.IFSCCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>FSSAI</label>
+                                @Html.TextBoxFor(model => model.FSSAICode, new { @class = "form-control", @placeholder = "FSSAI", @required = "required", @autocomplete = "new-password", @onkeypress = "return allowAlphaNumericSpace(event);", @maxlength = "14" })
+                                @Html.ValidationMessageFor(model => model.FSSAICode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>GST</label>
+                                @Html.TextBoxFor(model => model.GST, new { @class = "form-control", @placeholder = "GST ", @required = "required", @autocomplete = "new-password", @onkeypress = "return allowAlphaNumericSpace(event);", @maxlength = "15" })
+                                @Html.ValidationMessageFor(model => model.GST, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>PAN</label>
+                                @Html.TextBoxFor(model => model.PANNumber, new { @class = "form-control", @placeholder = "PANNumber", @required = "required", @autocomplete = "new-password", @onkeypress = "return allowAlphaNumericSpace(event);", @maxlength = "10" })
+                                @Html.ValidationMessageFor(model => model.PANNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="card-title">Primary Mailing Details</h4> <br /> <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Mailing Name</label>
+                                @Html.TextBoxFor(model => model.MailingName, new { @class = "form-control", @placeholder = "Mailing name", @required = "required", @autocomplete = "new-password", @maxlength = "50" })
+                                @Html.ValidationMessageFor(model => model.MailingName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div>
+                                    <label for="IsSame" style="margin-top:40px;">
+                                        <input type="checkbox" id="IsSame" name="IsSame" onchange="checkboxchecked()" />
+                                        Same as Billing Address
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Billing Address</label>
+                                                <div class="input-group">
+                                                    @Html.TextAreaFor(model => model.BillingAddress, new { @class = "form-control", @placeholder = "Billing Address", @required = "required", @autocomplete = "new-password", @maxlength = "100" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.BillingAddress, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Billing LandMark</label>
+                                                @Html.TextAreaFor(model => model.BillingLandmark, new { @class = "form-control", @placeholder = "Billing LandMark", @required = "required", @autocomplete = "new-password", @maxlength = "100" })
+                                                @Html.ValidationMessageFor(model => model.BillingLandmark, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>State</label>
+                                                <div class="input-group">
+                                                    @Html.DropDownListFor(model => model.State, (SelectList)ViewBag.StateList, "Select State", new { @class = "form-control listbox" })
+
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                @Html.TextBoxFor(model => model.City, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Pincode</label>
+                                                @Html.TextBoxFor(model => model.PinCode, new { @class = "form-control", @placeholder = "Pincode", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "6" })
+                                                @Html.ValidationMessageFor(model => model.PinCode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Shipping Address</label>
+                                                <div class="input-group">
+                                                    @Html.TextAreaFor(model => model.ShippingAddress, new { @class = "form-control", @placeholder = "Shipping Address", @required = "required", @autocomplete = "new-password", @maxlength = "100" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Shipping Landmark</label>
+                                                <div class="input-group">
+                                                    @Html.TextAreaFor(model => model.ShippinLandmark, new { @class = "form-control", @placeholder = "Shipping Landmark", @required = "required", @autocomplete = "new-password", @maxlength = "100" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.ShippinLandmark, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>State</label>
+                                                <div class="input-group">
+                                                    @Html.DropDownListFor(model => model.ShippingState, (SelectList)ViewBag.StateList, "Select State", new { @class = "form-control listbox" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.ShippingState, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                @Html.TextBoxFor(model => model.ShippingCity, new { @class = "form-control container_fluid_right", @placeholder = "City", @required = "required", @autocomplete = "new-password", @maxlength = "50" })
+                                                @Html.ValidationMessageFor(model => model.ShippingCity, "", new { @class = "text-danger validation_Msg" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Pincode</label>
+                                                @Html.TextBoxFor(model => model.ShippingPinCode, new { @class = "form-control", @placeholder = "Pincode", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "6" })
+                                                @Html.ValidationMessageFor(model => model.ShippingPinCode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h4 class="card-title">QR Code Document Upload</h4><br /><br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="tbldynamic" class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>QR Code Type</th>                                    
+                                        <th>Upload Document</th>                                        
+                                        <th style="width:300px;">Preview</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        if (Model.qrDocs.Count() > 0)
+                                        {
+                                            int j = 0;
+                                            foreach (var i in Model.qrDocs)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.HiddenFor(a => a.qrDocs[j].Base64Str, new { @class = "hdn_base64", @id = "[" + j + "].hdn_base64" })
+                                                        @Html.HiddenFor(a => a.qrDocs[j].DocumentType, new { @class = "hdn_doctype", @id = "[" + j + "].hdn_doctype" })
+                                                        @Html.TextBoxFor(a => a.qrDocs[j].DocumentType, null, new { @class = "form-control clsdocname", @id = "[" + j + "].docname" })
+                                                        @Html.ValidationMessageFor(a => a.qrDocs[j].DocumentType, "", new { @class = "text-danger clsdocnameinvalid" })
+                                                    </td>
+
+
+                                                    <td>
+                                                        @Html.TextBoxFor(a => a.qrDocs[j].DocFile, null, new { @class = "form-control clsdocfile", @id = "[" + j + "].docfile", @type = "file", @onchange = "document.getElementById('[" + j + "].preview').src = window.URL.createObjectURL(this.files[0])" })
+                                                        @Html.ValidationMessageFor(a => a.qrDocs[j].DocFile, "", new { @class = "text-danger clsdocfileinvalid" })
+                                                    </td>                                                    
+                                                    <td>
+                                                        <div id="app">
+                                                            <img id='[@j].preview' src='@i.DocBase64' class="clsimagepreview" height="50" />
+                                                        </div>
+                                                    </td>
+                                                    <td><button type="button" id='[@j].btndelete' name='[@j].btndelete' onclick="btndeleterow(this);" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></td>
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                      
+                                        <td></td>
+                                        <td>
+                                            <input type="button" id="btnAddRow" name="addrow" value="Add New Row" onclick="btnaddnewrow();" class="btn btn-sm btn-info pull-right">
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" value="Submit">Update</button>
+                            <a id="btnCancel" class="btn btn-danger" onclick="btnCancel_Click()">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                    </div>
+                </div>
+        </section>
+
+
+                    }
+
+
+
+

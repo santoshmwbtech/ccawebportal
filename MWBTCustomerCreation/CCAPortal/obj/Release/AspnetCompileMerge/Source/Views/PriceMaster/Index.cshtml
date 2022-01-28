@@ -1,0 +1,294 @@
+﻿@model WBT.DLCustomerCreation.PriceMaster
+@{
+    ViewBag.Title = "Price Master";
+}
+
+@using (Ajax.BeginForm("UpdatePriceList", "PriceMaster", null, new AjaxOptions
+{
+    UpdateTargetId = "divList",
+    OnSuccess = "onCreateSuccess_Ajax",
+    OnFailure = "onFailure_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "progress"
+
+}, new { @class = "form-sample" }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Filter Options</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Group</label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(model => model.CategoryID, (SelectList)ViewBag.Groups, "Select Group", new { @class = "form-control listbox", @onchange = "GroupChanged()", @onkeypress = "return isdecimalKey(event)" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Category</label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(model => model.SubCategoryID, (SelectList)ViewBag.Categories, "Select Category", new { @class = "form-control listbox", @onkeypress = "return isdecimalKey(event)", @onchange = "CategoryChanged()" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Item Name</label>
+                                @Html.TextBoxFor(a => a.ItemName, null, new { @class = "form-control", @autocomplete = "off" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label></label>
+                                <div class="icheck-primary">
+                                    <input type="checkbox" id="bulkUpdate">
+                                    <label for="bulkUpdate">
+                                        Bulk Update
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="valueRow">
+                            <div class="form-group">
+                                <label>Increment by Value</label>
+                                @Html.TextBoxFor(a => a.UpdateValue, null, new { @class = "form-control", @autocomplete = "off", @onchange = "valueChanged()" })
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="percentageRow">
+                            <div class="form-group">
+                                <label>Increment by Percentage</label>
+                                @Html.TextBoxFor(a => a.UpdatePercentage, null, new { @class = "form-control", @autocomplete = "off", @onchange = "percentageChanged()" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Item List</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body" id="dvList" style="max-height:500px;overflow:scroll;">
+                    @Html.Action("ItemList")
+                </div>
+                <div class="card-footer">
+                    <div class="text-center">
+                        <input type="submit" value="Save" class="btn btn-primary" onclick="return btnSave_Click()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+@section scripts{
+    @*<script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            $('#dataGrid').dataTable().makeEditable();
+        });
+        </script>*@
+    <script>
+        $(document).ready(function () {
+            $("#valueRow").hide();
+            $("#percentageRow").hide();
+            $('#bulkUpdate').change(function () {
+                if (this.checked) {
+                    $("#valueRow").show();
+                    $("#percentageRow").show();
+                }
+                else {
+                    $("#valueRow").hide();
+                    $("#percentageRow").hide();
+                }
+            });
+        });
+        function btnSave_Click() {
+            var updatebyvalue = $("#UpdateValue").val();
+            var updatebypercentage = $("#UpdatePercentage").val();
+            if ((updatebyvalue == "" || updatebyvalue == null) && (updatebypercentage == "" || updatebypercentage == null)) {
+                swal.fire("Please enter either increment by value or increment by percentage");
+                return false;
+            }
+        }
+        function onCreateSuccess_Ajax(data) {
+            if (data.Message.includes("success")) {
+                Swal.fire({
+                    title: 'Success',
+                    text: data.Message,
+                    icon: 'success'
+                }).then(function () {
+                    $("#UpdatePercentage").val('');
+                    $("#UpdateValue").val('');
+                    $("#dvList").html('');
+                    $("#dvList").html(data.AjaxReturn);
+                });
+            }
+            else {
+                Swal.fire({
+                    title: 'Error!!',
+                    text: data.Message,
+                    icon: 'error'
+                }).then(function () {
+                    $("#UpdatePercentage").val('');
+                    $("#UpdateValue").val('');
+                    $("#dvList").html('');
+                    $("#dvList").html(data.AjaxReturn);
+                });
+            }
+        }
+        function onFailure_Ajax() {
+
+        }
+        function valueChanged() {
+            $("#UpdatePercentage").val('');
+        }
+        function percentageChanged() {
+            $("#UpdateValue").val('');
+        }
+        function GroupChanged() {
+            var CategoryID = $('#CategoryID').val();
+            $('#SubCategoryID').html('');
+            $("#progress").show();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GroupChanged", "PriceMaster")',
+                dataType: "json",
+                data: { CategoryID: CategoryID},
+                success: function (response) {
+                    if (response == "sessionexpired") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else {
+                        var data = [];
+                        array = { label: "Select Category", value: 0 };
+                        data.push(array);
+                        for (var i = 0; i < response.length; i++) {
+                            array = { label: response[i].SubCategoryName, value: response[i].subCategoryID };
+                            data.push(array);
+                        }
+                        $("#SubCategoryID").multiselect('dataprovider', data);
+                        //Load Grid
+                        loadGrid(CategoryID, 0);
+                        //Load Grid
+                        $("#progress").hide();
+                    }
+                },
+                error: function () {
+                    $("#progress").hide();
+                }
+            });
+        }
+        function CategoryChanged() {
+            var CategoryID = $('#CategoryID').val();
+            var SubCategoryID = $('#SubCategoryID').val();
+            $("#progress").show();
+            loadGrid(CategoryID, SubCategoryID);
+            $("#progress").hide();
+        }
+        function loadGrid(CategoryID, SubcategoryID){
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetItems", "PriceMaster")',
+                dataType: "HTML",
+                data: { CategoryID: CategoryID, SubcategoryID: SubcategoryID},
+                success: function (response) {
+                    if (response == "sessionexpired") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else {
+                        $("#dvList").html('');
+                        $("#dvList").html(response);
+                    }
+                },
+                error: function () {
+                    $("#progress").hide();
+                }
+            });
+        }
+        function priceChanged(element) {
+            var BaseRateOther = $(element).val();
+            var tr = $(element).closest('tr');
+            var RateID = tr.find('.clsrate').val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdatePrice", "PriceMaster")',
+                dataType: "HTML",
+                data: { RateID: RateID, BaseRateOther: BaseRateOther},
+                success: function (response) {
+                    if (response == "sessionexpired") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else {
+                        swal.fire(response);
+                        //$("#dvList").html('');
+                        //$("#dvList").html(response);
+                    }
+                },
+                error: function () {
+                    $("#progress").hide();
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+    $(function () {
+        $("#ItemName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("SearchByName", "PriceMaster")',
+                    data: { Name: request.term, CategoryID: $("#CategoryID").val(), SubCategoryID: $("#SubCategoryID").val()},
+                    dataType: "HTML",
+                    type: "POST",
+                    success: function (data) {
+                        $("#dvList").html('');
+                        $("#dvList").html(data);
+                        var elmnt = document.getElementById("dvList");
+                        elmnt.scrollIntoView();
+                    },
+                    error: function (response) {
+                        swal.fire(response.responseText);
+                    },
+                    failure: function (response) {
+                        swal.fire(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#ItemName").val(i.item.val);
+            },
+            minLength: 0
+        });
+    });
+    </script>
+}

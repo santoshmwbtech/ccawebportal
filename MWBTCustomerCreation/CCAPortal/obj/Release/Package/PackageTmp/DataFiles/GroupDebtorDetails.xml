@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ENVELOPE>
+  <HEADER>
+    <VERSION>1</VERSION>
+    <TALLYREQUEST>Import</TALLYREQUEST>
+    <TYPE>Data</TYPE>
+    <ID>All Masters</ID>
+  </HEADER>
+  <BODY>
+    <DESC>
+      <STATICVARIABLES>
+        <SVCURRENTCOMPANY>MWB Groups</SVCURRENTCOMPANY>
+      </STATICVARIABLES>
+    </DESC>
+    <DATA>
+      <TALLYMESSAGE >
+        <GROUPS NAME="" Action="Create">
+          <NAME>test1</NAME>
+          <PARENT>[Parent]</PARENT>
+        </GROUPS>
+      </TALLYMESSAGE>
+    </DATA>
+  </BODY>
+</ENVELOPE>
+
+
+
+
+

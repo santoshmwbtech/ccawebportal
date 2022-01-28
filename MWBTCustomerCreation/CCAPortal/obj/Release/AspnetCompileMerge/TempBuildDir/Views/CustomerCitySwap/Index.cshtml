@@ -1,0 +1,324 @@
+﻿@model IEnumerable<WBT.DLCustomerCreation.CustomerCreation>
+
+@{
+    ViewBag.Title = "Customer City Swapping";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-panel">
+    <div class="row" id="divCreate">
+        @Html.Action("Search")
+    </div>
+    <div class="row" id="divList">
+    </div>
+</div>
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+    function onBegin_Ajax() {
+
+    }
+    function onCompleteCreate_Ajax() {
+
+    }
+    function onBegin_Ajax() {
+    }
+    function onSuccess_Ajax() {
+        //loadDataTableWithButtons();
+        LoadTable();
+        $('.listbox').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 450,
+        });
+        var elmnt = document.getElementById("divList");
+        elmnt.scrollIntoView();
+    }
+    function onFailure_Ajax(xhr, statusDescription) {
+        swal.fire(xhr.statusDescription);
+    }
+    function onSwapSuccess_Ajax() {
+        Swal.fire({
+            title: "Success!",
+            text: "City Swap done!!",
+            type: "success",
+            icon: "success",
+            }).then(function () {
+                window.location = '@Url.Action("Index", "CustomerCitySwap")';
+            });
+    }
+    </script>
+    <script>
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, column, row, node) {
+                        // distinguish between a regular cell and one with an input element
+                        if ($(node)[0].children.length === 0) {
+                            return data;
+                        }
+                        else {
+                            return $(data).val();
+                        }
+                    }
+                }
+            }
+        };
+        function LoadTable() {
+            $(".dataGrid").dataTable().fnDestroy();
+            var table = $('.dataGrid').DataTable({
+                        "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }],
+            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+                //dom: 'Blfrtip',
+                //pageLength: 5,
+                //"buttons": [
+                //    $.extend(true, {}, buttonCommon, {
+                //        extend: 'excel',
+                //        exportOptions: { columns: 'thead th:not(.noExport)' }
+                //    }),
+                //    $.extend(true, {}, buttonCommon, {
+                //        extend: 'csv',
+                //        exportOptions: { columns: 'thead th:not(.noExport)' }
+                //    }),
+                //]
+            //});
+
+            var table1 = $('.dataGrid').DataTable();
+
+            $('#select_all').click(function () {
+                //var c = this.checked;
+                //$('.chkselect').prop('checked', c)
+                $(':checkbox', table1.rows().nodes()).prop('checked', this.checked);
+            });
+
+            $(".chkselect").click(function () {
+                if (!this.checked) {
+                    $("#select_all").prop('checked', false);
+                }
+                else if ($(".chkselect").length == $(".chkselect:checked").length) {
+                    $("#select_all").prop('checked', true);
+                }
+            });
+
+            // Handle form submission event
+            $('#frm-promote').on('submit', function (e) {
+                var form = this;
+
+                // Encode a set of form elements from all pages as an array of names and values
+                var params = table1.$('input,select,textarea').serializeArray();
+
+                // Iterate over all form elements
+                $.each(params, function () {
+                    // If element doesn't exist in DOM
+                    if (!$.contains(document, form[this.name])) {
+                        // Create a hidden element
+                        $(form).append(
+                            $('<input>')
+                                .attr('type', 'hidden')
+                                .attr('name', this.name)
+                                .val(this.value)
+                        );
+                    }
+                });
+            });
+        }
+    </script>
+    <script>
+    function BranchChanged() {
+        var BranchID = $('#BranchID').val();
+        $('#StateID').html('');
+        $('#DistrictID').html('');
+        $('#BillingCity').html('');
+        $('#CityID').html('');
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("BranchChanged", "CustomerCitySwap")',
+            dataType: "json",
+            data: {BranchID: BranchID},
+            success: function (response) {
+                var data = [];
+                //statelist
+                for (var i = 0; i < response.states.length; i++) {
+                    array = { label: response.states[i].StateName, value: response.states[i].StateID };
+                    data.push(array);
+                }
+                $("#StateID").multiselect('dataprovider', data);
+                $('option', $('#StateID')).each(function (element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                });
+                $("#StateID").multiselect('refresh');
+                //end statelist
+
+                //citylist
+                data = [];
+                for (var i = 0; i < response.districts.length; i++) {
+                    array = { label: response.districts[i].DistrictName, value: response.districts[i].DistrictID };
+                    data.push(array);
+                }
+                $("#DistrictID").multiselect('dataprovider', data);
+                $('option', $('#DistrictID')).each(function (element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                });
+                $("#DistrictID").multiselect('refresh');
+                //end citylist
+
+                //citylist
+                data = [];
+                for (var i = 0; i < response.cities.length; i++) {
+                    array = { label: response.cities[i].CityName, value: response.cities[i].CityID };
+                    data.push(array);
+                }
+                $("#CityID").multiselect('dataprovider', data);
+                $('option', $('#CityID')).each(function (element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                });
+                $("#CityID").multiselect('refresh');
+                //end citylist
+
+                //area list
+                data = [];
+                for (var i = 0; i < response.areaLists.length; i++) {
+                    array = { label: response.areaLists[i].BillingArea, value: response.areaLists[i].BillingArea };
+                    data.push(array);
+                }
+                $("#BillingCity").multiselect('dataprovider', data);
+                $('option', $('#BillingCity')).each(function (element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                });
+                $("#BillingCity").multiselect('refresh');
+                //end area list
+
+                $("#progress").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    function StateChanged() {
+        var StateID = $('#StateID').val();
+        var BranchID = $('#BranchID').val();
+        if (BranchID == '') {
+            $('option', $('#StateID')).each(function(element) {
+                $(this).removeAttr('selected').prop('selected', false);
+              });
+            $("#StateID").multiselect('refresh');
+            swal.fire("Please select branch");
+            return false;
+        }
+        $('#DistrictID').html('');
+        $('#BillingCity').html('');
+        $('#CityID').html('');
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("StateChanged", "CustomerCitySwap")',
+            dataType: "json",
+            data: {BranchID: BranchID, StateID: StateID},
+            success: function (response) {
+                var data = [];
+                //districtlist
+                data = [];
+                for (var i = 0; i < response.districts.length; i++) {
+                    array = { label: response.districts[i].DistrictName, value: response.districts[i].DistrictID };
+                    data.push(array);
+                }
+                $("#DistrictID").multiselect('dataprovider', data);
+                //end districtlist
+
+                //citylist
+                data = [];
+                for (var i = 0; i < response.cities.length; i++) {
+                    array = { label: response.cities[i].CityName, value: response.cities[i].CityID };
+                    data.push(array);
+                }
+                $("#CityID").multiselect('dataprovider', data);
+                //end citylist
+
+                //area list
+                data = [];
+                for (var i = 0; i < response.areaLists.length; i++) {
+                    array = { label: response.areaLists[i].BillingArea, value: response.areaLists[i].BillingArea };
+                    data.push(array);
+                }
+                $("#BillingCity").multiselect('dataprovider', data);
+                //end area list
+
+                $("#progress").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function DistrictChanged() {
+        var StateID = $('#StateID').val();
+        var BranchID = $('#BranchID').val();
+        var DistrictID = $('#DistrictID').val();
+
+        if (BranchID == '') {
+            $('option', $('#DistrictID')).each(function(element) {
+                $(this).removeAttr('selected').prop('selected', false);
+              });
+            $("#DistrictID").multiselect('refresh');
+            swal.fire("Please select branch");
+            return false;
+        }
+        $('#BillingCity').html('');
+        $('#CityID').html('');
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DistrictChanged", "CustomerCitySwap")',
+            dataType: "json",
+            data: { BranchID: BranchID, StateID: StateID, DistrictID: DistrictID},
+            success: function (response) {
+                var data = [];
+                //citylist
+                data = [];
+                for (var i = 0; i < response.cities.length; i++) {
+                    array = { label: response.cities[i].CityName, value: response.cities[i].CityID };
+                    data.push(array);
+                }
+                $("#CityID").multiselect('dataprovider', data);
+                //end citylist
+
+                //area list
+                data = [];
+                for (var i = 0; i < response.areaLists.length; i++) {
+                    array = { label: response.areaLists[i].BillingArea, value: response.areaLists[i].BillingArea };
+                    data.push(array);
+                }
+                $("#BillingCity").multiselect('dataprovider', data);
+                //end area list
+
+                $("#progress").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    </script>
+    <script>
+        function BCityChanged() {
+            $("#CityRow").show();
+        }
+    </script>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            jQuery("#dataGrid").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }],
+            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+}

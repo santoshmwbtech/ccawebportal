@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ENVELOPE>
+  <HEADER>
+    <VERSION>1</VERSION>
+    <TALLYREQUEST>Export</TALLYREQUEST>
+    <TYPE>Collection</TYPE>
+    <ID>All Sales Vchs</ID>
+  </HEADER>
+  <BODY>
+    <DESC>
+      <TDL>
+        <TDLMESSAGE>
+          <Collection NAME="All Sales Vchs" ISINTERNAL="No" ISFIXED="No" ISMODIFY="No" >
+            <Type>Vouchers : Ledger</Type>
+            <ChildOf>[CustName]</ChildOf>
+            <FETCH>*.*,AllLedgerEntries.*</FETCH>
+          </Collection>
+        </TDLMESSAGE>
+      </TDL>
+    </DESC>
+  </BODY>
+</ENVELOPE>
+
+
+

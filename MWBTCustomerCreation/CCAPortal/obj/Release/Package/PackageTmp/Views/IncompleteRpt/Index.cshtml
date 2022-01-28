@@ -1,0 +1,206 @@
+﻿@model IEnumerable<WBT.DLCustomerCreation.CustomerCreation>
+@using WBT.Common
+
+@{
+    ViewBag.Title = "Customer Incomplete Report";
+}
+
+<div class="main-panel">
+    <div class="row" id="divCreate">
+        @Html.Action("Search")
+    </div>
+    <div class="row" id="divList">
+    </div>
+</div>
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+@section scripts {
+    <script>
+
+        $(document).on('change', ":checkbox", function () {
+            $('#IsSMS').change(function () {
+                if (this.checked) {
+                    $("#IsEmail").prop('checked', false);
+                    $("#IsWhatsApp").prop('checked', false);
+                    $("#SMSRow").show();
+                    $("#EmailRow").hide();
+                }
+                else {
+                    $("#SMSRow").hide();
+                }
+            });
+
+            $("#IsEmail").click(function () {
+                if (this.checked) {
+                    $("#IsSMS").prop('checked', false);
+                    $("#IsWhatsApp").prop('checked', false);
+                    $("#SMSRow").hide();
+                    $("#EmailRow").show();
+                    $('.textarea-editor').summernote({
+                        height: 100, // set editor height
+                        minHeight: null, // set minimum height of editor
+                        maxHeight: null, // set maximum height of editor
+                        focus: false // set focus to editable area after initializing summernote
+                    });
+                }
+                else {
+                    $("#EmailRow").hide();
+                }
+            });
+
+                $("#IsWhatsApp").click(function () {
+                if (this.checked) {
+                    $("#IsEmail").prop('checked', false);
+                    $("#IsSMS").prop('checked', false);
+                }
+            });
+        });
+
+
+
+
+        function onBegin_Ajax() {
+
+        }
+        function onCompleteCreate_Ajax() {
+
+        }
+        function onBegin_Ajax() {
+        }
+        function onSuccess_Ajax() {
+            //loadDataTableWithButtons();
+            LoadTable();
+            var elmnt = document.getElementById("divList");
+            elmnt.scrollIntoView();
+        }
+        function onFailure_Ajax(xhr, statusDescription) {
+            swal(xhr.statusDescription);
+        }
+        function onPromoSuccess_Ajax() {
+
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            //LoadTable();
+        });
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, column, row, node) {
+                        // distinguish between a regular cell and one with an input element
+                        if ($(node)[0].children.length === 0) {
+                            return data;
+                        }
+                        else {
+                            return $(data).val();
+                        }
+                    }
+                }
+            }
+        };
+        function LoadTable() {
+            $("#dataGrid").dataTable().fnDestroy();
+            var table = $('#dataGrid').DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }],
+            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+            //    dom: 'Blfrtip',
+            //    columnDefs: [
+            //        { width: '20%', targets: 0 }
+            //    ],
+            //    fixedColumns: true,
+            //    pageLength: 5,
+            //    "buttons": [
+            //        $.extend(true, {}, buttonCommon, {
+            //            extend: 'excel',
+            //            exportOptions: { columns: 'thead th:not(.noExport)' }
+            //        }),
+            //        $.extend(true, {}, buttonCommon, {
+            //            extend: 'csv',
+            //            exportOptions: { columns: 'thead th:not(.noExport)' }
+            //        }),
+            //    ]
+            //});
+
+
+            var table1 = $('#dataGrid').DataTable();
+
+            $('#select_all').click(function () {
+                $(':checkbox', table1.rows().nodes()).prop('checked', this.checked);
+
+            });
+
+            $(".chkselect").click(function () {
+                if (!this.checked) {
+                    $("#select_all").prop('checked', false);
+                }
+                else if ($(".chkselect").length == $(".chkselect:checked").length) {
+                    $("#select_all").prop('checked', true);
+                }
+            });
+
+            // Handle form submission event
+            $('#frm-promote').on('submit', function (e) {
+                var form = this;
+
+                // Encode a set of form elements from all pages as an array of names and values
+                var params = table1.$('input,select,textarea').serializeArray();
+
+                // Iterate over all form elements
+                $.each(params, function () {
+                    // If element doesn't exist in DOM
+                    if (!$.contains(document, form[this.name])) {
+                        // Create a hidden element
+                        $(form).append(
+                            $('<input>')
+                                .attr('type', 'hidden')
+                                .attr('name', this.name)
+                                .val(this.value)
+                        );
+                    }
+                });
+            });
+
+            //$("#dataTable").DataTable({
+            //   "responsive": true, "lengthChange": false, "autoWidth": false,
+            //   "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
+            //}).buttons().container().appendTo('#dataTable_wrapper .col-md-6:eq(0)');
+
+            //jQuery("#dataTable").DataTable({
+            //    "responsive": true, "lengthChange": false, "autoWidth": false,
+            //    "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
+            //}).buttons().container().appendTo('#dataTable_wrapper .col-md-6:eq(0)');
+        }
+    </script>
+
+    <script>
+            //jQuery(document).ready(function ($) {
+            //    jQuery("#dataGrid").DataTable({
+            //        "responsive": true, "lengthChange": false, "autoWidth": false,
+            //        "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
+            //    }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+            //});     
+    </script>
+
+    <script>
+
+    function onPromoteClick() {
+      //    alert('Promote clcik');
+        if (!$('#IsEmail').is(':checked') && !$('#IsSMS').is(':checked') && !$('#IsWhatsApp').is(':checked')) {
+            alert("Check atleast one checkbox to promote");
+            return false;
+        }
+        var checked_checkboxes = $(".dataGrid input[type=checkbox]:checked");
+        if (checked_checkboxes.length == 0) {
+            alert("Check atleast one checkbox from the above list to promote");
+            return false;
+        }
+    }
+    </script>
+}

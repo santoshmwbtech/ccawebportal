@@ -1,0 +1,26 @@
+*******************Start**************
+Date & Time : 06/10/2021 15:39:25
+Message : The cast to value type 'System.Boolean' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at WBT.DLCustomerCreation.DLSalesChannelType.GetSalesChannelTypeList(String OrgID) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLSalesChannelType.cs:line 23
+*******************End**************
+*******************Start**************
+Date & Time : 06/10/2021 15:40:47
+Message : The cast to value type 'System.Boolean' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at WBT.DLCustomerCreation.DLSalesChannelType.GetSalesChannelTypeList(String OrgID)
+*******************End**************

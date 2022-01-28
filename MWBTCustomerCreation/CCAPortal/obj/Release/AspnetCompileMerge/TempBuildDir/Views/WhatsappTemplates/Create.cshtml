@@ -1,0 +1,64 @@
+﻿@model WBT.DLCustomerCreation.Templates
+@using (Ajax.BeginForm("Save", "WhatsappTemplates", null, new AjaxOptions
+{
+    OnSuccess = "onCreateSuccess_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "progress"
+}, new { @class = "form-sample" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Whatsapp Templates</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Template Name </label>
+                                @Html.EditorFor(model => model.TemplateName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Template Name", @autocomplete = "off", @required = "required" } })
+                                @Html.ValidationMessageFor(model => model.TemplateName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Template Subject</label>
+                                @Html.EditorFor(model => model.TemplateSubject, new { htmlAttributes = new { @class = "form-control", @placeholder = "Template Subject", @autocomplete = "off", @required = "required" } })
+                                @Html.ValidationMessageFor(model => model.TemplateSubject, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Message</label>
+                                @Html.TextAreaFor(model => model.TemplateBody, new { @class = "form-control", @placeholder = "Message", @autocomplete = "off", @required = "required" })
+                                @Html.ValidationMessageFor(model => model.TemplateBody, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $.validator.unobtrusive.parse(document);
+</script>
+
+

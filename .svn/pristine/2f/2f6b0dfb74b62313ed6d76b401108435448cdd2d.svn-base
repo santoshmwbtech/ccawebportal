@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ENVELOPE>
+  <HEADER>
+    <VERSION>1</VERSION>
+    <TALLYREQUEST>Import</TALLYREQUEST>
+    <TYPE>Data</TYPE>
+    <ID>All Masters</ID>
+  </HEADER>
+  <BODY>
+    <DESC>
+      <STATICVARIABLES>
+        <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+      </STATICVARIABLES>
+    </DESC>
+    <DATA>
+      <TALLYMESSAGE>
+        <LEDGER NAME="" Action="Create">
+          <NAME>Belgum Market Debtors</NAME>
+          <NAME.LIST>
+            <NAME>Murali Industries300</NAME>
+            <NAME>Testing200</NAME>
+          </NAME.LIST>
+          <PARENT>Belgum Market Debtors</PARENT>
+          <OPENINGBALANCE>0</OPENINGBALANCE>
+          <ADDRESS.LIST>
+            <ADDRESS></ADDRESS>
+            <ADDRESS></ADDRESS>
+            <ADDRESS></ADDRESS>
+          </ADDRESS.LIST>
+          <MAILINGNAME.LIST TYPE="String">
+            <MAILINGNAME></MAILINGNAME>
+          </MAILINGNAME.LIST>
+          <EMAIL></EMAIL>
+          <LEDGERPHONE></LEDGERPHONE>
+          <LEDGERMOBILE></LEDGERMOBILE>
+          <LEDGERCONTACT></LEDGERCONTACT>
+          <ISBILLWISEON>Yes</ISBILLWISEON>
+          <ISCOSTCENTRESON>No</ISCOSTCENTRESON>
+          <ISINTERESTON>No</ISINTERESTON>
+          <ISCONDENSED>No</ISCONDENSED>
+          <AFFECTSSTOCK>No</AFFECTSSTOCK>
+          <FORPAYROLL>No</FORPAYROLL>
+          <CREDITLIMIT>0</CREDITLIMIT>
+          <LEDGERFAX></LEDGERFAX>
+          <STATENAME></STATENAME>
+          <PINCODE></PINCODE>
+          <INCOMETAXNUMBER></INCOMETAXNUMBER>
+          <VATTINNUMBER></VATTINNUMBER>
+          <SALESTAXNUMBER></SALESTAXNUMBER>
+          <VATDEALERNATURE.LIST DESC="`VATDealerNature`" ISLIST="YES" TYPE="String" INDEX="10031">
+            <VATDEALERNATURE DESC="`VATDealerNature`"></VATDEALERNATURE>
+          </VATDEALERNATURE.LIST>
+          <NARRATION></NARRATION>
+        </LEDGER>
+      </TALLYMESSAGE>
+    </DATA>
+  </BODY>
+</ENVELOPE>

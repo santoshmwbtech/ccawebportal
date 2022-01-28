@@ -1,0 +1,341 @@
+﻿@model WBT.DLCustomerCreation.SalesOrders
+@{
+    ViewBag.Title = "Sales Order Details";
+}
+
+@using (Ajax.BeginForm("Update", "SalesOrderEdit", null, new AjaxOptions
+{
+    OnSuccess = "onPromoSuccess_Ajax",
+    OnFailure = "onFailure_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "progress"
+}, new { @class = "form-sample", @id = "frm-promote", @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.CustID)
+    @Html.HiddenFor(model => model.BranchID)
+    @Html.HiddenFor(model => model.OrgID)
+    @Html.HiddenFor(model => model.VoucherTypeID)
+    @Html.HiddenFor(model => model.VoucherTypeNo)
+    @Html.HiddenFor(model => model.BrokerID)
+    @Html.HiddenFor(model => model.createdByID)
+    @Html.HiddenFor(model => model.CreationDate)
+    @Html.HiddenFor(model => model.ModifiedByID)
+    @Html.HiddenFor(model => model.ModifiedDate)
+    @*@Html.HiddenFor(model => model.DueDate)*@
+    @Html.HiddenFor(model => model.Status)
+    @Html.HiddenFor(model => model.SalesType)
+    @Html.HiddenFor(model => model.IsBulkSale)
+    @Html.HiddenFor(model => model.SalesmanID)
+    @Html.HiddenFor(model => model.PANNumber)
+    @Html.HiddenFor(model => model.DiscountAmt)
+    @Html.HiddenFor(model => model.DiscountPercentage)
+    @Html.HiddenFor(model => model.IsDiscountRangeExceeded)
+    @Html.HiddenFor(model => model.BusinessTypeId)
+    @Html.HiddenFor(model => model.BusinessTypeValue)
+    @Html.HiddenFor(model => model.CreditTypeId)
+    @Html.HiddenFor(model => model.CreditTypeValue)
+    @Html.HiddenFor(model => model.ShippingAdddress)
+    @Html.HiddenFor(model => model.Photo1)
+    @Html.HiddenFor(model => model.Photo2)
+    @Html.HiddenFor(model => model.IsDirectSO)
+    @Html.HiddenFor(model => model.IsDirectSale)
+    @Html.HiddenFor(model => model.SignatureImage)
+    @Html.HiddenFor(model => model.TransType)
+    @Html.HiddenFor(model => model.IsTallyUpdated)
+    @Html.HiddenFor(model => model.BillingAddress)
+    @Html.HiddenFor(model => model.URDNumber)
+    @Html.HiddenFor(model => model.Comments)
+    @Html.HiddenFor(model => model.Location)
+    @Html.HiddenFor(model => model.IsDelivaryNote)
+    @Html.HiddenFor(model => model.IsActive)
+
+
+    
+    <div class="row" id="divList">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">View and Edit Sales Order</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">  <i class="fas fa-minus"></i> </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"> <i class="fas fa-times"></i> </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Order Number </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.SalesOrderNumber, new { @readonly = "readonly", @class = "form-control", @id="txtsalesorderno" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label> Order Date </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.SalesDateTime, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Branch Name </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.BranchName, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Customer Name </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.CustomerName, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Customer Address </label>
+                                <div>
+                                    @Html.TextAreaFor(m => m.caddress, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Customer State </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.cstate, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Customer City </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.ccity, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table" id="tbl">
+                    <thead style="text-align:center">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Price Per Qty</th>
+                            <th>Qty</th>
+                            <th>Total Price</th>
+                            @*<th>Action</th>*@
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            if (Model.DLSalesOrderWithItemCreations.Count() > 0)
+                            {
+                                int j = 0;
+                                foreach (var item in Model.DLSalesOrderWithItemCreations)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(a => a.DLSalesOrderWithItemCreations[j].ItemName)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].ItemCode)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].SalesOrderWithItemID)
+                                            @*@Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].Rate)*@
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].BagQTY)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].IsRateInQuantls)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].LoadingUnloadingCharge)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].ItemRowNumber)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].FrieghtCharge)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].OtherExpense)
+                                        </td>
+
+                                        <td style="text-align:center;">
+                                            @if (Session["RoleName"].ToString() == "Admin")
+                                            {
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Rate, new { @class = "form-control numberonly", @id = "rate_" + item.ItemCode + "", @onchange = "calculating_pricechg(this, " + item.ItemCode + ")", @style = "text-align:right;" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Rate, new { @class = "form-control numberonly", @id = "rate_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
+                                            }
+
+                                        </td>
+
+                                        <td style="text-align:right;">
+                                            @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].TotalQTY, new { @class = "form-control numberonly", @onchange = "calculating(this, " + item.Rate + ", '" + item.ItemName + "','" + item.ItemCode + "')", @id = "bqty_" + item.ItemCode + "", @style = "text-align:right;" })
+                                            @Html.Hidden("hdnQty")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Value, new { @class = "form-control numberonly", @id = "ttlp_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
+                                        </td>
+                                        @*<td>  </td>*@
+
+                                    </tr>
+                                    j++;
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <div class="card-footer">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" id="btnUpdate">Update</button>
+                        <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally">Sync To Tally</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function calculating(qty, price, itemName, itemCode) {
+            var p = document.getElementById("rate_" + itemCode).value;
+            var result_val = (parseFloat(qty.value) * parseFloat(p));
+            document.getElementById("ttlp_" + itemCode).value = result_val.toFixed(2);
+        }
+
+        function calculating_pricechg(price, itemCode1) {
+            var qty = document.getElementById("bqty_" + itemCode1).value;
+            var res = (parseFloat(price.value) * qty);
+            document.getElementById("ttlp_" + itemCode1).value = res.toFixed(2);
+        }
+
+        function onPromoSuccess_Ajax() {
+            Swal.fire({
+                title: 'Success!!',
+                text: 'Sales Order Updated Successfully',
+                icon: 'success',
+            }).then((result) => {
+                        $("#btnUpdate").hide();
+                        $("#btnTally").show();
+            });
+        }
+
+        function onSuccess_Ajax() {
+        }
+        function onCompleteCreate_Ajax() {
+        }
+        function onCreateSuccess_Ajax() {
+        }
+        function onEditSuccess_Ajax() {
+        }
+        function onEditSuccess() {
+            var elmnt = document.getElementById("maindiv");
+            elmnt.scrollIntoView();
+            LoadListBox();
+        }
+        function onBegin_Ajax(data) {
+        }
+        function onEditCompleteCreate_Ajax() {
+
+        }
+        function onFailure_Ajax() {
+            Swal.fire({
+                title: 'Error',
+                text: "Please try again later",
+                icon: 'error',
+            }).then((result) => { });
+        }
+        function Ajax_Edit_Failure() {
+
+        }
+        function Ajax_OnComplete() {
+
+        }
+        function onSaveCompleteCreate_Ajax() {
+        }
+
+        $(document).ready(function ($) {
+            $("#dataGrid").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
+            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+
+            $("#btnTally").hide();
+
+             $('.numberonly').keypress(function (e) {
+                  if (event.which != 46 && (event.which < 47 || event.which > 59))
+                    {
+                        event.preventDefault();
+                        if ((event.which == 46) && ($(this).indexOf('.') != -1)) {
+                            event.preventDefault();
+                        }
+                    }
+            });
+        });
+
+
+    function TallySync() {
+        var ID = document.getElementById("txtsalesorderno").value; 
+        $.ajax({
+                url: '@Url.Action("TallySync", "SalesOrderEdit")',
+                data: "{ 'ID': '" + ID + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data == "0") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else if (data == "1") {
+                        swal.fire("Please install the service and open tally software, wait for 10 seconds and click on Tally Sync button again");
+                    }
+                    else {
+                        if (data == "Tally Sync Successful!!") {
+                            Swal.fire({
+                                title: "Success!",
+                                text: data,
+                                icon: "success",
+                            }).then(function () {
+                                window.location = '@Url.Action("Index", "SalesOrder")';
+                            });
+                        }
+                        else {
+                            alert(data);
+                        }
+                    }
+                },
+                error: function (response) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: response.responseText,
+                        type: "error",
+                        icon: "error",
+                    }).then(function () { });
+                },
+                failure: function (response) {
+                     Swal.fire({
+                        title: "Error!",
+                        text: response.responseText,
+                        type: "error",
+                        icon: "error",
+                    }).then(function () { });
+                }
+            });
+    }
+
+    </script>
+}

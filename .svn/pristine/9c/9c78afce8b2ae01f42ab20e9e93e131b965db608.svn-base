@@ -1,0 +1,337 @@
+﻿@model WBT.DLCustomerCreation.Receipts
+@{
+    ViewBag.Title = "Receipts Details";
+}
+
+@using (Ajax.BeginForm("updateValues", "ReceiptsEdit", null, new AjaxOptions
+{
+    OnSuccess = "onPromoSuccess_Ajax",
+    OnFailure = "onFailure_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "progress"
+}, new { @class = "form-sample", @id = "frm-promote", @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.ReceiptID)
+    @Html.HiddenFor(model => model.LedgerID)
+    @Html.HiddenFor(model => model.VoucherTypeNo)
+    @Html.HiddenFor(model => model.VoucherTypeName)
+    @Html.HiddenFor(model => model.OrgID)
+    @Html.HiddenFor(model => model.CreatedByID)
+    @Html.HiddenFor(model => model.CreationDate)
+    @Html.HiddenFor(model => model.Status)
+    @Html.HiddenFor(model => model.BankOrCash)
+    @Html.HiddenFor(model => model.PaymentType)
+    @Html.HiddenFor(model => model.Comments)
+    @Html.HiddenFor(model => model.BankName)
+    @Html.HiddenFor(model => model.BranchName)
+    @Html.HiddenFor(model => model.AccountNumber)
+    @Html.HiddenFor(model => model.IFSC)
+    @Html.HiddenFor(model => model.TransactionNumber)
+    @Html.HiddenFor(model => model.CheckDate)
+    @Html.HiddenFor(model => model.SalesManID)
+    @Html.HiddenFor(model => model.SignatureImage)
+    @Html.HiddenFor(model => model.IsTallyUpdates)
+    @Html.HiddenFor(model => model.SourceOfUpdate)
+    @Html.HiddenFor(model => model.CustLocation)
+    @Html.HiddenFor(model => model.UpdatedDate)
+    @Html.HiddenFor(model => model.RecieverSignatureImage)
+    @Html.HiddenFor(model => model.ReferenceImage)
+    @Html.HiddenFor(model => model.IsTallyUpdated)
+    @Html.HiddenFor(model => model.ReceiptDatetime)
+
+
+    <div class="row" id="divList">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">View and Edit Receipts</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">  <i class="fas fa-minus"></i> </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"> <i class="fas fa-times"></i> </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Receipt ID </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.ReceiptID, new { @readonly = "readonly", @class = "form-control", @id = "rcptID" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Receipt Date </label>
+                                <div>
+                                    @Html.EditorFor(m => m.ReceiptDateStr, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control"} })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Customer Name </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.CustomerName, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Voucher Type No </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.VoucherTypeNo, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label> Total Amount </label>
+                                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control numberonly", @id = "txt_ttl_amt", @style = "text-align:right;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table" id="tbl">
+                    <thead style="text-align:center">
+                        <tr>
+                            <th>Date</th>
+                            <th>Bill Number</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            if (Model.ReceiptsDetails.Count() > 0)
+                            {
+                                int j = 0;
+                                foreach (var item in Model.ReceiptsDetails)
+                                {
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            @Html.DisplayFor(a => a.ReceiptsDetails[j].Billdatetime)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].ReceiptWithBillID)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].ReceiptID)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].CustID)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].OrgID)
+                                            @*@Html.HiddenFor(a => a.ReceiptsDetails[j].BillNo)*@
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].BillType)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].Billdatetime)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].OutstandingAmt)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].ReceiptWithBillID)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].SourceOfUpdate)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].OutstandingAmt)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].TallyAmount)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].Discountamount)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].IsTallyUpdated)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].CreatedByID)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].ModifiedByID)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].CreationDate)
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].UpdatedDate)
+
+                                        </td>
+
+                                        <td style="text-align:center;">
+                                            @Html.TextBoxFor(a => a.ReceiptsDetails[j].BillNo, new { @readonly = "readonly", @class = "form-control" })
+                                        </td>
+
+                                        <td>
+                                            @Html.TextBoxFor(a => a.ReceiptsDetails[j].Billamount, new { @class = "form-control clsTxtToCalculate numberonly", @onchange = "calculating(this, " + item.BillNo + ");this.oldvalue = this.value;", @id = "bno_" + item.BillNo + "", @onfocus = "this.oldvalue = this.value;", @style = "text-align:right;" })
+                                        </td>
+
+                                    </tr>
+
+                                    j++;
+                                }
+                            }
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>Total : <label id="ttlprice"></label> </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="card-footer">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" id="btnUpdate" onclick="return validating_price();">Update</button>
+                        <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally">Sync To Tally</a>
+                        @Html.ValidationSummary()
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        //function calculating(amt, billno) {
+        //    var result_val = document.getElementById("txt_ttl_amt").value;
+
+        //    result_val = (parseFloat(result_val) - parseFloat(amt.oldvalue));
+        //    result_val = (parseFloat(result_val) + parseFloat(amt.value));
+        //    //document.getElementById("txt_ttl_amt").value = result_val.toFixed(2);
+        //    rfinal = result_val.toFixed(2);
+        //    rfinal = document.getElementById("lbl_ttl").value;
+        //}
+
+        //function ttlfunc()
+        //{
+        //    var res = document.getElementById("txt_ttl_amt").value;
+        //}
+
+        function onPromoSuccess_Ajax(data) {
+
+            Swal.fire({
+                text: data,
+                icon: 'success',
+            }).then((result) => { $("#btnTally").show(); $("#btnUpdate").hide(); });
+        }
+
+        function onSuccess_Ajax() {
+        }
+        function onCompleteCreate_Ajax() {
+        }
+        function onCreateSuccess_Ajax() {
+        }
+        function onEditSuccess_Ajax() {
+        }
+        function onEditSuccess() {
+            var elmnt = document.getElementById("maindiv");
+            elmnt.scrollIntoView();
+            LoadListBox();
+        }
+        function onBegin_Ajax(data) {
+        }
+        function onEditCompleteCreate_Ajax() {
+
+        }
+        function onFailure_Ajax() {
+            Swal.fire({
+                title: 'Error',
+                text: "Please try again later",
+                icon: 'error',
+            }).then((result) => { });
+        }
+        function Ajax_Edit_Failure() {
+
+        }
+        function Ajax_OnComplete() {
+
+        }
+        function onSaveCompleteCreate_Ajax() {
+        }
+
+        $(document).ready(function ($) {
+            $('input').on('focusin', function () {
+                $(this).data('val', $(this).val());
+            });
+
+            $("#dataGrid").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
+            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+        });
+
+        $(document).ready(function () {
+         $("#btnTally").hide();
+                    var total = 0;
+                    $(".clsTxtToCalculate").each(function () {
+                        if (!isNaN(this.value) && this.value.length != 0) {
+                            total += parseFloat(this.value);
+                        }
+                        document.getElementById('ttlprice').innerText = total.toFixed(2);
+                    });
+
+            $(".clsTxtToCalculate").each(function () {
+                $(this).keyup(function () {
+                    var total = 0;
+                    $(".clsTxtToCalculate").each(function () {
+                        if (!isNaN(this.value) && this.value.length != 0) {
+                            total += parseFloat(this.value);
+                        }
+                    });
+                    document.getElementById('ttlprice').innerText = total.toFixed(2);
+                });
+            });
+
+             $('.numberonly').keypress(function (e) {
+                  if (event.which != 46 && (event.which < 47 || event.which > 59))
+                    {
+                        event.preventDefault();
+                        if ((event.which == 46) && ($(this).indexOf('.') != -1)) {
+                            event.preventDefault();
+                        }
+                    }
+            });
+        });
+
+    function validating_price() {
+        var ttl = parseFloat(document.getElementById("txt_ttl_amt").value);
+        if (document.getElementById('ttlprice').innerText != ttl.toFixed(2)) {
+            Swal.fire({
+                title: 'Error',
+                text: "Total Receipt amount doesn't match with total bill amount",
+                icon: 'error',
+            }).then((result) => { return false; });
+            return false;
+        }
+    }
+
+    function TallySync() {
+        var ID = document.getElementById("rcptID").value;
+        $.ajax({
+                url: '@Url.Action("TallySync", "ReceiptsEdit")',
+                data: "{ 'ID': '" + ID + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data == "0") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else {
+                        if (data == "Tally Sync Successful!!") {
+                            Swal.fire({
+                                title: "Success!",
+                                text: data,
+                                icon: "success",
+                            }).then(function () {
+                                window.location = '@Url.Action("Index", "Receipts")';
+                            });
+                        }
+                        else {
+                            Swal.fire(data);
+                        }
+                    }
+                },
+            error: function (response) {
+                Swal.fire(response.responseText);
+                },
+            failure: function (response) {
+                Swal.fire(response.responseText);
+                }
+            });
+    }
+
+    </script>
+}

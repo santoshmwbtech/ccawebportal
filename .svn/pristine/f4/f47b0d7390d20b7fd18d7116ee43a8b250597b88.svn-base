@@ -1,0 +1,810 @@
+﻿@model IEnumerable<WBT.DLCustomerCreation.DLUserCreation>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-panel" id="mainDiv">
+    <div>
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div id="divCreate">
+                    @Html.Action("Create")
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div id="divList">
+                    @Html.Action("UserList")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+    function onCreateSuccess_Ajax() {
+
+        Swal.fire({
+            title: 'Success',
+            text: 'User Details Saved Successfully!',
+            icon: 'success'
+        }).then(function () {
+            window.location = '@Url.Action("Index", "UserCreation")';
+        });
+    }
+    function onBegin_Ajax(data) {
+    }
+    function onFailure_Ajax() {
+        //swal("Error", "Please try again later", "error");
+        Swal.fire({
+            title: "Error",
+            text: "Please try again later",
+            icon: "error"
+        }).then(function () {
+            //window.location = '@Url.Action("Index", "UserCreation")';
+        });
+    }
+        function Ajax_Edit_Failure(xhr, statusDescription) {
+
+             Swal.fire({
+            title: "Error",
+            text: xhr.statusDescription,
+            icon: "error"
+        }).then(function () {
+        });
+
+    }
+    function Ajax_OnComplete() {
+        $("#progress").hide();
+    }
+    function onSaveCompleteCreate_Ajax() {
+
+    }
+        function onEditSuccess_Ajax() {
+            Swal.fire({
+            title: "Success",
+            text: "User Details Updated Successfully!",
+            icon: "success"
+        }).then(function () {
+            //$("#progress").show();
+            window.location = '@Url.Action("Index", "UserCreation")';
+        });
+        }
+        function onDeleteSuccess(data) {
+            if (data.url) {
+                window.location = '@Url.Action("Index", "Login")';
+            }
+            Swal.fire({
+                text: data,
+            }).then((result) => {
+                $("#divList").load('@Url.Action("UserList", "UserCreation")');
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadDataTableWithButtons();
+                }, 1000);
+            });
+        }
+    function onFailure_Ajax() {
+
+        Swal.fire({
+            title: "Error",
+            text: "Please try again later",
+            icon: "error"
+        }).then(function () {
+            //window.location = '@Url.Action("Index", "UserCreation")';
+        });
+    }
+    function onEditSuccess(data) {
+        LoadDropdown();
+        BindSelectedValues();
+        $("#FName").focus();
+        LoadListBox();
+        OnChangeEventState();
+        loadCities();
+        $('#tbldynamic tbody tr').each(function (index, ele) {
+            if ($('.hdn_doctype', this).length > 0)
+                var doctype = $('.hdn_doctype', this).val();
+            $('.clsdoctype', this).val(doctype);
+            var doctypes = $('.clsdoctype', this);
+            doctype_changed(doctypes);
+        });
+    }
+    function onEditCompleteCreate_Ajax() {
+    }
+    </script>
+
+    <script>
+    function btnCancel_Click() {
+        $("#divCreate").load('@Url.Action("Create", "UserCreation")');
+        setTimeout(function () {
+            LoadListBox();
+        }, 1000);
+        $("#FName").focus();
+    }
+    </script>
+    <script type="text/javascript">
+    $('#Username').change(function () {
+        $('#Username').html('');
+        var selection = $('#Username').val();
+        if (selection.length > 0) {
+            $.post('@Url.Action("SearchUserName", "UserCreation")', { Username: selection },
+            function (data) {
+                if (data == 0) {
+                    $("#Username").html('<font color="Green">Available !. you can take it.</font>');
+                    $("#Username").css("border-color", "Green");
+                }
+                else {
+                    //swal("User Name already taken!... Please Try with the different one");
+                     Swal.fire({
+                        title: "Error",
+                        text: "User Name already taken!... Please Try with the different one",
+                        icon: "error"
+                    }).then(function () {
+                        //window.location = '@Url.Action("Index", "UserCreation")';
+                    });
+                    $('#Username').val('');
+                }
+            })
+        }
+    });
+    </script>
+    <script>
+    function LoadDropdown() {
+        var selectedId = $('#UserID').val();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AssignedUnderUsers", "UserCreation")',
+                dataType: "json",
+                    contentType: "application/json",
+            data: JSON.stringify({ Userid: selectedId }),
+            success: function (data)
+            {
+                if (data != null && data !="") {
+                    $("#AssignedUserId").empty();
+                    var s = '<option value="-1">Please Select Users</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        s += '<option value="' + data[i].UserID + '">' + data[i].Username + '</option>';
+                    }
+                    $("#AssignedUserId").html(s);
+                } else
+                {
+
+                }
+            },
+            error: function ()
+            {
+
+            }
+        });
+    }
+    </script>
+    <script>
+    function RoleChanged() {
+        var RoleID = $('#RoleID').val();
+        $("#ParentUserList").empty();
+        $("#ParentUserList option:selected").prop("selected", false);
+        $("#ParentUserList option").remove();
+        $('#ParentUserList').multiselect('rebuild');
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetParentUsers", "UserCreation")',
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({ RoleID: RoleID }),
+            success: function (data) {
+                if (data != null && data != "") {
+                    var userData = [];
+                    for (var i = 0; i < data.length; i++) {
+                        array = { label: data[i].FName, value: data[i].UserID };
+                        userData.push(array);
+                    }
+                    $("#ParentUserList").multiselect('dataprovider', userData);
+                    $('#ParentUserList').multiselect('rebuild');
+                    $("#progress").hide();
+                } else {
+                    $("#progress").hide();
+                }
+            },
+            error: function () {
+                $("#progress").hide();
+            }
+        });
+    }
+    </script>
+    <script>
+    function BindSelectedValues() {
+        var selectedId = $('#UserID').val();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AssignedUsersByUserID", "UserCreation")',
+                dataType: "json",
+                    contentType: "application/json",
+            data: JSON.stringify({ Userid: selectedId }),
+            success: function (data)
+            {
+                if (data != null && data != "") {
+                    var selectedValues = new Array();
+                    for (var i = 0; i < data.length; i++) {
+                        selectedValues[i] = data[i].UserID;
+                    }
+                    $("#AssignedUserId").val(selectedValues).change();
+                } else if (data == null && data == "")
+                {
+                    // $("#AssignedUserId").empty();
+                    //swal("Error", "cant allow to assign under users", "Error");
+                     Swal.fire({
+                        title: "Error",
+                        text: "cant allow to assign under users",
+                        icon: "error"
+                    }).then(function () {
+                        //window.location = '@Url.Action("Index", "UserCreation")';
+                    });
+                }
+            },
+            error: function ()
+            {
+
+            }
+        });
+    }
+    </script>
+    <script>
+    function OnChangeEventState() {
+        @*var selectedStateId = $('#State').val();
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AssigningCities", "UserCreation")',
+            dataType: "json",
+            data: { StateID: selectedStateId },
+            success: function (data) {
+                if (data != null && data != "") {
+                    var cityData = [];
+                    array = { label: "Select City", value: "0" };
+                    cityData.push(array);
+                    //citylist
+                    for (var i = 0; i < data.length; i++) {
+                        array = { label: data[i].CityName, value: data[i].CityID };
+                        cityData.push(array);
+                    }
+                    $("#City").multiselect('dataprovider', cityData);
+                    $("#progress").hide();
+                    //end citylist
+                } else {
+                    $("#progress").hide();
+                    $("#City option").remove();
+                    $("#City").multiselect('rebuild');
+                }
+            },
+            error: function () {
+
+            }
+        });*@
+    }
+    </script>
+    <script type="text/javascript">
+    function autoComplete() {
+        var StateID = $("#StateID").val();
+        $("#City").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("SearchByName", "UserCreation")',
+                    data: { StateID: StateID, Name: request.term},
+                    dataType: "json",
+                    type: "POST",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                                return item;
+                            }))
+                    },
+                    error: function (response) {
+                        //swal(response.responseText);
+
+                         Swal.fire({
+                             title: "Error",
+                             text: response.responseText,
+            icon: "error"
+        }).then(function () {
+        });
+                    },
+                    failure: function (response) {
+                        //swal(response.responseText);
+                         Swal.fire({
+                             title: "Error",
+                             text: response.responseText,
+            icon: "error"
+        }).then(function () {
+        });
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#City").val(i.item.val);
+            },
+            minLength: 1
+        });
+    }
+    </script>
+    <script>
+    $(document).ready(function(){
+        loadCities();
+    });
+    function loadCities() {
+        $("#City").select2({
+            ajax: {
+                url: '@Url.Action("SearchByName", "UserCreation")',
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+    }
+    function LoadListBox() {
+        $('.listbox').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 450,
+        });
+    }
+    </script>
+    <script>
+    function AStateChanged() {
+        $('#hfStateSelected').val($('#StateList').val());
+        var StateList = $('#hfStateSelected').val();
+        $('option', $('#DistrictList')).each(function(element) {
+                $(this).removeAttr('selected').prop('selected', false);
+              });
+            $("#DistrictList").multiselect('refresh');
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("StateChanged", "UserCreation")',
+            dataType: "json",
+            data: {StateList: StateList},
+            success: function (response) {
+                var data = [];
+                //districtlist
+                //for (var i = 0; i < response.districts.length; i++) {
+                //    array = { label: response.districts[i].DistrictName, value: response.districts[i].DistrictID };
+                //    data.push(array);
+                //}
+                data = response;
+                $("#DistrictList").multiselect('dataprovider', data);
+                $("#DistrictList").multiselect('rebuild');
+                //end districtlist
+
+                ////citylist
+                //data = [];
+                //for (var i = 0; i < response.cities.length; i++) {
+                //    array = { label: response.cities[i].CityName, value: response.cities[i].CityID };
+                //    data.push(array);
+                //}
+                //$("#CityList").multiselect('dataprovider', data);
+                ////end citylist
+
+                ////area list
+                //data = [];
+                //for (var i = 0; i < response.areaLists.length; i++) {
+                //    array = { label: response.areaLists[i].BillingArea, value: response.areaLists[i].BillingArea };
+                //    data.push(array);
+                //}
+                //$("#AreaList").multiselect('dataprovider', data);
+                ////end area list
+
+                $("#progress").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    function ADistrictChanged() {
+        $('#hfDistrictSelected').val($('#DistrictList').val());
+        var DistrictList = $('#hfDistrictSelected').val();
+
+        $('option', $('#CityList')).each(function(element) {
+                $(this).removeAttr('selected').prop('selected', false);
+              });
+            $("#CityList").multiselect('refresh');
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DistrictChanged", "UserCreation")',
+            dataType: "json",
+            data: { DistrictList: DistrictList},
+            success: function (response) {
+                var data = [];
+                //citylist
+                data = [];
+                for (var i = 0; i < response.cities.length; i++) {
+                    array = { label: response.cities[i].CityName, value: response.cities[i].CityID };
+                    data.push(array);
+                }
+                $("#CityList").multiselect('dataprovider', data);
+                //end citylist
+                $("#progress").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    function ACityChanged() {
+        $('#hfCitySelected').val($('#CityList').val());
+        var CityList = $('#hfCitySelected').val();
+        $("#AreaList").empty();
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CityChanged", "UserCreation")',
+            dataType: "json",
+            data: { CityList: CityList},
+            success: function (response) {
+                var data = [];
+                //area list
+                for (var i = 0; i < response.areaLists.length; i++) {
+                    array = { label: response.areaLists[i].BillingArea, value: response.areaLists[i].BillingArea };
+                    data.push(array);
+                }
+                $('option', $('#AreaList')).each(function(element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                  });
+                $("#AreaList").multiselect('refresh');
+                $("#AreaList").multiselect('dataprovider', data);
+                //end area list
+                $("#progress").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    function AreaChanged() {
+        $('#hfAreaSelected').val($('#AreaList').val());
+        $('#hfStateSelected').val($('#StateList').val());
+        $('#hfDistrictSelected').val($('#DistrictList').val());
+        $('#hfCitySelected').val($('#CityList').val());
+
+        var StateList = $('#hfStateSelected').val();
+        var DistrictList = $('#hfDistrictSelected').val();
+        var CityList = $('#hfCitySelected').val();
+        var AreaList = $('#hfAreaSelected').val();
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AreaChanged", "UserCreation")',
+            dataType: "HTML",
+            data: { StateList: StateList, DistrictList: DistrictList, CityList: CityList, AreaList: AreaList },
+            success: function (response) {
+                $("#dvCustomerList").html('');
+                $("#dvCustomerList").html(response);
+                loadTable();
+                $("#progress").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    </script>
+    <script>
+    function loadTable() {
+        var table = $('#Subtable').DataTable({
+            dom: 'Bfrtip',
+            "pageLength": 4,
+            //buttons: [
+            //    {
+            //        extend: 'pdfHtml5',
+            //        orientation: 'landscape',
+            //        pageSize: 'A0',
+            //        exportOptions: {
+            //            columns: "thead th:not(.noExport)"
+            //        },
+            //        language: {
+            //            infoEmpty: "No records available - Got it?",
+            //        },
+            //        text: '<b>Download</b> PDF',
+            //    },
+            //    {
+            //        extend: 'excel',
+            //        exportOptions: {
+            //            columns: "thead th:not(.noExport)"
+            //        },
+            //        // messageTop: 'Customer Report',
+            //        language: {
+            //            infoEmpty: "No records available - Got it?",
+            //        },
+            //    }
+            //]
+        });
+
+        $('#select_all').click(function () {
+            //var c = this.checked;
+            //$('.chkselect').prop('checked', c)
+            $(':checkbox', table.rows().nodes()).prop('checked', this.checked);
+        });
+
+        $(".chkselect").click(function () {
+            if (!this.checked) {
+                $("#select_all").prop('checked', false);
+            }
+            else if ($(".chkselect").length == $(".chkselect:checked").length) {
+                $("#select_all").prop('checked', true);
+            }
+        });
+
+        // Handle form submission event
+        $('#frm-promote').on('submit', function (e) {
+            var form = this;
+
+            // Encode a set of form elements from all pages as an array of names and values
+            var params = table.$('input,select,textarea').serializeArray();
+
+            // Iterate over all form elements
+            $.each(params, function () {
+                // If element doesn't exist in DOM
+                if (!$.contains(document, form[this.name])) {
+                    // Create a hidden element
+                    $(form).append(
+                        $('<input>')
+                            .attr('type', 'hidden')
+                            .attr('name', this.name)
+                            .val(this.value)
+                    );
+                }
+            });
+        });
+    }
+    function checkDupMobileNo(element) {
+        var Mno = $(element).val();
+        if (Mno != "" && Mno != null) {
+            $("#progress").show();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CheckDuplicateNumber", "UserCreation")',
+                dataType: "json",
+                data: { MobileNumber: Mno},
+                success: function (response) {
+                    if (response != null && response != "") {
+                        if (response != "0") {
+                            Swal.fire({
+                                title: "Warning",
+                                text: "Mobile Number already exists!! please use different one",
+                                icon: "warning"
+                            }).then(function () {
+                                $("#progress").hide();
+                                $(element).val('');
+                                $(element).focus();
+                            });
+                        }
+                    }
+                    $("#progress").hide();
+                },
+                error: function () {
+                    $("#progress").hide();
+                }
+            });
+        }
+    }
+    </script>
+    <script>
+    function btnaddnewrow() {
+        var rowCount = $('#tbldynamic tbody tr').length;
+        var id = $('#tbldynamic tbody tr:last').find('select.clsdoctype').attr('id');
+        var numb = id.match(/\d/g);
+        numb = numb.join("");
+        rowCount = Number(numb) + 1;
+
+        AddRow(rowCount);
+        return false;
+    }
+
+    function btndeleterow(element) {
+        $(element).closest('tr').remove();
+
+        $('#tbldynamic tbody tr').each(function (index, ele) {
+
+            //overwriting name attribute to post to controller as the indexing must be in sequential manner
+            var new_doctype = $('.clsdoctype', this).attr('name').replace(/[0-9]+/, index);
+            $('.clsdoctype', this).attr('name', new_doctype);
+            $('.clsdoctypeinvalid', this).attr('data-valmsg-for', new_doctype);
+            //$('.hdnmachine_id', this).attr('name', new_doctype);
+
+            var new_docnumber = $('.clsdocname', this).attr('name').replace(/[0-9]+/, index);
+            $('.clsdocname', this).attr('name', new_docnumber);
+            $('.clsdocnameinvalid', this).attr('data-valmsg-for', new_docnumber);
+            //$('.clshdncontract_id', this).attr('name', new_docnumber);
+
+            var new_docfile = $('.docfile', this).attr('name').replace(/[0-9]+/, index);
+            $('.docfile', this).attr('name', new_docfile);
+            $('.clsdocfileinvalid', this).attr('data-valmsg-for', new_docfile);
+
+            $("form").data("unobtrusiveValidation", null);
+            $("form").data("validator", null);
+            $.validator.unobtrusive.parse($("form"));
+
+        });
+    }
+
+    $(document).ready(function () {
+        $('#tbldynamic tbody tr').each(function (index, ele) {
+            if ($('.hdn_doctype', this).length > 0)
+                var doctype = $('.hdn_doctype', this).val();
+            $('.clsdoctype', this).val(doctype);
+            var doctypes = $('.clsdoctype', this);
+            doctype_changed(doctypes);
+        });
+    });
+
+    var AddRow = function (rows) {
+        var slno = parseInt(rows + 1);
+        var i = parseInt(rows);
+        var $row = $('<tr/>');
+
+        //<input type="hidden" class="hdn_doctype" name=""  />
+
+        $row.append(' <td> '
+            + '<select class="form-control clsdoctype" data-val="true"  data-val-required="Document Type Required" id="[' + i + '].doctype" name="userDocs[' + i + '].DocumentType" onchange="doctype_changed(this);" '
+            + '><option value="">-Select Document Type-</option></select>'
+            + '<span class="field-validation-valid text-danger clsdoctypeinvalid" data-valmsg-for="userDocs[' + i + '].doctype" data-valmsg-replace="true"></span> </td>');
+
+        $row.append(' <td> <input type="hidden" class="hdn_docname"  /><input name="userDocs[' + i + '].DocumentNumber" id="[' + i + '].docname" type="text" class="form-control clsdocname" data-val="true" />'
+            + '<span class="field-validation-valid text-danger clsdocnameinvalid" data-valmsg-for="userDocs[' + i + '].docname" data-valmsg-replace="true"></span> </td>');
+
+
+        $row.append(' <td> <input type="hidden" class="hdn_docfile"  /><input name="userDocs[' + i + '].DocFile" id="[' + i + '].docfile" type="file" class="form-control clsdocfile" data-val="true" />'
+            + '<span class="field-validation-valid text-danger clsdocfileinvalid" data-valmsg-for="userDocs[' + i + '].docfile" data-valmsg-replace="true"></span> </td>');
+
+        $row.append(' <td><input name="userDocs[' + i + '].ExpiryDate" id="[' + i + '].expirydate" class="form-control dated clsdocfile" data-val="true" />'
+            + ' </td>');
+
+        $row.append(' <td> <input type="hidden" class="hdn_preview"  /><img id="[' + i + '].preview" class="clsimagepreview" height="50" width="50" />'
+            + ' </td>');
+
+        $row.append(' <td><button type="button" id="btndelete" name="btndelete" onclick="btndeleterow(this);"  class="btn btn-danger btn-sm" ><i class="fas fa-trash"></i></button></td>');
+
+        $("#tbldynamic tbody tr:last").after($row);
+        $("form").data("unobtrusiveValidation", null);
+        $("form").data("validator", null);
+        $.validator.unobtrusive.parse($("form"));
+        $('.dated').datepicker({ dateFormat: "dd/mm/yy" });
+
+        var docTypeID = "[" + i + "].doctype";
+
+        docTypeLoad(docTypeID);
+        doctype_changed(document.getElementById(docTypeID));
+    }
+    function docTypeLoad(docTypeID) {
+        $(document.getElementById(docTypeID)).empty();
+        $.ajax({
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            type: 'POST',
+            url: '@Url.Action("DocTypeLoad", "UserCreation")',
+            success: function (data) {
+                $(document.getElementById(docTypeID)).append('<option value="">-Select Document Type-</option>');
+                $.each(data, function (index, value) {
+                    $(document.getElementById(docTypeID)).append('<option value="' + value.Value + '">' + value.Text + '</option>');
+                });
+            },
+            error: function (response) {
+            }
+        });
+    }
+    function doctype_changed(element) {
+        var docTypeID= $(element).val();
+
+        var prodcnt = document.getElementsByClassName('clsdoctype');
+        var index = $(element).closest('tr').index();
+        for (var i = 0; i < prodcnt.length; i++) {
+
+            var rwind = $(prodcnt[i]).closest('tr').index();
+            if (index != rwind) {
+                if ($(element).val() == prodcnt[i].value) {
+                    $(element).val('');
+                    $(element).closest('tr').find('input.hdn_doctype').val($(element).val());
+                    //swal("Document Type exists");
+
+                     Swal.fire({
+            title: "Error",
+            text: "Document Type exists",
+            icon: "error"
+        }).then(function () {
+        });
+
+                    prodcnt[i].focus();
+                    return;
+                }
+            }
+        }
+    }
+    function showPreview(event) {
+
+        var output = document.getElementById('output');
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(input).closest('tr').find('input.clsimagepreview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>
+
+    <script>
+        //jQuery(document).ready(function ($) {
+        //    jQuery("#dataGrid").DataTable({
+        //        "responsive": true, "lengthChange": false, "autoWidth": false,
+        //        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        //    }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+        //});
+
+
+        jQuery(document).ready(function ($) {
+            jQuery("#dataGrid").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }],
+            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+    <script>
+    function LoadDeptRoles() {
+        var DeptID = $("#DepartmentID").val();
+        if (DeptID != "" && DeptID != null) {
+            $("#progress").show();
+            $('option', $('#RoleID')).each(function(element) {
+                $(this).removeAttr('selected').prop('selected', false);
+              });
+            $("#RoleID").multiselect('refresh');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("LoadDeptRoles", "RoleCreation")',
+                dataType: "json",
+                data: { DeptID: DeptID},
+                success: function (response) {
+                    var data = [];
+                    //Parent Role List
+                    data = [];
+                    array = { label: "Select Role", value: "" };
+                    data.push(array);
+
+                    for (var i = 0; i < response.length; i++) {
+                        array = { label: response[i].RoleName, value: response[i].RoleID };
+                        data.push(array);
+                    }
+                    $("#RoleID").multiselect('dataprovider', data);
+                    //end Parent Role List
+                    $("#progress").hide();
+                },
+                error: function () {
+                    $("#progress").hide();
+                }
+            });
+        }
+    }
+    </script>
+}

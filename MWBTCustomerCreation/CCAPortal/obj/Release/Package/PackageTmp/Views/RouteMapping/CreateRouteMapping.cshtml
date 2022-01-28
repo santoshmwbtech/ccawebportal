@@ -1,0 +1,75 @@
+﻿@model WBT.DLCustomerCreation.RouteMapping
+
+@using (Ajax.BeginForm("SaveRouteMapping", "RouteMapping", null, new AjaxOptions
+{
+    UpdateTargetId = "divList",
+    OnSuccess = "onCreateSuccess_Ajax",
+    HttpMethod = "post"
+}, new { @class = "form-sample" }))
+{
+    @Html.AntiForgeryToken()
+
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Route Mapping</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>SalesMan </label>
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.UserID, (SelectList)ViewBag.SalesmanList, new { multiple = "multiple", @class = "form-control listbox", @onkeypress = "return false", @readonly = "readonly", @autocomplete = "off", @placeholder = "Assign Role Users", @required = "Required" })
+                                                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+                                            </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Date </label>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.AssignedDate, "", new { @multiple = "multiple", @class = "form-control datePick", @placeholder = "Assign Date", @required = "required", @autocomplete = "off", @rows = "3" })
+                                            @Html.ValidationMessageFor(model => model.AssignedDate, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Route </label>
+                                            <div class="input-group">
+                                                @Html.Hidden("hfSelected")
+                                                @Html.DropDownListFor(model => model.RouteID, (SelectList)ViewBag.RouteList, new { multiple = "multiple", @class = "form-control listbox", @onkeypress = "return false", @readonly = "readonly", @autocomplete = "off", @placeholder = "Assign Role Users", @required = "Required", style = "width:179px;height:50px;", onChange = "OnChangeEvent()" })
+                                                @Html.ValidationMessageFor(model => model.RouteID, "", new { @class = "text-danger validation_Msg", @style = "margin-left:125px;" })
+                                            </div>           
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary" >Submit</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+}

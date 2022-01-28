@@ -1,0 +1,82 @@
+﻿@model List<WBT.DLCustomerCreation.AccessControlItem>
+<style>
+    table tbody, table thead {
+        display: block;
+    }
+
+    table tbody {
+        overflow: auto;
+        height: 300px;
+    }
+
+    /*table {
+        width: 100%!important; 
+    }*/
+    th {
+        width: 275px;
+    }
+    td {
+        width: 275px;
+    }
+</style>
+<div class="table-responsive">
+    <table class="table table-bordered dataGrid">
+        <thead>
+            <tr>
+                <th class="text-center" style="width:414px!important;">
+                    Menu Name
+                </th>
+                <th class="text-center">
+                    Create <input type="checkbox" id="allCreate" />
+                </th>
+                <th class="text-center">
+                    View <input type="checkbox" id="allView" />
+                </th>
+                <th class="text-center">
+                    Edit <input type="checkbox" id="allEdit" />
+                </th>
+                <th class="text-center">
+                    Delete <input type="checkbox" id="allDelete" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                int j = 0;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(a => a[j].SubMenuID)
+                            @Html.DisplayFor(a => a[j].SubMenuName, new {  })
+                        </td>
+                        <td class="text-center">
+                            @Html.CheckBoxFor(a => a[j].IsCreate, new { @class = "chkCreate" })
+                        </td>
+                        <td class="text-center">
+                            @Html.CheckBoxFor(a => a[j].IsView, new { @class = "chkView" })
+                        </td>
+                        <td class="text-center">
+                            @Html.CheckBoxFor(a => a[j].IsEdit, new { @class = "chkEdit" })
+                        </td>
+                        <td class="text-center">
+                            @Html.CheckBoxFor(a => a[j].IsDelete, new { @class = "chkDelete" })
+                        </td>
+                    </tr>
+                    j++;
+                }
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        @if (Session["MenuMaster"] != null)
+        {
+            var MenuMaster = (List<WBT.DLCustomerCreation.AccessControlItem>)Session["MenuMaster"];
+            if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "formpermissions" && m.IsCreate == true) || Session["RoleName"].ToString().ToLower() == "admin")
+            {
+                <button type="submit" class="btn btn-primary">Submit</button>
+            }
+        }
+    </div>
+</div>

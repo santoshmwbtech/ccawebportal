@@ -1,0 +1,75 @@
+*******************Start**************
+Date & Time : 21/09/2021 13:51:42
+Message : String was not recognized as a valid DateTime.
+Source : mscorlib
+StackTrace :    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at WBT.DLCustomerCreation.Receipts.<>c__DisplayClass273_2.<GetReceipts>b__25(Receipts c) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLReceipts.cs:line 185
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at WBT.DLCustomerCreation.Receipts.GetReceipts(Receipts search) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLReceipts.cs:line 185
+*******************End**************
+*******************Start**************
+Date & Time : 21/09/2021 13:51:46
+Message : String was not recognized as a valid DateTime.
+Source : mscorlib
+StackTrace :    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at WBT.DLCustomerCreation.Receipts.<>c__DisplayClass273_2.<GetReceipts>b__25(Receipts c) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLReceipts.cs:line 185
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at WBT.DLCustomerCreation.Receipts.GetReceipts(Receipts search) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLReceipts.cs:line 185
+*******************End**************
+*******************Start**************
+Date & Time : 21/09/2021 18:24:34
+Message : The cast to value type 'System.Boolean' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at WBT.DLCustomerCreation.DLDebtorsCreation.GetDebtorsList(String OrgID) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLDebtorsCreation.cs:line 53
+*******************End**************
+*******************Start**************
+Date & Time : 21/09/2021 18:25:58
+Message : The cast to value type 'System.Boolean' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at WBT.DLCustomerCreation.DLDebtorsCreation.GetDebtorsList(String OrgID) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLDebtorsCreation.cs:line 53
+*******************End**************
+*******************Start**************
+Date & Time : 21/09/2021 18:26:54
+Message : The cast to value type 'System.Boolean' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at WBT.DLCustomerCreation.DLDebtorsCreation.GetDebtorsList(String OrgID)
+*******************End**************
+*******************Start**************
+Date & Time : 21/09/2021 18:28:14
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 21/09/2021 18:32:01
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************

@@ -1,0 +1,98 @@
+*******************Start**************
+Date & Time : 04/09/2021 12:11:52
+Message : The key field 'ReceiptID' cannot have a value of null. A non-null value is required for the key fields defined on type 'tblAccountReceiptDetail'.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Core.Objects.ObjectStateManager.CreateEntityKey(EntitySet entitySet, Object entity)
+   at System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   at System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClass16_0.<Attach>b__0()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   at System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   at WBT.DLCustomerCreation.Receipts.UpdateTallyStatus(Receipts receipts) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLReceipts.cs:line 296
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 12:11:52
+Message : Database Updation failed
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 12:12:41
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 12:49:03
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:04:30
+Message : Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at WBT.DLCustomerCreation.DLSalesOrders.UpdateTallyStatus(SalesOrders sOrders) in E:\NewSVNFolder\CCAWithOrg\WBT.DLCustomerCreation\DLSalesOrders.cs:line 600
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:04:30
+Message : Database Updation failed
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:08:46
+Message : Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at WBT.DLCustomerCreation.DLSalesOrders.UpdateTallyStatus(SalesOrders sOrders)
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:08:46
+Message : Database Updation failed
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:09:49
+Message : Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at WBT.DLCustomerCreation.DLSalesOrders.UpdateTallyStatus(SalesOrders sOrders)
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:09:49
+Message : The underlying provider failed on Rollback.
+Source : EntityFramework
+InnerException : Value cannot be null.
+Parameter name: connection
+StackTrace :    at System.Data.Entity.Core.EntityClient.EntityTransaction.Rollback()
+   at System.Data.Entity.DbContextTransaction.Rollback()
+   at WBT.DLCustomerCreation.DLSalesOrders.UpdateTallyStatus(SalesOrders sOrders)
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:09:49
+Message : Database Updation failed
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:09:56
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 04/09/2021 13:14:04
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************

@@ -1,0 +1,261 @@
+﻿@model WBT.DLCustomerCreation.SysOrganization
+@{
+    ViewBag.Title = "Company Profile";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Company Profile </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"> <i class="fas fa-minus"></i> </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove"> <i class="fas fa-times"></i>  </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        @using (Ajax.BeginForm("UpdateProfile", "CompanyProfile", null, new AjaxOptions
+                        {
+                            OnSuccess = "onSuccess_Ajax",
+                            OnFailure = "onFailure_Ajax",
+                            HttpMethod = "post"
+                        }, new { @class = "form-sample" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <p class="card-description">
+                                @Html.HiddenFor(model => model.OrgID)
+                                Last Updated By : <b>@Html.DisplayFor(model => model.UpdatedByName)</b> on <b>@Html.DisplayFor(model => model.UpdatedDatetime)</b>
+                            </p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Organization Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Organization Name", @maxlength = "255", @required = "required", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Contact Person Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Name", @maxlength = "100", @required = "required", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Phone Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Mobile Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mobile Number", @maxlength = "10", @required = "required", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Email ID</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @maxlength = "100", @autocomplete = "off" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Website</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control", @placeholder = "Website", @maxlength = "50", @autocomplete = "off" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">GST Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number", @maxlength = "100", @required = "required", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.GSTNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Country</label>
+                                        <div class="col-sm-9 input-group">
+                                            @Html.DropDownListFor(model => model.Country, (SelectList)ViewBag.CountryList, new { @class = "form-control listbox", @required = "required", @autocomplete = "off" })<br />
+                                            @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">State</label>
+                                        <div class="col-sm-9 input-group">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.State, (SelectList)ViewBag.StateList, "Select State", new { @class = "form-control listbox" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">City</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @required = "required", @maxlength = "50", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="card-description">
+                                Bank Details
+                            </p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Bank Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BankName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Bank Name", @required = "required", @maxlength = "50", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.BankName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Bank Branch Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BranchName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Bank Branch Name", @required = "required", @maxlength = "50", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.BranchName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Bank City</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BankCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Bank City", @required = "required", @maxlength = "50", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.BankCity, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Account Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Account Number", @required = "required", @maxlength = "50", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="clearfix"></div>
+                                <p class="card-description">
+                                    Statutory Documents
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Company Logo</label>
+                                            <div class="col-sm-9 imgBox">
+                                                @if (!string.IsNullOrEmpty(Model.LogoBase64))
+                                                {
+                                                    <a href='@Url.Content(Model.LogoBase64)' class="js-img-viwer">
+                                                        <img src='@Url.Content(Model.LogoBase64)' alt="aadhaar_image" class="img-responsive js-img-viwer" height="100" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/No_picture_available.png" alt="aadhaar_image" class="img-responsive" height="100" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <button type="submit" class="btn btn-primary btn-block" id="btnUpdate">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@*<script>
+        $(".form-sample").validate();
+    </script>*@
+<script>
+    function onSuccess_Ajax(data) {
+        if (data == "1") {
+            swal.fire({
+                title: "Success!",
+                text: "Company profile updated successfully!!",
+                type: "success",
+                icon: "success",
+            }).then(function () {
+                window.location = '@Url.Action("Index", "CompanyProfile")';
+            });
+        }
+        else {
+            swal.fire(data);
+        }
+    }
+    function onBegin_Ajax() {
+
+    }
+    function onCompleteCreate_Ajax() {
+
+    }
+    function onFailure_Ajax(data) {
+        swal.fire("Error!!", data, "error");
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        LoadListBox();
+    });
+    function LoadListBox() {
+        $('.listbox').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 450,
+        });
+    }
+</script>

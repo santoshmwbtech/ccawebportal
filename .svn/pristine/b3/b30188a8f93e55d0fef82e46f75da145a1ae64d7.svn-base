@@ -1,0 +1,306 @@
+﻿@model WBT.DLCustomerCreation.DLUserCreation
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <form>
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">Search by Date Range</h3>
+                    @Html.HiddenFor(a => a.IsServiceInstalled)
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input type="text" class="form-control" placeholder="From Date" id="FromDate" autocomplete="off" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input type="text" class="form-control" placeholder="From Date" id="ToDate" autocomplete="off" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <input type="submit" value="Search" class="btn btn-primary" onclick="LoadDetails()" id="btnSearch" />
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3 id="lblBranches"></h3>
+
+                        <p>Branches</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-usb"></i>
+                    </div>
+                    <a href='@Url.Action("Index", "PerformanceReport")' class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3 id="lblRegistered"></h3>
+
+                        <p>Customers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href='@Url.Action("Index", "PerformanceReport")' class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3 id="lblStates"></h3>
+
+                        <p>States</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-list"></i>
+                    </div>
+                    <a href='@Url.Action("Index", "PerformanceReport")' class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3 id="lblCities"></h3>
+
+                        <p>Cities</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-list-outline"></i>
+                    </div>
+                    <a href='@Url.Action("Index", "PerformanceReport")' class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <h5 class="mb-2">Today's Count</h5>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="fas fa-code-branch"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Branches</span>
+                        <span class="info-box-number" id="lblBranchesToday"></span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-success"><i class="fas fa-user-plus"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Customers</span>
+                        <span class="info-box-number" id="lblRegisteredToday"></span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-warning"><i class="fas fa-list"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">States</span>
+                        <span class="info-box-number" id="lblStatesToday"></span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-danger"><i class="fas fa-list"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Cities</span>
+                        <span class="info-box-number" id="lblCitiesToday"></span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        @{
+            if (Session["RoleName"].ToString().ToLower() == "admin")
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.Action("_templates")
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 45%; left: 45%;">
+            <span>Loading dashboard items, Please wait...</span> <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#progress").show();
+            $("#FromDate").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+                maxDate: new Date(),
+                onClose: function (date) {
+                    var selectedDate = new Date(date);
+                    var msecsInADay = 86400000;
+                    var endDate = new Date(selectedDate.getTime() + msecsInADay);
+                    //Set Minimum Date of EndDatePicker After Selected Date of StartDatePicker
+                    $("#ToDate").datepicker("option", "minDate", date);
+                }
+            });
+            $("#ToDate").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'dd/mm/yy',
+                    changeMonth: true,
+                    maxDate: new Date(),
+            });
+            $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    url: '@Url.Action("GetDashboardData", "Dashboard")',
+                    success: function (data) {
+                        if (data == "sessionexpired") {
+                            $("#progress").hide();
+                            swal({
+                                title: "Session Expired!",
+                                text: "Your session expired.. Please login again",
+                                type: "error",
+                                icon: "error",
+                            }).then(function () {
+                                window.location = '@Url.Action("Index", "Login")';
+                            });
+                        }
+                        else {
+                            $("#lblRegistered").text(data.Registered);
+                            $("#lblRegisteredToday").text(data.RegisteredToday);
+                            $("#lblBranches").text(data.Branches);
+                            $("#lblBranchesToday").text(data.BranchesToday);
+                            $("#lblStates").text(data.States);
+                            $("#lblStatesToday").text(data.StatesToday);
+                            $("#lblCities").text(data.Cities);
+                            $("#lblCitiesToday").text(data.CitiesToday);
+                            $("#progress").hide();
+                        }
+                    },
+                    error: function () {
+                        $("#progress").hide();
+                        swal("Error loading data! Please try again.");
+                    }
+                });
+        });
+        document.getElementById("btnSearch").addEventListener("click", function (event) {
+            event.preventDefault()
+        });
+        function LoadDetails() {
+        var FromDate = $("#FromDate").val();
+        var ToDate = $("#ToDate").val();
+        if (FromDate == "") {
+            swal({
+                text: "Please select From Date",
+                icon: "warning",
+            }).then(function () {
+                $("#FromDate").focus();
+            });
+            return false;
+        }
+        if (ToDate == "") {
+            swal({
+                text: "Please select To Date",
+                icon: "warning",
+            }).then(function () {
+                $("#ToDate").focus();
+            });
+            return false;
+        }
+
+        var dates = FromDate + "~" + ToDate;
+        $("#progress").show();
+        $.ajax({
+            type: 'POST',
+            data: {dates: dates},
+            dataType: 'json',
+            url: '@Url.Action("Search", "Dashboard")',
+            success: function (data) {
+                if (data == "sessionexpired") {
+                    $("#progress").hide();
+                    swal({
+                        title: "Session Expired!",
+                        text: "Your session expired.. Please login again",
+                        type: "error",
+                        icon: "error",
+                    }).then(function () {
+                        window.location = '@Url.Action("Index", "Login")';
+                    });
+                }
+                else {
+                    $("#lblRegistered").text(data.Registered);
+                    $("#lblRegisteredToday").text(data.RegisteredToday);
+                    $("#lblBranches").text(data.Branches);
+                    $("#lblBranchesToday").text(data.BranchesToday);
+                    $("#lblStates").text(data.States);
+                    $("#lblStatesToday").text(data.StatesToday);
+                    $("#lblCities").text(data.Cities);
+                    $("#lblCitiesToday").text(data.CitiesToday);
+                    $("#progress").hide();
+                }
+            },
+
+            error: function () {
+                $("#progress").hide();
+                swal("Error loading data! Please try again.");
+            }
+        });
+    }
+</script>
+}
+

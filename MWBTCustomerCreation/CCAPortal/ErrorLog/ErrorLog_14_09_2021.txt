@@ -1,0 +1,9 @@
+*******************Start**************
+Date & Time : 14/09/2021 18:32:08
+Message : Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Source : EntityFramework
+StackTrace :    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at WBT.DLCustomerCreation.CustomerCreations.UpdateTallyServiceStatus(String OrgID)
+*******************End**************

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<WBT.DLCustomerCreation.Receipts>
+@using WBT.Common
+@{
+    ViewBag.Title = "Receipts";
+}
+
+<div id="mainDiv">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="divCreate">
+                @Html.Action("Search")
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="divList">
+                @Html.Action("ReceiptsList")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        function onSuccess_Ajax() {
+            loadDataTableWithButtons();
+            //Swal.fire({
+            //    title: 'Success',
+            //    text: 'Receipt Saved Successfully',
+            //    icon: 'success',
+            //}).then((result) => {
+            //});
+        }
+        function onCompleteCreate_Ajax() { }
+        function onCreateSuccess_Ajax() { }
+        function onEditSuccess_Ajax() { }
+        function onEditSuccess() {
+            var elmnt = document.getElementById("maindiv");
+            elmnt.scrollIntoView();
+            LoadListBox();
+        }
+        function onBegin_Ajax(data) { }
+        function onEditCompleteCreate_Ajax() { }
+        function onFailure_Ajax() {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please try again later',
+                icon: 'error',
+            }).then((result) => {
+            });
+        }
+        function Ajax_Edit_Failure() { }
+        function Ajax_OnComplete() { }
+        function onSaveCompleteCreate_Ajax() { }
+        function LoadListBox() {
+            $('.listbox').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: 450,
+            });
+        }
+
+        $(document).ready(function ($) {
+            loadDataTableWithButtons();
+            //$("#dataGrid").DataTable({
+            //    "responsive": true, "lengthChange": false, "autoWidth": false,
+            //    "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
+            //}).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+
+            // var table1 = $('.dataGrid').DataTable();
+
+            //$('#select_all').click(function () {
+            //    //var c = this.checked;
+            //    //$('.chkselect').prop('checked', c)
+            //    $(':checkbox', table1.rows().nodes()).prop('checked', this.checked);
+            //});
+
+            //$(".chkselect").click(function () {
+            //    if (!this.checked) {
+            //        $("#select_all").prop('checked', false);
+            //    }
+            //    else if ($(".chkselect").length == $(".chkselect:checked").length) {
+            //        $("#select_all").prop('checked', true);
+            //    }
+            //});
+
+
+        });
+    function TallySync(ReceiptID) {
+        $.ajax({
+                url: '@Url.Action("TallySync", "ReceiptsEdit")',
+                data: "{ 'ID': '" + ReceiptID + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data == "0") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else {
+                        if (data == "Tally Sync Successful!!") {
+                            Swal.fire({
+                                title: "Success!",
+                                text: data,
+                                icon: "success",
+                            }).then(function () {
+                                $("divList").load('@Url.Action("ReceiptsList", "Receipts")');
+                            });
+                        }
+                        else {
+                            Swal.fire(data);
+                        }
+                    }
+                },
+            error: function (response) {
+                Swal.fire(response.responseText);
+                },
+            failure: function (response) {
+                Swal.fire(response.responseText);
+                }
+            });
+    }
+    </script>
+}
+

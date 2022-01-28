@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ENVELOPE>
+  <HEADER>
+    <VERSION>1</VERSION>
+    <TALLYREQUEST>Import</TALLYREQUEST>
+    <TYPE>Data</TYPE>
+    <ID>All Masters</ID>
+  </HEADER>
+  <BODY>
+    <DESC>
+      <STATICVARIABLES>
+        <SVCURRENTCOMPANY>$$SysName:XML</SVCURRENTCOMPANY>
+      </STATICVARIABLES>
+    </DESC>
+    <DATA>
+      <TALLYMESSAGE>
+        <STOCKITEM NAME="" Action="Create">
+          <NAME></NAME>
+          <NAME.LIST>
+            <NAME>Raw rice</NAME>
+            [Alies]
+          </NAME.LIST>
+          <PARENT>Flour</PARENT>
+          <CATEGORY>Maida</CATEGORY>
+          <BASEUNITS>gms</BASEUNITS>
+          <ADDITIONALUNITS></ADDITIONALUNITS>
+          <CONVERSION></CONVERSION>
+          <DENOMINATOR></DENOMINATOR>
+          <ISBATCHWISEON>No</ISBATCHWISEON>
+          <OPENINGBALANCE>1</OPENINGBALANCE>
+          <OPENINGRATE>0</OPENINGRATE>
+          <OPENINVALE></OPENINVALE>
+          <GSTAPPLICABLE>Applicable</GSTAPPLICABLE>
+          <!--Please done change this tag becase a hexadecimal value is prsent which is not vissible-->
+          <GSTTYPEOFSUPPLY>Goods</GSTTYPEOFSUPPLY>
+          <GSTDETAILS.LIST>
+            <APPLICABLEFROM>20190901</APPLICABLEFROM>
+            <CALCULATIONTYPE>On Value</CALCULATIONTYPE>
+            <HSNCODE>1003</HSNCODE>
+            <HSNMASTERNAME></HSNMASTERNAME>
+            <HSN>Flour</HSN>
+            <TAXABILITY>Taxable</TAXABILITY>
+            <ISREVERSECHARGEAPPLICABLE>No</ISREVERSECHARGEAPPLICABLE>
+            <ISNONGSTGOODS>No</ISNONGSTGOODS>
+            <GSTINELIGIBLEITC>No</GSTINELIGIBLEITC>
+            <includeexpforslabcalc>No</includeexpforslabcalc>
+            <STATEWISEDETAILS.LIST>
+              <STATENAME/>
+              <RATEDETAILS.LIST>
+                <GSTRATEDUTYHEAD>Central Tax</GSTRATEDUTYHEAD>
+                <GSTRATEVALUATIONTYPE>Based on Value</GSTRATEVALUATIONTYPE>
+                <GSTRATE>6</GSTRATE>
+              </RATEDETAILS.LIST>
+              <RATEDETAILS.LIST>
+                <GSTRATEDUTYHEAD>State Tax</GSTRATEDUTYHEAD>
+                <GSTRATEVALUATIONTYPE>Based on Value</GSTRATEVALUATIONTYPE>
+                <GSTRATE>6</GSTRATE>
+              </RATEDETAILS.LIST>
+              <RATEDETAILS.LIST>
+                <GSTRATEDUTYHEAD>Integrated Tax</GSTRATEDUTYHEAD>
+                <GSTRATEVALUATIONTYPE>Based on Value</GSTRATEVALUATIONTYPE>
+                <GSTRATE>12</GSTRATE>
+              </RATEDETAILS.LIST>
+              <RATEDETAILS.LIST>
+                <GSTRATEDUTYHEAD>Cess</GSTRATEDUTYHEAD>
+                <GSTRATEVALUATIONTYPE>Based on Value</GSTRATEVALUATIONTYPE>
+                <GSTRATE>5</GSTRATE>
+              </RATEDETAILS.LIST>
+            </STATEWISEDETAILS.LIST>
+            <TEMPGSTDETAILSLABRATES.LIST></TEMPGSTDETAILSLABRATES.LIST>
+          </GSTDETAILS.LIST>
+        </STOCKITEM>
+      </TALLYMESSAGE>
+    </DATA>
+  </BODY>
+</ENVELOPE>
+
+
+
+
+
+
+

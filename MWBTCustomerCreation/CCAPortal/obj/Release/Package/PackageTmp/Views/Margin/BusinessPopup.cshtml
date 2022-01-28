@@ -1,0 +1,98 @@
+﻿@model WBT.DLCustomerCreation.Margins
+
+
+
+
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Business Type Offer</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                @using (Ajax.BeginForm("SaveBusinessData", "Margin", null, new AjaxOptions
+                {
+                    UpdateTargetId = "divList",
+                    OnSuccess = "onSuccess_Ajax",
+                    HttpMethod = "post",
+                    LoadingElementId = "progress"
+                }, new { @class = "form-sample" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label> State </label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(a => a.StateList, (SelectList)ViewBag.StateList, new { @class = "form-control dropdown listbox", @multiple = "multiple" })
+                                    @Html.Hidden("hfStateSelected")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label> District </label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(a => a.DistrictList, (SelectList)ViewBag.DistrictList, new { @class = "form-control dropdown listbox", @multiple = "multiple" })
+                                    @Html.Hidden("hfDistrictSelected")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label> City </label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(a => a.CityList, (SelectList)ViewBag.CityList, new { @class = "form-control dropdown listbox", @multiple = "multiple" })
+                                    @Html.Hidden("hfCitySelected")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Branch</label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(model => model.BranchList, (SelectList)ViewBag.BranchList, new { @class = "form-control listbox", @multiple = "multiple" })
+                                    @Html.Hidden("hfBranchSelected")
+                                </div>
+                                @Html.ValidationMessageFor(model => model.BranchList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        @*<div class="form-group">
+                            <label>Branch</label>
+                            <div class="input-group">
+                                @Html.DropDownListFor(model => model.BranchList, (SelectList)ViewBag.BranchList, new { @class = "form-control listbox", @multiple = "multiple" })
+                                @Html.Hidden("hfBranchSelected")
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BranchList, "", new { @class = "text-danger" })
+                        </div>*@
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <input type="submit" value="Search" id="btnSearch" class="btn btn-primary" />
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -1,0 +1,930 @@
+﻿@model WBT.DLCustomerCreation.CustomerCreation
+
+
+@{
+    ViewBag.Title = "Edit Customer Details";
+}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Edit Customer Details</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                @using (Ajax.BeginForm("Update", "EditCustomer", null, new AjaxOptions
+                {
+                    UpdateTargetId = "dvList",
+                    OnBegin = "onBegin_Ajax",
+                    OnComplete = "onCompleteCreate_Ajax",
+                    OnSuccess = "onSuccess_Ajax",
+                    OnFailure = "onFailure_Ajax",
+                    HttpMethod = "post"
+                }, new { @class = "form-sample" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <p class="card-description">
+                    @Html.HiddenFor(model => model.CustID)
+                    @Html.HiddenFor(model => model.BillingLatitude)
+                    @Html.HiddenFor(model => model.BillingLongitude)
+                    @Html.HiddenFor(model => model.ShippingLatitude)
+                    @Html.HiddenFor(model => model.ShippingLongitude)
+                    @Html.HiddenFor(model => model.ShippingGPSLocation)
+                    @Html.HiddenFor(model => model.OrgID)
+                    @Html.HiddenFor(model => model.BranchID)
+                    @Html.HiddenFor(model => model.PercStrctureID)
+                    @Html.HiddenFor(model => model.CreationDate)
+                    @Html.HiddenFor(model => model.CreatedByID)
+                    @Html.HiddenFor(model => model.ShopImage)
+                    @Html.HiddenFor(model => model.OwnerPhoto)
+                    @Html.HiddenFor(model => model.AadhaarPhoto)
+                    @Html.HiddenFor(model => model.GSTPhoto)
+                    @Html.HiddenFor(model => model.PANPhoto)
+                    @Html.HiddenFor(model => model.Country)
+                    @Html.HiddenFor(model => model.FaxNo)
+                    @Html.HiddenFor(model => model.CCEmail)
+                    @Html.HiddenFor(model => model.Website)
+                    @Html.HiddenFor(model => model.BillWiseYesNo)
+                    @Html.HiddenFor(model => model.Checkforcreditdaysduringvoucherentry)
+                    @Html.HiddenFor(model => model.OverrideCreditlimit)
+                    @Html.HiddenFor(model => model.Inventoryvaluesareaffected)
+                    @Html.HiddenFor(model => model.ActivateInterestCalculation)
+                    @Html.HiddenFor(model => model.CalculateInterestTransaction_by_Transaction)
+                    @Html.HiddenFor(model => model.OverrideParametersforeachtransaction)
+                    @Html.HiddenFor(model => model.BillingGPSLocation)
+                    @Html.HiddenFor(model => model.AlternateNumber)
+                    @Html.HiddenFor(model => model.SalesManID)
+                    @Html.HiddenFor(model => model.ApprovalStatus)
+                    @Html.HiddenFor(model => model.SourceOfUpdate)
+                    @Html.HiddenFor(model => model.Parent1)
+                    @Html.HiddenFor(model => model.Parent2)
+                    @Html.HiddenFor(model => model.Parent3)
+                    @Html.HiddenFor(model => model.Parent4)
+                    @Html.HiddenFor(model => model.OwnerPhoto)
+                    @Html.HiddenFor(model => model.ShopImage)
+                    @Html.HiddenFor(model => model.AadhaarPhoto)
+                    @Html.HiddenFor(model => model.PANPhoto)
+                    @Html.HiddenFor(model => model.GSTPhoto)
+                    Created By : @Html.DisplayFor(model => model.CreatedByName) <br />
+                    Last Updated By : <b>@Html.DisplayFor(model => model.UpdatedByName)</b> on <b>@Html.DisplayFor(model => model.UpdatedDate)</b>
+                </p>
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Basic Details</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Ledger Type</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.LedgerTypeID, (SelectList)ViewBag.LedgerTypes, "Select Ledger Type", new { @class = "form-control listbox", @onchange = "ddlLedgerTypeChanged()" })
+                                            </div>
+                                            @Html.HiddenFor(model => model.LedgerType)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Firm Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.FirmName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Firm name", @maxlength = "500", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">New Firm Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.OldTallyFirmName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tally Firm Name", @maxlength = "50", @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Alias Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.AliasName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Alias Name", @maxlength = "50", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Customer Type</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.CustomerTypeID, (SelectList)ViewBag.CustomerTypes, "Select Customer Type", new { @class = "form-control listbox", @onchange = "ddlCustomerTypeChanged()" })
+                                            </div>
+                                            @Html.HiddenFor(model => model.CustomerType)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Company Type</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.CompanyTypeID, (SelectList)ViewBag.CompanyTypes, "Select Company Type", new { @class = "form-control listbox", @onchange = "ddlCompanyTypeChanged()" })
+                                            </div>
+                                            @Html.HiddenFor(model => model.CompanyType)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Customer Religion</label>
+                                        <div class="col-sm-9">
+                                            <select id="ddlReligion" onchange="ddlReligionChanged()" class="form-control" name="ddlReligion" title="Please select Religion" required>
+                                                <option value="">Select Religion</option>
+                                                <option value="Hindu">Hindu</option>
+                                                <option value="Muslim">Muslim</option>
+                                                <option value="Christian">Christian</option>
+                                                <option value="Jain">Jain</option>
+                                                <option value="Others">Others</option>
+                                            </select>
+                                            @Html.HiddenFor(model => model.Religion)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Owner Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Owner name", @maxlength = "500", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Owner Mobile Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Owner Mobile Number", @maxlength = "10", @onkeypress = "return isNumber(event);", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Whatsapp Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.WatsAppNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Whats App Number", @maxlength = "10" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Contact Person Mobile Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ContactpersonPhone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Mobile Number", @maxlength = "10", @onkeypress = "return isNumber(event);", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Telephone / Landline Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.TelephoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Telephone / Landline Number", @required = "required", @maxlength = "11" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Email ID</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @required = "required", @maxlength = "50" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Ledger Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.LedgerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Ledger Name", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Type of Category</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.CategoryTypeID, (SelectList)ViewBag.CategoryTypes, "Select Category Type", new { @class = "form-control listbox", @onchange = "ddlTypeofCategoryChanged()" })
+                                            </div>
+                                            @Html.HiddenFor(model => model.TypeofCategory)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Aadhaar Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.AadhaarNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Aadhaar Number", @required = "required", @maxlength = "12", @onkeypress = "return isNumber(event);" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Select Debtor Group</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.ParentDebtorID, (SelectList)ViewBag.DebtorsList, "Select Debtor", new { @class = "form-control listbox", @onchange = "ddlParent_changed()", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Branch Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Shop Holiday</label>
+                                        <div class="col-sm-9">
+                                            <select id="ddlWeekOffDay" onchange="ddlWeekOffDayChanged()" class="form-control" name="ddlWeekOffDay" title="Please select Shop Holiday" required>
+                                                <option value="">Select</option>
+                                                <option value="Sunday">Sunday</option>
+                                                <option value="Monday">Monday</option>
+                                                <option value="Tuesday">Tuesday</option>
+                                                <option value="Wednesday">Wednesday</option>
+                                                <option value="Thursday">Thursday</option>
+                                                <option value="Friday">Friday</option>
+                                                <option value="Saturday">Saturday</option>
+                                            </select>
+                                            @Html.HiddenFor(model => model.WeekOffDay)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Credit Type</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.CreditType, (SelectList)ViewBag.CreditTypes, "Select Credit Type", new { @class = "form-control listbox", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Billing Address</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Building / Road Address</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BillingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Area</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BillingArea, new { htmlAttributes = new { @class = "form-control", @placeholder = "Area", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Landmark</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BillingLandmark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Landmark", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Billing State</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BillingState, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing State", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Billing City</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ShippingCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing City", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Billing Pincode</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BillingPincode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing Pincode", @maxlength = "6", @required = "required", @onkeypress = "return isNumber(event);" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Country</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.CountryID, (SelectList)ViewBag.CountryList, "Select Country", new { @class = "form-control listbox", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">State</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.StateID, (SelectList)ViewBag.StateList, "Select State", new { @class = "form-control listbox", @onchange = "StateChanged()", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">City</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Cityname, new { htmlAttributes = new { @class = "form-control", @placeholder = "City Name", @required = "required", @maxlength = "500" } })
+                                            @Html.HiddenFor(model => model.CityID)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Shipping Address</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Building / Road Address</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ShippingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Shipping Area</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ShippingArea, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Area", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Shipping Landmark</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ShippingLandMark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Landmark", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Shipping State</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ShippingState, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping State", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Shipping City</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ShippingCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping City", @required = "required", @maxlength = "500" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Shipping Pincode</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ShippingPincode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Pincode", @maxlength = "6", @required = "required", @onkeypress = "return isNumber(event);" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">Statutory Details</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Registration Type</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(model => model.TaxationTypeID, (SelectList)ViewBag.TaxationTypes, "Select Registration Type", new { @class = "form-control listbox", @onchange = "ddlRegistrationTypeChanged()" })
+                                                @Html.HiddenFor(model => model.RegistrationType)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">GST Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number", @required = "required", @maxlength = "15", @onchange = "gst_pattern()" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">PAN Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.PANNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "PAN Number", @required = "required", @maxlength = "10" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Bank Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BankName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Bank Name", @maxlength = "50" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Branch Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BankBranch, new { htmlAttributes = new { @class = "form-control", @placeholder = "Branch Name", @maxlength = "50" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">City Name</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.BankCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City Name", @maxlength = "50" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Bank Account Number</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Bank Account Number", @maxlength = "50", @onkeypress = "return isNumber(event);" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">IFSC Code</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.IFSCCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "IFSC Code", @maxlength = "50" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Opening Balance</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.OpeningBalance, new { htmlAttributes = new { @class = "form-control", @placeholder = "Opening Balance", @onkeypress = "return isdecimalKey(event)", @required = "required", @maxlength = "8" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Credit Limit</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.CrLimit, new { htmlAttributes = new { @class = "form-control", @placeholder = "Credit Limit", @onkeypress = "return isdecimalKey(event)", @required = "required", @maxlength = "8" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Credit Days</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.CrDays, new { htmlAttributes = new { @class = "form-control", @placeholder = "Credit Days", @onkeypress = "return isNumber(event)", @required = "required", @maxlength = "5" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">No Of Outstanding Bill</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.NoofOutstandingBill, new { htmlAttributes = new { @class = "form-control", @placeholder = "No Of Outstanding Bill", @onkeypress = "return isNumber(event)", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Interest Rate</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.IntrestRate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Interest Rate", @onkeypress = "return isdecimalKey(event)", @required = "required", @maxlength = "5" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Interest Days</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.InterestDays, new { htmlAttributes = new { @class = "form-control", @placeholder = "Interest Days", @onkeypress = "return isNumber(event)", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Activate Interest</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.ActivateIntrest, new { htmlAttributes = new { @class = "form-control", @placeholder = "Activate Interest", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Is Active</label>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control", @placeholder = "Is Active", @required = "required" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-gray-dark">
+                        <div class="card-header">
+                            <h3 class="card-title">Statutory Documents</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Aadhaar Document</label>
+                                        <div class="col-sm-9 imgBox">
+                                            @if (!string.IsNullOrEmpty(Model.AadhaarPhoto) && Model.AadhaarPhoto.Contains("http"))
+                                            {
+                                                <a href='@Url.Content(Model.AadhaarPhoto)' class="js-img-viwer">
+                                                    <img src='@Url.Content(Model.AadhaarPhoto)' alt="aadhaar_image" class="img-responsive js-img-viwer" height="100" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/No_picture_available.png" alt="aadhaar_image" class="img-responsive" height="100" />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">GST Document</label>
+                                        <div class="col-sm-9 imgBox">
+                                            @if (!string.IsNullOrEmpty(Model.GSTPhoto) && Model.GSTPhoto.Contains("http"))
+                                            {
+                                                <a href='@Url.Content(Model.GSTPhoto)' class="js-img-viwer">
+                                                    <img src='@Url.Content(Model.GSTPhoto)' alt="GST_image" class="img-responsive js-img-viwer" height="100" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/No_picture_available.png" alt="GST_image" class="img-responsive" height="100" />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">PAN Document</label>
+                                        <div class="col-sm-9 imgBox">
+                                            @if (!string.IsNullOrEmpty(Model.PANPhoto) && Model.PANPhoto.Contains("http"))
+                                            {
+                                                <a href='@Url.Content(Model.PANPhoto)' class="js-img-viwer">
+                                                    <img src='@Url.Content(Model.PANPhoto)' alt="PAN_image" class="img-responsive js-img-viwer" height="100" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/No_picture_available.png" alt="PAN_image" class="img-responsive" height="100" />
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Shop Image</label>
+                                        <div class="col-sm-9 imgBox">
+                                            @if (!string.IsNullOrEmpty(Model.ShopImage) && Model.ShopImage.Contains("http"))
+                                            {
+                                                <a href='@Url.Content(Model.ShopImage)' class="js-img-viwer">
+                                                    <img src='@Url.Content(Model.ShopImage)' alt="shop_image" class="img-responsive js-img-viwer" height="100" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/No_picture_available.png" alt="shop_image" class="img-responsive" height="100" />
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Owner Image</label>
+                                        <div class="col-sm-9 imgBox">
+                                            @if (!string.IsNullOrEmpty(Model.OwnerPhoto) && Model.OwnerPhoto.Contains("http"))
+                                            {
+                                                <a href='@Url.Content(Model.OwnerPhoto)' class="js-img-viwer">
+                                                    <img src='@Url.Content(Model.OwnerPhoto)' alt="owner_image" class="img-responsive js-img-viwer" height="100" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/No_picture_available.png" alt="owner_image" class="img-responsive" height="100" />
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary btn-block" id="btnUpdate">Update</button>
+                        <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success col-md-6" id="btnTally">Sync To Tally</a>
+                        <a href='@Url.Action("Index", "AppUsers")' class="btn btn-danger col-md-6" id="btnBack">Back</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            Loading, please wait... <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(".form-sample").validate();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#btnUpdate").show();
+            document.getElementById("btnTally").style.display = "none";
+            document.getElementById("btnBack").style.display = "none";
+            var weekOff = $("#WeekOffDay").val();
+            var religion = $("#Religion").val();
+            $("#ddlWeekOffDay").val(weekOff);
+            $("#ddlReligion").val(religion);
+        });
+        function ddlLedgerTypeChanged() {
+            var LType = $("#LedgerTypeID option:selected").text();
+            $("#LedgerType").val(LType);
+        }
+        function ddlCustomerTypeChanged() {
+            var CType = $("#CustomerTypeID option:selected").text();
+            $("#CustomerType").val(CType);
+        }
+        function ddlCompanyTypeChanged() {
+            var ComType = $("#CompanyTypeID option:selected").text();
+            $("#CompanyType").val(ComType);
+        }
+        function ddlReligionChanged() {
+            var Rel = $("#ddlReligion option:selected").text();
+            $("#Religion").val(Rel);
+        }
+        function ddlTypeofCategoryChanged() {
+            var CategoryType = $("#CategoryTypeID option:selected").text();
+            $("#TypeofCategory").val(CategoryType);
+        }
+        function ddlRegistrationTypeChanged() {
+            var RType = $("#TaxationTypeID option:selected").text();
+            $("#RegistrationType").val(RType);
+        }
+        function ddlWeekOffDayChanged() {
+            var WkOffDay = $("#ddlWeekOffDay option:selected").text();
+            $("#WeekOffDay").val(WkOffDay);
+        }
+        function StateChanged() {
+
+        }
+    </script>
+    <script>
+        function onSuccess_Ajax(data) {
+            if (data == "1") {
+                swal.fire("Success!!", "Customer Details Successfully Updated", "success");
+                document.getElementById("btnUpdate").style.display = "none";
+                document.getElementById("btnBack").style.display = "block";
+                document.getElementById("btnTally").style.display = "block";
+            }
+            else {
+                swal(data);
+            }
+        }
+        function onBegin_Ajax() {
+
+        }
+        function onCompleteCreate_Ajax() {
+
+        }
+        function onFailure_Ajax(data) {
+            swal.fire("Error!!", data, "error");
+        }
+    </script>
+    <script>
+    function TallySync() {
+        var CustID = $("#CustID").val();
+        $.ajax({
+                url: '@Url.Action("TallySync", "EditCustomer")',
+                data: "{ 'CustID': '" + CustID + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data == "0") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else if (data == "1") {
+                        swal.fire("Please install the service and open tally software, wait for 10 seconds and click on Tally Sync button again");
+                    }
+                    else {
+                        if (data == "Tally Sync Successful!!") {
+                            swal.fire({
+                                title: "Tally Sync Successful!!",
+                                text: data,
+                                type: "success",
+                                icon: "success",
+                            }).then(function () {
+                                window.location = '@Url.Action("Index", "AppUsers")';
+                            });
+                        }
+                        else {
+                            swal.fire(data);
+                        }
+                    }
+                },
+                error: function (response) {
+                    swal(response.responseText);
+                },
+                failure: function (response) {
+                    swal(response.responseText);
+                }
+            });
+    }
+    function ddlParent_changed() {
+        var ddlParentID = $("#ParentDebtorID option:selected").text(); // $('#DebtorName').val();
+        $('#Parent1').val(ddlParentID);
+    }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Cityname').each(function () {
+                $(this).autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Action("GetCityName", "EditCustomer")',
+                            data: "{ 'prefix': '" + request.term + "'}",
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                if (data.length > 0) {
+                                    response($.map(data, function (item) {
+                                        return {
+                                            label: item.text,
+                                            val: item.id
+                                        }
+                                    }
+                                ));
+                                }
+
+                                else {
+                                    $("#CityID").val('');
+                                }
+                            },
+                            error: function (response) {
+                                swal.fire(response.responseText);
+                            },
+                            failure: function (response) {
+                                swal.fire(response.responseText);
+                            }
+                        });
+                    },
+                    select: function (e, i) {
+                        $("#CityID").val(i.item.val);
+                    },
+                    minLength: 1
+                });
+            });
+        })
+    </script>
+}

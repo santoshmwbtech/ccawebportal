@@ -1,0 +1,401 @@
+﻿@if (Session["MenuMaster"] != null)
+{
+    var MenuMaster = (List<WBT.DLCustomerCreation.AccessControlItem>)Session["MenuMaster"];
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href='@Url.Action("Index", "Dashboard")' class="brand-link">
+            <img src="~/images/ccalogo.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">CCAAdmin</span>
+        </a>
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    @*menus start*@
+                    @*Masters Menu Start*@
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Index", "Dashboard")'>
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tree"></i>
+                            <p>
+                                Masters
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "accesscontrol" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "CompanyProfile")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Company Profile</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "accesscontrol" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "AccessControl")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Access Control</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "group" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "Group")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Group</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "category" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "Category")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Category</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "itemcompany" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "ItemCompany")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Brand Manufacurers</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "brands" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "Brands")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Brands</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "businesstypes" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "BusinessTypes")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Business Types</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "credittypes" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "CreditTypes")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Credit Types</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "itemmaster" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "ItemCreation")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Item Master</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "pricemaster" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "PriceMaster")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Price Master</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "margins" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "Margin")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Margins</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "branches" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "BranchCreation")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Branches</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "debtorgroups" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "Debtors")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Debtor Groups</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "roles" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "RoleCreation")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Roles</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "users" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "UserCreation")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Users</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "channeltype" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "SalesChannelType")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Channel Type</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "channelpartners" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "ChannelPartners")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Channel Partners</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "marketingchannelpartnermapping" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "UCMappings")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Marketing / Channel Partner Mapping</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "customercityswap" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "CustomerCitySwap")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Customer City Swap</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "routemapping" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item" style="display:none;">
+                                    <a class="nav-link" href='@Url.Action("Index", "RouteMapping")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Route Mapping</p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                    @*Measters Menu End*@
+                    @*Settings Menus Start*@
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                Settings
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "configurationsettings" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "Settings")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Configuration Settings</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "importdebtorsexcel" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "DebtorGroupImport")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Import Debtors Excel</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "importcustomersexcel" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "ImportCustomersExcel")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Import Customers Excel</p>
+                                    </a>
+                                </li>
+                            }
+
+
+                        </ul>
+                    </li>
+                    @*Settings menu end*@
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                Templates
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "templates" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "Templates")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Template Design</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "smstemplates" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "SMSTemplates")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>SMS Templates</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "emailtemplates" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "EmailTemplates")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Email Templates</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "whatsapptemplates" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "WhatsappTemplates")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Whatsapp Templates</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    @*Customer Menu start*@
+                    @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "customerlist" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href='@Url.Action("Index", "AppUsers")'>
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>Customers</p>
+                            </a>
+                        </li>
+                    }
+
+                    @*Customer menu end*@
+
+
+                    @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "salesorders" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href='@Url.Action("Index", "SalesOrder")'>
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>Sales Orders</p>
+                            </a>
+                        </li>
+                    }
+                    @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "receipts" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href='@Url.Action("Index", "Receipts")'>
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>Receipts</p>
+                            </a>
+                        </li>
+                    }
+                    @*Marketing Menu Starts*@
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Marketing
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "performancereport" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "PerformanceReport")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Marketing </p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                    @*Marketing Menu ends*@
+                    @*Reports Menu Starts*@
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>
+                                Reports
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "performancereport" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "PerformanceReport")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Performance Report</p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "imcompletereport" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "IncompleteRpt")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Incomplete Report</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    @*Reports Menu ends*@
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+}
+

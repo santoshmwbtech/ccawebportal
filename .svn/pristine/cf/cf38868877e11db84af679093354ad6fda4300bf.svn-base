@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bf7656d07e1d4817a61c81f56b1b43fd" Name="Diagram1" ZoomLevel="101">
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.AccountGroupDetail" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.BasicExpensesDetail" Width="1.5" PointX="25.25" PointY="289.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.BusinessTypeMarginDetail" Width="1.5" PointX="15.75" PointY="252.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.BusinessType" Width="1.5" PointX="13.5" PointY="262.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.CreditTypeMarginDetail" Width="1.5" PointX="12.75" PointY="239.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.CreditType" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.CurrencyDenominationType" Width="1.5" PointX="16.75" PointY="6.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DCQtyAllocationItemWarehouseMap" Width="1.5" PointX="27" PointY="304.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DCQuantityAllocation" Width="1.5" PointX="24.75" PointY="320.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DeliverycenterBranchMap" Width="1.5" PointX="15.75" PointY="247.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DenominationMapWithTran" Width="1.5" PointX="19" PointY="6" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.Department" Width="1.5" PointX="0.75" PointY="269.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DiscountsExpenseDetail" Width="1.5" PointX="23.25" PointY="469.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DiscrepencyDetail" Width="1.5" PointX="20" PointY="287.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DocumentsList" Width="1.5" PointX="16.75" PointY="1.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DocumentsSetting" Width="1.5" PointX="19" PointY="1" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.DocumentUpload" Width="1.5" PointX="35.75" PointY="269.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.FranchiseMarginDetail" Width="1.5" PointX="23.25" PointY="474.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.FreightExpenseDetail" Width="1.5" PointX="23.25" PointY="465.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.FumigationDetail" Width="1.5" PointX="30" PointY="314.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.FumigationItemWrhsDetail" Width="1.5" PointX="32.25" PointY="310.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.FuturisticBusinessType" Width="1.5" PointX="15.75" PointY="238.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.FuturisticCreditType" Width="1.5" PointX="5.75" PointY="11.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.FuturisticItemThresholdQty" Width="1.5" PointX="23.25" PointY="326.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.ItemThresholdQtyDetail" Width="1.5" PointX="26.25" PointY="327.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.LedgersOpeningBalance" Width="1.5" PointX="5.75" PointY="16.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.OfferPriceDetail" Width="1.5" PointX="2.75" PointY="18.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.RateTransactionDetail" Width="1.5" PointX="18.75" PointY="10.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.SalesManAreaMappingChild" Width="1.5" PointX="9.75" PointY="5.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.SalesManAreaMappingParent" Width="1.5" PointX="7.5" PointY="3" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccessRight" Width="1.5" PointX="20" PointY="272.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountContraBillWithDetail" Width="1.5" PointX="15" PointY="292.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountContraDetail" Width="1.5" PointX="12.75" PointY="291.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountCreditNoteDetail" Width="1.5" PointX="12.75" PointY="266.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountCreditNoteItemDetail" Width="1.5" PointX="23.25" PointY="274.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountCreditNoteWithBillDetail" Width="1.5" PointX="15" PointY="267.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountDebitNoteDetail" Width="1.5" PointX="12.75" PointY="283.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountDebitNoteItemDetail" Width="1.5" PointX="28.25" PointY="272.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountDebitNoteWithBillDetail" Width="1.5" PointX="15" PointY="284.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountGroup" Width="1.5" PointX="15.75" PointY="242.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountGroupMaster" Width="1.5" PointX="10.5" PointY="203.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountLedger" Width="1.5" PointX="12" PointY="13" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountPaymentDetail" Width="1.5" PointX="0.75" PointY="12.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountPaymentWithBillDetail" Width="1.5" PointX="3" PointY="12.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountReceiptDetail" Width="1.5" PointX="14.25" PointY="11.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccountReceiptWithBillDetail" Width="1.5" PointX="16.5" PointY="12.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblActivity" Width="1.5" PointX="10.5" PointY="206.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAdminConfiguration" Width="1.5" PointX="10.5" PointY="368" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblArea" Width="1.5" PointX="7.5" PointY="7.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblBatch" Width="1.5" PointX="10.5" PointY="358" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblBrand" Width="1.5" PointX="12.75" PointY="299.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCart" Width="1.5" PointX="10.5" PointY="348.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCartItem" Width="1.5" PointX="23.25" PointY="333.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCategory" Width="1.5" PointX="10.5" PointY="352" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCategoryType" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblChannelPartnerMapping" Width="1.5" PointX="11.75" PointY="7.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCity" Width="1.5" PointX="5.25" PointY="7.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCompanyType" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCountry" Width="1.5" PointX="13.75" PointY="7.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCustomerCreditDetail" Width="1.5" PointX="10.5" PointY="269.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCustomerType" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblCustomerVendorDetail" Width="1.5" PointX="15.75" PointY="299.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDebtorsAreaDetail" Width="1.5" PointX="12.75" PointY="250" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDebtorsDetail" Width="1.5" PointX="18.75" PointY="15.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDebtorsPlaceDetail" Width="1.5" PointX="10.5" PointY="210.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDeliveryNote" Width="1.5" PointX="33.5" PointY="267" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDeliveryNoteItem" Width="1.5" PointX="23" PointY="284.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDepartment" Width="1.5" PointX="11.75" PointY="19.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDiscount" Width="1.5" PointX="32.25" PointY="299.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblDistrict" Width="1.5" PointX="3" PointY="7.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblGatePass" Width="1.5" PointX="28.25" PointY="264.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblGatePassItem" Width="1.5" PointX="23" PointY="292.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblGoodsInwardNote" Width="1.5" PointX="30.5" PointY="283.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblGoodsInwardNoteItem" Width="1.5" PointX="27" PointY="296.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblGRN" Width="1.5" PointX="33.5" PointY="283.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblGRNItem" Width="1.5" PointX="35.75" PointY="275.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblHOBranchPriceDetail" Width="1.5" PointX="33.25" PointY="274.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblHOMasterPriceDetail" Width="1.5" PointX="29.25" PointY="306.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblHSNCode" Width="1.5" PointX="10.5" PointY="222.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItem" Width="1.5" PointX="21" PointY="319.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemCompany" Width="1.5" PointX="10.5" PointY="341.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemImageDetail" Width="1.5" PointX="23.25" PointY="461.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemMapping" Width="1.5" PointX="29.25" PointY="293.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemMappingWithCESS" Width="1.5" PointX="35.25" PointY="306" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemMovement" Width="1.5" PointX="24" PointY="300.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemParameterMap" Width="1.5" PointX="32.25" PointY="305" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemRate" Width="1.5" PointX="12.75" PointY="276.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemStockTransferDestination" Width="1.5" PointX="24" PointY="308.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemStockTransferHeader" Width="1.5" PointX="10.5" PointY="345.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemStockTransferSource" Width="1.5" PointX="21" PointY="310.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemSupplierMapping" Width="1.5" PointX="36.25" PointY="286.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemToItemTracking" Width="1.5" PointX="10.5" PointY="375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblItemWarehouseMap" Width="1.5" PointX="38.75" PointY="287.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblLedgerType" Width="1.5" PointX="13.75" PointY="19.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblNotification" Width="1.5" PointX="10.5" PointY="214.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblOrganizationWarehouseMap" Width="1.5" PointX="20" PointY="267.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPacketSizeDetail" Width="1.5" PointX="10.5" PointY="385.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblParameter" Width="1.5" PointX="12.75" PointY="304.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPaymentReceipt" Width="1.5" PointX="10.5" PointY="398.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPCN_Details" Width="1.5" PointX="14" PointY="1.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPercentageStructure" Width="1.5" PointX="10.5" PointY="363.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPNCN" Width="1.5" PointX="11.75" PointY="1.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPOQuotation" Width="1.5" PointX="29.25" PointY="300.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPOQuotationSupplier" Width="1.5" PointX="40.5" PointY="294.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblProcessitem_Master" Width="1.5" PointX="15.75" PointY="19.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPurchaseOrder" Width="1.5" PointX="28.25" PointY="281" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPurchaseOrderInvoice" Width="1.5" PointX="40.75" PointY="277.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPurchaseOrderInvoiceItemDetail" Width="1.5" PointX="38.25" PointY="279.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPurchaseOrderWithItem" Width="1.5" PointX="30.5" PointY="274.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPurchaseRequisition" Width="1.5" PointX="20.75" PointY="260.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPurchaseRequisitionItemsDetail" Width="1.5" PointX="32.25" PointY="293.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblRack" Width="1.5" PointX="10.5" PointY="403.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblReason" Width="1.5" PointX="10.5" PointY="217.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblReceiptDetail" Width="1.5" PointX="10.5" PointY="408" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblReceiptWithBillDetail" Width="1.5" PointX="10.5" PointY="381" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblRouteMapping" Width="1.5" PointX="20.75" PointY="10.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblRouteMappingDetail" Width="1.5" PointX="20.75" PointY="14.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesChannelType" Width="1.5" PointX="17.75" PointY="20.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesmanDetail" Width="1.5" PointX="10.5" PointY="335.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesOrder" Width="1.5" PointX="26" PointY="272.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesOrderCashTransaction" Width="1.5" PointX="31.25" PointY="270.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesOrderInvoice" Width="1.5" PointX="43.5" PointY="278.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesOrderInvoiceItemDetail" Width="1.5" PointX="38.25" PointY="294.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesOrderItemWarehouseMap" Width="1.5" PointX="21" PointY="302.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSalesOrderWithItem" Width="1.5" PointX="35.25" PointY="298.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSPDocument" Width="1.5" PointX="20.75" PointY="18.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblState" Width="1.5" PointX="0.75" PointY="3.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblStateWithCity" Width="1.5" PointX="21.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblStickerDetail" Width="1.5" PointX="35.75" PointY="292.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblStockTransferHeader" Width="1.5" PointX="10.5" PointY="372" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblStockTransferLineItem" Width="1.5" PointX="24" PointY="314.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSubAccountGroupMaster" Width="1.5" PointX="12.75" PointY="245.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSubCategory" Width="1.5" PointX="18.75" PointY="307.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSubMenuRoleMap" Width="1.5" PointX="5.25" PointY="268.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysBranch" Width="1.5" PointX="10.5" PointY="247.5" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysMainMenu" Width="1.5" PointX="10.5" PointY="227.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysOrganization" Width="1.5" PointX="9.75" PointY="9.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysOrganizationMap" Width="1.5" PointX="21.75" PointY="3.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysRole" Width="1.5" PointX="3" PointY="268.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysSubMenu" Width="1.5" PointX="12.75" PointY="257.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSystemDetail" Width="1.5" PointX="4.75" PointY="21.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysUser" Width="1.5" PointX="8.25" PointY="250.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTaxationType" Width="1.5" PointX="6.75" PointY="21.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTaxCESS" Width="1.5" PointX="10.5" PointY="389.25" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTransitItem" Width="1.5" PointX="30.5" PointY="265.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTransitItemDetail" Width="1.5" PointX="35.75" PointY="265.125" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUnitQuantity" Width="1.5" PointX="10.5" PointY="198.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUOM" Width="1.5" PointX="10.5" PointY="305.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUserAreaofService" Width="1.5" PointX="19.75" PointY="21.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUserDocument" Width="1.5" PointX="21.75" PointY="21.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUserMapping" Width="1.5" PointX="22.75" PointY="8.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUserWarehouseMap" Width="1.5" PointX="23" PointY="267.375" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblVoucherType" Width="1.5" PointX="17.75" PointY="271.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblWarehouse" Width="1.5" PointX="17.75" PointY="257.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblWarehouseToWarehouseTracking" Width="1.5" PointX="10.5" PointY="393.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.TypeOfExpens" Width="1.5" PointX="23" PointY="263.875" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.VirtualWarehouseDetail" Width="1.5" PointX="8.75" PointY="22.75" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_BasicExpensesDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_BasicExpensesDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_TypeOfExpenses_BasicExpensesDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_BusinessTypes_BusinessTypeMarginDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_BusinessTypeMarginDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_BusinessTypes_FuturisticBusinessTypes" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_BusinessTypes_FuturisticItemThresholdQty" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_BusinessTypes_ItemThresholdQtyDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_CreditTypeMarginDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DenominationMapWithTrans_CurrencyDenominationType" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DCQtyAllocationItemWarehouseMap_DCQuantityAllocation" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DCQtyAllocationItemWarehouseMap_tblBatch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DCQtyAllocationItemWarehouseMap_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DCQtyAllocationItemWarehouseMap_tblPurchaseRequisition" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DCQtyAllocationItemWarehouseMap_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysSysBranch_DeliverycenterBranchMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_DeliverycenterBranchMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysRole_Departments" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_DiscountsExpenseDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblBatch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblReason" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysUserCrID" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysUserMdID" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DocumentsList_DocumentsSetting" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DocumentUploads_tblGatePass" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DocumentUploads_tblGoodsInwardNote" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_FranchiseMarginDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_FreightExpenseDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_FumigationDetails_FumigationItemWrhsDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_FumigationItemWrhsDetails_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_FumigationItemWrhsDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_FuturisticItemThresholdQty" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_ItemThresholdQtyDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SalesManAreaMappingChild_tblArea" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SalesManAreaMappingChild_tblSalesManAreaMappingParent" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SalesManAreaMappingParent_tblCity" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SalesManAreaMappingParent_tblDistrict" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SalesManAreaMappingParent_tblState" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysSubMenu_tblAccessRights" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblAccessRights" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblAccessRights" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser2_tblAccessRights" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountContraBillWithDetails_tblAccountContraDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountContraDetails_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountCreditNoteDetails_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountCreditNoteItemDetails_tblAccountCreditNoteDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountCreditNoteWithBillDetails_tblAccountCreditNoteDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountCreditNoteItemDetails_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountCreditNoteItemDetails_tblReason" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountCreditNoteWithBillDetails_tblAccountCreditNoteWithBillDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountDebitNoteDetails_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountDebitNoteItemDetails_tblAccountDebitNoteDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountDebitNoteWithBillDetails_tblAccountDebitNoteDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountDebitNoteItemDetails_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountDebitNoteItemDetails_tblReason" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountGroupMaster_tblAccountGroup" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblAccountGroup" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountGroupMaster_tblSubAccountGroupMaster" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblAccountGroupMaster" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountLedger_tblAccountReceiptDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountLedger_tblSysOrganization" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountPaymentWithBillDetails_tblAccountPaymentDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountReceiptDetails_tblAccountReceiptWithBillDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountReceiptDetails_tblSysOrganization" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAccountReceiptWithBillDetails_tblSysOrganization" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblActivity_tblSubMenuRoleMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblActivity" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblActivity" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblAdminConfiguration" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblAdminConfiguration" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblArea_tblCity" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblItemMovement" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblItemStockTransferDestination" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblItemStockTransferSource" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch1_tblStockTransferLineItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGoodsInwardNoteItem_tblBatch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblBatch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblBatch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBrand_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemCompany_tblBrand" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblBrand" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblBrand" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAddtoCartChild_tblAddtoCartParent" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblAddtoCartParent_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCartItems_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCategory_tblCategory" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCategory_tblHOMasterPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCategory_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCategory_tblItemStockTransferDestination" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCategory_tblParameter" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCategory_tblSubCategory" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblCategory" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_UserCategory" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCity_tblDistrict" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCustomerWarehouse_tblCustomerCreditDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblCustomerCreditDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Table_1_tblCustomerVendorDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCustomerVendorDetail_tblGRN" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCustomerVendorDetail_tblPOQuotationSuppliers" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCustomerVendorDetail_tblPurchaseOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCustomerWarehouse_tblPurchaseOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblCustomerWarehouse_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemSupplierMapping_tblCustomerVendorDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPercentageStructure_tblCustomerVendorDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrderInvoice_tblCustomerVendorDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblCustomerVendorDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblCustomerVendorDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser2_tblCustomerVendorDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblDebtorsPlaceDetails_tblDebtorsAreaDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblDebtorsAreaDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblDebtorsAreaDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblDebtorsPlaceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblDebtorsPlaceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblDeliveryNote_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblDeliveryNote_tblVoucherType" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGatePass_tblDeliveryNote" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblDeliveryNote" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblDeliveryNote" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblReason_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrderWithItem_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblDiscount" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblDiscount" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblDiscount" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblDistrict_tblState" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGatePass_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGatePass_tblVoucherType" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblGatePass" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrderInvoice_tblGatePass" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblGatePass" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblGatePass" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblReason_tblGatepassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrderWithItem_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblGatePassItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_GoodsInwardNote_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_GoodsInwardNote_tblSysUser1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_GoodsInwardNoteItem_tblGoodsInwardNote" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Table_1_tblPurchaseOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGoodsInwardNote_tblPurchaseOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGoodsInwardNote_tblVoucherType" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_GoodsInwardNoteItem_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGoodsInwardNoteItem_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGoodsInwardNoteItem_tblSysUser1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGoodsInwardNoteItem_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGRN_tblGRNItems" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGRN_tblVoucherType" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemWarehouseMap_tblGRN" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblGRN" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblStickerDetails_tblGRN" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblGRN" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblGRN" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblGRNItems_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblGRNItems" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblReason_tblGRNItems" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblGRNItems" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblGRNItems" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblHOBranchPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_tblHOBranchPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblHOBranchPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblHOBranchPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblHOMasterPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemRate_tblHOMasterPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblHOMasterPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblHOMasterPriceDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblHSNCode" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblHSNCode" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_tblItemStockTransferDestination" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_tblItemStockTransferSource" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_tblPurchaseOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_tblSalesOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_Itbltem_tblSalesOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblItemMapping" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblItemMappingWithCESS" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblItemMovement" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblItemParameterMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblItemSupplierMapping" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblPOQuotation" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblPurchaseRequisitionItemsDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItem_tblStockTransferLineItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemImageDetails_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemRate_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrderInvoiceItemDetail_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblRack_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblStickerDetails_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSubCategory_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUOM_tblItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUOM_tblItem1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_ItemCompanyID" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItemCompany" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemRate_tblItemMapping" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_tblItemMapping" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblItemMappingWithCESS" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItemMappingWithCESS" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblItemMovement" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrderWithItem_tblItemMovement" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblItemMovement" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblItemMovement" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblParameter_tblItemParameterMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSystblUser_tblItemParameterMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItemParameterMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblItemRate" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItemRate" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUOM_tblItemRate" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemStockTransferSource_tblItemStockTransferDestination" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblItemStockTransferDestination" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblItemStockTransferDestination" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemStockTransferHeader_tblItemStockTransferSource" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblItemStockTransferHeader" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblItemStockTransferSource" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblItemStockTransferSource" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblItemSupplierMapping_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblItemSupplierMapping" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItemSupplierMapping" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblItemToItemTracking" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItemToItemTracking" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_tblItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblNotification_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_tblOrganizationWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblOrganizationWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblOrganizationWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblOrganizationWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblPacketSizeDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPacketSizeDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSubCategory_tblParameter" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSystblUser_tblParameter" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblParameter" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblPaymentReceipt" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPaymentReceipt" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPCN_Details_tblPCN_Details" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblPercentageStructure" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPercentageStructure" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPOQuotation_tblPOQuotationSuppliers" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblPOQuotation" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPOQuotation" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblPOQuotationSuppliers" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPOQuotationSuppliers" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblPurchaseOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblPurchaseRequisition" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSysUser1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblTransitItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblVoucherType" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrderInvoice_tblPurchaseOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblPurchaseOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrderInvoice_tblPurchaseOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrderInvoice_tblVoucherType" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblPurchaseOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrderInvoiceItemDetail_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblPurchaseOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblReason_tblPurchaseOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblPurchaseOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblPurchaseOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseRequisition_tblPurchaseRequisitionItemsDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseRequisition_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_tblPurchaseRequisition" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblPurchaseRequisition" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseRequisition" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblPurchaseRequisitionItemsDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseRequisitionItemsDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblPurchaseRequisitionItemsDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblRack" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblRack" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblReason" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblReason" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblReceiptDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblReceiptDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblReceiptWithBillDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblReceiptWithBillDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblSalesmanDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesmanDetails" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SysBranch_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblSalesOrderCashTransaction" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblSalesOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrder_tblSalesOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUserBr_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblVoucherType_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderCashTransaction" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderCashTransaction" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrderInvoice_tblSalesOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblVoucherType_tblSalesOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblSalesOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSalesOrderWithItem_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderWithItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblStickerDetails_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblStickerDetails_tblSysUser1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblStickerDetails_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblStockTransferHeader_tblStockTransferLineItem1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblStockTransferHeader" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblStockTransferLineItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblStockTransferLineItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblStockTransferLineItem1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblSubAccountGroupMaster" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser1_tblSubAccountGroupMaster" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblSubCategory" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSubCategory" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysRole_tblSubMenuRoleMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysSubMenu_tblSubMenuRoleMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblSubMenuRoleMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSubMenuRoleMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SysBranchSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblVoucherType_tblSysBranch" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_SysMainMenuSubMenu" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblSysMainMenu" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSysMainMenu" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysRole_tblsysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblSysSubMenu" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSysSubMenu" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblTaxCESS" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblUnitQuantity" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblUOM" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblUserWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblsysUser_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblWarehouseToWarehouseTracking" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblTaxCESS" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblTransitItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblTransitItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblUnitQuantity" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblUOM" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblUserWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblWarehouse" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblWarehouseToWarehouseTracking" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblTransitItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblUser_tblTransitItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblVoucherType_tblSysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblVoucherType_tblSysUser1" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblsysUser" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblTransitItem_tblTransitItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblWarehouse_tblUserWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblVoucherTypeDisplayCol_tblVoucherTypeNo" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK__tblChanne__OrgID__6F9F86DC" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK__tblCustom__OrgID__7093AB15" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK__tblSysUse__OrgID__5C8CB268" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPlan" Width="1.5" PointX="0.75" PointY="23.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSysChannelPartner" Width="1.5" PointX="23.75" PointY="252.125" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysBranch_tblSysChannelPartner" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser_tblSysChannelPartner" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysUser1_tblSysChannelPartner" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccessControl" Width="1.5" PointX="23.375" PointY="13.625" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAccessControlItem" Width="1.5" PointX="25.625" PointY="13" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK__tblAccess__Acces__086B34A6" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblAdminSetting" Width="1.5" PointX="11.375" PointY="23.75" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblDepartment_DeptID" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysRole_DeptID" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysChannelPartner_ChannelTypeID" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblBranchDocument" Width="1.5" PointX="23.375" PointY="17.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblEmailTemplate" Width="1.5" PointX="24.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblSMSTemplate" Width="1.5" PointX="24.375" PointY="4.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblWhatsappTemplate" Width="1.5" PointX="24.375" PointY="21.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTemplateImage" Width="1.5" PointX="25.375" PointY="8.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUserTemplate" Width="1.5" PointX="25.375" PointY="17.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblOrgSystemDetail" Width="1.5" PointX="24.375" PointY="25.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

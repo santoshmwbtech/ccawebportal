@@ -1,0 +1,62 @@
+﻿@model WBT.DLCustomerCreation.FilterOptions
+
+@using (Ajax.BeginForm("Search", "UserCreation", null, new AjaxOptions
+{
+    UpdateTargetId = "divList",
+    OnBegin = "onBegin_Ajax",
+    OnComplete = "onSaveCompleteCreate_Ajax",
+    OnSuccess = "onCreateSuccess_Ajax",
+    OnFailure = "onFailure_Ajax",
+    HttpMethod = "post"
+
+}, new { @class = "form-sample" }))
+{
+    @Html.AntiForgeryToken()
+
+    <section>
+        <div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"> Search User </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Search by User</label>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.SalesmanList, new { @class = "form-control dropdown" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Search by Role</label>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.RolesList, "Select Role", new { @class = "form-control dropdown" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:center">
+                        <button type="submit" class="btn btn-primary mr-2">Search</button>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+                    }
+
