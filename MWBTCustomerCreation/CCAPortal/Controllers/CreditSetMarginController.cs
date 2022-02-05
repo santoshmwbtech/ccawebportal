@@ -28,7 +28,7 @@ namespace CCAPortal.Controllers
                 ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");
                 ViewBag.DistrictList = new SelectList(customerCreations.GetDistricts(), "DistrictID", "DistrictName");
                 ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["UserID"].ToString()), "StateWithCityID", "VillageLocalityName");
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
 
                 credittypeiddetail = Convert.ToInt32(route);
                 creditTypeName = WBT.Common.Helper.Decrypt(routeName, "sblw-3hn8-sqoy19");

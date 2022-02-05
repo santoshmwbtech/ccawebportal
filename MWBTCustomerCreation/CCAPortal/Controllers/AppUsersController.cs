@@ -32,10 +32,10 @@ namespace CCAPortal.Controllers
         }
         public ActionResult Search()
         {
-            if (Session["UserID"] != null && Session["OrgID"] != null)
+            if (Session["UserID"] != null && Session["OrgID"] != null && Session["RoleName"] != null)
             {
                 CustomerCreations customerCreations = new CustomerCreations();
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
                 ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");
                 ViewBag.DistrictList = new SelectList(customerCreations.GetDistricts(), "DistrictID", "DistrictName");
                 ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["UserID"].ToString()), "StateWithCityID", "VillageLocalityName");
@@ -297,7 +297,7 @@ namespace CCAPortal.Controllers
                 searchItems.CompanyTypeList = search.CompanyTypeList;
                 searchItems.CategoryTypeList = search.CategoryTypeList;
                 searchItems.TaxationTypeList = search.TaxationTypeList;
-                if (Session["UserID"].ToString() != "1")
+                if (Session["RoleName"].ToString().ToLower() != "admin")
                     searchItems.SalesManID = Convert.ToInt32(Session["UserID"].ToString());
                 else
                     searchItems.SalesManID = 0;

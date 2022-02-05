@@ -43,9 +43,9 @@ namespace CCAPortal.Controllers
 
                 ViewBag.AreaList = new SelectList(DAL.GetAreas(Session["OrgID"].ToString()), "BillingArea", "BillingArea");
 
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
                 string name = "salesman";
-                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name), "UserID", "Username");
+                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name, Session["OrgID"].ToString()), "UserID", "Username");
                 return PartialView();
             }
             else
@@ -60,9 +60,9 @@ namespace CCAPortal.Controllers
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
 
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
                 string name = "salesman";
-                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name), "UserID", "Username");
+                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name, Session["OrgID"].ToString()), "UserID", "Username");
 
                 SalesOrders searchItems = new SalesOrders();
                 List<SalesOrders> SOlist = new List<SalesOrders>();
@@ -101,13 +101,9 @@ namespace CCAPortal.Controllers
         public ActionResult SalesOrdersList()
         {
             List<SalesOrders> result = new List<SalesOrders>();
-            try
+            if(Session["OrgID"] != null && Session["UserID"] != null)
             {
-                result = so.GetData();
-            }
-            catch (Exception ex)
-            {
-
+                result = so.GetData(Session["OrgID"].ToString());
             }
             return PartialView(result);
         }

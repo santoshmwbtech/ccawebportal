@@ -142,6 +142,7 @@ namespace WBT.Entity
         public Nullable<bool> TallySync { get; set; }
         public Nullable<System.Guid> DCUniqueID { get; set; }
         public string MailingName { get; set; }
+        public Nullable<bool> isBranchLedger { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCustomerCreditDetail> tblCustomerCreditDetails { get; set; }

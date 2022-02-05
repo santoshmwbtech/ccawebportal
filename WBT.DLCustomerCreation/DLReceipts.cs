@@ -365,7 +365,7 @@ namespace WBT.DLCustomerCreation
                 return false;
             }
         }
-        public bool UpdateTallyStatusFromService(Receipts receipts)
+        public bool UpdateTallyStatusFromService(Receipts receipts, bool Error = false)
         {
             MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
             try
@@ -381,18 +381,36 @@ namespace WBT.DLCustomerCreation
                     {
                         try
                         {
-                            tblAccountReceiptDetail tblAccountReceiptDetails = new tblAccountReceiptDetail();
-                            tblAccountReceiptDetails.ReceiptID = receipts.ReceiptID;
-                            tblAccountReceiptDetails.UpdatedDate = DateTimeNow;
-                            tblAccountReceiptDetails.IsTallyUpdates = true;
-                            tblAccountReceiptDetails.TallySync = false;
-                            Entities.tblAccountReceiptDetails.Attach(tblAccountReceiptDetails);
-                            Entities.Entry(tblAccountReceiptDetails).Property(c => c.UpdatedDate).IsModified = true;
-                            Entities.Entry(tblAccountReceiptDetails).Property(c => c.IsTallyUpdates).IsModified = true;
-                            Entities.Entry(tblAccountReceiptDetails).Property(c => c.TallySync).IsModified = true;
-                            Entities.SaveChanges();
-                            dbcxtransaction.Commit();
-                            return true;
+                            if (Error)
+                            {
+                                tblAccountReceiptDetail tblAccountReceiptDetails = new tblAccountReceiptDetail();
+                                tblAccountReceiptDetails.ReceiptID = receipts.ReceiptID;
+                                tblAccountReceiptDetails.UpdatedDate = DateTimeNow;
+                                tblAccountReceiptDetails.IsTallyUpdates = false;
+                                tblAccountReceiptDetails.TallySync = false;
+                                Entities.tblAccountReceiptDetails.Attach(tblAccountReceiptDetails);
+                                Entities.Entry(tblAccountReceiptDetails).Property(c => c.UpdatedDate).IsModified = true;
+                                Entities.Entry(tblAccountReceiptDetails).Property(c => c.IsTallyUpdates).IsModified = true;
+                                Entities.Entry(tblAccountReceiptDetails).Property(c => c.TallySync).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
+                            else
+                            {
+                                tblAccountReceiptDetail tblAccountReceiptDetails = new tblAccountReceiptDetail();
+                                tblAccountReceiptDetails.ReceiptID = receipts.ReceiptID;
+                                tblAccountReceiptDetails.UpdatedDate = DateTimeNow;
+                                tblAccountReceiptDetails.IsTallyUpdates = true;
+                                tblAccountReceiptDetails.TallySync = false;
+                                Entities.tblAccountReceiptDetails.Attach(tblAccountReceiptDetails);
+                                Entities.Entry(tblAccountReceiptDetails).Property(c => c.UpdatedDate).IsModified = true;
+                                Entities.Entry(tblAccountReceiptDetails).Property(c => c.IsTallyUpdates).IsModified = true;
+                                Entities.Entry(tblAccountReceiptDetails).Property(c => c.TallySync).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
                         }
                         catch (Exception ex)
                         {

@@ -35,7 +35,7 @@ namespace CCAPortal.Controllers
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
                 CustomerCreations customerCreations = new CustomerCreations();
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
                 ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");
                 ViewBag.DistrictList = new SelectList(customerCreations.GetDistricts(), "DistrictID", "DistrictName");
                 ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["OrgID"].ToString()), "StateWithCityID", "VillageLocalityName");
@@ -48,7 +48,7 @@ namespace CCAPortal.Controllers
                 ViewBag.BillingCityList = new SelectList(customerCreations.GetTallyCities(Session["OrgID"].ToString(), string.Empty), "CityName", "CityName");
 
                 string name = "salesman";
-                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name), "UserID", "Username");
+                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name, Session["OrgID"].ToString()), "UserID", "Username");
 
                 return PartialView();
             }

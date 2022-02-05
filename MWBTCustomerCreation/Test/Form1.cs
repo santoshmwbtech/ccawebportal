@@ -44,7 +44,7 @@ namespace Test
                 List<WBT.DLCustomerCreation.CustomerCreation> custCreation = new List<WBT.DLCustomerCreation.CustomerCreation>();
 
                 CustomerCreations M_customerCreations = new CustomerCreations();
-                string OrgID = "1";
+                string OrgID = "2";
                 custCreation = (List<WBT.DLCustomerCreation.CustomerCreation>)M_customerCreations.GetTallysyncCustomerData(OrgID);
 
                 if (custCreation.Count() > 0)
@@ -76,7 +76,7 @@ namespace Test
                 //Helper.LogError("S1", "", null, "");
                 List<WBT.DLCustomerCreation.DebtorsDetails> lstdebtorsDetails = new List<WBT.DLCustomerCreation.DebtorsDetails>();
                 DLDebtorsCreation M_DebtorsCreation = new DLDebtorsCreation();
-                string OrgID = "1";
+                string OrgID = "2";
                 lstdebtorsDetails = (List<WBT.DLCustomerCreation.DebtorsDetails>)M_DebtorsCreation.GetDebtorsListForTallySync(OrgID);
                 //Helper.LogError("S2", "", null, "");
                 //lstdebtorsDetails = M_DebtorsCreation.GetDebtorsListForTallySync(OrgID);
@@ -107,7 +107,7 @@ namespace Test
             {
                 List<WBT.DLCustomerCreation.Receipts> GetReceipts = new List<WBT.DLCustomerCreation.Receipts>();
                 Receipts m_receipts = new Receipts();
-                string OrgId = "1";
+                string OrgId = "2";
                 GetReceipts = (List<WBT.DLCustomerCreation.Receipts>)m_receipts.GetReceiptDetailTally(OrgId);
                 if (GetReceipts.Count() > 0)
                 {
@@ -138,7 +138,7 @@ namespace Test
                 List<SalesOrders> salesOrders = new List<SalesOrders>();
 
                 DLSalesOrders dLSalesOrders = new DLSalesOrders();
-                string OrgID = "1";
+                string OrgID = "2";
 
                 salesOrders = dLSalesOrders.GetSOListForTally(OrgID);
 

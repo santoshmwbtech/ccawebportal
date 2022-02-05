@@ -291,7 +291,7 @@ namespace WBT.DLCustomerCreation
             }
         }
 
-        public List<SalesOrders> GetData(string Name = "")
+        public List<SalesOrders> GetData(string OrgID, string Name = "")
         {
             try
             {
@@ -303,9 +303,9 @@ namespace WBT.DLCustomerCreation
                     if (!string.IsNullOrEmpty(Name))
                     {
                         SOList = (from so in Entities.tblSalesOrders
-                                  join
-cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
+                                  join cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
                                   where so.BranchID.ToLower().Contains(Name)
+                                  && so.OrgID == OrgID
                                   select new SalesOrders
                                   {
                                       ID = so.ID,
@@ -314,14 +314,16 @@ cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
                                       OrderNumber = so.SalesOrderNumber,
                                       BranchName = Entities.tblSysBranches.Where(r => r.BranchID == so.BranchID).FirstOrDefault().Name,
                                       OrderDate = so.SalesDatetime,
-
+                                      IsTallyUpdated = so.IsTallyUpdated,
+                                      TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
+                                      TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
                     else
                     {
                         SOList = (from so in Entities.tblSalesOrders
                                   join cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
-                                  where so.BranchID.ToLower().Contains(Name)
+                                  where so.OrgID == OrgID
                                   select new SalesOrders
                                   {
                                       ID = so.ID,
@@ -330,6 +332,9 @@ cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
                                       OrderNumber = so.SalesOrderNumber,
                                       BranchName = Entities.tblSysBranches.Where(r => r.BranchID == so.BranchID).FirstOrDefault().Name,
                                       OrderDate = so.SalesDatetime,
+                                      IsTallyUpdated = so.IsTallyUpdated,
+                                      TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
+                                      TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
                 }
@@ -698,7 +703,7 @@ cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
             }
         }
 
-        public bool UpdateTallyStatusFromService(SalesOrders sOrders)
+        public bool UpdateTallyStatusFromService(SalesOrders sOrders, bool Error = false)
         {
             try
             {
@@ -711,22 +716,40 @@ cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
                     {
                         try
                         {
-                            tblSalesOrder tblSalesOrders = new tblSalesOrder();
-                            tblSalesOrders.SalesOrderNumber = sOrders.SalesOrderNumber;
-                            tblSalesOrders.ModifiedByID = sOrders.ModifiedByID;
-                            tblSalesOrders.UpdateDate = sOrders.ModifiedDate;
-                            tblSalesOrders.IsTallyUpdated = true;
-                            tblSalesOrders.TallySync = false;
-                            tblSalesOrders.TransType = sOrders.TransType;
-                            tblSalesOrders.SalesDatetime = sOrders.SalesDateTime;
-                            Entities.tblSalesOrders.Attach(tblSalesOrders);
-                            Entities.Entry(tblSalesOrders).Property(c => c.ModifiedByID).IsModified = true;
-                            Entities.Entry(tblSalesOrders).Property(c => c.UpdateDate).IsModified = true;
-                            Entities.Entry(tblSalesOrders).Property(c => c.IsTallyUpdated).IsModified = true;
-                            Entities.Entry(tblSalesOrders).Property(c => c.TallySync).IsModified = true;
-                            Entities.SaveChanges();
-                            dbcxtransaction.Commit();
-                            return true;
+                            if (Error)
+                            {
+                                tblSalesOrder tblSalesOrders = new tblSalesOrder();
+                                tblSalesOrders.SalesOrderNumber = sOrders.SalesOrderNumber;
+                                tblSalesOrders.UpdateDate = DateTime.Now;
+                                tblSalesOrders.IsTallyUpdated = false;
+                                tblSalesOrders.TallySync = false;
+                                tblSalesOrders.TransType = sOrders.TransType;
+                                tblSalesOrders.SalesDatetime = sOrders.SalesDateTime;
+                                Entities.tblSalesOrders.Attach(tblSalesOrders);
+                                Entities.Entry(tblSalesOrders).Property(c => c.UpdateDate).IsModified = true;
+                                Entities.Entry(tblSalesOrders).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.Entry(tblSalesOrders).Property(c => c.TallySync).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
+                            else
+                            {
+                                tblSalesOrder tblSalesOrders = new tblSalesOrder();
+                                tblSalesOrders.SalesOrderNumber = sOrders.SalesOrderNumber;
+                                tblSalesOrders.UpdateDate = sOrders.ModifiedDate;
+                                tblSalesOrders.IsTallyUpdated = true;
+                                tblSalesOrders.TallySync = false;
+                                tblSalesOrders.TransType = sOrders.TransType;
+                                tblSalesOrders.SalesDatetime = sOrders.SalesDateTime;
+                                Entities.tblSalesOrders.Attach(tblSalesOrders);
+                                Entities.Entry(tblSalesOrders).Property(c => c.UpdateDate).IsModified = true;
+                                Entities.Entry(tblSalesOrders).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.Entry(tblSalesOrders).Property(c => c.TallySync).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
                         }
                         catch (Exception ex)
                         {

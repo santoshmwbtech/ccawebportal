@@ -1983,7 +1983,7 @@ namespace WBT.DLCustomerCreation
             }
         }
 
-        public bool UpdateTallyStatusFromService(CustomerCreation customerCreation)
+        public bool UpdateTallyStatusFromService(CustomerCreation customerCreation, bool Error = false)
         {
             try
             {
@@ -1998,19 +1998,36 @@ namespace WBT.DLCustomerCreation
                     {
                         try
                         {
-                            tblCustomerVendorDetail tblCustomerVendorDetail = new tblCustomerVendorDetail();
-                            tblCustomerVendorDetail.CustID = customerCreation.CustID;
-                            tblCustomerVendorDetail.TallySync = false;
-                            tblCustomerVendorDetail.IsTallyUpdated = true;
-                            tblCustomerVendorDetail.UpdatedDate = DateTimeNow;
-                            Entities.tblCustomerVendorDetails.Attach(tblCustomerVendorDetail);
-                            Entities.Entry(tblCustomerVendorDetail).Property(c => c.ModifiedByID).IsModified = true;
-                            Entities.Entry(tblCustomerVendorDetail).Property(c => c.UpdatedDate).IsModified = true;
-                            Entities.Entry(tblCustomerVendorDetail).Property(c => c.TallySync).IsModified = true;
-                            Entities.Entry(tblCustomerVendorDetail).Property(c => c.IsTallyUpdated).IsModified = true;
-                            Entities.SaveChanges();
-                            dbcxtransaction.Commit();
-                            return true;
+                            if (Error)
+                            {
+                                tblCustomerVendorDetail tblCustomerVendorDetail = new tblCustomerVendorDetail();
+                                tblCustomerVendorDetail.CustID = customerCreation.CustID;
+                                tblCustomerVendorDetail.TallySync = false;
+                                tblCustomerVendorDetail.IsTallyUpdated = false;
+                                tblCustomerVendorDetail.UpdatedDate = DateTimeNow;
+                                Entities.tblCustomerVendorDetails.Attach(tblCustomerVendorDetail);
+                                Entities.Entry(tblCustomerVendorDetail).Property(c => c.UpdatedDate).IsModified = true;
+                                Entities.Entry(tblCustomerVendorDetail).Property(c => c.TallySync).IsModified = true;
+                                Entities.Entry(tblCustomerVendorDetail).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
+                            else
+                            {
+                                tblCustomerVendorDetail tblCustomerVendorDetail = new tblCustomerVendorDetail();
+                                tblCustomerVendorDetail.CustID = customerCreation.CustID;
+                                tblCustomerVendorDetail.TallySync = false;
+                                tblCustomerVendorDetail.IsTallyUpdated = true;
+                                tblCustomerVendorDetail.UpdatedDate = DateTimeNow;
+                                Entities.tblCustomerVendorDetails.Attach(tblCustomerVendorDetail);
+                                Entities.Entry(tblCustomerVendorDetail).Property(c => c.UpdatedDate).IsModified = true;
+                                Entities.Entry(tblCustomerVendorDetail).Property(c => c.TallySync).IsModified = true;
+                                Entities.Entry(tblCustomerVendorDetail).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -2080,7 +2097,7 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-        public List<tblSysBranch> GetBranchList(string OrgID, string UserID = "")
+        public List<tblSysBranch> GetBranchList(string OrgID, string UserID = "", string RoleName = "")
         {
             try
             {
@@ -2090,9 +2107,9 @@ namespace WBT.DLCustomerCreation
                     {
                         List<tblSysBranch> BranchList = new List<tblSysBranch>();
 
-                        if (!string.IsNullOrEmpty(UserID))
+                        if (!string.IsNullOrEmpty(RoleName))
                         {
-                            if (UserID == "1")
+                            if (RoleName.ToLower() == "admin")
                             {
 
                                 BranchList = (from s in Entities.tblSysBranches
@@ -2567,7 +2584,7 @@ namespace WBT.DLCustomerCreation
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
                     //Get Tally User ID
-                    int TallyUserID = Entities.tblSysUsers.Where(s => s.FName.ToLower() == "administrator" && s.OrgID == search.OrgID).FirstOrDefault().UserID;
+                    int TallyUserID = Entities.tblSysUsers.Where(s => s.FName.ToLower().Contains("admin") && s.OrgID == search.OrgID).FirstOrDefault().UserID;
                     List<CustomerCreation> customerCreationList = new List<CustomerCreation>();
 
                     IQueryable<CustomerCreation> QueryableList = (from c in Entities.tblCustomerVendorDetails

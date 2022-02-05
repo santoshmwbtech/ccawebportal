@@ -1325,6 +1325,7 @@
           <Property Name="TallySync" Type="bit" />
           <Property Name="DCUniqueID" Type="uniqueidentifier" />
           <Property Name="MailingName" Type="nvarchar" MaxLength="250" />
+          <Property Name="isBranchLedger" Type="bit" />
         </EntityType>
         <EntityType Name="tblDebtorsAreaDetails">
           <Key>
@@ -2665,6 +2666,8 @@
           <Property Name="Photo1" Type="text" />
           <Property Name="Photo2" Type="text" />
           <Property Name="TallySync" Type="bit" />
+          <Property Name="RetSOName" Type="nvarchar" MaxLength="250" />
+          <Property Name="RetSOSignature" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblSalesOrderCashTransaction">
           <Key>
@@ -3244,6 +3247,17 @@
           <Property Name="CountryID" Type="int" />
           <Property Name="DepartmentID" Type="int" />
           <Property Name="IsServiceInstalled" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblTallySyncErrors">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrgID" Type="varchar" MaxLength="20" />
+          <Property Name="TallySyncType" Type="varchar" MaxLength="200" />
+          <Property Name="TallySyncDetails" Type="varchar" MaxLength="200" />
+          <Property Name="ErrorMsg" Type="varchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblTaxationType">
           <Key>
@@ -8265,6 +8279,7 @@
           <EntitySet Name="tblSysSubMenu" EntityType="Self.tblSysSubMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSystemDetail" EntityType="Self.tblSystemDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSysUser" EntityType="Self.tblSysUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTallySyncErrors" EntityType="Self.tblTallySyncErrors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTaxationType" EntityType="Self.tblTaxationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTaxCESS" EntityType="Self.tblTaxCESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTemplateImage" EntityType="Self.tblTemplateImage" Schema="dbo" store:Type="Tables" />
@@ -11514,6 +11529,7 @@
           <EntitySet Name="tblTemplateImages" EntityType="MWBTCustomerAppModel.tblTemplateImage" />
           <EntitySet Name="tblUserTemplates" EntityType="MWBTCustomerAppModel.tblUserTemplate" />
           <EntitySet Name="tblOrgSystemDetails" EntityType="MWBTCustomerAppModel.tblOrgSystemDetail" />
+          <EntitySet Name="tblTallySyncErrors" EntityType="MWBTCustomerAppModel.tblTallySyncError" />
         </EntityContainer>
         <EntityType Name="AccountGroupDetail">
           <Key>
@@ -12916,6 +12932,7 @@
           <Property Name="TallySync" Type="Boolean" />
           <Property Name="DCUniqueID" Type="Guid" />
           <Property Name="MailingName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="isBranchLedger" Type="Boolean" />
           </EntityType>
         <EntityType Name="tblDebtorsAreaDetail">
           <Key>
@@ -14508,6 +14525,8 @@
           <NavigationProperty Name="tblSysUser3" Relationship="MWBTCustomerAppModel.FK_tblUser_tblSalesOrder" FromRole="tblSalesOrder" ToRole="tblSysUser" />
           <NavigationProperty Name="tblVoucherType" Relationship="MWBTCustomerAppModel.FK_tblVoucherType_tblSalesOrder" FromRole="tblSalesOrder" ToRole="tblVoucherType" />
           <Property Name="TallySync" Type="Boolean" />
+          <Property Name="RetSOName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RetSOSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblSalesOrderCashTransaction">
           <Key>
@@ -20413,6 +20432,17 @@
           <Property Name="TallyCompanyName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CurrentDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="tblTallySyncError">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrgID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TallySyncType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TallySyncDetails" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ErrorMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -21623,6 +21653,7 @@
           <EntitySetMapping Name="tblCustomerVendorDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblCustomerVendorDetail">
               <MappingFragment StoreEntitySet="tblCustomerVendorDetail">
+                <ScalarProperty Name="isBranchLedger" ColumnName="isBranchLedger" />
                 <ScalarProperty Name="MailingName" ColumnName="MailingName" />
                 <ScalarProperty Name="DCUniqueID" ColumnName="DCUniqueID" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />
@@ -23043,6 +23074,8 @@
           <EntitySetMapping Name="tblSalesOrders">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSalesOrder">
               <MappingFragment StoreEntitySet="tblSalesOrder">
+                <ScalarProperty Name="RetSOSignature" ColumnName="RetSOSignature" />
+                <ScalarProperty Name="RetSOName" ColumnName="RetSOName" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />
                 <ScalarProperty Name="Photo2" ColumnName="Photo2" />
                 <ScalarProperty Name="Photo1" ColumnName="Photo1" />
@@ -24112,6 +24145,18 @@
                 <ScalarProperty Name="CurrentDate" ColumnName="CurrentDate" />
                 <ScalarProperty Name="TallyCompanyName" ColumnName="TallyCompanyName" />
                 <ScalarProperty Name="IsTallyRunning" ColumnName="IsTallyRunning" />
+                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTallySyncErrors">
+            <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblTallySyncError">
+              <MappingFragment StoreEntitySet="tblTallySyncErrors">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ErrorMsg" ColumnName="ErrorMsg" />
+                <ScalarProperty Name="TallySyncDetails" ColumnName="TallySyncDetails" />
+                <ScalarProperty Name="TallySyncType" ColumnName="TallySyncType" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

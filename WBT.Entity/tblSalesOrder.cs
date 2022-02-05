@@ -82,6 +82,8 @@ namespace WBT.Entity
         public string Photo1 { get; set; }
         public string Photo2 { get; set; }
         public Nullable<bool> TallySync { get; set; }
+        public string RetSOName { get; set; }
+        public string RetSOSignature { get; set; }
     
         public virtual tblCustomerVendorDetail tblCustomerVendorDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

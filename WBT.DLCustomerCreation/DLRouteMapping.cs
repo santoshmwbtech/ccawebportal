@@ -90,7 +90,7 @@ namespace WBT.DLCustomerCreation
         public List<CustomerVendorDetails> customerVenderDetailsList = new List<CustomerVendorDetails>();
         private RouteMapping mAddUserCreation;
         //public List<UserDetailsList> GetSalesManList(int RoleID)
-        public List<UserDetailsList> GetSalesManList(string name)
+        public List<UserDetailsList> GetSalesManList(string name, string OrgID)
         //public SysRolesLst GetSalesManRoleId(string name)
         {
             try
@@ -102,11 +102,13 @@ namespace WBT.DLCustomerCreation
 
                     var sysRoleId = (from sysRole in Entities.tblSysRoles
                                      where sysRole.RoleName == name
+                                     && sysRole.OrgID == OrgID
                                      select sysRole.RoleID).FirstOrDefault();
 
 
                     userDetailsList = (from sysUser in Entities.tblSysUsers
                                        where sysUser.RoleID == sysRoleId
+                                       && sysUser.OrgID == OrgID
                                        select new UserDetailsList
                                        {
                                            UserID = sysUser.UserID,
