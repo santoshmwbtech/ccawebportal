@@ -194,5 +194,6 @@ namespace WBT.Entity
         public virtual DbSet<tblTemplateImage> tblTemplateImages { get; set; }
         public virtual DbSet<tblUserTemplate> tblUserTemplates { get; set; }
         public virtual DbSet<tblOrgSystemDetail> tblOrgSystemDetails { get; set; }
+        public virtual DbSet<tblTallySyncError> tblTallySyncErrors { get; set; }
     }
 }

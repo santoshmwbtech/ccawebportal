@@ -249,14 +249,10 @@ namespace CCAPortal.Controllers
             DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);            
 
             //Get SO Details from Master Table
-            SalesOrders tallyResult = SaveSalesOrderToTally(salesOrders);
-            
+            SalesOrders tallyResult = SaveSalesOrderToTally(salesOrders);            
 
             if (tallyResult.DisplayMessage.Contains("<CREATED>1"))
-            {
-                
-                Helper.LogError("Tally Updated", null, null, null);
-                tallyResult.ModifiedByID = Convert.ToInt32(salesOrders.UserID);// Convert.ToInt32(Session["UserID"].ToString());
+            {   
                 tallyResult.ModifiedDate = DateTimeNow;
                 tallyResult.SalesDateTime = salesOrders.SalesDateTime;
                 tallyResult.TransType = salesOrders.TransType;
@@ -265,18 +261,15 @@ namespace CCAPortal.Controllers
                 {
                     Helper.TallyServiceLog("Sales Order", tallyResult.SalesOrderNumber, tallyResult.CustomerName, Convert.ToDateTime(tallyResult.SalesDateTime), DateTimeNow, "Updated");
                     Helper.LogError("DataBase Updated Successfully", null, null, null);
-                    //Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                 }
                 else
                 {
                     Helper.TallyServiceLog("Sales Order", tallyResult.SalesOrderNumber, tallyResult.CustomerName, Convert.ToDateTime(tallyResult.SalesDateTime), DateTimeNow, "Not Updated");
                     Helper.LogError("Database Updation failed", null, null, null);
-                    //Helper.LogError("Database Updation failed", DebtorName, null, null);
                 }
             }
             else if (tallyResult.DisplayMessage.Contains("<ALTERED>1"))
             {
-                tallyResult.ModifiedByID = Convert.ToInt32(salesOrders.UserID);// Convert.ToInt32(Session["UserID"].ToString());
                 tallyResult.ModifiedDate = DateTimeNow;
                 tallyResult.SalesDateTime = salesOrders.SalesDateTime;
                 tallyResult.TransType = salesOrders.TransType;
@@ -285,13 +278,11 @@ namespace CCAPortal.Controllers
                 {
                     Helper.TallyServiceLog("Sales Order", tallyResult.SalesOrderNumber, tallyResult.CustomerName, Convert.ToDateTime(tallyResult.SalesDateTime), DateTimeNow, "Updated");
                     Helper.LogError("DataBase Updated Successfully", null, null, null);
-                    //  Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                 }
                 else
                 {
                     Helper.LogError("Database Updation failed", null, null, null);
                     Helper.TallyServiceLog("Sales Order", tallyResult.SalesOrderNumber, tallyResult.CustomerName, Convert.ToDateTime(tallyResult.SalesDateTime), DateTimeNow, "Not Updated");
-                    //   Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                 }
             }
             else if (tallyResult.DisplayMessage.Contains("Please Open Company"))
@@ -305,17 +296,13 @@ namespace CCAPortal.Controllers
                 int pTo = tallyResult.DisplayMessage.LastIndexOf("</LINEERROR>");
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage.Substring(pFrom, pTo - pFrom);
                 Helper.LogError(tallyResult.DisplayMessage, null, null, null);
-                //MessageBox.Show(tallyResult.Remark.Substring(pFrom, pTo - pFrom), "Purchase Invoice", MessageBoxButton.OK, MessageBoxImage.Error);
+                sorders.UpdateTallyStatusFromService(tallyResult, true);
             }
             else
             {
                 Helper.LogError(tallyResult.DisplayMessage, null, null, null);
-                //return Json(tallyResult.DisplayMessage, JsonRequestBehavior.AllowGet);
-                //else
-                // {
-                //return Json("Please Open Tally to sync your data", JsonRequestBehavior.AllowGet);
+                sorders.UpdateTallyStatusFromService(tallyResult, true);
             }
-
         }
 
         public SalesOrders SaveSalesOrderToTally(SalesOrders SalesOrder)
@@ -325,6 +312,7 @@ namespace CCAPortal.Controllers
             if (IsCompanyOpen == true)
             {
                 SalesOrders IResult = new SalesOrders();
+                
 
                 //xmlFileString = Server.MapPath("~/DataFiles/SalesOrder.xml");
                 //xmlDoc = new XmlDocument();
@@ -734,7 +722,9 @@ namespace CCAPortal.Controllers
                     xmlstc = xmlstc + "</ENVELOPE>" + "\r\n";
 
                     IResult.DisplayMessage = XMLGetData(xmlstc);
-
+                    IResult.SalesOrderNumber = SalesOrder.SalesOrderNumber;
+                    IResult.TransType = SalesOrder.TransType;
+                    IResult.SalesDateTime = SalesOrder.SalesDateTime;
                     return IResult;
                 }
                 catch (Exception ex)
@@ -745,6 +735,7 @@ namespace CCAPortal.Controllers
             }
             else
             {
+                SalesOrder.DisplayMessage = "Please open " + SalesOrder.BranchName + " in Tally";
                 return SalesOrder;
             }
         }

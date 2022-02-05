@@ -557,6 +557,7 @@
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTemplateImage" Width="1.5" PointX="25.375" PointY="8.75" />
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUserTemplate" Width="1.5" PointX="25.375" PointY="17.75" />
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblOrgSystemDetail" Width="1.5" PointX="22.375" PointY="25.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTallySyncError" Width="1.5" PointX="24.375" PointY="25.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

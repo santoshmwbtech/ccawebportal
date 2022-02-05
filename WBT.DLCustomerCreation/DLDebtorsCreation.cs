@@ -294,12 +294,10 @@ namespace WBT.DLCustomerCreation
                         {
                             tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
                             tblDebtors.ID = debtors.ID;
-                            tblDebtors.ModifiedByID = debtors.ModifiedByID;
                             tblDebtors.ModifiedDate = DateTimeNow;
                             tblDebtors.IsTallyUpdated = false;
                             tblDebtors.TallySync = true;
                             Entities.tblDebtorsDetails.Attach(tblDebtors);
-                            Entities.Entry(tblDebtors).Property(c => c.ModifiedByID).IsModified = true;
                             Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
                             Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
                             Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
@@ -322,7 +320,7 @@ namespace WBT.DLCustomerCreation
                 return false;
             }
         }
-        public bool UpdateTallyStatusFromService(DebtorsDetails debtors)
+        public bool UpdateTallyStatusFromService(DebtorsDetails debtors, bool Error = false)
         {
             try
             {
@@ -336,18 +334,36 @@ namespace WBT.DLCustomerCreation
                     {
                         try
                         {
-                            tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
-                            tblDebtors.ID = debtors.ID;
-                            tblDebtors.ModifiedDate = DateTimeNow;
-                            tblDebtors.IsTallyUpdated = true;
-                            tblDebtors.TallySync = false;
-                            Entities.tblDebtorsDetails.Attach(tblDebtors);
-                            Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
-                            Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
-                            Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
-                            Entities.SaveChanges();
-                            dbcxtransaction.Commit();
-                            return true;
+                            if (Error)
+                            {
+                                tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
+                                tblDebtors.ID = debtors.ID;
+                                tblDebtors.ModifiedDate = DateTimeNow;
+                                tblDebtors.IsTallyUpdated = false;
+                                tblDebtors.TallySync = false;
+                                Entities.tblDebtorsDetails.Attach(tblDebtors);
+                                Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
+                            else
+                            {
+                                tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
+                                tblDebtors.ID = debtors.ID;
+                                tblDebtors.ModifiedDate = DateTimeNow;
+                                tblDebtors.IsTallyUpdated = true;
+                                tblDebtors.TallySync = false;
+                                Entities.tblDebtorsDetails.Attach(tblDebtors);
+                                Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
                         }
                         catch (Exception ex)
                         {

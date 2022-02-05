@@ -39,7 +39,7 @@ namespace CCAPortal.Controllers
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
                 WBT.DLCustomerCreation.CustomerCreations customerCreations = new WBT.DLCustomerCreation.CustomerCreations();
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
                 ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");
                 ViewBag.DistrictList = new SelectList(customerCreations.GetDistricts(), "DistrictID", "DistrictName");
                 ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["UserID"].ToString()), "StateWithCityID", "VillageLocalityName");
@@ -48,7 +48,7 @@ namespace CCAPortal.Controllers
                 ViewBag.CompanyTypes = new SelectList(customerCreations.GetCompanyTypes(), "CompanyTypeID", "CompanyType");
                 ViewBag.AreaList = new SelectList(DAL.GetAreas(Session["OrgID"].ToString()), "BillingArea", "BillingArea");
                 string name = "salesman";
-                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name), "UserID", "Username");
+                ViewBag.SalesmanList = new SelectList(DLSalesman.GetSalesManList(name, Session["OrgID"].ToString()), "UserID", "Username");
                 return PartialView();
             }
             else
@@ -130,44 +130,37 @@ namespace CCAPortal.Controllers
 
             if (tallyResult.DisplayMessage.Contains("<CREATED>1"))
             {
-                Helper.LogError("Receipt - Tally Updated", null, null, null);
                 tallyResult.DisplayMessage = "Tally Sync Successful!!";
                 tallyResult.IsTallyUpdated = true;
-                tallyResult.ModifiedByID = 1;// Convert.ToInt32(Session["UserID"].ToString());
                 tallyResult.ModifiedDate = DateTimeNow;
                 tallyResult.ID = GetReceipts.ID;
                 tallyResult.ReceiptID = GetReceipts.ReceiptID;
                 if (GetReceipts.UpdateTallyStatusFromService(tallyResult))
                 {
                     Helper.LogError("Receipt - DataBase Updated Successfully", null, null, null);
-                    //Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                 }
                 else
                 {
                     Helper.LogError("Receipt - Database Updation failed", null, null, null);
-                    //Helper.LogError("Database Updation failed", DebtorName, null, null);
                 }
             }
             else if (tallyResult.DisplayMessage.Contains("<ALTERED>1"))
             {
                 tallyResult.DisplayMessage = "Tally Sync Successful!!";
                 tallyResult.IsTallyUpdated = true;
-                tallyResult.ModifiedByID = 1;// Convert.ToInt32(Session["UserID"].ToString());
                 tallyResult.ModifiedDate = DateTimeNow;
                 tallyResult.ID = GetReceipts.ID;
                 tallyResult.ReceiptID = GetReceipts.ReceiptID;
                 if (GetReceipts.UpdateTallyStatusFromService(tallyResult))
                 {
                     Helper.LogError("Receipt - DataBase Updated Successfully", null, null, null);
-                    //  Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                 }
                 else
                 {
                     Helper.LogError("Receipt - Database Updation failed", null, null, null);
-                    //   Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                 }
             }
-            else if (tallyResult.DisplayMessage.Contains("Please Open Company"))
+            else if (tallyResult.DisplayMessage.Contains("Please open company"))
             {
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage;
             }
@@ -176,19 +169,13 @@ namespace CCAPortal.Controllers
                 int pFrom = tallyResult.DisplayMessage.IndexOf("<LINEERROR>") + "<LINEERROR>".Length;
                 int pTo = tallyResult.DisplayMessage.LastIndexOf("</LINEERROR>");
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage.Substring(pFrom, pTo - pFrom);
-                //MessageBox.Show(tallyResult.Remark.Substring(pFrom, pTo - pFrom), "Purchase Invoice", MessageBoxButton.OK, MessageBoxImage.Error);
+                GetReceipts.UpdateTallyStatusFromService(tallyResult, true);
             }
             else
             {
                 tallyResult.DisplayMessage = "There is an error with Tally. Please try later..";
                 Helper.LogError("There is an error with Tally. Please try later..", null, null, null);
-
-
-
-                //return Json(tallyResult.DisplayMessage, JsonRequestBehavior.AllowGet);
-                //else
-                // {
-                //return Json("Please Open Tally to sync your data", JsonRequestBehavior.AllowGet);
+                GetReceipts.UpdateTallyStatusFromService(tallyResult, true);
             }
 
         }

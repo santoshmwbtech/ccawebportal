@@ -27,7 +27,7 @@ namespace CCAPortal.Controllers
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
                 CustomerCreations customerCreations = new CustomerCreations();
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
 
                 IEnumerable<SelectListItem> searchItems = from SearchOptions s in Enum.GetValues(typeof(SearchOptions))
                                                           select new SelectListItem

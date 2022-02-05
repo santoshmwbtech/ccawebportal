@@ -547,7 +547,6 @@ namespace CCAPortal.Controllers
                 CustomerCreation customerCreationtoTally = customerCreations.GetCustomerDetails(CustID);
                 string FirmName = CustID + customerCreationtoTally.FirmName.ToString();
                 bool iswinservie = true;
-                //string ab = customerCreationtoTally
                 CustomerCreation tallyResult = (CustomerCreation)AddCustomerSupplierToTally(customerCreationtoTally, iswinservie);
                 if (tallyResult.Remark.Contains("<CREATED>1"))
                 {                       
@@ -572,12 +571,10 @@ namespace CCAPortal.Controllers
                     tallyResult.DisplayMessage = "Tally Sync Successful!!";
                     if (customerCreations.UpdateTallyStatusFromService(tallyResult))
                     {
-                        //Helper.LogError("DataBase Updated Successfully", null, null, null);
                         Helper.TransactionLog("Database Updation Successfully [" + FirmName + "]", true);
                     }
                     else
                     {
-                        //Helper.LogError("Database Updation failed", null, null, null);
                         Helper.LogError("Database Updation failed", FirmName, null, null);
 
                     }
@@ -591,7 +588,6 @@ namespace CCAPortal.Controllers
                     int pFrom = tallyResult.Remark.IndexOf("<LINEERROR>") + "<LINEERROR>".Length;
                     int pTo = tallyResult.Remark.LastIndexOf("</LINEERROR>");
                     tallyResult.DisplayMessage = tallyResult.Remark.Substring(pFrom, pTo - pFrom);
-                    //MessageBox.Show(tallyResult.Remark.Substring(pFrom, pTo - pFrom), "Purchase Invoice", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {

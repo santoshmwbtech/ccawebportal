@@ -38,7 +38,7 @@ namespace CCAPortal.Controllers
         public ActionResult Create()
         {
             ViewBag.DebtorsList = new SelectList(dLDebtorsCreation.GetDebtorsList(Session["OrgID"].ToString()), "ID", "DebtorName");
-            ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString()), "BranchID", "Name");
+            ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
             return PartialView();
         }
         public ActionResult DebtorList()
@@ -98,7 +98,7 @@ namespace CCAPortal.Controllers
             }
 
             ViewBag.DebtorsList = new SelectList(dLDebtorsCreation.GetDebtorsList(Session["OrgID"].ToString()), "ID", "DebtorName");
-            ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString()), "BranchID", "Name");
+            ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
             DebtorsDetails obj = dLDebtorsCreation.GetDebtorDetail(DebtorID);
 
             if (obj == null)
@@ -375,7 +375,6 @@ namespace CCAPortal.Controllers
         public void Debtor_TallySync(int? ID)
         {
             GetDebtorsDetailsforTallyUpdate((int)ID);
-            //Helper.LogError("S4", "", null, "");
         }
         private JsonResult GetDebtorsDetailsforTallyUpdate(int ID)
         {
@@ -384,7 +383,6 @@ namespace CCAPortal.Controllers
                 DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
                 bool iswinservie = true;
                 DebtorsDetails debtorsTally = dLDebtorsCreation.GetDebtorDetail(ID);
-                //Helper.LogError("S5", "", null, "");
                 string DebtorName = debtorsTally.DebtorName.ToString();
                 DebtorsDetails tallyResult = (DebtorsDetails)SaveDebtorToTally(debtorsTally, iswinservie);
 
@@ -393,17 +391,14 @@ namespace CCAPortal.Controllers
                     Helper.LogError("Tally Updated", null, null, null);
                     tallyResult.DisplayMessage = "Tally Sync Successful!!";
                     tallyResult.IsTallyUpdated = true;
-                    tallyResult.ModifiedByID = 1;// Convert.ToInt32(Session["UserID"].ToString());
                     tallyResult.ModifiedDate = DateTimeNow;
                     tallyResult.ID = debtorsTally.ID;
-                    if (dLDebtorsCreation.UpdateTallyStatus(tallyResult))
+                    if (dLDebtorsCreation.UpdateTallyStatusFromService(tallyResult))
                     {
-                        Helper.LogError("DataBase Updated Successfully", null, null, null);
                         Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                     }
                     else
                     {
-                        Helper.LogError("Database Updation failed", null, null, null);
                         Helper.LogError("Database Updation failed", DebtorName, null, null);
                     }
                 }
@@ -411,17 +406,14 @@ namespace CCAPortal.Controllers
                 {
                     tallyResult.DisplayMessage = "Tally Sync Successful!!";
                     tallyResult.IsTallyUpdated = true;
-                    tallyResult.ModifiedByID = 1;// Convert.ToInt32(Session["UserID"].ToString());
                     tallyResult.ModifiedDate = DateTimeNow;
                     tallyResult.ID = debtorsTally.ID;
-                    if (dLDebtorsCreation.UpdateTallyStatus(tallyResult))
+                    if (dLDebtorsCreation.UpdateTallyStatusFromService(tallyResult))
                     {
-                        Helper.LogError("DataBase Updated Successfully", null, null, null);
                         Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                     }
                     else
                     {
-                        Helper.LogError("Database Updation failed", null, null, null);
                         Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                     }
                 }
@@ -434,11 +426,12 @@ namespace CCAPortal.Controllers
                     int pFrom = tallyResult.DisplayMessage.IndexOf("<LINEERROR>") + "<LINEERROR>".Length;
                     int pTo = tallyResult.DisplayMessage.LastIndexOf("</LINEERROR>");
                     tallyResult.DisplayMessage = tallyResult.DisplayMessage.Substring(pFrom, pTo - pFrom);
-                    //MessageBox.Show(tallyResult.Remark.Substring(pFrom, pTo - pFrom), "Purchase Invoice", MessageBoxButton.OK, MessageBoxImage.Error);
+                    dLDebtorsCreation.UpdateTallyStatusFromService(debtorsTally, true);
                 }
                 else
                 {
                     Helper.LogError(tallyResult.DisplayMessage, null, null, null);
+                    dLDebtorsCreation.UpdateTallyStatusFromService(debtorsTally, true);
                 }
                 return Json(tallyResult.DisplayMessage, JsonRequestBehavior.AllowGet);
             }

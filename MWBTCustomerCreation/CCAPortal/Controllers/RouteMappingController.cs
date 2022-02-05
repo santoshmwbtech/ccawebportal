@@ -27,12 +27,12 @@ namespace CCAPortal.Controllers
         }
         public ActionResult CreateRouteMapping()
         {
-            if (Session["UserID"] == null)
+            if (Session["UserID"] == null && Session["OrgID"] != null)
             {
                 return this.RedirectToAction("Index", "Login");
             }
             string name = "salesman";
-            ViewBag.SalesmanList = new SelectList(dLRouteMappingData.GetSalesManList(name), "UserID", "Username");
+            ViewBag.SalesmanList = new SelectList(dLRouteMappingData.GetSalesManList(name, Session["OrgID"].ToString()), "UserID", "Username");
             ViewBag.RouteList = new SelectList(dLRouteMappingData.GetRouteList(), "ID", "DebtorName");
             return PartialView();
         }

@@ -33,7 +33,7 @@ namespace CCAPortal.Controllers
                 ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");
                 ViewBag.DistrictList = new SelectList(customerCreations.GetDistricts(), "DistrictID", "DistrictName");
                 ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["UserID"].ToString()), "StateWithCityID", "VillageLocalityName");
-                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["UserID"].ToString()), "BranchID", "Name");
+                ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
 
                 return PartialView();
             }
@@ -79,7 +79,7 @@ namespace CCAPortal.Controllers
             ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");
             ViewBag.DistrictList = new SelectList(customerCreations.GetDistricts(), "DistrictID", "DistrictName");
             ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["UserID"].ToString()), "StateWithCityID", "VillageLocalityName");
-            ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["UserID"].ToString()), "BranchID", "Name");
+            ViewBag.BranchList = new SelectList(customerCreations.GetBranchList(Session["OrgID"].ToString(), Session["UserID"].ToString(), Session["RoleName"].ToString()), "BranchID", "Name");
             return PartialView();
         }
 
