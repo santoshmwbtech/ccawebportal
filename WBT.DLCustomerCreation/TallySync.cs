@@ -11,7 +11,7 @@ namespace WBT.DLCustomerCreation
     public class TallySync
     {
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-        public bool InsertTallySyncErrors(string TallySyncType, string TallySyncDetails, string ErrorMsg)
+        public bool InsertTallySyncErrors(string OrgID, string TallySyncType, string TallySyncDetails, string ErrorMsg)
         {
             MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
             try
@@ -27,8 +27,13 @@ namespace WBT.DLCustomerCreation
                     {
                         try
                         {
-                            tblAccountReceiptDetail tblAccountReceiptDetails = new tblAccountReceiptDetail();
-                            
+                            tblTallySyncError tblTallySyncError = new tblTallySyncError();
+                            tblTallySyncError.OrgID = OrgID;
+                            tblTallySyncError.TallySyncType = TallySyncType;
+                            tblTallySyncError.TallySyncDetails = TallySyncDetails;
+                            tblTallySyncError.ErrorMsg = ErrorMsg;
+                            tblTallySyncError.CreatedDate = DateTimeNow;
+                            Entities.tblTallySyncErrors.Add(tblTallySyncError);
                             Entities.SaveChanges();
                             dbcxtransaction.Commit();
                             return true;

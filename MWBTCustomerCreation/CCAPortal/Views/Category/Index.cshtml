@@ -35,19 +35,19 @@
                     text: data,
              }).then((result) => {
                     $("#divCreate").load('@Url.Action("Create", "Category")');
-                    $("#divList").load('@Url.Action("CategoryList", "Category")');                    
+                    $("#divList").html(data.AjaxReturn);
                     setTimeout(function () {
                             loadDataTableWithButtons();
                             multiSelect();
                         }, 1000);
                     });
         }
-        function onEditSuccess_Ajax() {
+        function onEditSuccess_Ajax(data) {
             Swal.fire({
-                    text: data,
+                text: data.Message,
             }).then((result) => {
-                    $("#divCreate").load('@Url.Action("Create", "Category")');
-                    $("#divList").load('@Url.Action("CategoryList", "Category")');
+                $("#divCreate").load('@Url.Action("Create", "Category")');
+                $("#divList").html(data.AjaxReturn);
                     setTimeout(function () {
                         loadDataTableWithButtons();
                         multiSelect();
@@ -87,7 +87,7 @@
         function onSaveCompleteCreate_Ajax() {
 
         }
-        
+
     </script>
     <script>
         function btnCancel_Click() {
@@ -99,7 +99,7 @@
     </script>
 
     <script>
-        jQuery(document).ready(function ($) {            
+        jQuery(document).ready(function ($) {
             loadDataTableWithButtons();
         });
     </script>

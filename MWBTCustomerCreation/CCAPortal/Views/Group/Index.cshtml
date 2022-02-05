@@ -31,18 +31,18 @@
 
     <script>
 
-        function onCreateSuccess_Ajax(data) {            
+        function onCreateSuccess_Ajax(data) {
             Swal.fire({
                 text: data,
-            }).then((result) => {                
-                $("#divCreate").load('@Url.Action("Create", "Group")');    
-                $("#divList").load('@Url.Action("GroupList", "Group")');                
+            }).then((result) => {
+                $("#divCreate").load('@Url.Action("Create", "Group")');
+                $("#divList").load('@Url.Action("GroupList", "Group")');
                 setTimeout(function () {
                     loadDataTableWithButtons();
-                    multiSelect(); 
+                    multiSelect();
                 }, 1000);
-                
-            });            
+
+            });
         }
 
     function onEditSuccess_Ajax(data) {
@@ -50,10 +50,10 @@
                 text: data.Message,
             }).then((result) => {
                 $("#divCreate").load('@Url.Action("Create", "Group")');
-                $("#divList").load('@Url.Action("GroupList", "Group")');
+                $("#divList").html(data.AjaxReturn);
                 setTimeout(function () {
                     loadDataTableWithButtons();
-                    multiSelect();  
+                    multiSelect();
                 }, 1000);
             });
     }
@@ -64,7 +64,7 @@
          setTimeout(function () {
                         $("#dataGrid").dataTable().fnDestroy();
                         loadDataTableWithButtons();
-                        multiSelect();                
+                        multiSelect();
                 }, 1000);
     }
         function onEditCompleteCreate_Ajax() {
@@ -88,7 +88,7 @@
     }
     function onSaveCompleteCreate_Ajax() {
     }
-    
+
     </script>
     <script>
         jQuery(document).ready(function ($) {

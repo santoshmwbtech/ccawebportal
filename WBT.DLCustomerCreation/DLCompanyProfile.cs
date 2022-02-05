@@ -43,6 +43,8 @@ namespace WBT.DLCustomerCreation
                                   BankCity = o.BankCity,
                                   Logo = o.Logo,
                                   LogoBase64 = string.Empty,
+                                  UpdatedByName = o.tblSysUsers.FirstOrDefault().FName,
+                                  UpdatedDatetime = o.ModifiedDatetime.Value
                               }).FirstOrDefault();
 
                     return result;

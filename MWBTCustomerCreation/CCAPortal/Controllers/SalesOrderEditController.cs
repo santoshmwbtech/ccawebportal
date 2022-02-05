@@ -25,6 +25,7 @@ namespace CCAPortal.Controllers
         static string mxmlRootPath = string.Empty;
         bool IsCompanyOpen = false;
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        TallySync tallySync = new TallySync();
         public ActionResult Index(string route)
         {
             if (Session["UserID"] != null && !string.IsNullOrEmpty(route))
@@ -285,10 +286,12 @@ namespace CCAPortal.Controllers
                     Helper.TallyServiceLog("Sales Order", tallyResult.SalesOrderNumber, tallyResult.CustomerName, Convert.ToDateTime(tallyResult.SalesDateTime), DateTimeNow, "Not Updated");
                 }
             }
-            else if (tallyResult.DisplayMessage.Contains("Please Open Company"))
+            else if (tallyResult.DisplayMessage.ToLower().Contains("please open company"))
             {
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage;
                 Helper.LogError("Tally Company is not open", null, null, null);
+                sorders.UpdateTallyStatusFromService(tallyResult, true);
+                tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Sales Order Sync", tallyResult.SalesOrderNumber, tallyResult.DisplayMessage);
             }
             else if (tallyResult.DisplayMessage.Contains("<LINEERROR>"))
             {
@@ -297,11 +300,13 @@ namespace CCAPortal.Controllers
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage.Substring(pFrom, pTo - pFrom);
                 Helper.LogError(tallyResult.DisplayMessage, null, null, null);
                 sorders.UpdateTallyStatusFromService(tallyResult, true);
+                tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Sales Order Sync", tallyResult.SalesOrderNumber, tallyResult.DisplayMessage);
             }
             else
             {
                 Helper.LogError(tallyResult.DisplayMessage, null, null, null);
                 sorders.UpdateTallyStatusFromService(tallyResult, true);
+                tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Sales Order Sync", tallyResult.SalesOrderNumber, tallyResult.DisplayMessage);
             }
         }
 

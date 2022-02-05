@@ -184,7 +184,7 @@ namespace WBT.DLCustomerCreation
 
                     if (!string.IsNullOrEmpty(search.CustomerName) && !string.IsNullOrEmpty(search.CustomerName))
                     {
-                        rLists = rLists.Where(m => m.CustomerName.ToString() == search.CustomerName).ToList();
+                        rLists = rLists.Where(m => m.CustomerName.ToLower().Contains(search.CustomerName.ToLower())).ToList();
                     }
 
                     if (search.StateList != null && search.StateList.Count() > 0)

@@ -24,6 +24,7 @@ namespace CCAPortal.Controllers
         bool IsCompanyOpen = false;
         public static string Result = string.Empty;
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        TallySync tallySync = new TallySync();
         // GET: ReceiptsEdit
         public ActionResult Index(string route)
         {

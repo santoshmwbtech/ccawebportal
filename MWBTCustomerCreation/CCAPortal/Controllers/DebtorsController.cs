@@ -22,6 +22,7 @@ namespace CCAPortal.Controllers
         static string mxmlRootPath = string.Empty;
         bool IsCompanyOpen = false;
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        TallySync tallySync = new TallySync();
         // GET: Debtors
         public ActionResult Index()
         {
@@ -310,9 +311,7 @@ namespace CCAPortal.Controllers
         public DebtorsDetails SaveDebtorToTally(DebtorsDetails item, bool iswinservie = false)
         {
 
-            //Helper.LogError("S6", "", null, "");
             IsTallyCompanyOpen(item, item.BranchName, iswinservie);
-            //Helper.LogError("S8", "", null, "");
 
             if (IsCompanyOpen == true)
             {
@@ -325,15 +324,10 @@ namespace CCAPortal.Controllers
                     string xmlfile = Helper.GetSystemFilePath() + @"\DataFiles";
                     //string xmlfile = Environment.CurrentDirectory + @"\DataFiles";
                     xmlFileString = Path.Combine(xmlfile, "GroupDebtorDetails.xml");
-                    //Helper.LogError("S9", "", null, "");
                 }
 
                 DebtorsDetails IResult = new DebtorsDetails();
-                //xmlFileString = System.IO.File.ReadAllText(@"DataFiles\GroupDebtorDetails.xml");
-                //xmlFileString = Server.MapPath("~/DataFiles/GroupDebtorDetails.xml");
-
-
-
+                
                 xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlFileString);
                 try
@@ -417,9 +411,11 @@ namespace CCAPortal.Controllers
                         Helper.TransactionLog("Database Updation Successfully [" + DebtorName + "]", true);
                     }
                 }
-                else if (tallyResult.DisplayMessage.Contains("Please Open Company"))
+                else if (tallyResult.DisplayMessage.ToLower().Contains("please open company"))
                 {
                     tallyResult.DisplayMessage = tallyResult.DisplayMessage;
+                    dLDebtorsCreation.UpdateTallyStatusFromService(debtorsTally, true);
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Debtor Group Sync", tallyResult.DebtorName, tallyResult.DisplayMessage);
                 }
                 else if (tallyResult.DisplayMessage.Contains("<LINEERROR>"))
                 {
@@ -427,11 +423,13 @@ namespace CCAPortal.Controllers
                     int pTo = tallyResult.DisplayMessage.LastIndexOf("</LINEERROR>");
                     tallyResult.DisplayMessage = tallyResult.DisplayMessage.Substring(pFrom, pTo - pFrom);
                     dLDebtorsCreation.UpdateTallyStatusFromService(debtorsTally, true);
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Debtor Group Sync", tallyResult.DebtorName, tallyResult.DisplayMessage);
                 }
                 else
                 {
                     Helper.LogError(tallyResult.DisplayMessage, null, null, null);
                     dLDebtorsCreation.UpdateTallyStatusFromService(debtorsTally, true);
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Debtor Group Sync", tallyResult.DebtorName, tallyResult.DisplayMessage);
                 }
                 return Json(tallyResult.DisplayMessage, JsonRequestBehavior.AllowGet);
             }

@@ -22,6 +22,7 @@ namespace CCAPortal.Controllers
         DLRouteMapping DLSalesman = new DLRouteMapping();
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         DLGetCustomerCreationReport DAL = new DLGetCustomerCreationReport();
+        TallySync tallySync = new TallySync();
         // GET: Receipts
         public ActionResult Index()
         {
@@ -80,6 +81,7 @@ namespace CCAPortal.Controllers
                 searchItems.CompanyTypeList = dlRececipts.CompanyTypeList;
                 searchItems.BranchList = dlRececipts.BranchList;
                 searchItems.salesmanList = dlRececipts.salesmanList;
+                searchItems.CustomerName = dlRececipts.CustomerName;
 
                 Receiptslist = receipts.GetReceipts(searchItems);
 
@@ -160,9 +162,11 @@ namespace CCAPortal.Controllers
                     Helper.LogError("Receipt - Database Updation failed", null, null, null);
                 }
             }
-            else if (tallyResult.DisplayMessage.Contains("Please open company"))
+            else if (tallyResult.DisplayMessage.ToLower().Contains("please open company"))
             {
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage;
+                GetReceipts.UpdateTallyStatusFromService(tallyResult, true);
+                tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Receipts Sync", tallyResult.ReceiptID, tallyResult.DisplayMessage);
             }
             else if (tallyResult.DisplayMessage.Contains("<LINEERROR>"))
             {
@@ -170,12 +174,13 @@ namespace CCAPortal.Controllers
                 int pTo = tallyResult.DisplayMessage.LastIndexOf("</LINEERROR>");
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage.Substring(pFrom, pTo - pFrom);
                 GetReceipts.UpdateTallyStatusFromService(tallyResult, true);
+                tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Receipts Sync", tallyResult.ReceiptID, tallyResult.DisplayMessage);
             }
             else
             {
-                tallyResult.DisplayMessage = "There is an error with Tally. Please try later..";
                 Helper.LogError("There is an error with Tally. Please try later..", null, null, null);
                 GetReceipts.UpdateTallyStatusFromService(tallyResult, true);
+                tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Receipts Sync", tallyResult.ReceiptID, tallyResult.DisplayMessage);
             }
 
         }

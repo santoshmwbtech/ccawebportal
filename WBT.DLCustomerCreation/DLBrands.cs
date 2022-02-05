@@ -64,8 +64,8 @@ namespace WBT.DLCustomerCreation
                             tblbrand.OrgID = OrgID;
                             tblbrand.CreatedByID = isValueExists.CreatedByID;
                             tblbrand.CreatedDate = isValueExists.CreatedDate;
+                            tblbrand.ModifiedDate = DateTimeNow;
                             tblbrand.ModifiedByID = Convert.ToInt32(UserID);
-                            tblbrand.CreatedDate = DateTimeNow;
                             tblbrand.IsActive = brands.IsActive;
                             Entities.tblBrands.Add(tblbrand);
                             Entities.Entry(tblbrand).State = EntityState.Modified;

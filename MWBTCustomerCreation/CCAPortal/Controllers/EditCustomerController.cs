@@ -22,6 +22,7 @@ namespace CCAPortal.Controllers
         CustomerCreations customerCreations = new CustomerCreations();
         DLDebtorsCreation dLDebtorsCreation = new DLDebtorsCreation();
         DLGetUserCreation dLGetUserCreation = new DLGetUserCreation();
+        TallySync tallySync = new TallySync();
         // GET: EditCustomer
         public ActionResult Index(string route)
         {
@@ -579,20 +580,25 @@ namespace CCAPortal.Controllers
 
                     }
                 }
-                else if (tallyResult.Remark.Contains("Please Open Company"))
+                else if (tallyResult.Remark.ToLower().Contains("please open company"))
                 {
                     tallyResult.DisplayMessage = tallyResult.Remark;
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.DisplayMessage);
+                    customerCreations.UpdateTallyStatusFromService(tallyResult);
                 }
                 else if (tallyResult.Remark.Contains("<LINEERROR>"))
                 {
                     int pFrom = tallyResult.Remark.IndexOf("<LINEERROR>") + "<LINEERROR>".Length;
                     int pTo = tallyResult.Remark.LastIndexOf("</LINEERROR>");
                     tallyResult.DisplayMessage = tallyResult.Remark.Substring(pFrom, pTo - pFrom);
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.DisplayMessage);
+                    customerCreations.UpdateTallyStatusFromService(tallyResult);
                 }
                 else
                 {
-                    tallyResult.DisplayMessage = "There is an error with Tally. Please try later..";
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.DisplayMessage);
                     Helper.LogError("There is an error with Tally. Please try later..", null, null, null);
+                    customerCreations.UpdateTallyStatusFromService(tallyResult);
                 }
                 return Json(tallyResult.DisplayMessage, JsonRequestBehavior.AllowGet);
             }
