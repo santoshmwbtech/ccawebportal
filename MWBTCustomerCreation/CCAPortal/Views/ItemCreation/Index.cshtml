@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<WBT.DLCustomerCreation.DLItemCreation>
 @{
-    ViewBag.Title = "Item Creation";    
+    ViewBag.Title = "Item Creation";
 }
 
 <div id="MainDiv">
@@ -30,7 +30,8 @@
 
 @section scripts {
 
-    <script>       
+    <script>
+
 
         function FillSubCategory() {
             var categoryID = $("#CategoryID").val();
@@ -64,7 +65,7 @@
             });
         }
         }
-               
+
         function BagUnitChanged() {
 
             if ($("#PacketUOMID").val() != 0) {
@@ -159,7 +160,7 @@
                 });
             }
         }
-                                 
+
         function AltChange() {
             if ($("#BaseUnit").val() != null) {
                 var BaseUOM = $('#BaseUnit :selected').text();
@@ -214,7 +215,8 @@
 
             });
     }
-    function onEditSuccess() {
+        function onEditSuccess() {
+            AltChange();
     }
         function onBegin_Ajax(data) {
             jQuery("#progress").hide();
@@ -244,7 +246,7 @@
        // LoadListBox();
          $("#progress").hide();
     }
-    
+
 
         jQuery(document).ready(function ($) {
 
@@ -257,10 +259,10 @@
                     //$('#WhareDiv').toggle($(this).prop('changed'));
                     chk.style.display = '';
                 }
-                else {                    
+                else {
                     chk.style.display = 'none';
                 }
-                
+
             });
 
              $('.numberonly').keypress(function (e) {
@@ -275,5 +277,5 @@
         });
     </script>
 
-   
+
 }

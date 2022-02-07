@@ -49,6 +49,17 @@ namespace CCAPortal.Controllers
                 ViewBag.CountryList = new SelectList(customerCreations.GetCountryList(), "CountryID", "CountryName");
 
                 CustomerCreation customer = customerCreations.GetCustomerDetails(CustID);
+                var apiUrl = ConfigurationManager.AppSettings["APIUrl"].ToString();
+                if(!string.IsNullOrEmpty(customer.ShopImage))
+                    customer.ShopImage = apiUrl + customer.ShopImage;
+                if (!string.IsNullOrEmpty(customer.OwnerPhoto))
+                    customer.OwnerPhoto = apiUrl + customer.OwnerPhoto;
+                if (!string.IsNullOrEmpty(customer.PANPhoto))
+                    customer.PANPhoto = apiUrl + customer.PANPhoto;
+                if (!string.IsNullOrEmpty(customer.AadhaarPhoto))
+                    customer.AadhaarPhoto = apiUrl + customer.AadhaarPhoto;
+                if (!string.IsNullOrEmpty(customer.GSTPhoto))
+                    customer.GSTPhoto = apiUrl + customer.GSTPhoto;
                 return View(customer);
             }
             else

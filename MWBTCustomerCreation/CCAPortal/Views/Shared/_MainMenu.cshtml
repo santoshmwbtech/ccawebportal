@@ -385,7 +385,6 @@
                                     </a>
                                 </li>
                             }
-
                         </ul>
                         <ul class="nav nav-treeview">
                             @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "imcompletereport" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
@@ -394,6 +393,17 @@
                                     <a class="nav-link" href='@Url.Action("Index", "IncompleteRpt")'>
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Incomplete Report</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "tallysyncerrorrpt" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "TallySyncErrorRpt")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Tally Sync Error Report</p>
                                     </a>
                                 </li>
                             }

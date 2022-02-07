@@ -182,7 +182,7 @@
                             <div class="form-group">
                                 <label>Packet Size </label>
                                 <div class="input-group">
-                                    @Html.EditorFor(model => model.PacketQTY, new { htmlAttributes = new { @class = "form-control ", @autocomplete = "off" } })  &nbsp;&nbsp;
+                                    @Html.EditorFor(model => model.PacketQTY, new { htmlAttributes = new { @class = "form-control ", @autocomplete = "off", @readonly = "readonly" } })  &nbsp;&nbsp;
                                     @Html.DropDownListFor(model => model.PacketUOMID, (SelectList)ViewBag.uomList, "Select Unit", new { @class = "form-control listbox", @placeholder = "Select Unit",  @disabled = "disabled" })
                                 </div>
                                 @*@Html.ValidationMessageFor(model => model.PacketQTY, "", new { @class = "text-danger" })
