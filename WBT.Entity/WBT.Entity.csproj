@@ -537,6 +537,9 @@
     <Compile Include="tblSysUser.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblTallySyncError.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblTaxationType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
