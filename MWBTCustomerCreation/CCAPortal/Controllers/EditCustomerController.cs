@@ -196,7 +196,7 @@ namespace CCAPortal.Controllers
                         {
                             xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = "Sundry Debtors";
                         }
-                        else if ((!string.IsNullOrEmpty(item.Parent1)) && (!string.IsNullOrEmpty(item.Parent2)) && (!string.IsNullOrEmpty(item.Parent3)) && (!string.IsNullOrEmpty(item.Parent4)))
+                        else if ((!string.IsNullOrEmpty(item.Parent1)) && (string.IsNullOrEmpty(item.Parent2)) && (string.IsNullOrEmpty(item.Parent3)) && (string.IsNullOrEmpty(item.Parent4)))
                         {
                             xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent1;
 
