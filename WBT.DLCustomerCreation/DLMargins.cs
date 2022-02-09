@@ -154,9 +154,10 @@ namespace WBT.DLCustomerCreation
                     List<Margins> Businessmargins = new List<Margins>();
 
                     Businessmargins = (from b in Entities.BusinessTypes
-                                       join btc in Entities.BusinessTypeMarginDetails on b.BusinessTypeID
-                                                      equals btc.BusinessTypeID
-                                       where b.OrgId == OrgID && btc.OrgID == b.OrgId
+                                       join btc in Entities.BusinessTypeMarginDetails on b.BusinessTypeID equals btc.BusinessTypeID
+                                       into btm
+                                       from btc in btm.DefaultIfEmpty()
+                                       where b.OrgId == OrgID
                                        select new Margins
                                        {
                                            BusinessTypeID = b.BusinessTypeID,
@@ -193,8 +194,7 @@ namespace WBT.DLCustomerCreation
                     List<Margins> Businessmargins = new List<Margins>();
 
                     Businessmargins = (from b in Entities.BusinessTypes
-                                       join btc in Entities.BusinessTypeMarginDetails on b.BusinessTypeID
-                                                      equals btc.BusinessTypeID
+                                       join btc in Entities.BusinessTypeMarginDetails on b.BusinessTypeID equals btc.BusinessTypeID
                                        where b.OrgId == OrgID && btc.OrgID == b.OrgId && b.BusinessTypeID == businessTypeID
                                        select new Margins
                                        {
@@ -220,8 +220,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
-
         public List<Margins> GetCreditTypeMarginDetails(string OrgID, int creditTypeID)
         {
             try
@@ -263,7 +261,6 @@ namespace WBT.DLCustomerCreation
             }
         }
 
-
         public List<Margins> GetCreditTypeData(string OrgID)
         {
             try
@@ -276,9 +273,8 @@ namespace WBT.DLCustomerCreation
                     List<Margins> Creditmargins = new List<Margins>();
 
                     Creditmargins = (from b in Entities.CreditTypes
-                                     join ctc in Entities.CreditTypeMarginDetails on b.CreditTypeID
-                                                      equals ctc.CreditTypeID
-                                     where b.OrgId == OrgID && ctc.OrgId == b.OrgId
+                                     join ctc in Entities.CreditTypeMarginDetails on b.CreditTypeID equals ctc.CreditTypeID into ctm
+                                     from ctc in ctm.DefaultIfEmpty()
                                      where b.OrgId == OrgID
                                      select new Margins
                                      {
@@ -584,7 +580,6 @@ namespace WBT.DLCustomerCreation
             Entities.SaveChanges();
         }
 
-
         public Margins SaveCreditDetails(Margins margindetails, string OrgID)
         {
             //lstCreaditTypeMarginsCreation = (List<DLCreaditTypeMarginsCreation>)Context;
@@ -677,7 +672,6 @@ namespace WBT.DLCustomerCreation
             }
             //return this.GetApplicationActivate;
         }
-
 
         private void CreditFuturisticDataSave(Margins mCreaditTypeMarginsCreation)
         {

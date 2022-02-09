@@ -251,7 +251,20 @@
                                     </a>
                                 </li>
                             }
-
+                            @{
+                                if (Convert.ToBoolean(Session["IsTallyUsing"].ToString()))
+                                {
+                                    if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "downloadservice" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href='@Url.Action("DownloadFile", "Login")'>
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Download Service Setup</p>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            }
 
                         </ul>
                     </li>

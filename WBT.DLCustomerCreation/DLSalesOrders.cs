@@ -317,6 +317,7 @@ namespace WBT.DLCustomerCreation
                                       IsTallyUpdated = so.IsTallyUpdated,
                                       TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
                                       TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
+                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum(),
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
                     else
@@ -335,6 +336,7 @@ namespace WBT.DLCustomerCreation
                                       IsTallyUpdated = so.IsTallyUpdated,
                                       TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
                                       TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
+                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum(),
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
                 }

@@ -30,6 +30,9 @@
                                         Order Date
                                     </th>
                                     <th>
+                                        Total Value
+                                    </th>
+                                    <th>
                                         Tally Sync Status
                                     </th>
                                     <th class="notexport"> Action </th>
@@ -56,6 +59,9 @@
                                                 </td>
                                                 <td>
                                                     @Convert.ToDateTime(item.OrderDate).ToString("dd/MM/yyyy hh:mm:ss")
+                                                </td>
+                                                <td>
+                                                    @item.TotalAmount
                                                 </td>
                                                 <td>
                                                     @item.TallyStatus

@@ -594,7 +594,7 @@ namespace CCAPortal.Controllers
                 else if (tallyResult.Remark.ToLower().Contains("please open company"))
                 {
                     tallyResult.DisplayMessage = tallyResult.Remark;
-                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.DisplayMessage);
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.Remark);
                     customerCreations.UpdateTallyStatusFromService(tallyResult);
                 }
                 else if (tallyResult.Remark.Contains("<LINEERROR>"))
@@ -602,12 +602,12 @@ namespace CCAPortal.Controllers
                     int pFrom = tallyResult.Remark.IndexOf("<LINEERROR>") + "<LINEERROR>".Length;
                     int pTo = tallyResult.Remark.LastIndexOf("</LINEERROR>");
                     tallyResult.DisplayMessage = tallyResult.Remark.Substring(pFrom, pTo - pFrom);
-                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.DisplayMessage);
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.Remark);
                     customerCreations.UpdateTallyStatusFromService(tallyResult);
                 }
                 else
                 {
-                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.DisplayMessage);
+                    tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Customer Sync", tallyResult.FirmName, tallyResult.Remark);
                     Helper.LogError("There is an error with Tally. Please try later..", null, null, null);
                     customerCreations.UpdateTallyStatusFromService(tallyResult);
                 }

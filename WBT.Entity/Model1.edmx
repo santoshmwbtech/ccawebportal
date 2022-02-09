@@ -1037,6 +1037,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="SORegister" Type="varchar" MaxLength="500" />
+          <Property Name="GroupName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tblArea">
           <Key>
@@ -20303,6 +20305,8 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="SORegister" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="GroupName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_tblDepartment_DeptID">
           <End Type="MWBTCustomerAppModel.tblDepartment" Role="tblDepartment" Multiplicity="0..1">
@@ -24037,6 +24041,8 @@
           <EntitySetMapping Name="tblAdminSettings">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAdminSetting">
               <MappingFragment StoreEntitySet="tblAdminSettings">
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="SORegister" ColumnName="SORegister" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

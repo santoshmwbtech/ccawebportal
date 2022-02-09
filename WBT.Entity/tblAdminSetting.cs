@@ -31,5 +31,7 @@ namespace WBT.Entity
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string SORegister { get; set; }
+        public string GroupName { get; set; }
     }
 }

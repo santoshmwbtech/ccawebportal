@@ -33,10 +33,12 @@ namespace CCAPortal.Controllers
                 return RedirectToAction("Index", "Login");
             }
         }
-        public ActionResult ErrorsList(TallySyncErrorDTO search)
+        public ActionResult ErrorsList()
         {
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
+                TallySyncErrorDTO search = new TallySyncErrorDTO();
+                search.OrgID = Session["OrgID"].ToString();
                 var errorsList = tallySync.GetTallySyncErrors(search);
                 return PartialView(errorsList);
             }
@@ -50,6 +52,7 @@ namespace CCAPortal.Controllers
         {
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
+                search.OrgID = Session["OrgID"].ToString();
                 var errorsList = tallySync.GetTallySyncErrors(search);
                 return PartialView("ErrorsList", errorsList);
             }

@@ -39,6 +39,8 @@ namespace WBT.DLCustomerCreation
                                     CreatedDate = s.CreatedDate,
                                     ModifiedBy = s.ModifiedBy,
                                     ModifiedDate = s.ModifiedDate,
+                                    SORegister = s.SORegister,
+                                    GroupName = s.GroupName,
                                 }).FirstOrDefault();
                     if(settings == null)
                     {
@@ -79,6 +81,8 @@ namespace WBT.DLCustomerCreation
                         tblAdminSetting.CreatedBy = LoginUserID;
                         tblAdminSetting.OrgID = OrgID;
                         tblAdminSetting.CreatedDate = DateTimeNow;
+                        tblAdminSetting.SORegister = settings.SORegister;
+                        tblAdminSetting.GroupName = settings.GroupName;
 
                         Entities.tblAdminSettings.Add(tblAdminSetting);
                         Entities.SaveChanges();
@@ -105,6 +109,8 @@ namespace WBT.DLCustomerCreation
                         tblAdminSetting.ModifiedDate = DateTimeNow;
                         tblAdminSetting.CreatedBy = settings.CreatedBy;
                         tblAdminSetting.CreatedDate = settings.CreatedDate;
+                        tblAdminSetting.SORegister = settings.SORegister;
+                        tblAdminSetting.GroupName = settings.GroupName;
                         Entities.tblAdminSettings.Add(tblAdminSetting);
                         Entities.Entry(tblAdminSetting).State = EntityState.Modified;
                         Entities.SaveChanges();
@@ -141,6 +147,8 @@ namespace WBT.DLCustomerCreation
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string SORegister { get; set; }
+        public string GroupName { get; set; }
 
     }
 }

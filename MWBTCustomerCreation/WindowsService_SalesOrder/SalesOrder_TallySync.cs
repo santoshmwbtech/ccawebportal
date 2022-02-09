@@ -72,7 +72,7 @@ namespace WindowsService_SalesOrder
                     SalesOrderEditController salesOrderEditController = new SalesOrderEditController();
                     foreach (var i in salesOrders)
                     {
-                        salesOrderEditController.SyncReceiptToTally(i);
+                        salesOrderEditController.SyncSOToTally(i);
                     }
                 }
             }

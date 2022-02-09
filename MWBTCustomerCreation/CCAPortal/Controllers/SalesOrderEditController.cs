@@ -33,7 +33,7 @@ namespace CCAPortal.Controllers
                 string OrderNumber = Helper.Decrypt(route, "sblw-3hn8-sqoy19");
 
                 SalesOrders so = sorders.GetSalesOrderDetails(OrderNumber);
-                
+
                 var itemsList = (from a in Entities.tblSalesOrderWithItems
                                  join b in Entities.tblSalesOrders on a.SalesOrderNumber.ToLower().Trim() equals b.SalesOrderNumber.ToLower().Trim()
                                  join c in Entities.tblItems on a.ItemCode.ToLower().Trim() equals c.ItemCode.ToLower().Trim()
@@ -53,7 +53,7 @@ namespace CCAPortal.Controllers
                                      ItemRowNumber = a.ItemRowNumber,
                                      FrieghtCharge = a.FrieghtCharge,
                                      OtherExpense = a.OtherExpense
-                                     
+
 
                                  }).Distinct().ToList();
 
@@ -245,15 +245,15 @@ namespace CCAPortal.Controllers
             }
         }
 
-        public void SyncReceiptToTally(SalesOrders salesOrders)
+        public void SyncSOToTally(SalesOrders salesOrders)
         {
-            DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);            
+            DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
 
             //Get SO Details from Master Table
-            SalesOrders tallyResult = SaveSalesOrderToTally(salesOrders);            
+            SalesOrders tallyResult = SaveSalesOrderToTally(salesOrders);
 
             if (tallyResult.DisplayMessage.Contains("<CREATED>1"))
-            {   
+            {
                 tallyResult.ModifiedDate = DateTimeNow;
                 tallyResult.SalesDateTime = salesOrders.SalesDateTime;
                 tallyResult.TransType = salesOrders.TransType;
@@ -317,7 +317,7 @@ namespace CCAPortal.Controllers
             if (IsCompanyOpen == true)
             {
                 SalesOrders IResult = new SalesOrders();
-                
+                IResult.OrgID = SalesOrder.OrgID;
 
                 //xmlFileString = Server.MapPath("~/DataFiles/SalesOrder.xml");
                 //xmlDoc = new XmlDocument();
@@ -498,6 +498,7 @@ namespace CCAPortal.Controllers
 
                     List<DLSalesOrderWithItemCreation> local = dLSalesOrderCreationItems;
                     var ItemGrp = local.GroupBy(x => new { x.ItemCode }).ToList();
+                    var ItemWrhsBatchGrp = local.GroupBy(x => new { x.ItemCode, x.Rate, x.WarehouseID }).ToList();
                     List<DLSalesOrderWithItemCreation> TallyListOfitems = new List<DLSalesOrderWithItemCreation>();
 
                     foreach (var item in ItemGrp)
@@ -514,6 +515,34 @@ namespace CCAPortal.Controllers
                         dL.TotalQTY = local.Where(i => i.ItemCode == item.Key.ItemCode).Sum(i => i.TotalQTY);
                         TallyListOfitems.Add(dL);
                     }
+
+                    //foreach (var item in ItemWrhsBatchGrp)
+                    //{
+                    //    DLSalesOrderWithItemCreation dLo = new DLSalesOrderWithItemCreation();
+                    //    dLo = local.Where(i => i.ItemCode == item.Key.ItemCode && i.Rate == item.Key.Rate && i.WarehouseID == item.Key.WarehouseID).FirstOrDefault();
+
+                    //    DLSalesOrderWithItemCreation dL = new DLSalesOrderWithItemCreation();
+                    //    dL.ItemCode = dLo.ItemCode;
+                    //    dL.ItemName = dLo.ItemName;
+                    //    dL.Tax = dLo.Tax;
+                    //    dL.AltUnitRateWithoutTaxNoBQty = dLo.AltUnitRateWithoutTaxNoBQty;
+                    //    dL.BasicRate = dLo.BasicRate;
+                    //    dL.BasicRateUnit = dLo.BasicRateUnit;
+                    //    dL.WarehouseID = dLo.WarehouseID;
+                    //    dL.WarehouseName = dLo.WarehouseName;
+                    //    dL.BatchNumber = dLo.BatchNumber;
+                    //    dL.BilledUnit = dLo.BilledUnit;
+                    //    dL.Quantity = local.FindAll(i => i.ItemCode == item.Key.ItemCode && i.WarehouseID == item.Key.WarehouseID && i.BatchId == item.Key.BatchId && i.BasicRate == item.Key.BasicRate).Sum(i => i.Quantity);
+                    //    dL.BilledQuantity = local.FindAll(i => i.ItemCode == item.Key.ItemCode && i.WarehouseID == item.Key.WarehouseID && i.BatchId == item.Key.BatchId && i.BasicRate == item.Key.BasicRate)
+                    //        .Sum(k => k.BilledQuantity);
+                    //    dL.TotalAmountAfrDiscount = local.FindAll(i => i.ItemCode == item.Key.ItemCode && i.WarehouseID == item.Key.WarehouseID && i.BatchId == item.Key.BatchId && i.BasicRate == item.Key.BasicRate).Sum(k => k.TotalAmountAfrDiscount);
+                    //    dL.ItemDiscountValue = local.FindAll(i => i.ItemCode == item.Key.ItemCode && i.WarehouseID == item.Key.WarehouseID && i.BatchId == item.Key.BatchId && i.BasicRate == item.Key.BasicRate).Sum(k => k.ItemDiscountValue);
+                    //    dL.TaxForQtyValue = local.FindAll(i => i.ItemCode == item.Key.ItemCode && i.WarehouseID == item.Key.WarehouseID && i.BatchId == item.Key.BatchId && i.BasicRate == item.Key.BasicRate).Sum(k => k.TaxForQtyValue);
+                    //    //dL.TaxForWithOutQtyValue = local.FindAll(i => i.ItemCode == item.Key.ItemCode && i.WarehouseID == item.Key.WarehouseID && i.BatchId == item.Key.BatchId && i.Rate == item.Key.Rate).Sum(k => k.TaxForWithOutQtyValue);
+                    //    dL.NetItemLevelamount = local.FindAll(i => i.ItemCode == item.Key.ItemCode && i.WarehouseID == item.Key.WarehouseID && i.BatchId == item.Key.BatchId && i.BasicRate == item.Key.BasicRate).Sum(k => k.NetItemLevelamount);
+
+                    //    TallyListOfitemsWrhsbatch.Add(dL);
+                    //}
 
                     #region bind details
 
@@ -548,7 +577,7 @@ namespace CCAPortal.Controllers
                                 SalesOrPurchase = "sales";
                             }
 
-                            lSalPurchAccountName = "Cash Sales";
+                            lSalPurchAccountName = Entities.tblAdminSettings.FirstOrDefault().SORegister;
 
                             //TaxInputOutputAccountNameList = AccountsDetails.Where(a => a.AccountLedgerName.ToLower().Trim().StartsWith(
                             //                     ConfigurationManager.AppSettings[SalesOrPurchase].Trim().ToLower()) && a.AccountLedgerName.Contains(temptax.ToString())).ToList();
@@ -597,18 +626,18 @@ namespace CCAPortal.Controllers
                         #region WAREHOUSE DETAILS
                         //foreach (DLSalesInvoiceCreationItem dlwrhs in TallyListOfitemsWrhsbatch.FindAll(i => i.ItemCode == dLSales.ItemCode))
                         //{
-                            xmlstc = xmlstc + "<BATCHALLOCATIONS.LIST>";
-                        //    //xmlstc = xmlstc + "<TRACKINGNUMBER/>";
-                        //    //xmlstc = xmlstc + "<GODOWNNAME>" + dLSales.WarehouseName + "</GODOWNNAME>"; // Main Location
-                        //    //xmlstc = xmlstc + "<BATCHNAME>" + dLSales.BatchNumber + "</BATCHNAME>"; //Primary Batch
-                        //    //xmlstc = xmlstc + "<DESTINATIONGODOWNNAME>" + dLSales.WarehouseName + "</DESTINATIONGODOWNNAME>";
-                        //    //xmlstc = xmlstc + "<MFDON>" + "20070401" + "</MFDON>";
-                        //    //xmlstc = xmlstc + "<EXPIRYPERIOD/>";
-                        //    //xmlstc = xmlstc + "<AMOUNT>" + Math.Round((dLSales.TotalAmountAfrDiscount * dLSales.BilledQuantity), 2).ToString() + "</AMOUNT>";
-                        //    //xmlstc = xmlstc + "<ACTUALQTY>" + dLSales.Quantity + "</ACTUALQTY>";
-                        //    //xmlstc = xmlstc + "<BILLEDQTY>" + dLSales.BilledQuantity + dLSales.RateUnit + "</BILLEDQTY>";
-                        //    //xmlstc = xmlstc + "<ORDERNO/>";
-                        //    //xmlstc = xmlstc + "</BATCHALLOCATIONS.LIST>";
+                        xmlstc = xmlstc + "<BATCHALLOCATIONS.LIST>";
+                        xmlstc = xmlstc + "<TRACKINGNUMBER/>";
+                        xmlstc = xmlstc + "<GODOWNNAME>Main Location</GODOWNNAME>"; // Main Location
+                        xmlstc = xmlstc + "<BATCHNAME>001</BATCHNAME>"; //Primary Batch
+                        xmlstc = xmlstc + "<DESTINATIONGODOWNNAME>Main Location</DESTINATIONGODOWNNAME>";
+                        xmlstc = xmlstc + "<MFDON>" + "20070401" + "</MFDON>";
+                        xmlstc = xmlstc + "<EXPIRYPERIOD/>";
+                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(dLSales.Rate, 2).ToString() + "</AMOUNT>";
+                        xmlstc = xmlstc + "<ACTUALQTY>" + dLSales.TotalQTY + "</ACTUALQTY>";
+                        xmlstc = xmlstc + "<BILLEDQTY>" + dLSales.TotalQTY + "</BILLEDQTY>";
+                        xmlstc = xmlstc + "<ORDERNO/>";
+                        xmlstc = xmlstc + "</BATCHALLOCATIONS.LIST>";
 
 
                         //    xmlstc = xmlstc + "<BATCHALLOCATIONS.LIST>";
@@ -623,7 +652,7 @@ namespace CCAPortal.Controllers
                         //    xmlstc = xmlstc + "<ACTUALQTY>" + dlwrhs.Quantity + "</ACTUALQTY>";
                         //    xmlstc = xmlstc + "<BILLEDQTY>" + dlwrhs.BilledQuantity + dlwrhs.BilledUnit + "</BILLEDQTY>";
                         //    xmlstc = xmlstc + "<ORDERNO/>";
-                            xmlstc = xmlstc + "</BATCHALLOCATIONS.LIST>";
+                        //xmlstc = xmlstc + "</BATCHALLOCATIONS.LIST>";
                         //}
                         #endregion
 

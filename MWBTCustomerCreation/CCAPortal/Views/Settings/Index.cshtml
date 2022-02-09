@@ -117,6 +117,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label>Sales Order Register</label>
+                                @Html.EditorFor(model => model.SORegister, new { htmlAttributes = new { @class = "form-control", @placeholder = "Sales Order Register", @maxlength = "500", @required = "required" } })
+                                @Html.ValidationMessageFor(model => model.SORegister, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Group</label>
+                                @Html.EditorFor(model => model.GroupName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Group", @maxlength = "500", @required = "required" } })
+                                @Html.ValidationMessageFor(model => model.GroupName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                     @Html.CheckBoxFor(model => model.AutoSyncTally, new { @class = "custom-control-input", @id = "customSwitch3" })
                                     @*<input type="checkbox" class="custom-control-input" id="customSwitch3">*@

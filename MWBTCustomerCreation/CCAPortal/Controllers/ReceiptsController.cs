@@ -194,7 +194,7 @@ namespace CCAPortal.Controllers
             IsTallyCompanyOpen(GetReceipts.OrgName, iswinservice);
 
             Receipts receiptss = new Receipts();
-
+            receiptss.OrgID = OrgID;
             //            Helper.LogError("S2", "", null, "");
 
             if (IsCompanyOpen == true)

@@ -126,7 +126,6 @@ namespace WBT.DLCustomerCreation
                 {
                     MCreditType creditType = new MCreditType();
                     creditType = (from c in Entities.CreditTypes
-                                  join cm in Entities.CreditTypeMarginDetails on c.CreditTypeID equals cm.CreditTypeID
                                   where c.CreditTypeID == CreditTypeID
                                   select new MCreditType
                                   {
@@ -135,8 +134,6 @@ namespace WBT.DLCustomerCreation
                                       CreatedById = c.CreatedById,
                                       CreatedDate = c.CreatedDate,
                                       OrgId = c.OrgId,
-                                      CreditDays = cm.CreditDays,
-                                      Margin = cm.Margin,
                                   }).FirstOrDefault();
                     return creditType;
                 }

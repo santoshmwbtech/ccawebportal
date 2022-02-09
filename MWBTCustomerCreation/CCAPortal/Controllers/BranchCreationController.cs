@@ -179,12 +179,15 @@ namespace CCAPortal.Controllers
                 {
                     foreach (var item in branchDetails.qrDocs)
                     {
-                        byte[] thePictureAsBytes = new byte[item.DocFile.ContentLength];
-                        using (BinaryReader theReader = new BinaryReader(item.DocFile.InputStream))
+                        if(item.DocFile != null)
                         {
-                            thePictureAsBytes = theReader.ReadBytes(item.DocFile.ContentLength);
+                            byte[] thePictureAsBytes = new byte[item.DocFile.ContentLength];
+                            using (BinaryReader theReader = new BinaryReader(item.DocFile.InputStream))
+                            {
+                                thePictureAsBytes = theReader.ReadBytes(item.DocFile.ContentLength);
+                            }
+                            item.DocBase64 = Convert.ToBase64String(thePictureAsBytes);
                         }
-                        item.DocBase64 = Convert.ToBase64String(thePictureAsBytes);
                     }
                 }
 

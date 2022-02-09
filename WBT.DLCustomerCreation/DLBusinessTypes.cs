@@ -32,7 +32,7 @@ namespace WBT.DLCustomerCreation
 
                         if (isValueExists == null)
                         {
-                            var IsNameExists = Entities.BusinessTypes.AsNoTracking().Where(i => i.BusinessTypeName.ToLower().Trim() == BusinessType.BusinessTypeName.ToLower().Trim()).FirstOrDefault();
+                            var IsNameExists = Entities.BusinessTypes.AsNoTracking().Where(i => i.BusinessTypeName.ToLower().Trim() == BusinessType.BusinessTypeName.ToLower().Trim() && i.OrgId == OrgID).FirstOrDefault();
                             if (IsNameExists == null)
                             {
                                 BusinessType tblBusinesstype = new BusinessType();
@@ -54,7 +54,7 @@ namespace WBT.DLCustomerCreation
                         }
                         else
                         {
-                            var IsNameExists = Entities.BusinessTypes.AsNoTracking().Where(i => i.BusinessTypeName.ToLower().Trim() == BusinessType.BusinessTypeName.ToLower().Trim() && i.BusinessTypeID != BusinessType.BusinessTypeID).FirstOrDefault();
+                            var IsNameExists = Entities.BusinessTypes.AsNoTracking().Where(i => i.BusinessTypeName.ToLower().Trim() == BusinessType.BusinessTypeName.ToLower().Trim() && i.BusinessTypeID != BusinessType.BusinessTypeID && i.OrgId == OrgID).FirstOrDefault();
                             if (IsNameExists == null)
                             {
                                 BusinessType tblBusinesstype = new BusinessType();
@@ -154,7 +154,7 @@ namespace WBT.DLCustomerCreation
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
 
-                    var isValueExists = Entities.BusinessTypes.AsNoTracking().Where(u => u.BusinessTypeID == BusinessTypeID).FirstOrDefault();
+                    var isValueExists = Entities.BusinessTypes.AsNoTracking().Where(u => u.BusinessTypeID == BusinessTypeID && u.OrgId == OrgID).FirstOrDefault();
 
                     if (isValueExists == null)
                     {
@@ -163,7 +163,7 @@ namespace WBT.DLCustomerCreation
                     }
                     else
                     {
-                        var isExists = Entities.tblCustomerVendorDetails.Where(c => c.CustomerType == BusinessTypeID).FirstOrDefault();
+                        var isExists = Entities.tblCustomerVendorDetails.Where(c => c.CustomerType == BusinessTypeID && c.OrgID == OrgID).FirstOrDefault();
                         if (isExists != null)
                         {
                             Result.DisplayMessage = "Can not delete Business Type as it is being referenced.";
@@ -171,7 +171,7 @@ namespace WBT.DLCustomerCreation
                         }
                         else
                         {
-                            Entities.BusinessTypes.Remove(Entities.BusinessTypes.Where(r => r.BusinessTypeID == BusinessTypeID).FirstOrDefault());
+                            Entities.BusinessTypes.Remove(Entities.BusinessTypes.Where(r => r.BusinessTypeID == BusinessTypeID && r.OrgId == OrgID).FirstOrDefault());
                             Entities.SaveChanges();
                             Result.DisplayMessage = "Business Type Deleted Successfully";
                             return Result;
