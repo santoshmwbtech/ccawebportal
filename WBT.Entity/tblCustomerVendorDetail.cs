@@ -143,6 +143,7 @@ namespace WBT.Entity
         public Nullable<System.Guid> DCUniqueID { get; set; }
         public string MailingName { get; set; }
         public Nullable<bool> isBranchLedger { get; set; }
+        public bool IsEdited { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCustomerCreditDetail> tblCustomerCreditDetails { get; set; }

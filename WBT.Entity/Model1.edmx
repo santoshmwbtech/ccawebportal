@@ -959,6 +959,7 @@
           <Property Name="TallySync" Type="bit" />
           <Property Name="BranchID" Type="varchar" MaxLength="100" />
           <Property Name="RefValue" Type="nvarchar(max)" />
+          <Property Name="IsEdited" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblAccountReceiptWithBillDetails">
           <Key>
@@ -1328,6 +1329,7 @@
           <Property Name="DCUniqueID" Type="uniqueidentifier" />
           <Property Name="MailingName" Type="nvarchar" MaxLength="250" />
           <Property Name="isBranchLedger" Type="bit" />
+          <Property Name="IsEdited" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblDebtorsAreaDetails">
           <Key>
@@ -1362,6 +1364,7 @@
           <Property Name="IsTallyUpdated" Type="bit" />
           <Property Name="BranchID" Type="varchar" MaxLength="25" />
           <Property Name="TallySync" Type="bit" />
+          <Property Name="IsEdited" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblDebtorsPlaceDetails">
           <Key>
@@ -2670,6 +2673,7 @@
           <Property Name="TallySync" Type="bit" />
           <Property Name="RetSOName" Type="nvarchar" MaxLength="250" />
           <Property Name="RetSOSignature" Type="nvarchar(max)" />
+          <Property Name="IsEdited" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblSalesOrderCashTransaction">
           <Key>
@@ -12546,6 +12550,7 @@
           <Property Name="TallySync" Type="Boolean" />
           <Property Name="BranchID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="RefValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsEdited" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tblAccountReceiptWithBillDetail">
           <Key>
@@ -12935,6 +12940,7 @@
           <Property Name="DCUniqueID" Type="Guid" />
           <Property Name="MailingName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="isBranchLedger" Type="Boolean" />
+          <Property Name="IsEdited" Type="Boolean" Nullable="false" />
           </EntityType>
         <EntityType Name="tblDebtorsAreaDetail">
           <Key>
@@ -12972,6 +12978,7 @@
           <Property Name="IsTallyUpdated" Type="Boolean" />
           <Property Name="BranchID" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="TallySync" Type="Boolean" />
+          <Property Name="IsEdited" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tblDebtorsPlaceDetail">
           <Key>
@@ -14529,6 +14536,7 @@
           <Property Name="TallySync" Type="Boolean" />
           <Property Name="RetSOName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="RetSOSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsEdited" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tblSalesOrderCashTransaction">
           <Key>
@@ -21391,6 +21399,7 @@
           <EntitySetMapping Name="tblAccountReceiptDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAccountReceiptDetail">
               <MappingFragment StoreEntitySet="tblAccountReceiptDetails">
+                <ScalarProperty Name="IsEdited" ColumnName="IsEdited" />
                 <ScalarProperty Name="RefValue" ColumnName="RefValue" />
                 <ScalarProperty Name="BranchID" ColumnName="BranchID" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />
@@ -21657,6 +21666,7 @@
           <EntitySetMapping Name="tblCustomerVendorDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblCustomerVendorDetail">
               <MappingFragment StoreEntitySet="tblCustomerVendorDetail">
+                <ScalarProperty Name="IsEdited" ColumnName="IsEdited" />
                 <ScalarProperty Name="isBranchLedger" ColumnName="isBranchLedger" />
                 <ScalarProperty Name="MailingName" ColumnName="MailingName" />
                 <ScalarProperty Name="DCUniqueID" ColumnName="DCUniqueID" />
@@ -21794,6 +21804,7 @@
           <EntitySetMapping Name="tblDebtorsDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblDebtorsDetail">
               <MappingFragment StoreEntitySet="tblDebtorsDetails">
+                <ScalarProperty Name="IsEdited" ColumnName="IsEdited" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />
                 <ScalarProperty Name="BranchID" ColumnName="BranchID" />
                 <ScalarProperty Name="IsTallyUpdated" ColumnName="IsTallyUpdated" />
@@ -23078,6 +23089,7 @@
           <EntitySetMapping Name="tblSalesOrders">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSalesOrder">
               <MappingFragment StoreEntitySet="tblSalesOrder">
+                <ScalarProperty Name="IsEdited" ColumnName="IsEdited" />
                 <ScalarProperty Name="RetSOSignature" ColumnName="RetSOSignature" />
                 <ScalarProperty Name="RetSOName" ColumnName="RetSOName" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />

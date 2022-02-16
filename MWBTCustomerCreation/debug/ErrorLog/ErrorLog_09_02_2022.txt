@@ -1,0 +1,72 @@
+*******************Start**************
+Date & Time : 09-02-2022 15:27:40
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 15:27:47
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 15:30:21
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:41:42
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:41:46
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:43:58
+Message : <RESPONSE>Unknown Request, cannot be processed</RESPONSE>
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:45:47
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:45:47
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:47:36
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:47:37
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 18:47:45
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 09-02-2022 21:40:39
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************

@@ -319,10 +319,6 @@ namespace CCAPortal.Controllers
                 SalesOrders IResult = new SalesOrders();
                 IResult.OrgID = SalesOrder.OrgID;
 
-                //xmlFileString = Server.MapPath("~/DataFiles/SalesOrder.xml");
-                //xmlDoc = new XmlDocument();
-                //xmlDoc.Load(xmlFileString);
-
                 string xmlfile = Helper.GetSystemFilePath() + @"\DataFiles";
                 Helper.LogError("IsCurrentCompanyOpen", xmlfile, null, "");
                 xmlFileString = Path.Combine(xmlfile, "IsCurrentCompanyOpen.xml");
@@ -353,7 +349,7 @@ namespace CCAPortal.Controllers
                     string SalesType = string.Empty;
 
                     SalesType = "Local State";
-                    string VoucherType = "Sales";
+                    string VoucherType = "Sales Order";
 
                     string xmlstc = string.Empty;
 
@@ -372,8 +368,17 @@ namespace CCAPortal.Controllers
                     xmlstc = xmlstc + "</REQUESTDESC>" + "\r\n";
                     xmlstc = xmlstc + "<REQUESTDATA>" + "\r\n";
                     xmlstc = xmlstc + "<TALLYMESSAGE xmlns:UDF=" + "\"" + "TallyUDF" + "\" >" + "\r\n";
-                    //xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + "Sales Invioce" + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
-                    xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + VoucherType + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
+                    //xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + "Sales Order" + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
+
+                    if (SalesOrder.IsEdited)
+                    {
+                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + VoucherType + "\" ACTION=" + "\"" + "Alter" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
+                    }
+                    else
+                    {
+                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + VoucherType + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
+                    }
+
                     xmlstc = xmlstc + "<ADDRESS.LIST TYPE=" + "\"" + "String" + "\" >" + "\r\n";
                     string BillingAddress = SalesOrder.DLCustomerVendorDetail.BillingAddress.Trim();
                     BillingAddress = BillingAddress.Replace("&", "&amp;");

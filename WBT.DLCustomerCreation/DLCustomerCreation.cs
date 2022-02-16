@@ -165,6 +165,7 @@ namespace WBT.DLCustomerCreation
         public string OldTallyFirmName { get; set; }
         public int UpdatedRecords { get; set; }
         public int TotalRecords { get; set; }
+        public bool IsEdited { get; set; }
 
     }
 
@@ -679,6 +680,7 @@ namespace WBT.DLCustomerCreation
                         SCustomerCreation.BranchID = tblCustomerVendorDetail.BranchID;
                         SCustomerCreation.PercStrctureID = tblCustomerVendorDetail.PercStrctureID;
                         SCustomerCreation.FirmName = tblCustomerVendorDetail.FirmName;
+                        SCustomerCreation.OldTallyFirmName = tblCustomerVendorDetail.OldTallyFirmName;
                         SCustomerCreation.CustomerTypeID = tblCustomerVendorDetail.CustomerTypeID;
                         SCustomerCreation.AliasName = tblCustomerVendorDetail.AliasName;
 
@@ -782,6 +784,7 @@ namespace WBT.DLCustomerCreation
                         SCustomerCreation.TaxationTypeID = tblCustomerVendorDetail.TaxationTypeID;
                         SCustomerCreation.CreditType = tblCustomerVendorDetail.CreditType;
                         SCustomerCreation.ActivateIntrest = tblCustomerVendorDetail.ActivateIntrest;
+                        SCustomerCreation.IsEdited = tblCustomerVendorDetail.IsEdited;
 
                         if (tblCustomerVendorDetail.CreatedByID != 0)
                             SCustomerCreation.CreatedByName = Entities.tblSysUsers.Where(s => s.UserID == tblCustomerVendorDetail.CreatedByID).FirstOrDefault().Username;
@@ -1768,9 +1771,7 @@ namespace WBT.DLCustomerCreation
                 DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
                 using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
                 {
-                    //var IsValueexists = from gCustomer in Entities.tblCustomerVendorDetails.AsNoTracking().ToList()
-                    //                    where gCustomer.MobileNumber.Equals(mCustomerVendorCreation.MobileNumber.Trim())
-                    //                    select gCustomer;
+                    var customer = Entities.tblCustomerVendorDetails.AsNoTracking().Where(d => d.CustID == customerCreation.CustID).FirstOrDefault();
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
 
@@ -1858,11 +1859,11 @@ namespace WBT.DLCustomerCreation
                             lCustomerVendor.AliasName = this.mCustomerVendorCreation.AliasName;
                             lCustomerVendor.AadhaarNumber = this.mCustomerVendorCreation.AadhaarNumber;
 
-                            lCustomerVendor.AadhaarPhoto = mCustomerVendorCreation.AadhaarPhoto;
-                            lCustomerVendor.GSTPhoto = mCustomerVendorCreation.GSTPhoto;
-                            lCustomerVendor.PANPhoto = mCustomerVendorCreation.PANPhoto;
-                            lCustomerVendor.OwnerPhoto = mCustomerVendorCreation.OwnerPhoto;
-                            lCustomerVendor.ShopImage = mCustomerVendorCreation.ShopImage;
+                            lCustomerVendor.AadhaarPhoto = customer.AadhaarPhoto;
+                            lCustomerVendor.GSTPhoto = customer.GSTPhoto;
+                            lCustomerVendor.PANPhoto = customer.PANPhoto;
+                            lCustomerVendor.OwnerPhoto = customer.OwnerPhoto;
+                            lCustomerVendor.ShopImage = customer.ShopImage;
 
                             lCustomerVendor.CustID = this.mCustomerVendorCreation.CustID;
                             lCustomerVendor.ModifiedByID = this.mCustomerVendorCreation.ModifiedByID;
@@ -1894,6 +1895,7 @@ namespace WBT.DLCustomerCreation
                             lCustomerVendor.CompanyTypeID = this.mCustomerVendorCreation.CompanyTypeID;
                             lCustomerVendor.CategoryTypeID = this.mCustomerVendorCreation.CategoryTypeID;
                             lCustomerVendor.TaxationTypeID = this.mCustomerVendorCreation.TaxationTypeID;
+                            lCustomerVendor.IsEdited = customer.IsTallyUpdated == true ? true : false;
 
                             Entities.Entry(lCustomerVendor).State = System.Data.Entity.EntityState.Modified;
                             Entities.SaveChanges();
@@ -2020,10 +2022,12 @@ namespace WBT.DLCustomerCreation
                                 tblCustomerVendorDetail.TallySync = false;
                                 tblCustomerVendorDetail.IsTallyUpdated = true;
                                 tblCustomerVendorDetail.UpdatedDate = DateTimeNow;
+                                tblCustomerVendorDetail.IsEdited = true;
                                 Entities.tblCustomerVendorDetails.Attach(tblCustomerVendorDetail);
                                 Entities.Entry(tblCustomerVendorDetail).Property(c => c.UpdatedDate).IsModified = true;
                                 Entities.Entry(tblCustomerVendorDetail).Property(c => c.TallySync).IsModified = true;
                                 Entities.Entry(tblCustomerVendorDetail).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.Entry(tblCustomerVendorDetail).Property(c => c.IsEdited).IsModified = true;
                                 Entities.SaveChanges();
                                 dbcxtransaction.Commit();
                                 return true;
@@ -2151,7 +2155,6 @@ namespace WBT.DLCustomerCreation
                     {
                         List<tblLedgerType> ledgerTypes = (from s in Entities.tblLedgerTypes
                                                            select s).ToList();
-
                         return ledgerTypes;
                     }
                 }

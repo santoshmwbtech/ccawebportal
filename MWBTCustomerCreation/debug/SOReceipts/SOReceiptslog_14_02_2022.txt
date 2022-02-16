@@ -1,0 +1,14 @@
+Type : Sales Order
+Sales Order / Receipt Number : 0222TES00020
+Customer : 
+Order / Receipt Date : 10-02-2022 10:42:14
+Tally Sync Date : 14-02-2022 12:13:12
+Database Status : Updated
+************
+Type : Sales Order
+Sales Order / Receipt Number : 0222TES00023
+Customer : 
+Order / Receipt Date : 12-02-2022 01:55:02
+Tally Sync Date : 14-02-2022 12:15:08
+Database Status : Updated
+************

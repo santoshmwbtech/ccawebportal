@@ -336,9 +336,18 @@ namespace CCAPortal.Controllers
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/DESC/STATICVARIABLES/SVCURRENTCOMPANY").InnerText = item.BranchName;
                     mxmlRootPath = mxmlRootPath + "/DATA/TALLYMESSAGE";
                     mxmlRootPath = mxmlRootPath + "/GROUPS";
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/NAME").InnerText = item.DebtorName.Trim();//item.SundryType.Trim();  
-                    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["NAME"].InnerText = item.OldDebtorName;
-                    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Create";
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/NAME").InnerText = item.OldDebtorName.Trim();//item.SundryType.Trim();  
+                    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["NAME"].InnerText = item.DebtorName;
+
+                    if (item.IsEdited)
+                    {
+                        xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Alter";
+                    }
+                    else
+                    {
+                        xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Create";
+                    }
+                                        
                     string tempLedger = xmlDoc.InnerXml.Replace("[Alias]", "<NAME>" + "" + "</NAME>");
 
                     if (item.ParentDebtorName == "Primary")
@@ -349,9 +358,10 @@ namespace CCAPortal.Controllers
                     //Alies Name
                     string Result = XMLGetData(tempLedger);
 
-
                     IResult.DisplayMessage = Result;
                     IResult.ID = item.ID;
+                    IResult.OrgID = item.OrgID;
+                    IResult.DebtorName = item.DebtorName;
                     return IResult;
                 }
                 catch (Exception ex)
@@ -378,7 +388,7 @@ namespace CCAPortal.Controllers
                 bool iswinservie = true;
                 DebtorsDetails debtorsTally = dLDebtorsCreation.GetDebtorDetail(ID);
                 string DebtorName = debtorsTally.DebtorName.ToString();
-                DebtorsDetails tallyResult = (DebtorsDetails)SaveDebtorToTally(debtorsTally, iswinservie);
+                DebtorsDetails tallyResult = SaveDebtorToTally(debtorsTally, iswinservie);
 
                 if (tallyResult.DisplayMessage.Contains("<CREATED>1"))
                 {

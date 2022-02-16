@@ -205,6 +205,7 @@ namespace WBT.DLCustomerCreation
         public string area { get; set; }
         public int? companyTypeID { get; set; }
         public int? customerType { get; set; }
+        public bool IsEdited { get; set; }
 
     }
 
@@ -318,6 +319,7 @@ namespace WBT.DLCustomerCreation
                                       TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
                                       TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
                                       TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum(),
+                                      IsEdited = so.IsEdited,
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
                     else
@@ -337,6 +339,7 @@ namespace WBT.DLCustomerCreation
                                       TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
                                       TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
                                       TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum(),
+                                      IsEdited = so.IsEdited,
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
                 }
@@ -389,7 +392,9 @@ namespace WBT.DLCustomerCreation
                                                      area = cust.BillingArea,
                                                      IsTallyUpdated = so.IsTallyUpdated,
                                                      TallyStatus = so.IsTallyUpdated == true ? "Yes" : "No",
-                                                     TallySync = so.TallySync == null ? false : so.TallySync.Value
+                                                     TallySync = so.TallySync == null ? false : so.TallySync.Value,
+                                                     TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum(),
+                                                     IsEdited = so.IsEdited,
                                                  }).ToList();
 
                     if (!string.IsNullOrEmpty(search.SalesOrderNumber) && !string.IsNullOrEmpty(search.SalesOrderNumber))
@@ -502,6 +507,7 @@ namespace WBT.DLCustomerCreation
                                                      UserName = so.ModifiedByID == null ? "Admin" : Entities.tblSysUsers.Where(c => c.UserID == so.ModifiedByID).FirstOrDefault().FName,
                                                      UserID = so.ModifiedByID.Value.ToString(),
                                                      TransType = so.TransType,
+                                                     IsEdited = so.IsEdited,
                                                      DLSalesOrderWithItemCreations = so.tblSalesOrderWithItems
                                                .Select(i => new DLSalesOrderWithItemCreation()
                                                {
@@ -588,6 +594,7 @@ namespace WBT.DLCustomerCreation
                         SsalesOrders.IsGatePassEntered = tblsalesorders.IsGatePassEntered;
                         SsalesOrders.CreditTypeId = tblsalesorders.CreditTypeId;
                         SsalesOrders.BillingAddress = tblsalesorders.BillingAddress;
+                        SsalesOrders.IsEdited = tblsalesorders.IsEdited;
 
                         SsalesOrders.BranchName = Entities.tblSysBranches.Where(r => r.BranchID == SsalesOrders.BranchID).FirstOrDefault().Name;
                         SsalesOrders.CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().FirmName;
@@ -744,10 +751,12 @@ namespace WBT.DLCustomerCreation
                                 tblSalesOrders.TallySync = false;
                                 tblSalesOrders.TransType = sOrders.TransType;
                                 tblSalesOrders.SalesDatetime = sOrders.SalesDateTime;
+                                tblSalesOrders.IsEdited = true;
                                 Entities.tblSalesOrders.Attach(tblSalesOrders);
                                 Entities.Entry(tblSalesOrders).Property(c => c.UpdateDate).IsModified = true;
                                 Entities.Entry(tblSalesOrders).Property(c => c.IsTallyUpdated).IsModified = true;
                                 Entities.Entry(tblSalesOrders).Property(c => c.TallySync).IsModified = true;
+                                Entities.Entry(tblSalesOrders).Property(c => c.IsEdited).IsModified = true;
                                 Entities.SaveChanges();
                                 dbcxtransaction.Commit();
                                 return true;
@@ -821,9 +830,8 @@ namespace WBT.DLCustomerCreation
 
         private SalesOrders mSalesOrder = new SalesOrders();
         private tblSalesOrder lSalesOrder = new tblSalesOrder();
-        public SalesOrders updateSalesOrder(SalesOrders salesOders)
+        public SalesOrders updateSalesOrder(SalesOrders mSalesOrder)
         {
-            mSalesOrder = ((SalesOrders)salesOders);
             try
             {
 
@@ -871,6 +879,7 @@ namespace WBT.DLCustomerCreation
                                     lSalesOrder.CreditTypeId = mSalesOrder.CreditTypeId;
                                     lSalesOrder.BillingAddress = mSalesOrder.ShippingAdddress;
                                     lSalesOrder.BranchID = lSalesOrder.BranchID;
+                                    lSalesOrder.IsEdited = mSalesOrder.IsTallyUpdated == true ? true : false;
 
 
                                     #endregion

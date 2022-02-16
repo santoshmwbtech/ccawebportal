@@ -84,6 +84,7 @@ namespace WBT.Entity
         public Nullable<bool> TallySync { get; set; }
         public string RetSOName { get; set; }
         public string RetSOSignature { get; set; }
+        public bool IsEdited { get; set; }
     
         public virtual tblCustomerVendorDetail tblCustomerVendorDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

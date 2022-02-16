@@ -49,8 +49,6 @@
     @Html.HiddenFor(model => model.IsDelivaryNote)
     @Html.HiddenFor(model => model.IsActive)
 
-
-    
     <div class="row" id="divList">
         <div class="col-12">
             <div class="card card-primary">
@@ -68,7 +66,7 @@
                             <div class="form-group">
                                 <label>Order Number </label>
                                 <div>
-                                    @Html.TextBoxFor(m => m.SalesOrderNumber, new { @readonly = "readonly", @class = "form-control", @id="txtsalesorderno" })
+                                    @Html.TextBoxFor(m => m.SalesOrderNumber, new { @readonly = "readonly", @class = "form-control", @id = "txtsalesorderno" })
                                 </div>
                             </div>
                         </div>
@@ -193,6 +191,7 @@
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary" id="btnUpdate">Update</button>
                         <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally">Sync To Tally</a>
+                        <a href='@Url.Action("Index", "SalesOrder")' class="btn btn-success" id="btnBack">Back</a>
                     </div>
                 </div>
 
@@ -229,8 +228,14 @@
                 text: 'Sales Order Updated Successfully',
                 icon: 'success',
             }).then((result) => {
-                        $("#btnUpdate").hide();
-                        $("#btnTally").show();
+                $("#btnUpdate").hide();
+                var isTallyUpdated = $("#IsTallyUpdated").val();
+                if (String(isTallyUpdated).toLowerCase() == "false") {
+                    $("#btnTally").show();
+                }
+                else {
+                    $("#btnBack").show();
+                }
             });
         }
 
@@ -289,7 +294,7 @@
 
 
     function TallySync() {
-        var ID = document.getElementById("txtsalesorderno").value; 
+        var ID = document.getElementById("txtsalesorderno").value;
         $.ajax({
                 url: '@Url.Action("TallySync", "SalesOrderEdit")',
                 data: "{ 'ID': '" + ID + "'}",
@@ -314,7 +319,7 @@
                             });
                         }
                         else {
-                            alert(data);
+                            Swal.fire(data);
                         }
                     }
                 },

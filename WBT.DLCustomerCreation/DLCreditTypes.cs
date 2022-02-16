@@ -28,11 +28,11 @@ namespace WBT.DLCustomerCreation
 
                     using (var dbcxtransaction = Entities.Database.BeginTransaction())
                     {
-                        var isValueExists = Entities.CreditTypes.AsNoTracking().Where(i => i.CreditTypeID == creditType.CreditTypeID).FirstOrDefault();
+                        var isValueExists = Entities.CreditTypes.AsNoTracking().Where(i => i.CreditTypeID == creditType.CreditTypeID && i.OrgId == OrgID).FirstOrDefault();
 
                         if (isValueExists == null)
                         {
-                            var IsNameExists = Entities.CreditTypes.AsNoTracking().Where(i => i.CreditTypeName.ToLower().Trim() == creditType.CreditTypeName.ToLower().Trim()).FirstOrDefault();
+                            var IsNameExists = Entities.CreditTypes.AsNoTracking().Where(i => i.CreditTypeName.ToLower().Trim() == creditType.CreditTypeName.ToLower().Trim() && i.OrgId == OrgID).FirstOrDefault();
                             if (IsNameExists == null)
                             {
                                 CreditType tblcredittype = new CreditType();
@@ -54,7 +54,7 @@ namespace WBT.DLCustomerCreation
                         }
                         else
                         {
-                            var IsNameExists = Entities.CreditTypes.AsNoTracking().Where(i => i.CreditTypeName.ToLower().Trim() == creditType.CreditTypeName.ToLower().Trim() && i.CreditTypeID != creditType.CreditTypeID).FirstOrDefault();
+                            var IsNameExists = Entities.CreditTypes.AsNoTracking().Where(i => i.CreditTypeName.ToLower().Trim() == creditType.CreditTypeName.ToLower().Trim() && i.CreditTypeID != creditType.CreditTypeID && i.OrgId == OrgID).FirstOrDefault();
                             if (IsNameExists == null)
                             {
                                 CreditType tblcredittype = new CreditType();

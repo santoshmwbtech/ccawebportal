@@ -1,0 +1,12 @@
+*******************Start**************
+Date & Time : 12-02-2022 13:09:09
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 12-02-2022 15:31:52
+Message : Object reference not set to an instance of an object.
+Source : CCAPortal
+StackTrace :    at CCAPortal.Controllers.ReceiptsController.SyncReceiptData(String ReceiptID, String OrgID, Receipts GetReceipts, Boolean iswinservice) in E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\CCAPortal\Controllers\ReceiptsController.cs:line 261
+*******************End**************

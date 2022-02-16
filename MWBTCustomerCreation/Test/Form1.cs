@@ -85,7 +85,6 @@ namespace Test
                     DebtorsController debtorsController = new DebtorsController();
                     foreach (var i in lstdebtorsDetails)
                     {
-                        //Helper.LogError("S3", "", null, "");
                         debtorsController.Debtor_TallySync(i.ID);
                         
                     }
@@ -115,7 +114,6 @@ namespace Test
                     foreach (var i in GetReceipts)
                     {
                        receiptsController.SyncReceiptToTally(i.ReceiptID, i.OrgID);
-                        return;
                     }
                 }
             }

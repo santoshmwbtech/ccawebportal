@@ -37,6 +37,7 @@ namespace WBT.DLCustomerCreation
         public int InsertedRecords { get; set; }
         public int FailedRecords { get; set; }
         public bool TallySync { get; set; }
+        public bool IsEdited { get; set; }
 
     }
     public class DLDebtorsCreation
@@ -70,7 +71,8 @@ namespace WBT.DLCustomerCreation
                                        IsDefault = u.IsDefault,
                                        BranchName = dbContext.tblSysBranches.Where(b => b.BranchID == u.BranchID).FirstOrDefault().Name,
                                        TallySync = u.TallySync == null ? false : u.TallySync.Value,
-                                       IsTallyUpdated = u.IsTallyUpdated
+                                       IsTallyUpdated = u.IsTallyUpdated,
+                                       IsEdited = u.IsEdited,
                                    }).OrderByDescending(x => x.IsDefault).ToList();
                     return DebtorsList;
                 }
@@ -88,20 +90,22 @@ namespace WBT.DLCustomerCreation
                 using (MWBTCustomerAppEntities dbContext = new MWBTCustomerAppEntities())
                 {
                     DebtorsDetails debtor = new DebtorsDetails();
-                    debtor = (from u in dbContext.tblDebtorsDetails
-                              where u.ID == ID
+                    debtor = (from d in dbContext.tblDebtorsDetails
+                              where d.ID == ID
                               select new DebtorsDetails
                               {
-                                  ID = u.ID,
-                                  OrgID = u.OrgID,
-                                  DebtorName = u.DebtorName.Trim(),
-                                  Description = u.Description.Trim(),
-                                  ParentDebtorID = u.ParentDebtorID,
-                                  ParentDebtorName = dbContext.tblDebtorsDetails.Where(p => p.ID == u.ParentDebtorID).FirstOrDefault().DebtorName,
-                                  CreationDate = u.CreationDate,
-                                  OldDebtorName = u.OldDebtorName.Trim(),
-                                  BranchName = dbContext.tblSysBranches.Where(b => b.BranchID == u.BranchID).FirstOrDefault().Name,
-                                  BranchID = u.BranchID
+                                  ID = d.ID,
+                                  OrgID = d.OrgID,
+                                  DebtorName = d.DebtorName.Trim(),
+                                  Description = d.Description.Trim(),
+                                  ParentDebtorID = d.ParentDebtorID,
+                                  ParentDebtorName = dbContext.tblDebtorsDetails.Where(p => p.ID == d.ParentDebtorID).FirstOrDefault().DebtorName,
+                                  CreationDate = d.CreationDate,
+                                  OldDebtorName = d.OldDebtorName.Trim(),
+                                  BranchName = dbContext.tblSysBranches.Where(b => b.BranchID == d.BranchID).FirstOrDefault().Name,
+                                  BranchID = d.BranchID,
+                                  IsEdited = d.IsEdited,
+                                  IsTallyUpdated = d.IsTallyUpdated,
                               }).FirstOrDefault();
                     return debtor;
                 }
@@ -143,6 +147,7 @@ namespace WBT.DLCustomerCreation
                         debtor.OldDebtorName = DebtorsDetail.OldDebtorName;
                         debtor.IsDefault = IsExists.IsDefault;
                         debtor.BranchID = DebtorsDetail.BranchID;
+                        debtor.IsEdited = IsExists.IsEdited;
                         dbContext.tblDebtorsDetails.Add(debtor);
                         dbContext.Entry(debtor).State = EntityState.Modified;
                         dbContext.SaveChanges();
@@ -164,6 +169,7 @@ namespace WBT.DLCustomerCreation
                         debtor.OldDebtorName = DebtorsDetail.DebtorName;
                         debtor.BranchID = DebtorsDetail.BranchID;
                         debtor.IsDefault = debtor.DebtorName.ToLower() == "sundry debtors" ? 1 : 0;
+                        debtor.IsEdited = false;
                         dbContext.tblDebtorsDetails.Add(debtor);
                         dbContext.SaveChanges();
                         return debtor.ID;
@@ -238,6 +244,7 @@ namespace WBT.DLCustomerCreation
                                                 debtorsDetail.CreationDate = DateTimeNow;
                                                 debtorsDetail.CreatedByID = Convert.ToInt32(UserID);
                                                 debtorsDetail.IsDefault = 0;
+                                                debtorsDetail.IsEdited = false;
                                                 Entities.tblDebtorsDetails.Add(debtorsDetail);
                                                 Entities.SaveChanges();
                                                 dbcxtransaction.Commit();
@@ -356,10 +363,12 @@ namespace WBT.DLCustomerCreation
                                 tblDebtors.ModifiedDate = DateTimeNow;
                                 tblDebtors.IsTallyUpdated = true;
                                 tblDebtors.TallySync = false;
+                                tblDebtors.IsEdited = true;
                                 Entities.tblDebtorsDetails.Attach(tblDebtors);
                                 Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
                                 Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
                                 Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.IsEdited).IsModified = true;
                                 Entities.SaveChanges();
                                 dbcxtransaction.Commit();
                                 return true;

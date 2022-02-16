@@ -32,6 +32,7 @@
                                 <div class="input-group">
                                     @Html.HiddenFor(model => model.ID)
                                     @Html.HiddenFor(model => model.OldDebtorName)
+                                    @Html.HiddenFor(model => model.IsTallyUpdated)
                                     @Html.EditorFor(model => model.DebtorName, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.DebtorName, "", new { @class = "text-danger" })
                                 </div>

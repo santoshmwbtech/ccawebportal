@@ -97,6 +97,7 @@ namespace WBT.DLCustomerCreation
         public int? companyTypeID { get; set; }
         public int? customerType { get; set; }
         public string TallyStatus { get; set; }
+        public bool IsEdited { get; set; }
 
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
 
@@ -283,6 +284,7 @@ namespace WBT.DLCustomerCreation
                         dlrd.ReferenceImage = tblAccountReceiptDetails.ReferenceImage;
                         dlrd.ReceiptDatetime = tblAccountReceiptDetails.ReceiptDatetime;
                         dlrd.ReceiptDateStr = tblAccountReceiptDetails.ReceiptDatetime.Value.ToString("dd/MM/yyyy");
+                        dlrd.IsEdited = tblAccountReceiptDetails.IsEdited;
 
                         var itemsList = (from a in Entities.tblAccountReceiptDetails
                                          join b in Entities.tblAccountReceiptWithBillDetails on a.ReceiptID.ToLower().Trim() equals b.ReceiptID.ToLower().Trim()
@@ -403,10 +405,12 @@ namespace WBT.DLCustomerCreation
                                 tblAccountReceiptDetails.UpdatedDate = DateTimeNow;
                                 tblAccountReceiptDetails.IsTallyUpdates = true;
                                 tblAccountReceiptDetails.TallySync = false;
+                                tblAccountReceiptDetails.IsEdited = true;
                                 Entities.tblAccountReceiptDetails.Attach(tblAccountReceiptDetails);
                                 Entities.Entry(tblAccountReceiptDetails).Property(c => c.UpdatedDate).IsModified = true;
                                 Entities.Entry(tblAccountReceiptDetails).Property(c => c.IsTallyUpdates).IsModified = true;
                                 Entities.Entry(tblAccountReceiptDetails).Property(c => c.TallySync).IsModified = true;
+                                Entities.Entry(tblAccountReceiptDetails).Property(c => c.IsEdited).IsModified = true;
                                 Entities.SaveChanges();
                                 dbcxtransaction.Commit();
                                 return true;
@@ -522,9 +526,8 @@ namespace WBT.DLCustomerCreation
                                                IsTallyUpdates = pay.IsTallyUpdates,
                                                SourceOfUpdate = pay.SourceOfUpdate,
                                                LedgerID = pay.LedgerID,
-                                               LedgerName = Entities.tblAccountLedgers.Where(i => i.LedgerID == pay.LedgerID).FirstOrDefault().LedgerName,
-                                               BankOrCashName = Entities.tblAccountLedgers.Where(i => i.LedgerID == pay.LedgerID).FirstOrDefault().LedgerName,
-                                               VoucherTypeNo = pay.VoucherTypeNo,
+                                               LedgerName = pay.BankOrCash == "C" ? Entities.tblAccountLedgers.Where(a => a.LedgerName == "Cash").FirstOrDefault().LedgerName : Entities.tblSysOrganizations.Where(o => o.OrgID == OrgID).FirstOrDefault().BankName,
+                                               BankOrCashName = pay.BankOrCash == "C" ? Entities.tblAccountLedgers.Where(a => a.LedgerName == "Cash").FirstOrDefault().LedgerName : Entities.tblSysOrganizations.Where(o => o.OrgID == OrgID).FirstOrDefault().BankName,
                                                VoucherTypeName = Entities.tblVoucherTypes.Where(i => i.VoucherTypeNo == pay.VoucherTypeNo).FirstOrDefault().Name,
                                                DLReceiptsBillDetailsCreation = pay.tblAccountReceiptWithBillDetails
                                                .Select(i => new DLReceiptsBillDetailsCreation()
@@ -532,10 +535,7 @@ namespace WBT.DLCustomerCreation
                                                    ReceiptWithBillID = i.ReceiptWithBillID,
                                                    ReceiptID = i.ReceiptID,
                                                    CustID = i.CustID,
-                                                   //LedgerName = Entities.tblAccountLedgers.Where(j => j.LedgerID == pay.LedgerID).FirstOrDefault().LedgerName,
-                                                   LedgerName = (from cust in Entities.tblCustomerVendorDetails
-                                                                 where cust.CustID == i.CustID
-                                                                 select cust.FirmName).FirstOrDefault(),
+                                                   LedgerName = Entities.tblCustomerVendorDetails.Where(d => d.CustID == i.CustID).FirstOrDefault().FirmName,
                                                    BillType = i.BillType.Trim(),
                                                    BillNo = i.BillNo,
                                                    Billdatetime = i.Billdatetime,
@@ -546,7 +546,8 @@ namespace WBT.DLCustomerCreation
                                                    CreatedByID = i.CreatedByID,
                                                    CreationDate = i.CreationDate,
                                                    Name = (i.BillType.ToString() == ModeOfPayments.New_Reference.ToString() || i.BillType.ToString() == ModeOfPayments.Advance.ToString()) ? i.BillNo : string.Empty,
-                                               }).ToList()
+                                               }).ToList(),
+                                               IsEdited = pay.IsEdited,
                                            }).FirstOrDefault();
 
                 }
@@ -659,6 +660,7 @@ namespace WBT.DLCustomerCreation
                                 lReceiptDetails.CheckDate = mDLReceiptsCreation.CheckDate;
                                 lReceiptDetails.SignatureImage = mDLReceiptsCreation.SignatureImage;
                                 lReceiptDetails.BranchID = lReceiptDetails.BranchID;
+                                lReceiptDetails.IsEdited = lReceiptDetails.IsTallyUpdates == true ? true : false;
 
                                 Entities.tblAccountReceiptDetails.Add(lReceiptDetails);
                                 Entities.Entry(lReceiptDetails).State = EntityState.Modified;

@@ -1,0 +1,66 @@
+*******************Start**************
+Date & Time : 08-02-2022 12:57:03
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 12:59:06
+Message : Please open MWB Hubli1 in Tally
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 12:59:53
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 12:59:54
+Message : Please open MWB Hubli1 in Tally
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 12:59:56
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 12:59:56
+Message : Please open MWB Hubli1 in Tally
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 16:05:42
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 16:07:24
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 16:21:52
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 16:21:57
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 08-02-2022 16:23:16
+Message : Stock Item 'Raj White Soap [ 1000Gms X 1Units ]1Kg' does not exist!
+Source : 
+StackTrace : 
+*******************End**************

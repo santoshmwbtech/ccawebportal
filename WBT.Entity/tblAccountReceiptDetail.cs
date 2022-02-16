@@ -53,6 +53,7 @@ namespace WBT.Entity
         public Nullable<bool> TallySync { get; set; }
         public string BranchID { get; set; }
         public string RefValue { get; set; }
+        public bool IsEdited { get; set; }
     
         public virtual tblAccountLedger tblAccountLedger { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -1,0 +1,84 @@
+*******************Start**************
+Date & Time : 11-02-2022 16:19:39
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:19:49
+Message : Object reference not set to an instance of an object.
+Source : CCAPortal
+StackTrace :    at CCAPortal.Controllers.EditCustomerController.AddCustomerSupplierToTally(CustomerCreation item, Boolean iswinservie) in E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\CCAPortal\Controllers\EditCustomerController.cs:line 184
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:19:49
+Message : There is an error with Tally. Please try later..
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:22:03
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:25:02
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:25:26
+Message : Object reference not set to an instance of an object.
+Source : CCAPortal
+StackTrace :    at CCAPortal.Controllers.EditCustomerController.AddCustomerSupplierToTally(CustomerCreation item, Boolean iswinservie) in E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\CCAPortal\Controllers\EditCustomerController.cs:line 184
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:25:26
+Message : There is an error with Tally. Please try later..
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:28:37
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:28:39
+Message : Object reference not set to an instance of an object.
+Source : CCAPortal
+StackTrace :    at CCAPortal.Controllers.EditCustomerController.AddCustomerSupplierToTally(CustomerCreation item, Boolean iswinservie) in E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\CCAPortal\Controllers\EditCustomerController.cs:line 184
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:28:39
+Message : There is an error with Tally. Please try later..
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:46:29
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 16:53:19
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 18:39:34
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 11-02-2022 18:41:16
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************

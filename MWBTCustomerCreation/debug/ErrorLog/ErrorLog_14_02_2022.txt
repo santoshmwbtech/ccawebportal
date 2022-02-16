@@ -1,0 +1,156 @@
+*******************Start**************
+Date & Time : 14-02-2022 11:42:28
+Message : Receipt - DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 11:54:39
+Message : Receipt - DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 11:57:01
+Message : Receipt - DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:10:52
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:10:53
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:13:11
+Message : Stock Item 'maida [ 1000Gms X 1Units ]1Kg' does not exist!
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:13:13
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:13:13
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:13:20
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:15:09
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:15:09
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:15:21
+Message : DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:25:13
+Message : Receipt - DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 12:25:18
+Message : Receipt - DataBase Updated Successfully
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 17:09:43
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 17:09:44
+Message : S7
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:09:23
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:09:23
+Message : S7
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:11:33
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:11:34
+Message : S7
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:33:28
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:33:28
+Message : S7
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:35:46
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:35:46
+Message : S7
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:37:28
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 14-02-2022 19:37:28
+Message : S7
+Source : 
+StackTrace : 
+*******************End**************

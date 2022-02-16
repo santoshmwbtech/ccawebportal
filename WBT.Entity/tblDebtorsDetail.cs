@@ -28,5 +28,6 @@ namespace WBT.Entity
         public Nullable<bool> IsTallyUpdated { get; set; }
         public string BranchID { get; set; }
         public Nullable<bool> TallySync { get; set; }
+        public bool IsEdited { get; set; }
     }
 }

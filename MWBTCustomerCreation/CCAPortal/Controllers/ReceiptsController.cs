@@ -182,43 +182,29 @@ namespace CCAPortal.Controllers
                 GetReceipts.UpdateTallyStatusFromService(tallyResult, true);
                 tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Receipts Sync", tallyResult.ReceiptID, tallyResult.DisplayMessage);
             }
-
         }
-
 
         public Receipts SyncReceiptData(string ReceiptID, string OrgID, Receipts GetReceipts, bool iswinservice)
         {
-
-            //Helper.LogError("S1", "", null, "");
-
             IsTallyCompanyOpen(GetReceipts.OrgName, iswinservice);
 
             Receipts receiptss = new Receipts();
             receiptss.OrgID = OrgID;
-            //            Helper.LogError("S2", "", null, "");
 
             if (IsCompanyOpen == true)
             {
-                //Helper.LogError("S3", "", null, "");
-                //string VoucherType = lDLPaymentsCreation.VoucherTypeName;
-                //string result = "";
                 string mXMLResult = string.Empty;
                 try
                 {
                     string xmlstc = string.Empty;
-                    //string xmlstc = string.Empty;
-                    //Receipts GetReceipts = new Receipts();
-                    //GetReceipts = (Receipts)GetReceipts.GetReceiptsBillDetails_TallySync(ReceiptID, OrgID);
-
                     List<WBT.DL.CCAplusSO.DLReceiptsBillDetailsCreation> PartyWiseData = GetReceipts.DLReceiptsBillDetailsCreation.
-                      GroupBy(ac => new { ac.BillNo }).Select(g => new WBT.DL.CCAplusSO.DLReceiptsBillDetailsCreation()
+                      GroupBy(ac => new { ac.CustID }).Select(g => new WBT.DL.CCAplusSO.DLReceiptsBillDetailsCreation()
                       {
-                          BillNo = g.Key.BillNo,
+                          CustID = g.Key.CustID,
                           LedgerName = g.Select(i => i.LedgerName).FirstOrDefault(),
-                          Billamount = g.Select(i => i.Billamount).FirstOrDefault(),
+                          Billamount = g.Sum(i => i.Credit),
                           BillType = g.Select(i => i.BillType).FirstOrDefault() == null ? "None" : g.Select(i => i.BillType).FirstOrDefault(),
                       }).ToList();
-                    //Helper.LogError("S4" + " " + PartyWiseData.Count(), "", null, "");
 
                     xmlstc = "<ENVELOPE>";
                     xmlstc = xmlstc + "<HEADER>";
@@ -234,13 +220,79 @@ namespace CCAPortal.Controllers
                     xmlstc = xmlstc + "</REQUESTDESC>";
                     xmlstc = xmlstc + "<REQUESTDATA>";
                     xmlstc = xmlstc + "<TALLYMESSAGE >";
-                    xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + GetReceipts.VoucherTypeName + "\" ACTION=" + "\"" + "Create" + "\" OBJVIEW=" + "\"" + "Accounting Voucher View" + "\" >";
+
+                    if(GetReceipts.IsEdited)
+                    {
+                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + GetReceipts.VoucherTypeName + "\" ACTION=" + "\"" + "Alter" + "\" OBJVIEW=" + "\"" + "Accounting Voucher View" + "\" >";
+                    }
+                    else
+                    {
+                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + GetReceipts.VoucherTypeName + "\" ACTION=" + "\"" + "Create" + "\" OBJVIEW=" + "\"" + "Accounting Voucher View" + "\" >";
+                    }
+
                     xmlstc = xmlstc + "<VOUCHERNUMBER>" + GetReceipts.ReceiptID + "</VOUCHERNUMBER>";
                     xmlstc = xmlstc + "<DATE>" + GetReceipts.ReceiptDatetime.Value.ToString("dd/MM/yyyy") + "</DATE>";
                     xmlstc = xmlstc + "<EFFECTIVEDATE>" + GetReceipts.ReceiptDatetime.Value.ToString("dd/MM/yyyy") + "</EFFECTIVEDATE>";
                     xmlstc = xmlstc + "<NARRATION>" + GetReceipts.Comments + "</NARRATION>";
                     xmlstc = xmlstc + "<VOUCHERTYPENAME>" + GetReceipts.VoucherTypeName + "</VOUCHERTYPENAME>";
+                    xmlstc = xmlstc + "<PARTYLEDGERNAME>" + GetReceipts.DLReceiptsBillDetailsCreation.FirstOrDefault().LedgerName + "</PARTYLEDGERNAME>";
+           
+                    foreach (var item in PartyWiseData)
+                    {
+                        xmlstc = xmlstc + "<ALLLEDGERENTRIES.LIST>";
+                        xmlstc = xmlstc + "<LEDGERNAME>" + item.LedgerName + "</LEDGERNAME>"; //not comming
+                        if (item.BillType == ModeOfPayments.Against_Reference.ToString() || item.BillType == ModeOfPayments.Advance.ToString() || item.BillType == ModeOfPayments.New_Reference.ToString() || item.BillType == ModeOfPayments.OnAccount.ToString())
+                        {
+                            //xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "Yes" + "</ISDEEMEDPOSITIVE>";
+                            //xmlstc = xmlstc + "<ISPARTYLEDGER>" + "Yes" + "</ISPARTYLEDGER>";
+                            //xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "Yes" + "</ISLASTDEEMEDPOSITIVE>";
 
+                            xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "No" + "</ISDEEMEDPOSITIVE>";
+                            xmlstc = xmlstc + "<LEDGERFROMITEM>" + "No" + "</LEDGERFROMITEM>";
+                            xmlstc = xmlstc + "<REMOVEZEROENTRIES>" + "No" + "</REMOVEZEROENTRIES>";
+                            xmlstc = xmlstc + "<ISPARTYLEDGER>" + "Yes" + "</ISPARTYLEDGER>";
+                            xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "No" + "</ISLASTDEEMEDPOSITIVE>";
+                        }
+                        else
+                        {
+                            //xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "Yes" + "</ISDEEMEDPOSITIVE>";
+                            //xmlstc = xmlstc + "<ISPARTYLEDGER>" + "No" + "</ISPARTYLEDGER>";
+                            //xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "Yes" + "</ISLASTDEEMEDPOSITIVE>";
+
+                            xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "No" + "</ISDEEMEDPOSITIVE>";
+                            xmlstc = xmlstc + "<LEDGERFROMITEM>" + "No" + "</LEDGERFROMITEM>";
+                            xmlstc = xmlstc + "<REMOVEZEROENTRIES>" + "No" + "</REMOVEZEROENTRIES>";
+                            xmlstc = xmlstc + "<ISPARTYLEDGER>" + "Yes" + "</ISPARTYLEDGER>";
+                            xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "No" + "</ISLASTDEEMEDPOSITIVE>";
+                        }
+
+                        xmlstc = xmlstc + "<AMOUNT>" + item.Billamount + "</AMOUNT>";
+
+
+                        List<WBT.DLCustomerCreation.DLReceiptsBillDetailsCreation> CutDetails = GetReceipts.DLReceiptsBillDetailsCreation.Where(i => i.CustID == PartyWiseData.FirstOrDefault().CustID).ToList();
+
+                        foreach (var bill in CutDetails)
+                        {
+                            if (bill.BillType == ModeOfPayments.Against_Reference.ToString() || bill.BillType == ModeOfPayments.Advance.ToString() || bill.BillType == ModeOfPayments.New_Reference.ToString() || bill.BillType == ModeOfPayments.OnAccount.ToString())
+                            {
+                                xmlstc = xmlstc + "<BILLALLOCATIONS.LIST>";
+                                xmlstc = xmlstc + "<NAME>" + bill.BillNo + "</NAME>";
+
+                                if (bill.BillType == ModeOfPayments.Against_Reference.ToString())
+                                    xmlstc = xmlstc + "<BILLTYPE>" + "Agst Ref" + "</BILLTYPE>";
+                                else if (bill.BillType == ModeOfPayments.Advance.ToString())
+                                    xmlstc = xmlstc + "<BILLTYPE>" + "Advance" + "</BILLTYPE>";
+                                else if (bill.BillType == ModeOfPayments.New_Reference.ToString())
+                                    xmlstc = xmlstc + "<BILLTYPE>" + "New Ref" + "</BILLTYPE>";
+                                else if (bill.BillType == ModeOfPayments.OnAccount.ToString())
+                                    xmlstc = xmlstc + "<BILLTYPE>" + "On Account" + "</BILLTYPE>";
+
+                                xmlstc = xmlstc + "<AMOUNT>" + Convert.ToDecimal(bill.Credit) + "</AMOUNT>";
+                                xmlstc = xmlstc + "</BILLALLOCATIONS.LIST>";
+                            }
+                        }
+                        xmlstc = xmlstc + "</ALLLEDGERENTRIES.LIST>";
+                    }
                     if (GetReceipts.BankOrCash == "C")
                     {
                         #region insert cash or bank ledger details
@@ -251,7 +303,7 @@ namespace CCAPortal.Controllers
                         xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "Yes" + "</ISDEEMEDPOSITIVE>";
                         xmlstc = xmlstc + "<LEDGERFROMITEM>" + "NO" + "</LEDGERFROMITEM>";
                         xmlstc = xmlstc + "<REMOVEZEROENTRIES>" + "No" + "</REMOVEZEROENTRIES>";
-                        xmlstc = xmlstc + "<ISPARTYLEDGER>" + "Yes" + "</ISPARTYLEDGER>";
+                        xmlstc = xmlstc + "<ISPARTYLEDGER>" + "No" + "</ISPARTYLEDGER>";
                         xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "Yes" + "</ISLASTDEEMEDPOSITIVE>";
                         xmlstc = xmlstc + "</ALLLEDGERENTRIES.LIST>";
 
@@ -263,11 +315,11 @@ namespace CCAPortal.Controllers
 
                         xmlstc = xmlstc + "<ALLLEDGERENTRIES.LIST>";
                         xmlstc = xmlstc + "<LEDGERNAME>" + GetReceipts.BankOrCashName + "</LEDGERNAME>"; //Bank ledger name
-                        xmlstc = xmlstc + "<AMOUNT>" + GetReceipts.Amount + "</AMOUNT>"; //total pament amount
+                        xmlstc = xmlstc + "<AMOUNT>-" + GetReceipts.Amount + "</AMOUNT>"; //total pament amount
                         //xmlstc = xmlstc + "<VATEXPAMOUNT>" + lDLPaymentsCreation.Amount + "</VATEXPAMOUNT>";
-                        xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "No" + "</ISDEEMEDPOSITIVE>";
+                        xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "Yes" + "</ISDEEMEDPOSITIVE>";
                         xmlstc = xmlstc + "<ISPARTYLEDGER>" + "Yes" + "</ISPARTYLEDGER>";
-                        xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "No" + "</ISLASTDEEMEDPOSITIVE>";
+                        xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "Yes" + "</ISLASTDEEMEDPOSITIVE>";
 
                         #region Bank Details of party goes to first party in list
 
@@ -283,6 +335,9 @@ namespace CCAPortal.Controllers
                         }
                         else
                         {
+                            //if (lDLReceiptsCreation.BankName.Contains("&") && User.IsTallyErpRunning == true)
+                            //    lDLReceiptsCreation.BankName = lDLReceiptsCreation.BankName.Replace("&", "&amp;");
+
                             xmlstc = xmlstc + "<BANKALLOCATIONS.LIST>";
                             xmlstc = xmlstc + "<DATE>" + GetReceipts.ReceiptDatetime.Value.ToString("dd/MM/yyyy") + "</DATE>";
                             xmlstc = xmlstc + "<BANKERSDATE> </BANKERSDATE>";
@@ -305,52 +360,12 @@ namespace CCAPortal.Controllers
                             xmlstc = xmlstc + "</BANKALLOCATIONS.LIST>";
                         }
                         #endregion
+
                         xmlstc = xmlstc + "</ALLLEDGERENTRIES.LIST>";
 
                         #endregion
                     }
 
-                    foreach (var item in PartyWiseData)
-                    {
-                        xmlstc = xmlstc + "<ALLLEDGERENTRIES.LIST>";
-                        xmlstc = xmlstc + "<LEDGERNAME>" + item.LedgerName + "</LEDGERNAME>"; //not comming
-                        if (item.BillType == ModeOfPayments.Against_Reference.ToString() || item.BillType == ModeOfPayments.Advance.ToString() || item.BillType == ModeOfPayments.New_Reference.ToString() || item.BillType == ModeOfPayments.OnAccount.ToString())
-                        {
-                            xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "Yes" + "</ISDEEMEDPOSITIVE>";
-                            xmlstc = xmlstc + "<ISPARTYLEDGER>" + "Yes" + "</ISPARTYLEDGER>";
-                            xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "Yes" + "</ISLASTDEEMEDPOSITIVE>";
-                        }
-                        else
-                        {
-                            xmlstc = xmlstc + "<ISDEEMEDPOSITIVE>" + "Yes" + "</ISDEEMEDPOSITIVE>";
-                            xmlstc = xmlstc + "<ISPARTYLEDGER>" + "No" + "</ISPARTYLEDGER>";
-                            xmlstc = xmlstc + "<ISLASTDEEMEDPOSITIVE>" + "Yes" + "</ISLASTDEEMEDPOSITIVE>";
-                        }
-
-                        xmlstc = xmlstc + "<AMOUNT>-" + item.Billamount + "</AMOUNT>";
-
-                        List<WBT.DLCustomerCreation.DLReceiptsBillDetailsCreation> CutDetails = GetReceipts.DLReceiptsBillDetailsCreation.Where(i => i.CustID == item.CustID).ToList();
-                        foreach (var bill in CutDetails)
-                        {
-                            if (bill.BillType == ModeOfPayments.Against_Reference.ToString() || bill.BillType == ModeOfPayments.Advance.ToString() || bill.BillType == ModeOfPayments.New_Reference.ToString() || bill.BillType == ModeOfPayments.OnAccount.ToString())
-                            {
-                                xmlstc = xmlstc + "<BILLALLOCATIONS.LIST>";
-                                xmlstc = xmlstc + "<NAME>" + bill.BillNo + "</NAME>";
-
-                                if (bill.BillType == ModeOfPayments.Against_Reference.ToString())
-                                    xmlstc = xmlstc + "<BILLTYPE>" + "Agst Ref" + "</BILLTYPE>";
-                                else if (bill.BillType == ModeOfPayments.Advance.ToString())
-                                    xmlstc = xmlstc + "<BILLTYPE>" + "Advance" + "</BILLTYPE>";
-                                else if (bill.BillType == ModeOfPayments.New_Reference.ToString())
-                                    xmlstc = xmlstc + "<BILLTYPE>" + "New Ref" + "</BILLTYPE>";
-                                else if (bill.BillType == ModeOfPayments.OnAccount.ToString())
-                                    xmlstc = xmlstc + "<BILLTYPE>" + "On Account" + "</BILLTYPE>";
-                                xmlstc = xmlstc + "<AMOUNT>-" + Convert.ToDecimal(bill.Billamount) + "</AMOUNT>";
-                                xmlstc = xmlstc + "</BILLALLOCATIONS.LIST>";
-                            }
-                        }
-                        xmlstc = xmlstc + "</ALLLEDGERENTRIES.LIST>";
-                    }
                     xmlstc = xmlstc + "</VOUCHER>";
                     xmlstc = xmlstc + "</TALLYMESSAGE>";
                     xmlstc = xmlstc + "</REQUESTDATA>";
@@ -360,8 +375,6 @@ namespace CCAPortal.Controllers
                     string result = XMLGetData(xmlstc);
                     receiptss.DisplayMessage = result;
                     receiptss.ReceiptID = GetReceipts.ReceiptID;
-
-                    //Helper.LogError("S5" + " " + receiptss, "", null, "");
                     return receiptss;
                 }
                 catch (Exception ex)

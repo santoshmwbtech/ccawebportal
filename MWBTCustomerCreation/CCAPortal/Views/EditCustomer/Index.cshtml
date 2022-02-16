@@ -74,6 +74,12 @@
                     @Html.HiddenFor(model => model.AadhaarPhoto)
                     @Html.HiddenFor(model => model.PANPhoto)
                     @Html.HiddenFor(model => model.GSTPhoto)
+                    @Html.HiddenFor(model => model.ShippingGPSLocation)
+                    @Html.HiddenFor(model => model.BillingGPSLocation)
+                    @Html.HiddenFor(model => model.ShippingLatitude)
+                    @Html.HiddenFor(model => model.ShippingLongitude)
+                    @Html.HiddenFor(model => model.BillingLatitude)
+                    @Html.HiddenFor(model => model.BillingLongitude)
                     Created By : @Html.DisplayFor(model => model.CreatedByName) <br />
                     Last Updated By : <b>@Html.DisplayFor(model => model.UpdatedByName)</b> on <b>@Html.DisplayFor(model => model.UpdatedDate)</b>
                 </p>
@@ -107,7 +113,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Firm Name</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.FirmName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Firm name", @maxlength = "500", @required = "required", @readonly = "readonly" } })
+                                            @Html.EditorFor(model => model.FirmName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Firm name", @maxlength = "500", @required = "required" } })
                                         </div>
                                     </div>
                                 </div>
@@ -115,9 +121,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label">New Firm Name</label>
+                                        <label class="col-sm-3 col-form-label">Tally Firm Name</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.OldTallyFirmName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tally Firm Name", @maxlength = "250", } })
+                                            @Html.EditorFor(model => model.OldTallyFirmName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tally Firm Name", @maxlength = "250", @readonly = "readonly" } })
                                         </div>
                                     </div>
                                 </div>
@@ -300,6 +306,18 @@
                                         <div class="col-sm-9">
                                             <div class="input-group">
                                                 @Html.DropDownListFor(model => model.CreditType, (SelectList)ViewBag.CreditTypes, "Select Credit Type", new { @class = "form-control listbox", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Contact Person Name</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                @Html.EditorFor(model => model.ContactpersonName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Name", @required = "required", @maxlength = "500" } })
                                             </div>
                                         </div>
                                     </div>

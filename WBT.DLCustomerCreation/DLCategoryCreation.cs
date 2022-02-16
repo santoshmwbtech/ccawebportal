@@ -166,9 +166,8 @@ namespace WBT.DLCustomerCreation
             }
             return lstCategoryCreation;
         }
-        public DLCategoryCreation SaveData(DLCategoryCreation dLCategoryCreation)
+        public DLCategoryCreation SaveData(DLCategoryCreation mCategoryCreation)
         {
-            mCategoryCreation = ((DLCategoryCreation)dLCategoryCreation);
             try
             {
                 using (Entities = new Entity.MWBTCustomerAppEntities())
@@ -243,7 +242,6 @@ namespace WBT.DLCustomerCreation
                 mCategoryCreation.DisplayMessage = "Error.. Please contact administrator";
                 return mCategoryCreation;
             }
-            return mCategoryCreation;
         }
 
         public object EditData(object Context)

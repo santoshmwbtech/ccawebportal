@@ -163,6 +163,7 @@
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary" id="btnUpdate" onclick="return validating_price();">Update</button>
                         <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally">Sync To Tally</a>
+                        <a href='@Url.Action("Index", "Receipts")' class="btn btn-success" id="btnBack">Back</a>
                         @Html.ValidationSummary()
                     </div>
                 </div>
@@ -203,7 +204,17 @@
 
             Swal.fire({
                 text: data,
-            }).then((result) => { $("#btnTally").show(); $("#btnUpdate").hide(); });
+            }).then((result) => {
+                var isTallyUpdated = $("#IsTallyUpdates").val();
+                if (String(isTallyUpdated).toLowerCase() == "false") {
+                    $("#btnTally").show();
+                }
+                else {
+                    $("#btnBack").show();
+                }
+                $("#btnUpdate").hide();
+
+            });
         }
 
         function onSuccess_Ajax() {

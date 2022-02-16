@@ -1,0 +1,24 @@
+*******************Start**************
+Date & Time : 15-02-2022 09:47:34
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 15-02-2022 09:47:34
+Message : S7
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 15-02-2022 09:47:36
+Message : Tally Updated
+Source : 
+StackTrace : 
+*******************End**************
+*******************Start**************
+Date & Time : 15-02-2022 09:49:19
+Message : IsCurrentCompanyOpen
+Source : E:\Repos\CCAPortal\ccawebportal\MWBTCustomerCreation\debug\\DataFiles
+StackTrace : 
+*******************End**************

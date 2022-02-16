@@ -33,7 +33,7 @@ namespace CCAPortal.Controllers
                 {
                     CustID = Helper.Decrypt(route, "sblw-3hn8-sqoy19");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Helper.LogError(ex.Message, ex.Source, ex.InnerException == null ? null : ex.InnerException, ex.StackTrace);
                     return RedirectToAction("Index", "Login");
@@ -50,7 +50,7 @@ namespace CCAPortal.Controllers
 
                 CustomerCreation customer = customerCreations.GetCustomerDetails(CustID);
                 var apiUrl = ConfigurationManager.AppSettings["APIUrl"].ToString();
-                if(!string.IsNullOrEmpty(customer.ShopImage))
+                if (!string.IsNullOrEmpty(customer.ShopImage))
                     customer.ShopImage = apiUrl + customer.ShopImage;
                 if (!string.IsNullOrEmpty(customer.OwnerPhoto))
                     customer.OwnerPhoto = apiUrl + customer.OwnerPhoto;
@@ -112,7 +112,7 @@ namespace CCAPortal.Controllers
                 //Check tally service from database
                 DLSystemDetails dLSystemDetails = new DLSystemDetails();
                 var sysDetails = dLSystemDetails.GetSystemDetails(Session["OrgID"].ToString());
-                if(sysDetails != null)
+                if (sysDetails != null)
                 {
                     IsTallyRunning = sysDetails.IsTallyRunning.Value;
                     if (sysDetails.IsTallyRunning.Value != true)
@@ -135,7 +135,7 @@ namespace CCAPortal.Controllers
                         Result = "Error! Please contact administrator";
                     }
                 }
-                
+
                 return Json(Result);
             }
             else
@@ -156,14 +156,10 @@ namespace CCAPortal.Controllers
                 }
                 else
                 {
-                    //"C:\Users\wbtech1\Documents\SVN\CCA_V1\MWBTCustomerCreation\Test\bin\Debug\DataFiles\IsCurrentCompanyOpen.xml"
                     string xmlfile = Helper.GetSystemFilePath() + @"\DataFiles";
-                    //string xmlfile = Environment.CurrentDirectory + @"\DataFiles";
                     xmlFileString = Path.Combine(xmlfile, "CreateLedgerTemplate.xml");
                 }
 
-                //xmlFileString = System.IO.File.ReadAllText(@"DataFiles\CreateLedgerTemplate.xml");
-                //    xmlFileString = Server.MapPath("~/DataFiles/CreateLedgerTemplate.xml");
                 xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlFileString);
                 try
@@ -173,6 +169,11 @@ namespace CCAPortal.Controllers
                     mxmlRootPath = mxmlRootPath + "/DATA/TALLYMESSAGE";
                     mxmlRootPath = mxmlRootPath + "/LEDGER";
 
+                    //if (item.IsEdited)
+                    //    xmlDoc.SelectSingleNode(mxmlRootPath + "/LEDGER/Action").InnerText = "Alter";
+                    //else
+                    //    xmlDoc.SelectSingleNode(mxmlRootPath + "/LEDGER/Action").InnerText = "Create";
+
                     if (item.Name.Contains("&"))
                     {
                         item.Name = item.Name.Replace("&", "and");
@@ -181,13 +182,7 @@ namespace CCAPortal.Controllers
                     {
                         item.FirmName = item.FirmName.Replace("&", "and");
                     }
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/NAME.LIST/NAME").InnerText = item.FirmName.Trim();
-
-                    //if (item.IsVendor == false)
-                    //    //NA
-                    //    xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent1; //"Sundry Debtors";//item.SundryType.Trim();
-                    //else
-                    //    xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = "Sundry Creditors";
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/NAME.LIST/NAME").InnerText = item.OldTallyFirmName.Trim();                    
 
                     if (item.IsVendor == false)
 
@@ -215,8 +210,6 @@ namespace CCAPortal.Controllers
                             xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent4;
 
                         }
-
-
 
                     //if (!string.IsNullOrEmpty(item.Parent1))
                     //    xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent1; //"Sundry Debtors";//item.SundryType.Trim();
@@ -258,8 +251,6 @@ namespace CCAPortal.Controllers
                     //{
                     //    xmlDoc.SelectSingleNode(mxmlRootPath + "/NAME.LIST/NAME").InnerText = item.FirmName.Trim();    //Customer Name
                     //}
-
-
 
                     if (item.OpeningBalance != null)
                         xmlDoc.SelectSingleNode(mxmlRootPath + "/OPENINGBALANCE").InnerText = item.OpeningBalance.ToString();
@@ -304,7 +295,7 @@ namespace CCAPortal.Controllers
                                                                                                                                                                       //xmlDoc.SelectSingleNode(mxmlRootPath + "/SALESTAXNUMBER").InnerText = //mSalesTaxNumber.Trim();
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/NARRATION").InnerText = ""; //mNarration.Trim();
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/ADDRESS.LIST/ADDRESS").InnerText = item.BillingLandmark.Trim();
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/ADDRESS.LIST/ADDRESS").InnerText = item.BillingAddress.Trim();// + "GST NO:" + item.TINNumber.Trim();
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/ADDRESS.LIST/ADDRESS").InnerText = item.BillingAddress.Trim() + " " + item.BillingArea.Trim() + " " + item.BillingLandmark.Trim() + item.Cityname;// + "GST NO:" + item.TINNumber.Trim();
 
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/MAILINGNAME.LIST/MAILINGNAME").InnerText = item.FirmName.Trim();//item.Name.Trim();
 
@@ -319,10 +310,10 @@ namespace CCAPortal.Controllers
                     }
                     string tempLedger = xmlDoc.InnerXml;//.Replace("", "");
 
-                    tempLedger = tempLedger.Replace("[GST]", "GST NO:" + item.GSTNumber.Trim());
+                    tempLedger = tempLedger.Replace("[GST]", "" + item.GSTNumber.Trim());
 
                     if (!string.IsNullOrEmpty(item.CustomerType))
-                        tempLedger = tempLedger.Replace("[PARTYTYPE]", "GST NO:" + item.CustomerType.Trim());
+                        tempLedger = tempLedger.Replace("[PARTYTYPE]", "" + item.CustomerType.Trim());
 
                     if (item.RegistrationType == "Registered")
                         tempLedger = tempLedger.Replace("[IsRegistered]", "Regular");
@@ -561,21 +552,21 @@ namespace CCAPortal.Controllers
                 bool iswinservie = true;
                 CustomerCreation tallyResult = (CustomerCreation)AddCustomerSupplierToTally(customerCreationtoTally, iswinservie);
                 if (tallyResult.Remark.Contains("<CREATED>1"))
-                {                       
+                {
                     tallyResult.DisplayMessage = "Tally Sync Successful!!";
                     Helper.TransactionLog(tallyResult.DisplayMessage, true);
                     tallyResult.IsTallyUpdated = true;
-                    
+
                     if (customerCreations.UpdateTallyStatusFromService(tallyResult))
                     {
-                   
+
                         Helper.TransactionLog("Database Updation Successfully [" + FirmName + "]", true);
                     }
                     else
                     {
-                        Helper.LogError("Database Updation failed", FirmName , null, null);                        
+                        Helper.LogError("Database Updation failed", FirmName, null, null);
                     }
-                    
+
                 }
                 else if (tallyResult.Remark.Contains("<ALTERED>1"))
                 {

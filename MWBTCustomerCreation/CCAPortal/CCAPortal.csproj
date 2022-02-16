@@ -157,6 +157,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\promotionController.cs" />
+    <Compile Include="Controllers\TallySyncErrorRptController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\AccessControlController.cs" />
     <Compile Include="Controllers\ApproveTemplatesController.cs" />
@@ -3915,6 +3916,9 @@
     <Content Include="TallyService\Setup.msi" />
     <Content Include="Views\Dashboard\ServiceInstall.cshtml" />
     <Content Include="Views\promotion\Index.cshtml" />
+    <Content Include="Views\TallySyncErrorRpt\Index.cshtml" />
+    <Content Include="Views\TallySyncErrorRpt\Search.cshtml" />
+    <Content Include="Views\TallySyncErrorRpt\ErrorsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -728,9 +728,8 @@ namespace WBT.DLCustomerCreation
             //}
             //return lstSubCategoryCreation1;
         }
-        public DLSubCategoryCreation SaveDatas(DLSubCategoryCreation dlsubCatgCrt)
+        public DLSubCategoryCreation SaveDatas(DLSubCategoryCreation mSubCategoryCreation)
         {
-            mSubCategoryCreation = ((DLSubCategoryCreation)dlsubCatgCrt);
             try
             {
                 using (Entities = new Entity.MWBTCustomerAppEntities())
@@ -816,7 +815,7 @@ namespace WBT.DLCustomerCreation
                         using (var dbcxtransaction = dbContext.Database.BeginTransaction())
                         {
 
-                            var IsNameExists = Entities.tblSubCategories.AsNoTracking().Where(i => i.SubCategoryName.ToLower().Trim() == CatgDetails.SubCategoryName.ToLower().Trim()).Where(j => j.SubCategoryID != CatgDetails.SubCategoryID).FirstOrDefault();
+                            var IsNameExists = Entities.tblSubCategories.AsNoTracking().Where(i => i.SubCategoryName.ToLower().Trim() == CatgDetails.SubCategoryName.ToLower().Trim()).Where(j => j.SubCategoryID != CatgDetails.SubCategoryID && j.OrgID == OrgID).FirstOrDefault();
                             if (IsNameExists == null)
                             {
 

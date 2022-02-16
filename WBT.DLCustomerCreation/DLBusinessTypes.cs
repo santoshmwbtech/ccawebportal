@@ -28,7 +28,7 @@ namespace WBT.DLCustomerCreation
 
                     using (var dbcxtransaction = Entities.Database.BeginTransaction())
                     {
-                        var isValueExists = Entities.BusinessTypes.AsNoTracking().Where(i => i.BusinessTypeID == BusinessType.BusinessTypeID).FirstOrDefault();
+                        var isValueExists = Entities.BusinessTypes.AsNoTracking().Where(i => i.BusinessTypeID == BusinessType.BusinessTypeID && i.OrgId == OrgID).FirstOrDefault();
 
                         if (isValueExists == null)
                         {
