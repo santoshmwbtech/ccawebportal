@@ -31,34 +31,7 @@ namespace CCAPortal.Controllers
             if (Session["UserID"] != null && !string.IsNullOrEmpty(route))
             {
                 string OrderNumber = Helper.Decrypt(route, "sblw-3hn8-sqoy19");
-
                 SalesOrders so = sorders.GetSalesOrderDetails(OrderNumber);
-
-                var itemsList = (from a in Entities.tblSalesOrderWithItems
-                                 join b in Entities.tblSalesOrders on a.SalesOrderNumber.ToLower().Trim() equals b.SalesOrderNumber.ToLower().Trim()
-                                 join c in Entities.tblItems on a.ItemCode.ToLower().Trim() equals c.ItemCode.ToLower().Trim()
-                                 where a.SalesOrderNumber == OrderNumber
-                                 select new DLSalesOrderWithItemCreation
-                                 {
-                                     ItemName = c.ItemName,
-                                     BagQTY = a.BagQTY,
-                                     Value = a.Value,
-                                     ItemCode = a.ItemCode,
-                                     Rate = a.Rate,
-                                     TotalQTY = a.TotalQTY,
-                                     SalesOrderWithItemID = a.SalesOrderWithItemID,
-                                     IsRateInQuantls = a.IsRateInQuantls,
-                                     DiscountPercentage = a.DiscountPercentage,
-                                     LoadingUnloadingCharge = a.LoadingUnloadingCharge,
-                                     ItemRowNumber = a.ItemRowNumber,
-                                     FrieghtCharge = a.FrieghtCharge,
-                                     OtherExpense = a.OtherExpense
-
-
-                                 }).Distinct().ToList();
-
-                so.DLSalesOrderWithItemCreations = itemsList.ToList();
-
                 return View(so);
             }
             else

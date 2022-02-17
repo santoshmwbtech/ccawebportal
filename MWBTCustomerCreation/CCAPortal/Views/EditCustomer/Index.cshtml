@@ -131,7 +131,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Alias Name</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.AliasName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Alias Name", @maxlength = "50", @required = "required" } })
+                                            @Html.EditorFor(model => model.AliasName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Alias Name", @maxlength = "50" } })
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Customer Religion</label>
                                         <div class="col-sm-9">
-                                            <select id="ddlReligion" onchange="ddlReligionChanged()" class="form-control" name="ddlReligion" title="Please select Religion" required>
+                                            <select id="ddlReligion" onchange="ddlReligionChanged()" class="form-control" name="ddlReligion" title="Please select Religion" >
                                                 <option value="">Select Religion</option>
                                                 <option value="Hindu">Hindu</option>
                                                 <option value="Muslim">Muslim</option>
@@ -209,7 +209,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Contact Person Mobile Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ContactpersonPhone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Mobile Number", @maxlength = "10", @onkeypress = "return isNumber(event);", @required = "required" } })
+                                            @Html.EditorFor(model => model.ContactpersonPhone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Mobile Number", @maxlength = "10", @onkeypress = "return isNumber(event);" } })
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Telephone / Landline Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.TelephoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Telephone / Landline Number", @required = "required", @maxlength = "11" } })
+                                            @Html.EditorFor(model => model.TelephoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Telephone / Landline Number", @maxlength = "11" } })
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +227,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Email ID</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @required = "required", @maxlength = "50" } })
+                                            @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @maxlength = "50" } })
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +235,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Ledger Name</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.LedgerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Ledger Name", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.LedgerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Ledger Name", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -256,7 +256,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Aadhaar Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.AadhaarNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Aadhaar Number", @required = "required", @maxlength = "12", @onkeypress = "return isNumber(event);" } })
+                                            @Html.EditorFor(model => model.AadhaarNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Aadhaar Number", @maxlength = "12", @onkeypress = "return isNumber(event);" } })
                                         </div>
                                     </div>
                                 </div>
@@ -267,7 +267,7 @@
                                         <label class="col-sm-3 col-form-label">Select Debtor Group</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                @Html.DropDownListFor(model => model.ParentDebtorID, (SelectList)ViewBag.DebtorsList, "Select Debtor", new { @class = "form-control listbox", @onchange = "ddlParent_changed()", @required = "required" })
+                                                @Html.DropDownListFor(model => model.ParentDebtorID, (SelectList)ViewBag.DebtorsList, "Select Debtor", new { @class = "form-control listbox", @onchange = "ddlParent_changed()" })
                                             </div>
                                         </div>
                                     </div>
@@ -286,7 +286,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Shop Holiday</label>
                                         <div class="col-sm-9">
-                                            <select id="ddlWeekOffDay" onchange="ddlWeekOffDayChanged()" class="form-control" name="ddlWeekOffDay" title="Please select Shop Holiday" required>
+                                            <select id="ddlWeekOffDay" onchange="ddlWeekOffDayChanged()" class="form-control" name="ddlWeekOffDay" title="Please select Shop Holiday" >
                                                 <option value="">Select</option>
                                                 <option value="Sunday">Sunday</option>
                                                 <option value="Monday">Monday</option>
@@ -317,7 +317,7 @@
                                         <label class="col-sm-3 col-form-label">Contact Person Name</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                @Html.EditorFor(model => model.ContactpersonName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Name", @required = "required", @maxlength = "500" } })
+                                                @Html.EditorFor(model => model.ContactpersonName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Name", @maxlength = "500" } })
                                             </div>
                                         </div>
                                     </div>
@@ -344,7 +344,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Building / Road Address</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.BillingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.BillingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address",  @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -352,7 +352,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Area</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.BillingArea, new { htmlAttributes = new { @class = "form-control", @placeholder = "Area", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.BillingArea, new { htmlAttributes = new { @class = "form-control", @placeholder = "Area", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +362,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Landmark</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.BillingLandmark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Landmark", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.BillingLandmark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Landmark", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -370,7 +370,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Billing State</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.BillingState, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing State", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.BillingState, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing State", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -380,7 +380,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Billing City</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ShippingCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing City", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.ShippingCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing City", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -388,7 +388,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Billing Pincode</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.BillingPincode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing Pincode", @maxlength = "6", @required = "required", @onkeypress = "return isNumber(event);" } })
+                                            @Html.EditorFor(model => model.BillingPincode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Billing Pincode", @maxlength = "6", @onkeypress = "return isNumber(event);" } })
                                         </div>
                                     </div>
                                 </div>
@@ -399,7 +399,7 @@
                                         <label class="col-sm-3 col-form-label">Country</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                @Html.DropDownListFor(model => model.CountryID, (SelectList)ViewBag.CountryList, "Select Country", new { @class = "form-control listbox", @required = "required" })
+                                                @Html.DropDownListFor(model => model.CountryID, (SelectList)ViewBag.CountryList, "Select Country", new { @class = "form-control listbox" })
                                             </div>
                                         </div>
                                     </div>
@@ -409,7 +409,7 @@
                                         <label class="col-sm-3 col-form-label">State</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                @Html.DropDownListFor(model => model.StateID, (SelectList)ViewBag.StateList, "Select State", new { @class = "form-control listbox", @onchange = "StateChanged()", @required = "required" })
+                                                @Html.DropDownListFor(model => model.StateID, (SelectList)ViewBag.StateList, "Select State", new { @class = "form-control listbox", @onchange = "StateChanged()" })
                                             </div>
                                         </div>
                                     </div>
@@ -420,7 +420,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">City</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.Cityname, new { htmlAttributes = new { @class = "form-control", @placeholder = "City Name", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.Cityname, new { htmlAttributes = new { @class = "form-control", @placeholder = "City Name", @maxlength = "500" } })
                                             @Html.HiddenFor(model => model.CityID)
                                         </div>
                                     </div>
@@ -447,7 +447,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Building / Road Address</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ShippingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.ShippingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -455,7 +455,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Shipping Area</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ShippingArea, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Area", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.ShippingArea, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Area", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -465,7 +465,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Shipping Landmark</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ShippingLandMark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Landmark", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.ShippingLandMark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Landmark", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -473,7 +473,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Shipping State</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ShippingState, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping State", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.ShippingState, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping State", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -483,7 +483,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Shipping City</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ShippingCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping City", @required = "required", @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.ShippingCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping City", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -491,7 +491,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Shipping Pincode</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ShippingPincode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Pincode", @maxlength = "6", @required = "required", @onkeypress = "return isNumber(event);" } })
+                                            @Html.EditorFor(model => model.ShippingPincode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Shipping Pincode", @maxlength = "6", @onkeypress = "return isNumber(event);" } })
                                         </div>
                                     </div>
                                 </div>
@@ -528,7 +528,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">GST Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number", @required = "required", @maxlength = "15", @onchange = "gst_pattern()" } })
+                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number", @maxlength = "15", @onchange = "gst_pattern()" } })
                                         </div>
                                     </div>
                                 </div>
@@ -538,7 +538,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">PAN Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.PANNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "PAN Number", @required = "required", @maxlength = "10" } })
+                                            @Html.EditorFor(model => model.PANNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "PAN Number", @maxlength = "10" } })
                                         </div>
                                     </div>
                                 </div>
@@ -592,7 +592,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Opening Balance</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.OpeningBalance, new { htmlAttributes = new { @class = "form-control", @placeholder = "Opening Balance", @onkeypress = "return isdecimalKey(event)", @required = "required", @maxlength = "8" } })
+                                            @Html.EditorFor(model => model.OpeningBalance, new { htmlAttributes = new { @class = "form-control", @placeholder = "Opening Balance", @onkeypress = "return isdecimalKey(event)", @maxlength = "8" } })
                                         </div>
                                     </div>
                                 </div>
@@ -600,7 +600,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Credit Limit</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.CrLimit, new { htmlAttributes = new { @class = "form-control", @placeholder = "Credit Limit", @onkeypress = "return isdecimalKey(event)", @required = "required", @maxlength = "8" } })
+                                            @Html.EditorFor(model => model.CrLimit, new { htmlAttributes = new { @class = "form-control", @placeholder = "Credit Limit", @onkeypress = "return isdecimalKey(event)", @maxlength = "8" } })
                                         </div>
                                     </div>
                                 </div>
@@ -610,7 +610,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Credit Days</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.CrDays, new { htmlAttributes = new { @class = "form-control", @placeholder = "Credit Days", @onkeypress = "return isNumber(event)", @required = "required", @maxlength = "5" } })
+                                            @Html.EditorFor(model => model.CrDays, new { htmlAttributes = new { @class = "form-control", @placeholder = "Credit Days", @onkeypress = "return isNumber(event)", @maxlength = "5" } })
                                         </div>
                                     </div>
                                 </div>
@@ -618,7 +618,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">No Of Outstanding Bill</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.NoofOutstandingBill, new { htmlAttributes = new { @class = "form-control", @placeholder = "No Of Outstanding Bill", @onkeypress = "return isNumber(event)", @required = "required" } })
+                                            @Html.EditorFor(model => model.NoofOutstandingBill, new { htmlAttributes = new { @class = "form-control", @placeholder = "No Of Outstanding Bill", @onkeypress = "return isNumber(event)" } })
                                         </div>
                                     </div>
                                 </div>
@@ -628,7 +628,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Interest Rate</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.IntrestRate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Interest Rate", @onkeypress = "return isdecimalKey(event)", @required = "required", @maxlength = "5" } })
+                                            @Html.EditorFor(model => model.IntrestRate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Interest Rate", @onkeypress = "return isdecimalKey(event)", @maxlength = "5" } })
                                         </div>
                                     </div>
                                 </div>
@@ -636,7 +636,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Interest Days</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.InterestDays, new { htmlAttributes = new { @class = "form-control", @placeholder = "Interest Days", @onkeypress = "return isNumber(event)", @required = "required" } })
+                                            @Html.EditorFor(model => model.InterestDays, new { htmlAttributes = new { @class = "form-control", @placeholder = "Interest Days", @onkeypress = "return isNumber(event)" } })
                                         </div>
                                     </div>
                                 </div>
@@ -646,7 +646,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Activate Interest</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ActivateIntrest, new { htmlAttributes = new { @class = "form-control", @placeholder = "Activate Interest", @required = "required" } })
+                                            @Html.EditorFor(model => model.ActivateIntrest, new { htmlAttributes = new { @class = "form-control", @placeholder = "Activate Interest" } })
                                         </div>
                                     </div>
                                 </div>
@@ -654,7 +654,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Is Active</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control", @placeholder = "Is Active", @required = "required" } })
+                                            @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control", @placeholder = "Is Active" } })
                                         </div>
                                     </div>
                                 </div>
@@ -845,7 +845,7 @@
                 document.getElementById("btnTally").style.display = "block";
             }
             else {
-                swal(data);
+                swal.fire(data);
             }
         }
         function onBegin_Ajax() {

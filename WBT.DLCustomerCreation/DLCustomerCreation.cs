@@ -863,6 +863,7 @@ namespace WBT.DLCustomerCreation
                         userLogin.RoleID = ValidateUser.RoleID;
                         userLogin.IsTallyUsing = ValidateUser.tblSysOrganization.IsTallyUsing == null ? false : ValidateUser.tblSysOrganization.IsTallyUsing.Value;
                         userLogin.IsServiceInstalled = ValidateUser.tblSysOrganization.IsServiceInstalled == null ? false : ValidateUser.tblSysOrganization.IsServiceInstalled.Value;
+                        userLogin.OrgName = ValidateUser.tblSysOrganization.Name;
                         return userLogin;
                     }
                     else

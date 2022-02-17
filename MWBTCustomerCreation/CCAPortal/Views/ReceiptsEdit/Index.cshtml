@@ -65,7 +65,7 @@
                             <div class="form-group">
                                 <label>Receipt Date </label>
                                 <div>
-                                    @Html.EditorFor(m => m.ReceiptDateStr, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control"} })
+                                    @Html.EditorFor(m => m.ReceiptDateStr, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
                                 </div>
                             </div>
                         </div>
@@ -86,8 +86,65 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Transaction Type </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.BankOrCash, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Comments </label>
+                                <div>
+                                    @Html.TextBoxFor(m => m.Comments, new { @readonly = "readonly", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                        @{
+                            if (Model.BankOrCash != "C")
+                            {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Payment Type</label>
+                                        @Html.TextBoxFor(m => m.PaymentType, new { @readonly = "readonly", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Vouher Number</label>
+                                        @Html.TextBoxFor(m => m.VoucherTypeNo, new { @readonly = "readonly", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Bank Name</label>
+                                        @Html.TextBoxFor(m => m.BankName, new { @readonly = "readonly", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Branch Name</label>
+                                        @Html.TextBoxFor(m => m.BranchName, new { @readonly = "readonly", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>IFSC</label>
+                                        @Html.TextBoxFor(m => m.BankName, new { @readonly = "readonly", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Account Number</label>
+                                        @Html.TextBoxFor(m => m.AccountNumber, new { @readonly = "readonly", @class = "form-control" })
+                                    </div>
+                                </div>
+                            }
+                        }
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label> Total Amount </label>
@@ -138,7 +195,7 @@
                                         </td>
 
                                         <td style="text-align:center;">
-                                            @Html.TextBoxFor(a => a.ReceiptsDetails[j].BillNo, new { @readonly = "readonly", @class = "form-control" })
+                                            @Html.TextBoxFor(a => a.ReceiptsDetails[j].BillNo, new { @class = "form-control", @required = "required" })
                                         </td>
 
                                         <td>

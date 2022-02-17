@@ -35,6 +35,7 @@ namespace CCAPortal.Controllers
                     Session["OrgID"] = User.OrgID;
                     Session["UserName"] = User.FName;
                     Session["IsTallyUsing"] = User.IsTallyUsing;
+                    Session["FirmName"] = User.OrgName;
 
                     DLGetRoleCreation dlRole = new DLGetRoleCreation();
                     var role = dlRole.GetDeatil(User.RoleID);

@@ -559,51 +559,77 @@ namespace WBT.DLCustomerCreation
 
                     using (var dbcxtransaction = Entities.Database.BeginTransaction())
                     {
-                        tblSalesOrder tblsalesorders = Entities.tblSalesOrders.AsNoTracking().Where(c => c.SalesOrderNumber == OrderNumber.Trim()).FirstOrDefault();
 
-                        SsalesOrders.CustID = tblsalesorders.CustID;
-                        SsalesOrders.OrderNumber = tblsalesorders.SalesOrderNumber;
-                        SsalesOrders.SalesOrderNumber = tblsalesorders.SalesOrderNumber;
-                        SsalesOrders.OrgID = tblsalesorders.OrgID;
-                        SsalesOrders.BranchID = tblsalesorders.BranchID;
-                        SsalesOrders.SalesmanID = tblsalesorders.SalesmanID;
-                        SsalesOrders.createdByID = tblsalesorders.CreatedByID;
+                        SsalesOrders = (from tblsalesorders in Entities.tblSalesOrders
+                                        join c in Entities.tblCustomerVendorDetails on tblsalesorders.CustID equals c.CustID
+                                        select new SalesOrders
+                                        {
+                                            CustID = tblsalesorders.CustID,
+                                            OrderNumber = tblsalesorders.SalesOrderNumber,
+                                            SalesOrderNumber = tblsalesorders.SalesOrderNumber,
+                                            OrgID = tblsalesorders.OrgID,
+                                            BranchID = tblsalesorders.BranchID,
+                                            SalesmanID = tblsalesorders.SalesmanID,
+                                            createdByID = tblsalesorders.CreatedByID,
+                                            IsDirectSO = tblsalesorders.IsDirectSO,
+                                            IsDirectSale = tblsalesorders.IsDirectSale,
+                                            Photo1 = tblsalesorders.Photo1,
+                                            Photo2 = tblsalesorders.Photo2,
+                                            BrokerID = tblsalesorders.BrokerID,
+                                            VoucherTypeNo = tblsalesorders.VoucherTypeNo,
+                                            SignatureImage = tblsalesorders.SignatureImage,
+                                            IsBulkSale = tblsalesorders.IsBulkSale,
+                                            SalesType = tblsalesorders.SalesType,
+                                            IsTallyUpdated = tblsalesorders.IsTallyUpdated,
+                                            Status = tblsalesorders.Status,
+                                            DiscountPercentage = tblsalesorders.DiscountPercentage,
+                                            DiscountAmt = tblsalesorders.DiscountAmt,
+                                            ApprovalStatus = tblsalesorders.ApprovalStatus,
+                                            RegistrationType = tblsalesorders.RegistrationType,
+                                            TransType = tblsalesorders.TransType,
+                                            Comments = tblsalesorders.Comments,
+                                            Location = tblsalesorders.Location,
+                                            PANNumber = tblsalesorders.PANNumber,
+                                            IsActive = tblsalesorders.IsActive,
+                                            IsDelivaryNote = tblsalesorders.IsDelivaryNote,
+                                            URDNumber = tblsalesorders.URDNumber,
+                                            IsGatePassEntered = tblsalesorders.IsGatePassEntered,
+                                            CreditTypeId = tblsalesorders.CreditTypeId,
+                                            BillingAddress = tblsalesorders.BillingAddress,
+                                            IsEdited = tblsalesorders.IsEdited,
+                                            BranchName = Entities.tblSysBranches.Where(r => r.BranchID == tblsalesorders.BranchID).FirstOrDefault().Name,
+                                            CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().FirmName,
+                                            MobileNumber = Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().MobileNumber,
+                                            caddress = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingAddress) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingAddress : "NA",
+                                            cstate = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingState) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingState : "NA",
+                                            ccity = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingCity) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingCity : "NA",
+                                            SalesDateTime = tblsalesorders.SalesDatetime,
+                                            area = c.BillingArea,
+                                        }).FirstOrDefault();
 
-                        SsalesOrders.IsDirectSO = tblsalesorders.IsDirectSO;
-                        SsalesOrders.IsDirectSale = tblsalesorders.IsDirectSale;
-                        SsalesOrders.Photo1 = tblsalesorders.Photo1;
-                        SsalesOrders.Photo2 = tblsalesorders.Photo2;
-                        SsalesOrders.BrokerID = tblsalesorders.BrokerID;
-                        SsalesOrders.VoucherTypeNo = tblsalesorders.VoucherTypeNo;
-                        SsalesOrders.SignatureImage = tblsalesorders.SignatureImage;
-                        SsalesOrders.IsBulkSale = tblsalesorders.IsBulkSale;
-                        SsalesOrders.SalesType = tblsalesorders.SalesType;
-                        SsalesOrders.IsTallyUpdated = tblsalesorders.IsTallyUpdated;
-                        SsalesOrders.Status = tblsalesorders.Status;
-                        SsalesOrders.DiscountPercentage = tblsalesorders.DiscountPercentage;
-                        SsalesOrders.DiscountAmt = tblsalesorders.DiscountAmt;
-                        SsalesOrders.ApprovalStatus = tblsalesorders.ApprovalStatus;
-                        SsalesOrders.RegistrationType = tblsalesorders.RegistrationType;
-                        SsalesOrders.TransType = tblsalesorders.TransType;
-                        SsalesOrders.Comments = tblsalesorders.Comments;
-                        SsalesOrders.Location = tblsalesorders.Location;
-                        SsalesOrders.PANNumber = tblsalesorders.PANNumber;
-                        SsalesOrders.IsActive = tblsalesorders.IsActive;
-                        SsalesOrders.IsDelivaryNote = tblsalesorders.IsDelivaryNote;
-                        SsalesOrders.URDNumber = tblsalesorders.URDNumber;
-                        SsalesOrders.IsGatePassEntered = tblsalesorders.IsGatePassEntered;
-                        SsalesOrders.CreditTypeId = tblsalesorders.CreditTypeId;
-                        SsalesOrders.BillingAddress = tblsalesorders.BillingAddress;
-                        SsalesOrders.IsEdited = tblsalesorders.IsEdited;
+                        var itemsList = (from a in Entities.tblSalesOrderWithItems
+                                         join b in Entities.tblSalesOrders on a.SalesOrderNumber.ToLower().Trim() equals b.SalesOrderNumber.ToLower().Trim()
+                                         join c in Entities.tblItems on a.ItemCode.ToLower().Trim() equals c.ItemCode.ToLower().Trim()
+                                         where a.SalesOrderNumber == OrderNumber
+                                         select new DLSalesOrderWithItemCreation
+                                         {
+                                             ItemName = c.ItemName,
+                                             BagQTY = a.BagQTY,
+                                             Value = a.Value,
+                                             ItemCode = a.ItemCode,
+                                             Rate = a.Rate,
+                                             TotalQTY = a.TotalQTY,
+                                             SalesOrderWithItemID = a.SalesOrderWithItemID,
+                                             IsRateInQuantls = a.IsRateInQuantls,
+                                             DiscountPercentage = a.DiscountPercentage,
+                                             LoadingUnloadingCharge = a.LoadingUnloadingCharge,
+                                             ItemRowNumber = a.ItemRowNumber,
+                                             FrieghtCharge = a.FrieghtCharge,
+                                             OtherExpense = a.OtherExpense
 
-                        SsalesOrders.BranchName = Entities.tblSysBranches.Where(r => r.BranchID == SsalesOrders.BranchID).FirstOrDefault().Name;
-                        SsalesOrders.CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().FirmName;
-                        SsalesOrders.MobileNumber = Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().MobileNumber;
-                        SsalesOrders.caddress = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().ShippingAddress) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().ShippingAddress : "NA";
-                        SsalesOrders.cstate = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().ShippingState) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().ShippingState : "NA";
-                        SsalesOrders.ccity = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().ShippingCity) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == SsalesOrders.CustID).FirstOrDefault().ShippingCity : "NA";
-                        //SsalesOrders.salesmanName = !string.IsNullOrEmpty(Entities.tblSalesmanDetails.Where(r => r.SalesManID == SsalesOrders.SalesmanID).FirstOrDefault().Fname) ? Entities.tblSalesmanDetails.Where(r => r.SalesManID == SsalesOrders.SalesmanID).FirstOrDefault().Fname : "NA";
-                        SsalesOrders.SalesDateTime = tblsalesorders.SalesDatetime;
+
+                                         }).Distinct().ToList();
+                        SsalesOrders.DLSalesOrderWithItemCreations = itemsList.ToList();
 
                         return SsalesOrders;
                     }
