@@ -1128,6 +1128,7 @@ namespace WBT.DLCustomerCreation
                                             CityName = ct.VillageLocalityname
                                         }).Distinct().ToList();
 
+                           
                             cityList = (from c in cityList
                                         join b in BranchList on c.BranchID equals b.BranchID
                                         select new City
@@ -1135,6 +1136,8 @@ namespace WBT.DLCustomerCreation
                                             CityID = c.CityID,
                                             CityName = c.CityName
                                         }).Distinct().ToList();
+                            cityList = cityList.GroupBy(d => d.CityID).Select(i => i.FirstOrDefault()).ToList();
+
 
                             stateList = (from c in Entities.tblCustomerVendorDetails
                                          join s in Entities.tblStates on c.StateID equals s.StateID
@@ -1145,7 +1148,9 @@ namespace WBT.DLCustomerCreation
                                              StateID = s.StateID,
                                              StateName = s.StateName
                                          }).Distinct().ToList();
+                            stateList = stateList.GroupBy(d => d.StateID).Select(i =>i.FirstOrDefault()).ToList();
 
+                            
                             stateList = (from s in stateList
                                          join b in BranchList on s.BranchID equals b.BranchID
                                          select new State
@@ -1153,6 +1158,7 @@ namespace WBT.DLCustomerCreation
                                              StateID = s.StateID,
                                              StateName = s.StateName
                                          }).Distinct().ToList();
+                            //cityList = cityList.GroupBy(d => d.CityID).Select(i => i.FirstOrDefault()).ToList();
 
                             areaList = (from c in Entities.tblCustomerVendorDetails
                                         where c.BillingArea != null && c.BillingArea != "" && c.OrgID == OrgID
@@ -1170,6 +1176,8 @@ namespace WBT.DLCustomerCreation
                                             BillingArea = c.BillingArea,
                                             ShippingArea = c.BillingArea
                                         }).Distinct().ToList();
+
+                            areaList = areaList.GroupBy(d => d.ShippingArea).Select(i => i.FirstOrDefault()).ToList();//new line
 
                             var BCityList = Entities.tblCustomerVendorDetails.Where(cc => cc.BillingCity != null && cc.BillingCity != "" && cc.OrgID == OrgID).Select(c => new { c.BranchID, c.BillingCity }).Distinct().ToList();
 
@@ -1348,6 +1356,7 @@ namespace WBT.DLCustomerCreation
                                             ShippingArea = c.BillingArea
                                         }).Distinct().ToList();
                         }
+                        areaList = areaList.GroupBy(d => d.ShippingArea).Select(i => i.FirstOrDefault()).ToList();//new line
 
                         aCLists.cities = cityList;
                         aCLists.districts = districts;
@@ -1482,6 +1491,8 @@ namespace WBT.DLCustomerCreation
                                             CityName = c.CityName,
                                             DistrictID = c.DistrictID
                                         }).Distinct().ToList();
+                            cityList = cityList.GroupBy(d => d.CityID).Select(i => i.FirstOrDefault()).ToList(); //new line
+
                         }
                         else
                         {
@@ -1507,6 +1518,7 @@ namespace WBT.DLCustomerCreation
                                         BillingArea = c.BillingArea,
                                         ShippingArea = c.BillingArea
                                     }).Distinct().ToList();
+                         
 
                         if (states != null && states.Count() > 0)
                         {
@@ -1520,6 +1532,8 @@ namespace WBT.DLCustomerCreation
                                             ShippingArea = c.BillingArea
                                         }).Distinct().ToList();
                         }
+                        
+
                         else
                         {
                             areaList = (from c in areaList
@@ -1529,7 +1543,9 @@ namespace WBT.DLCustomerCreation
                                             BillingArea = c.BillingArea,
                                             ShippingArea = c.BillingArea
                                         }).Distinct().ToList();
+                           
                         }
+                        areaList = areaList.GroupBy(d => d.ShippingArea).Select(i => i.FirstOrDefault()).ToList(); //new line
 
                         aCLists.cities = cityList;
                         aCLists.areaLists = areaList;
@@ -1686,6 +1702,7 @@ namespace WBT.DLCustomerCreation
                                             BillingArea = c.BillingArea,
                                             ShippingArea = c.BillingArea
                                         }).Distinct().ToList();
+                            areaList = areaList.GroupBy(d => d.ShippingArea).Select(i => i.FirstOrDefault()).ToList();//new line
                         }
                         else
                         {
@@ -1697,7 +1714,9 @@ namespace WBT.DLCustomerCreation
                                             BillingArea = c.BillingArea,
                                             ShippingArea = c.BillingArea
                                         }).Distinct().ToList();
+                            
                         }
+                        areaList = areaList.GroupBy(d => d.ShippingArea).Select(i => i.FirstOrDefault()).ToList();//new line
 
                         aCLists.areaLists = areaList;
                         return aCLists;
