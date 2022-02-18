@@ -48,6 +48,7 @@
     @Html.HiddenFor(model => model.Location)
     @Html.HiddenFor(model => model.IsDelivaryNote)
     @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.IsEdited)
 
     <div class="row" id="divList">
         <div class="col-12">
@@ -146,9 +147,9 @@
                             <th>Item Name</th>
                             <th>Price Per Qty</th>
                             <th>Qty</th>
+                            <th>Discount %</th>
+                            <th>Discount Value</th>
                             <th>Total Price</th>
-                            @*<th>Action</th>*@
-
                         </tr>
                     </thead>
                     <tbody>
@@ -164,7 +165,6 @@
                                             @Html.DisplayFor(a => a.DLSalesOrderWithItemCreations[j].ItemName)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].ItemCode)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].SalesOrderWithItemID)
-                                            @*@Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].Rate)*@
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].BagQTY)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].IsRateInQuantls)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage)
@@ -183,18 +183,36 @@
                                             {
                                                 @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Rate, new { @class = "form-control numberonly", @id = "rate_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
                                             }
-
                                         </td>
 
                                         <td style="text-align:right;">
                                             @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].TotalQTY, new { @class = "form-control numberonly", @onchange = "calculating(this, " + item.Rate + ", '" + item.ItemName + "','" + item.ItemCode + "')", @id = "bqty_" + item.ItemCode + "", @style = "text-align:right;" })
                                             @Html.Hidden("hdnQty")
                                         </td>
+
+                                        <td>
+                                            @if (Session["RoleName"].ToString() == "Admin")
+                                            {
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @id = "discPer_" + item.ItemCode + "", @onchange = "discountPerChanged(this, " + item.Rate + ", "+ item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @id = "discPer_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (Session["RoleName"].ToString() == "Admin")
+                                            {
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @id = "discAmt_" + item.ItemCode + "", @onchange = "discountAmtChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @id = "discAmt_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
+                                            }
+                                        </td>
                                         <td>
                                             @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Value, new { @class = "form-control numberonly", @id = "ttlp_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
                                         </td>
-                                        @*<td>  </td>*@
-
                                     </tr>
                                     j++;
                                 }
@@ -205,7 +223,12 @@
 
                 <div class="card-footer">
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary" id="btnUpdate">Update</button>
+                        @{
+                            if (!Model.IsEdited)
+                            {
+                                <button type="submit" class="btn btn-primary" id="btnUpdate">Update</button>
+                            }
+                        }
                         <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally">Sync To Tally</a>
                         <a href='@Url.Action("Index", "SalesOrder")' class="btn btn-success" id="btnBack">Back</a>
                     </div>
@@ -228,8 +251,10 @@
     <script>
         function calculating(qty, price, itemName, itemCode) {
             var p = document.getElementById("rate_" + itemCode).value;
+            var discountAmt = parseFloat(document.getElementById("discAmt_" + itemCode).value);
+            if(discountAmt)
             var result_val = (parseFloat(qty.value) * parseFloat(p));
-            document.getElementById("ttlp_" + itemCode).value = result_val.toFixed(2);
+            document.getElementById("ttlp_" + itemCode).value = (result_val - discountAmt).toFixed(2);
         }
 
         function calculating_pricechg(price, itemCode1) {
@@ -358,5 +383,22 @@
             });
     }
 
+        //Discount 
+        function discountPerChanged(discountPerelement, price, totalValue, itemCode) {
+            $("#progress").show();
+            
+            var discountPer = discountPerelement.value;
+            var discountAmt = parseFloat((parseFloat(price) * parseFloat(discountPer)) / parseFloat(100));
+            document.getElementById("ttlp_" + itemCode).value = totalValue - discountAmt;
+            document.getElementById("discAmt_" + itemCode).value = discountAmt;
+            $("#progress").hide();
+        }
+        function discountAmtChanged(discountAmtelement, price, totalValue, itemCode) {
+            $("#progress").show();
+            document.getElementById("discPer_" + itemCode).value = "";
+            var discountAmt = discountAmtelement.value;
+            document.getElementById("ttlp_" + itemCode).value = totalValue - discountAmt;
+            $("#progress").hide();
+        }
     </script>
 }

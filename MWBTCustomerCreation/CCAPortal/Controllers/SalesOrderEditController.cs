@@ -320,8 +320,13 @@ namespace CCAPortal.Controllers
                     decimal FreightGStValue = 0;
 
                     string SalesType = string.Empty;
+                    var customerState = sorders.GetCustomerState(SalesOrder.CustID);
+                    var companyState = sorders.GetCompanyState(SalesOrder.OrgID);
+                    if(customerState.Trim() == companyState.Trim())
+                        SalesType = "Local State";
+                    else
+                        SalesType = "Inter";
 
-                    SalesType = "Local State";
                     string VoucherType = "Sales Order";
 
                     string xmlstc = string.Empty;

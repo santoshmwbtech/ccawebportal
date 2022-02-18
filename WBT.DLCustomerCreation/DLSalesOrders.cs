@@ -168,6 +168,7 @@ namespace WBT.DLCustomerCreation
         public decimal TotalQtyAllocatedItems { get; set; }
         //added on 2 NOV for GST of SO number
         public string GSTPR { get; set; }
+        public decimal? GSTPer { get; set; }
         public Nullable<int> BrokerID { get; set; }
         //for print needed added by sneha 5thNov2020
         public string OrgDetails { get; set; }
@@ -1432,6 +1433,57 @@ namespace WBT.DLCustomerCreation
         //    throw new NotImplementedException();
         //}
 
+        public string GetCustomerState(string CustID)
+        {
+            try
+            {
+                using (Entities = new MWBTCustomerAppEntities())
+                {
+                    if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
+                        Entities.Database.Connection.Open();
+
+                    using (var dbcxtransaction = Entities.Database.BeginTransaction())
+                    {
+                        var customerState = string.Empty;
+                        var customer = Entities.tblCustomerVendorDetails.Where(d => d.CustID == CustID).FirstOrDefault();
+                        if (customer != null)
+                            customerState = customer.BillingState;
+                        return customerState;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return null;
+            }
+        }
+
+        public string GetCompanyState(string OrgID)
+        {
+            try
+            {
+                using (Entities = new MWBTCustomerAppEntities())
+                {
+                    if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
+                        Entities.Database.Connection.Open();
+
+                    using (var dbcxtransaction = Entities.Database.BeginTransaction())
+                    {
+                        var companyState = string.Empty;
+                        var company = Entities.tblSysOrganizations.Where(d => d.OrgID == OrgID).FirstOrDefault();
+                        if(company != null)
+                            companyState = company.State;
+                        return companyState;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return null;
+            }
+        }
 
         private void UpdateLineItem(DLSalesOrderWithItemCreation updatedLineItem, tblSalesOrderWithItem oldLineItem)
         {

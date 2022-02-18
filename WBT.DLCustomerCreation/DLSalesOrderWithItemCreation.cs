@@ -29,6 +29,7 @@ namespace WBT.DL.Transaction
         public Nullable<decimal> LoadingUnloadingCharge { get; set; }
         public Nullable<decimal> OtherExpense { get; set; }
         public Nullable<decimal> DiscountPercentage { get; set; }
+        public decimal? DiscountAmt { get; set; }
         public Nullable<decimal> MaxQuantity { get; set; }
         public bool IsCorrectionRequired { get; set; }
         /// <summary>
