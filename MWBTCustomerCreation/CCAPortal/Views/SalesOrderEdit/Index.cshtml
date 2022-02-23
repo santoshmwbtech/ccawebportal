@@ -177,7 +177,7 @@
                                         <td style="text-align:center;">
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Rate, new { @class = "form-control numberonly", @id = "rate_" + item.ItemCode + "", @onchange = "calculating_pricechg(this, " + item.ItemCode + ")", @style = "text-align:right;" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Rate, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "rate_" + item.ItemCode + "", @onchange = "calculating_pricechg(this, " + item.ItemCode + ")", @style = "text-align:right;" })
                                             }
                                             else
                                             {
@@ -186,14 +186,14 @@
                                         </td>
 
                                         <td style="text-align:right;">
-                                            @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].TotalQTY, new { @class = "form-control numberonly", @onchange = "calculating(this, " + item.Rate + ", '" + item.ItemName + "','" + item.ItemCode + "')", @id = "bqty_" + item.ItemCode + "", @style = "text-align:right;" })
+                                            @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].TotalQTY, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @onchange = "calculating(this, " + item.Rate + ", '" + item.ItemName + "','" + item.ItemCode + "')", @id = "bqty_" + item.ItemCode + "", @style = "text-align:right;" })
                                             @Html.Hidden("hdnQty")
                                         </td>
 
                                         <td>
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @id = "discPer_" + item.ItemCode + "", @onchange = "discountPerChanged(this, " + item.Rate + ", "+ item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discPer_" + item.ItemCode + "", @onchange = "discountPerChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
                                             }
                                             else
                                             {
@@ -203,7 +203,7 @@
                                         <td>
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @id = "discAmt_" + item.ItemCode + "", @onchange = "discountAmtChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discAmt_" + item.ItemCode + "", @onchange = "discountAmtChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
                                             }
                                             else
                                             {
@@ -233,7 +233,6 @@
                         <a href='@Url.Action("Index", "SalesOrder")' class="btn btn-success" id="btnBack">Back</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -251,16 +250,59 @@
     <script>
         function calculating(qty, price, itemName, itemCode) {
             var p = document.getElementById("rate_" + itemCode).value;
+            var discountPer = document.getElementById("discPer_" + itemCode).value;
             var discountAmt = parseFloat(document.getElementById("discAmt_" + itemCode).value);
-            if(discountAmt)
-            var result_val = (parseFloat(qty.value) * parseFloat(p));
-            document.getElementById("ttlp_" + itemCode).value = (result_val - discountAmt).toFixed(2);
+            var totalPrice = (parseFloat(qty.value) * parseFloat(p));
+            if (discountPer) {
+                discountAmt = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
+                totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+            }
+            else if (discountAmt) {
+                totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+            }
+            //var result_val = (parseFloat(qty.value) * parseFloat(totalPrice));
+            document.getElementById("ttlp_" + itemCode).value = totalPrice.toFixed(2);
+            document.getElementById("discAmt_" + itemCode).value = discountAmt.toFixed(2);
         }
 
         function calculating_pricechg(price, itemCode1) {
             var qty = document.getElementById("bqty_" + itemCode1).value;
-            var res = (parseFloat(price.value) * qty);
-            document.getElementById("ttlp_" + itemCode1).value = res.toFixed(2);
+            var discountPer = document.getElementById("discPer_" + itemCode1).value;
+            var discountAmt = document.getElementById("discAmt_" + itemCode1).value;
+            var totalPrice = parseFloat(price.value) * parseFloat(qty);
+            if (discountPer) {
+                discountAmt = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
+                totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+            }
+            else if (discountAmt) {
+                totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+            }
+            //var res = (parseFloat(totalPrice) * qty);
+            document.getElementById("ttlp_" + itemCode1).value = totalPrice.toFixed(2);
+            document.getElementById("discAmt_" + itemCode1).value = discountAmt.toFixed(2);
+        }
+        //Discount
+        function discountPerChanged(discountPerelement, price, totalValue, itemCode) {
+            $("#progress").show();
+
+            var discountPer = discountPerelement.value;
+            price = document.getElementById("rate_" + itemCode).value;
+            qty = document.getElementById("bqty_" + itemCode).value;
+            var totalPrice = parseFloat(price) * parseFloat(qty);
+            var discountAmt = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
+            document.getElementById("ttlp_" + itemCode).value = totalPrice - discountAmt;
+            document.getElementById("discAmt_" + itemCode).value = discountAmt;
+            $("#progress").hide();
+        }
+        function discountAmtChanged(discountAmtelement, price, totalValue, itemCode) {
+            $("#progress").show();
+            price = document.getElementById("rate_" + itemCode).value;
+            qty = document.getElementById("bqty_" + itemCode).value;
+            document.getElementById("discPer_" + itemCode).value = "";
+            var discountAmt = discountAmtelement.value;
+            var totalPrice = parseFloat(price) * parseFloat(qty);
+            document.getElementById("ttlp_" + itemCode).value = totalPrice - discountAmt;
+            $("#progress").hide();
         }
 
         function onPromoSuccess_Ajax() {
@@ -332,9 +374,7 @@
                     }
             });
         });
-
-
-    function TallySync() {
+        function TallySync() {
         var ID = document.getElementById("txtsalesorderno").value;
         $.ajax({
                 url: '@Url.Action("TallySync", "SalesOrderEdit")',
@@ -382,23 +422,5 @@
                 }
             });
     }
-
-        //Discount 
-        function discountPerChanged(discountPerelement, price, totalValue, itemCode) {
-            $("#progress").show();
-            
-            var discountPer = discountPerelement.value;
-            var discountAmt = parseFloat((parseFloat(price) * parseFloat(discountPer)) / parseFloat(100));
-            document.getElementById("ttlp_" + itemCode).value = totalValue - discountAmt;
-            document.getElementById("discAmt_" + itemCode).value = discountAmt;
-            $("#progress").hide();
-        }
-        function discountAmtChanged(discountAmtelement, price, totalValue, itemCode) {
-            $("#progress").show();
-            document.getElementById("discPer_" + itemCode).value = "";
-            var discountAmt = discountAmtelement.value;
-            document.getElementById("ttlp_" + itemCode).value = totalValue - discountAmt;
-            $("#progress").hide();
-        }
     </script>
 }

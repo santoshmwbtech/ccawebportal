@@ -2207,7 +2207,7 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-        public List<tblCustomerType> GetCustomerTypes()
+        public List<BusinessType> GetCustomerTypes(string OrgID)
         {
             try
             {
@@ -2215,8 +2215,9 @@ namespace WBT.DLCustomerCreation
                 {
                     using (var dbcxtransaction = Entities.Database.BeginTransaction())
                     {
-                        List<tblCustomerType> CustomerTypes = new List<tblCustomerType>();
-                        CustomerTypes = (from s in Entities.tblCustomerTypes
+                        List<BusinessType> CustomerTypes = new List<BusinessType>();
+                        CustomerTypes = (from s in Entities.BusinessTypes
+                                         where s.OrgId == OrgID
                                          select s).ToList();
 
                         return CustomerTypes;
