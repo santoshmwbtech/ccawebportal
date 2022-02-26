@@ -107,7 +107,13 @@
                     window.location = '@Url.Action("Index", "Login")';
                 }
                 else if (data == "1") {
-                    swal.fire("Please install the service and open tally software, wait for 10 seconds and click on Tally Sync button again");
+                    Swal.fire({
+                            title: "Please open Tally!",
+                            text: "Please install the service and open tally software, wait for 10 seconds and click on Tally Sync button again",
+                            icon: "error",
+                        }).then(function () {
+                            $("#progress").hide();
+                        });
                 }
                 else {
                     if (data == "Tally Sync Successful!!") {

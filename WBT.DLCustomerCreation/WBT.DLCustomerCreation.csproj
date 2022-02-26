@@ -137,9 +137,11 @@
     <Compile Include="DLSettings.cs" />
     <Compile Include="DLSubCategoryCreation.cs" />
     <Compile Include="DLSystemDetails.cs" />
+    <Compile Include="DLTaxLedgers.cs" />
     <Compile Include="DLTemplates.cs" />
     <Compile Include="DLUCMappings.cs" />
     <Compile Include="DLUserCreation.cs" />
+    <Compile Include="DTOs\TaxLedgersDTO.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\DLCustomerCreationReport.cs" />

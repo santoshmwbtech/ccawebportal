@@ -269,6 +269,61 @@
                         </ul>
                     </li>
                     @*Settings menu end*@
+                    @*Settings Menus Start*@
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                Tally Import
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            @{
+                                if (Convert.ToBoolean(Session["IsTallyUsing"].ToString()))
+                                {
+                                    if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "importdebtorsexcel" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href='@Url.Action("Index", "DebtorGroupImport")'>
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Import Groups</p>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "importtaxes" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href='@Url.Action("Index", "ImportTaxes")'>
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Import Taxes</p>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "importcustomersexcel" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href='@Url.Action("Index", "ImportCustomersExcel")'>
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Import Customers</p>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "downloadservice" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href='@Url.Action("DownloadFile", "Login")'>
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Download Service Setup</p>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </li>
+                    @*Settings menu end*@
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-edit"></i>

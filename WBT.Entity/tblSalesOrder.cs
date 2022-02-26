@@ -85,6 +85,13 @@ namespace WBT.Entity
         public string RetSOName { get; set; }
         public string RetSOSignature { get; set; }
         public bool IsEdited { get; set; }
+        public Nullable<decimal> TotalQty { get; set; }
+        public Nullable<decimal> TotalPrice { get; set; }
+        public Nullable<decimal> FinalPrice { get; set; }
+        public Nullable<decimal> TotalDiscount { get; set; }
+        public Nullable<decimal> IGSTAmt { get; set; }
+        public Nullable<decimal> SGSTAmt { get; set; }
+        public Nullable<decimal> CGSTAmt { get; set; }
     
         public virtual tblCustomerVendorDetail tblCustomerVendorDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

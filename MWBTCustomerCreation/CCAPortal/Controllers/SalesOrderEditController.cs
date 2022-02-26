@@ -320,9 +320,7 @@ namespace CCAPortal.Controllers
                     decimal FreightGStValue = 0;
 
                     string SalesType = string.Empty;
-                    var customerState = sorders.GetCustomerState(SalesOrder.CustID);
-                    var companyState = sorders.GetCompanyState(SalesOrder.OrgID);
-                    if(customerState.Trim() == companyState.Trim())
+                    if(SalesOrder.CustomerState.Trim() == SalesOrder.CompanyState.Trim())
                         SalesType = "Local State";
                     else
                         SalesType = "Inter";
@@ -346,15 +344,15 @@ namespace CCAPortal.Controllers
                     xmlstc = xmlstc + "</REQUESTDESC>" + "\r\n";
                     xmlstc = xmlstc + "<REQUESTDATA>" + "\r\n";
                     xmlstc = xmlstc + "<TALLYMESSAGE xmlns:UDF=" + "\"" + "TallyUDF" + "\" >" + "\r\n";
-                    //xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + "Sales Order" + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
+                    //xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + "Sales Order" + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Invoice Voucher View" + "\" >" + "\r\n";
 
                     if (SalesOrder.IsEdited)
                     {
-                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + VoucherType + "\" ACTION=" + "\"" + "Alter" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
+                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + VoucherType + "\" ACTION=" + "\"" + "Alter" + "\"  OBJVIEW =" + "\"" + "Invoice Voucher View" + "\" >" + "\r\n";
                     }
                     else
                     {
-                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + VoucherType + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Sales Order" + "\" >" + "\r\n";
+                        xmlstc = xmlstc + "<VOUCHER VCHTYPE=" + "\"" + VoucherType + "\" ACTION=" + "\"" + "Create" + "\"  OBJVIEW =" + "\"" + "Invoice Voucher View" + "\" >" + "\r\n";
                     }
 
                     xmlstc = xmlstc + "<ADDRESS.LIST TYPE=" + "\"" + "String" + "\" >" + "\r\n";
@@ -407,20 +405,20 @@ namespace CCAPortal.Controllers
                     xmlstc = xmlstc + "<BASICBUYERNAME>" + custName + " </BASICBUYERNAME >" + "\r\n";
                     xmlstc = xmlstc + "<BASICSHIPDOCUMENTNO>" + orderNo + " </BASICSHIPDOCUMENTNO >" + "\r\n";
                     xmlstc = xmlstc + "<BASICFINALDESTINATION>" + SalesOrder.DLCustomerVendorDetail.BillingCity + "</BASICFINALDESTINATION >" + "\r\n"; //Need to the value (Place of shipping)
-                    xmlstc = xmlstc + "<BASICORDERREF>" + "SB" + "</BASICORDERREF >" + "\r\n";
-                    xmlstc = xmlstc + "<BASICSHIPVESSELNO>" + string.Empty + "</BASICSHIPVESSELNO >" + "\r\n";
+                    //xmlstc = xmlstc + "<BASICORDERREF>" + "SB" + "</BASICORDERREF >" + "\r\n";
+                    //xmlstc = xmlstc + "<BASICSHIPVESSELNO>" + string.Empty + "</BASICSHIPVESSELNO >" + "\r\n";
                     xmlstc = xmlstc + "<BASICDUEDATEOFPYMT>" + "NEFT/RTGS" + "</BASICDUEDATEOFPYMT >" + "\r\n";
-                    xmlstc = xmlstc + "<BASICDATETIMEOFINVOICE>" + orderDate + "</BASICDATETIMEOFINVOICE>" + "\r\n";
-                    xmlstc = xmlstc + "<BASICDATETIMEOFREMOVAL>" + orderDate + "</BASICDATETIMEOFREMOVAL>" + "\r\n";
+                    //xmlstc = xmlstc + "<BASICDATETIMEOFINVOICE>" + orderDate + "</BASICDATETIMEOFINVOICE>" + "\r\n";
+                    //xmlstc = xmlstc + "<BASICDATETIMEOFREMOVAL>" + orderDate + "</BASICDATETIMEOFREMOVAL>" + "\r\n";
                     xmlstc = xmlstc + "<CONSIGNEESTATENAME>" + SalesOrder.DLCustomerVendorDetail.BillingState + "</CONSIGNEESTATENAME>" + "\r\n";
-                    xmlstc = xmlstc + "<ENTEREDBY>" + SalesOrder.UserName + "</ENTEREDBY>" + "\r\n";
+                    //xmlstc = xmlstc + "<ENTEREDBY>" + SalesOrder.UserName + "</ENTEREDBY>" + "\r\n";
                     xmlstc = xmlstc + "<EFFECTIVEDATE>" + orderDate + "</EFFECTIVEDATE>" + "\r\n";
-                    xmlstc = xmlstc + "<ISINVOICE>Yes</ISINVOICE>" + "\r\n";
+                    xmlstc = xmlstc + "<ISINVOICE>No</ISINVOICE>" + "\r\n";
                     xmlstc = xmlstc + "<REFERENCE>" + SalesOrderNo + "</REFERENCE>" + "\r\n";
 
                     xmlstc = xmlstc + "<INVOICEORDERLIST.LIST>" + "\r\n";
-                    xmlstc = xmlstc + "<BASICORDERDATE>" + orderDate + "</BASICORDERDATE>" + "\r\n";
-                    xmlstc = xmlstc + "<BASICPURCHASEORDERNO>" + SalesOrderNo + "</BASICPURCHASEORDERNO>" + "\r\n";
+                    //xmlstc = xmlstc + "<BASICORDERDATE>" + orderDate + "</BASICORDERDATE>" + "\r\n";
+                    //xmlstc = xmlstc + "<BASICPURCHASEORDERNO>" + SalesOrderNo + "</BASICPURCHASEORDERNO>" + "\r\n";
                     xmlstc = xmlstc + "</INVOICEORDERLIST.LIST>" + "\r\n";
                     #endregion
 
@@ -496,9 +494,14 @@ namespace CCAPortal.Controllers
                         dL.Unit = dLo.Unit;
                         dL.Value = dLo.Value;
                         dL.TotalQTY = local.Where(i => i.ItemCode == item.Key.ItemCode).Sum(i => i.TotalQTY);
+                        dL.GSTPer = dLo.GSTPer;
+                        dL.CGSTLedger = dLo.CGSTLedger;
+                        dL.SGSTLedger = dLo.SGSTLedger;
+                        dL.IGSTLedger = dLo.IGSTLedger;
                         TallyListOfitems.Add(dL);
                     }
 
+                    #region
                     //foreach (var item in ItemWrhsBatchGrp)
                     //{
                     //    DLSalesOrderWithItemCreation dLo = new DLSalesOrderWithItemCreation();
@@ -526,6 +529,7 @@ namespace CCAPortal.Controllers
 
                     //    TallyListOfitemsWrhsbatch.Add(dL);
                     //}
+                    #endregion
 
                     #region bind details
 
@@ -533,10 +537,12 @@ namespace CCAPortal.Controllers
                     //foreach (DLSalesInvoiceCreationItem dLSales in dLSalesInvoiceCreationItems)
                     foreach (DLSalesOrderWithItemCreation dLSales in TallyListOfitems)
                     {
-
+                        var tempTaxAmt = (dLSales.Rate * dLSales.GSTPer) / 100;
+                        var excludedPrice = dLSales.Rate - tempTaxAmt;
+                        var finalPrice = excludedPrice * SalesOrder.DLSalesOrderWithItemCreations.Where(d => d.ItemCode == dLSales.ItemCode).FirstOrDefault().TotalQTY;
                         #region TAX DETAILS
-                        decimal taxValue = 0;
-                        decimal TaxAmount = 0;
+                        decimal taxValue = dLSales.GSTPer.Value;
+                        decimal TaxAmount = tempTaxAmt.Value;
                         var lSalPurchAccountName = string.Empty;
 
                         if (SalesOrder.DLCustomerVendorDetail != null)
@@ -568,9 +574,9 @@ namespace CCAPortal.Controllers
                         }
 
                         string SalesAccountLEDGERNAME = lSalPurchAccountName;
-                        string IGST_LEDGERNAME = "Cash Ledger";
-                        string SGST_LEDGERNAME = "Cash Ledger";
-                        string CGST_LEDGERNAME = "Cash Ledger";
+                        string IGST_LEDGERNAME = dLSales.IGSTLedger;
+                        string SGST_LEDGERNAME = dLSales.SGSTLedger;
+                        string CGST_LEDGERNAME = dLSales.CGSTLedger;
                         //if (SalesType == "Inter State" || SalesType == "Branch Inter State")
                         //{
                         //    if (TaxInputOutputAccountNameList != null && TaxInputOutputAccountNameList.Count > 0)
@@ -597,9 +603,9 @@ namespace CCAPortal.Controllers
                         xmlstc = xmlstc + "<ISTRACKCOMPONENT> No </ISTRACKCOMPONENT>";
                         xmlstc = xmlstc + "<ISTRACKPRODUCTION> No </ISTRACKPRODUCTION>";
                         xmlstc = xmlstc + "<ISPRIMARYITEM> No </ISPRIMARYITEM>";
-                        xmlstc = xmlstc + "<RATE>" + dLSales.Rate + "</RATE>";
+                        xmlstc = xmlstc + "<RATE>" + Math.Round(excludedPrice.Value, 2).ToString() + "</RATE>";
                         //xmlstc = xmlstc + "<AMOUNT>" + Math.Round((dLSales.TotalAmountAfrDiscount * dLSales.BilledQuantity), 2).ToString() + "</AMOUNT>";
-                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(dLSales.Value, 2).ToString() + "</AMOUNT>";
+                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(finalPrice.Value, 2).ToString() + "</AMOUNT>";
                         xmlstc = xmlstc + "<ACTUALQTY>" + dLSales.TotalQTY.ToString() + "</ACTUALQTY>"; /**/
                         xmlstc = xmlstc + "<BILLEDQTY>" + dLSales.TotalQTY.ToString() + dLSales.Unit + "</BILLEDQTY>";
                         xmlstc = xmlstc + "<DISCOUNT>" + dLSales.DiscountPercentage + "</DISCOUNT>";
@@ -616,7 +622,7 @@ namespace CCAPortal.Controllers
                         xmlstc = xmlstc + "<DESTINATIONGODOWNNAME>Main Location</DESTINATIONGODOWNNAME>";
                         xmlstc = xmlstc + "<MFDON>" + "20070401" + "</MFDON>";
                         xmlstc = xmlstc + "<EXPIRYPERIOD/>";
-                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(dLSales.Rate, 2).ToString() + "</AMOUNT>";
+                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(excludedPrice.Value, 2).ToString() + "</AMOUNT>";
                         xmlstc = xmlstc + "<ACTUALQTY>" + dLSales.TotalQTY + "</ACTUALQTY>";
                         xmlstc = xmlstc + "<BILLEDQTY>" + dLSales.TotalQTY + "</BILLEDQTY>";
                         xmlstc = xmlstc + "<ORDERNO/>";
@@ -684,11 +690,11 @@ namespace CCAPortal.Controllers
                                 xmlstc = xmlstc + "<AMOUNT> " + Math.Round((TaxAmount / 2), 2) + " </AMOUNT>" + "\r\n";
                                 xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
 
-                                //xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
-                                //xmlstc = xmlstc + "<LEDGERNAME> " + SGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
-                                //xmlstc = xmlstc + "<ISDEEMEDPOSITIVE > No </ISDEEMEDPOSITIVE>" + "\r\n";
-                                //xmlstc = xmlstc + "<AMOUNT> " + Math.Round((TaxAmount / 2), 2) + " </AMOUNT> " + "\r\n";
-                                //xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
+                                xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
+                                xmlstc = xmlstc + "<LEDGERNAME> " + SGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
+                                xmlstc = xmlstc + "<ISDEEMEDPOSITIVE > No </ISDEEMEDPOSITIVE>" + "\r\n";
+                                xmlstc = xmlstc + "<AMOUNT> " + Math.Round((TaxAmount / 2), 2) + " </AMOUNT> " + "\r\n";
+                                xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
                             }
                         }
                         else if (SalesType.Trim().ToLower() == "inter state" || SalesType.Trim().ToLower() == "branch inter state") //0,5,12,18,24

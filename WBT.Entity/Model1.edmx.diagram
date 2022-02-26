@@ -558,6 +558,9 @@
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblUserTemplate" Width="1.5" PointX="25.375" PointY="17.75" />
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblOrgSystemDetail" Width="1.5" PointX="22.375" PointY="25.75" />
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTallySyncError" Width="1.5" PointX="24.375" PointY="25.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblReligion" Width="1.5" PointX="26.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTaxLedger" Width="1.5" PointX="26.375" PointY="3.75" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblWeekoff" Width="1.5" PointX="3.375" PointY="26.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

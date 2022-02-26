@@ -2549,6 +2549,14 @@
           <Property Name="SourceOfUpdate" Type="char" MaxLength="1" />
           <Property Name="TallySync" Type="bit" />
         </EntityType>
+        <EntityType Name="tblReligion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Religion" Type="varchar" MaxLength="250" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblRouteMapping">
           <Key>
             <PropertyRef Name="ID" />
@@ -2674,6 +2682,13 @@
           <Property Name="RetSOName" Type="nvarchar" MaxLength="250" />
           <Property Name="RetSOSignature" Type="nvarchar(max)" />
           <Property Name="IsEdited" Type="bit" Nullable="false" />
+          <Property Name="TotalQty" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FinalPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTAmt" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblSalesOrderCashTransaction">
           <Key>
@@ -2815,6 +2830,9 @@
           <Property Name="UpdateDate" Type="datetime" />
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="TallySync" Type="bit" />
+          <Property Name="DiscountAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GSTPer" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GSTValue" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblSMSTemplate">
           <Key>
@@ -3135,6 +3153,7 @@
           <Property Name="TermsAndConditions" Type="nvarchar(max)" />
           <Property Name="IsServiceInstalled" Type="bit" />
           <Property Name="IsTallyUsing" Type="bit" />
+          <Property Name="SubscriptionKey" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblSysOrganizationMap">
           <Key>
@@ -3253,6 +3272,7 @@
           <Property Name="CountryID" Type="int" />
           <Property Name="DepartmentID" Type="int" />
           <Property Name="IsServiceInstalled" Type="bit" />
+          <Property Name="isFirstLogin" Type="bit" />
         </EntityType>
         <EntityType Name="tblTallySyncErrors">
           <Key>
@@ -3289,6 +3309,21 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="SourceOfUpdate" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="tblTaxLedgers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrgID" Type="varchar" MaxLength="10" />
+          <Property Name="Name" Type="varchar" MaxLength="500" />
+          <Property Name="Under" Type="varchar" MaxLength="500" />
+          <Property Name="TaxType" Type="varchar" MaxLength="5" />
+          <Property Name="TaxPercentage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblTemplateImage">
           <Key>
@@ -3512,6 +3547,14 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="SourceOfUpdate" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="tblWeekoff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WeekDayName" Type="varchar" MaxLength="250" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblWhatsappTemplate">
           <Key>
@@ -8256,6 +8299,7 @@
           <EntitySet Name="tblReason" EntityType="Self.tblReason" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblReceiptDetails" EntityType="Self.tblReceiptDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblReceiptWithBillDetails" EntityType="Self.tblReceiptWithBillDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblReligion" EntityType="Self.tblReligion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRouteMapping" EntityType="Self.tblRouteMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRouteMappingDetails" EntityType="Self.tblRouteMappingDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSalesChannelType" EntityType="Self.tblSalesChannelType" Schema="dbo" store:Type="Tables" />
@@ -8288,6 +8332,7 @@
           <EntitySet Name="tblTallySyncErrors" EntityType="Self.tblTallySyncErrors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTaxationType" EntityType="Self.tblTaxationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTaxCESS" EntityType="Self.tblTaxCESS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTaxLedgers" EntityType="Self.tblTaxLedgers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTemplateImage" EntityType="Self.tblTemplateImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTransitItem" EntityType="Self.tblTransitItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTransitItemDetail" EntityType="Self.tblTransitItemDetail" Schema="dbo" store:Type="Tables" />
@@ -8301,6 +8346,7 @@
           <EntitySet Name="tblVoucherType" EntityType="Self.tblVoucherType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWarehouse" EntityType="Self.tblWarehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWarehouseToWarehouseTracking" EntityType="Self.tblWarehouseToWarehouseTracking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblWeekoff" EntityType="Self.tblWeekoff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWhatsappTemplate" EntityType="Self.tblWhatsappTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypeOfExpenses" EntityType="Self.TypeOfExpenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VirtualWarehouseDetails" EntityType="Self.VirtualWarehouseDetails" Schema="dbo" store:Type="Tables" />
@@ -11536,6 +11582,9 @@
           <EntitySet Name="tblUserTemplates" EntityType="MWBTCustomerAppModel.tblUserTemplate" />
           <EntitySet Name="tblOrgSystemDetails" EntityType="MWBTCustomerAppModel.tblOrgSystemDetail" />
           <EntitySet Name="tblTallySyncErrors" EntityType="MWBTCustomerAppModel.tblTallySyncError" />
+          <EntitySet Name="tblReligions" EntityType="MWBTCustomerAppModel.tblReligion" />
+          <EntitySet Name="tblTaxLedgers" EntityType="MWBTCustomerAppModel.tblTaxLedger" />
+          <EntitySet Name="tblWeekoffs" EntityType="MWBTCustomerAppModel.tblWeekoff" />
         </EntityContainer>
         <EntityType Name="AccountGroupDetail">
           <Key>
@@ -14537,6 +14586,13 @@
           <Property Name="RetSOName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="RetSOSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsEdited" Type="Boolean" Nullable="false" />
+          <Property Name="TotalQty" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FinalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTAmt" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblSalesOrderCashTransaction">
           <Key>
@@ -14708,6 +14764,9 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderWithItem" FromRole="tblSalesOrderWithItem" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderWithItem" FromRole="tblSalesOrderWithItem" ToRole="tblSysUser" />
           <Property Name="TallySync" Type="Boolean" />
+          <Property Name="DiscountAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GSTValue" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblSPDocument">
           <Key>
@@ -15019,6 +15078,7 @@
           <NavigationProperty Name="tblSysUsers" Relationship="MWBTCustomerAppModel.FK__tblSysUse__OrgID__5C8CB268" FromRole="tblSysOrganization" ToRole="tblSysUser" />
           <Property Name="IsServiceInstalled" Type="Boolean" />
           <Property Name="IsTallyUsing" Type="Boolean" />
+          <Property Name="SubscriptionKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblSysOrganizationMap">
           <Key>
@@ -15314,6 +15374,7 @@
           <Property Name="DepartmentID" Type="Int32" />
           <NavigationProperty Name="tblDepartment" Relationship="MWBTCustomerAppModel.FK_tblDepartment_DeptID" FromRole="tblSysUser" ToRole="tblDepartment" />
           <Property Name="IsServiceInstalled" Type="Boolean" />
+          <Property Name="isFirstLogin" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblTaxationType">
           <Key>
@@ -20455,6 +20516,37 @@
           <Property Name="ErrorMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="tblReligion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Religion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTaxLedger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Under" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TaxType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TaxPercentage" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="OrgID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblWeekoff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WeekDayName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -23089,6 +23181,13 @@
           <EntitySetMapping Name="tblSalesOrders">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSalesOrder">
               <MappingFragment StoreEntitySet="tblSalesOrder">
+                <ScalarProperty Name="CGSTAmt" ColumnName="CGSTAmt" />
+                <ScalarProperty Name="SGSTAmt" ColumnName="SGSTAmt" />
+                <ScalarProperty Name="IGSTAmt" ColumnName="IGSTAmt" />
+                <ScalarProperty Name="TotalDiscount" ColumnName="TotalDiscount" />
+                <ScalarProperty Name="FinalPrice" ColumnName="FinalPrice" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="TotalQty" ColumnName="TotalQty" />
                 <ScalarProperty Name="IsEdited" ColumnName="IsEdited" />
                 <ScalarProperty Name="RetSOSignature" ColumnName="RetSOSignature" />
                 <ScalarProperty Name="RetSOName" ColumnName="RetSOName" />
@@ -23269,6 +23368,9 @@
           <EntitySetMapping Name="tblSalesOrderWithItems">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSalesOrderWithItem">
               <MappingFragment StoreEntitySet="tblSalesOrderWithItem">
+                <ScalarProperty Name="GSTValue" ColumnName="GSTValue" />
+                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
+                <ScalarProperty Name="DiscountAmt" ColumnName="DiscountAmt" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
@@ -23503,6 +23605,7 @@
           <EntitySetMapping Name="tblSysOrganizations">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSysOrganization">
               <MappingFragment StoreEntitySet="tblSysOrganization">
+                <ScalarProperty Name="SubscriptionKey" ColumnName="SubscriptionKey" />
                 <ScalarProperty Name="IsTallyUsing" ColumnName="IsTallyUsing" />
                 <ScalarProperty Name="IsServiceInstalled" ColumnName="IsServiceInstalled" />
                 <ScalarProperty Name="TermsAndConditions" ColumnName="TermsAndConditions" />
@@ -23638,6 +23741,7 @@
           <EntitySetMapping Name="tblSysUsers">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSysUser">
               <MappingFragment StoreEntitySet="tblSysUser">
+                <ScalarProperty Name="isFirstLogin" ColumnName="isFirstLogin" />
                 <ScalarProperty Name="IsServiceInstalled" ColumnName="IsServiceInstalled" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
                 <ScalarProperty Name="CountryID" ColumnName="CountryID" />
@@ -24176,6 +24280,40 @@
                 <ScalarProperty Name="TallySyncDetails" ColumnName="TallySyncDetails" />
                 <ScalarProperty Name="TallySyncType" ColumnName="TallySyncType" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblReligions">
+            <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblReligion">
+              <MappingFragment StoreEntitySet="tblReligion">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTaxLedgers">
+            <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblTaxLedger">
+              <MappingFragment StoreEntitySet="tblTaxLedgers">
+                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TaxPercentage" ColumnName="TaxPercentage" />
+                <ScalarProperty Name="TaxType" ColumnName="TaxType" />
+                <ScalarProperty Name="Under" ColumnName="Under" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblWeekoffs">
+            <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblWeekoff">
+              <MappingFragment StoreEntitySet="tblWeekoff">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="WeekDayName" ColumnName="WeekDayName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
