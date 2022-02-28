@@ -215,7 +215,7 @@ namespace WBT.DLCustomerCreation
                             item.QRCodes = String.Join(",", qrCodes);
                         }
                     }
-                    return BranchDetailsList;
+                    return BranchDetailsList.OrderBy(a=>a.BranchID).ToList();
                 }
             }
             catch (Exception ex)

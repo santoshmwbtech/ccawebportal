@@ -267,9 +267,8 @@ namespace WBT.DLCustomerCreation
                                                             CategoryName = cat.CategoryName.Trim(),
                                                             OrgID = cat.OrgID,
                                                         }).ToList();
-                    return categories;
+                    return categories.OrderBy(a=>a.CategoryName).ToList();//new line
                 }
-
             }
             catch (System.Data.SqlClient.SqlException sqlex)
             {
@@ -312,7 +311,7 @@ namespace WBT.DLCustomerCreation
                                              OrgID = subcat.OrgID,
                                          }).ToList();
                     }
-                    return subCategories;
+                    return subCategories.OrderBy(a=>a.SubCategoryName).ToList();//new line
                 }
 
             }

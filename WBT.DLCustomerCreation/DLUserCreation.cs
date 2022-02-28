@@ -79,7 +79,7 @@ namespace WBT.DLCustomerCreation
         public int[] ParentUserList { get; set; }
         //public int RoleUserId { get; set; }
         public string OrgID { get; set; }
-        public string BranchID { get; set; }
+        public string BranchID { get; set;}
         public int UserID { get; set; }
         public string FName { get; set; }
         public string Alias { get; set; }
@@ -708,10 +708,7 @@ namespace WBT.DLCustomerCreation
                               RoleName = role.RoleName.Trim(),
                               UnderRole = role.ParentRoleID,
                           }).ToList();
-
-
-
-            return dLRolesLst;
+            return dLRolesLst.OrderBy(a=>a.RoleName).ToList();//new line
         }
         public List<DLWarehouseLst> GetWarehouseData(string OrgID)
         {
@@ -728,8 +725,7 @@ namespace WBT.DLCustomerCreation
                                   OrgID = wrhs.OrgID,
                                   BranchID = wrhs.BranchID,
                               }).ToList();
-
-            return dLWarehouseLst;
+            return dLWarehouseLst.OrderBy(a=>a.WarehouseName).ToList();
         }
         public List<DLWarehouseLst> GetSales()
         {
@@ -1083,7 +1079,7 @@ namespace WBT.DLCustomerCreation
                                             FName = u.FName
                                         }).ToList();
                         }
-                        return UserList;
+                        return UserList.OrderBy(a=>a.FName).ToList();//new line
                     }
                 }
             }
@@ -1525,7 +1521,7 @@ namespace WBT.DLCustomerCreation
 
                     List<tblDepartment> departments = new List<tblDepartment>();
                     departments = Entities.tblDepartments.Where(d => d.IsActive == true).ToList();
-                    return departments;
+                    return departments.OrderBy(a=>a.DepartmentName).ToList();//new line
                 }
             }
             catch (Exception ex)

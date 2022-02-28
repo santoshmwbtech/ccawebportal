@@ -74,7 +74,7 @@ namespace WBT.DLCustomerCreation
                                        IsTallyUpdated = u.IsTallyUpdated,
                                        IsEdited = u.IsEdited,
                                    }).OrderByDescending(x => x.IsDefault).ToList();
-                    return DebtorsList;
+                    return DebtorsList.OrderBy(a=>a.DebtorName).ToList();//new line
                 }
             }
             catch (Exception ex)

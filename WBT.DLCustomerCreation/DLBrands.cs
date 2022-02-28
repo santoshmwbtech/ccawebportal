@@ -212,7 +212,7 @@ namespace WBT.DLCustomerCreation
                                          CompanyName = i.CompanyName,
                                      }).OrderByDescending(i => i.ItemCompanyID).ToList();
 
-                    return itemCompanies;
+                    return itemCompanies.OrderBy(a=>a.CompanyName).ToList();
                 }
             }
             catch (Exception ex)

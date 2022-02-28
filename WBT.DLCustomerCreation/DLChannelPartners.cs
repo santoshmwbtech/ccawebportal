@@ -77,7 +77,7 @@ namespace WBT.DLCustomerCreation
                                            BranchState = u.BranchState,
                                        }).OrderByDescending(u => u.BranchID).ToList();
 
-                    return channelPartners;
+                    return channelPartners.OrderBy(a=>a.ChannelPartnerName).ToList();//new line
                 }
             }
             catch (Exception ex)
@@ -449,7 +449,7 @@ namespace WBT.DLCustomerCreation
                                              ChannelType = u.ChannelType.Trim(),
                                          }).ToList();
 
-                    return salesChannelTypes;
+                    return salesChannelTypes.OrderBy(a=>a.ChannelType).ToList();//new line
                 }
             }
             catch (Exception ex)

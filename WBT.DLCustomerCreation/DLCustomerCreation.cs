@@ -889,8 +889,6 @@ namespace WBT.DLCustomerCreation
 
                     var organization = Entities.tblSysOrganizations.AsNoTracking().Where(o => o.OrgID == OrgID).FirstOrDefault();
 
-
-
                     tblSysOrganization tblSysOrganization = new tblSysOrganization();
                     tblSysOrganization.OrgID = OrgID;
                     tblSysOrganization.Name = organization.Name;
@@ -1136,7 +1134,7 @@ namespace WBT.DLCustomerCreation
                                             CityID = c.CityID,
                                             CityName = c.CityName
                                         }).Distinct().ToList();
-                            cityList = cityList.GroupBy(d => d.CityID).Select(i => i.FirstOrDefault()).ToList();
+                            cityList = cityList.GroupBy(d => d.CityID).Select(i => i.FirstOrDefault()).ToList();//new line
 
 
                             stateList = (from c in Entities.tblCustomerVendorDetails
@@ -1148,7 +1146,7 @@ namespace WBT.DLCustomerCreation
                                              StateID = s.StateID,
                                              StateName = s.StateName
                                          }).Distinct().ToList();
-                            stateList = stateList.GroupBy(d => d.StateID).Select(i =>i.FirstOrDefault()).ToList();
+                            stateList = stateList.GroupBy(d => d.StateID).Select(i =>i.FirstOrDefault()).ToList();//new line
 
                             
                             stateList = (from s in stateList
@@ -1743,8 +1741,6 @@ namespace WBT.DLCustomerCreation
                         {
                             if (UserID == "1")
                             {
-
-
                                 cityList = (from s in Entities.tblStateWithCities
                                             join c in Entities.tblCustomerVendorDetails on s.VillageLocalityname equals c.BillingCity
                                             where c.OrgID == OrgID
@@ -1770,7 +1766,7 @@ namespace WBT.DLCustomerCreation
                                         select s).Distinct().ToList();
                             cityList = cityList.GroupBy(d => d.VillageLocalityname).Select(i => i.FirstOrDefault()).ToList();
                         }
-                        return cityList;
+                        return cityList.OrderBy(d => d.VillageLocalityname).ToList();//new line
                     }
                 }
             }
@@ -2154,7 +2150,7 @@ namespace WBT.DLCustomerCreation
                                           select s).ToList();
                         }
 
-                        return BranchList;
+                        return BranchList.OrderBy(a=>a.BranchID).ToList();//new line
                     }
                 }
             }

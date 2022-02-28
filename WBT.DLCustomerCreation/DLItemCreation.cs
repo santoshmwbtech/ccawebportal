@@ -1264,10 +1264,10 @@ namespace WBT.DLCustomerCreation
                                            }).Distinct().ToList<DLItemRateCreation>();
 
                     //lstItemRateCreation = lstItemRateCreation.Where(i => i.BranchID == Criteria.BranchID).ToList();
-
+                    //Item Search
                     if (!string.IsNullOrEmpty(Criteria.ItemName))
                         lstItemRateCreation = lstItemRateCreation.Where(j => j.ItemName.ToLower().Contains(Criteria.ItemName.ToLower())).ToList();
-
+                     
                     if (Criteria.CategoryID > 0)
                         lstItemRateCreation = lstItemRateCreation.Where(i => i.CategoryID == Criteria.CategoryID).ToList();
 
@@ -2547,7 +2547,7 @@ namespace WBT.DLCustomerCreation
                         catgList = (from s in Entities.tblCategories
                                     select s).ToList();
 
-                        return catgList;
+                        return catgList.OrderBy(x=>x.CategoryName).ToList();//new line
                     }
                 }
             }
@@ -2620,7 +2620,7 @@ namespace WBT.DLCustomerCreation
                         List<tblBrand> brandList = new List<tblBrand>();
                         brandList = (from s in Entities.tblBrands
                                      select s).ToList();
-                        return brandList;
+                        return brandList.OrderBy(m=>m.BrandName).ToList();//new line
                     }
                 }
             }
@@ -2642,7 +2642,7 @@ namespace WBT.DLCustomerCreation
                         List<tblItemCompany> cmpnyList = new List<tblItemCompany>();
                         cmpnyList = (from s in Entities.tblItemCompanies
                                      select s).ToList();
-                        return cmpnyList;
+                        return cmpnyList.OrderBy(x=>x.CompanyName).ToList();//new line
                     }
                 }
             }

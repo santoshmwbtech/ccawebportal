@@ -110,7 +110,7 @@ namespace WBT.DLCustomerCreation
                                     orderby s.CategoryName
                                     select s).ToList();
 
-                        return catgList;
+                        return catgList.OrderBy(a=>a.CategoryName).ToList();//new line
                     }
                 }
             }

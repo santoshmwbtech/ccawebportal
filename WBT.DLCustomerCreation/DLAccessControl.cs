@@ -21,7 +21,7 @@ namespace WBT.DLCustomerCreation
                 {
                     List<tblSysRole> Roles = new List<tblSysRole>();
                     Roles = Entities.tblSysRoles.ToList();
-                    return Roles;
+                    return Roles.OrderBy(a=>a.RoleName).ToList();
                 }
             }
             catch (Exception ex)
