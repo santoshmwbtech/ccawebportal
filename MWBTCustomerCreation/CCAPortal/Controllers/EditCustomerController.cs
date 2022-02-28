@@ -41,7 +41,7 @@ namespace CCAPortal.Controllers
                 ViewBag.DebtorsList = new SelectList(dLDebtorsCreation.GetDebtorsList(Session["OrgID"].ToString()), "ID", "DebtorName");
                 ViewBag.LedgerTypes = new SelectList(customerCreations.GetLedgerTypes(), "LedgerTypeID", "LedgerType");
                 ViewBag.CreditTypes = new SelectList(customerCreations.GetCreditTypes(Session["OrgID"].ToString()), "CreditTypeID", "CreditTypeName");
-                ViewBag.CustomerTypes = new SelectList(customerCreations.GetCustomerTypes(), "CustomerTypeID", "CustomerType");
+                ViewBag.CustomerTypes = new SelectList(customerCreations.GetCustomerTypes(Session["OrgID"].ToString()), "BusinessTypeID", "BusinessTypeName");
                 ViewBag.CompanyTypes = new SelectList(customerCreations.GetCompanyTypes(), "CompanyTypeID", "CompanyType");
                 ViewBag.CategoryTypes = new SelectList(customerCreations.GetCategoryTypes(), "CategoryTypeID", "CategoryType");
                 ViewBag.TaxationTypes = new SelectList(customerCreations.GetTaxationTypes(), "TaxationTypeID", "TaxationType");

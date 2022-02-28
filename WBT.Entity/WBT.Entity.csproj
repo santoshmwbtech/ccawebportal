@@ -450,6 +450,9 @@
     <Compile Include="tblReceiptWithBillDetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblReligion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblRouteMapping.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -546,6 +549,9 @@
     <Compile Include="tblTaxCESS.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblTaxLedger.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblTemplateImage.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -583,6 +589,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblWarehouseToWarehouseTracking.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblWeekoff.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblWhatsappTemplate.cs">

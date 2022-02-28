@@ -79,6 +79,7 @@ namespace WBT.Entity
         public string TermsAndConditions { get; set; }
         public Nullable<bool> IsServiceInstalled { get; set; }
         public Nullable<bool> IsTallyUsing { get; set; }
+        public string SubscriptionKey { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAccountLedger> tblAccountLedgers { get; set; }

@@ -20,7 +20,6 @@ namespace WBT.DL.Transaction
         public decimal TotalQTY { get; set; }
         public decimal Rate { get; set; }
         public decimal Value { get; set; }
-        //public bool IsTallyUpdated { get; set; }
         public Nullable<int> ItemRowNumber { get; set; }
         public int WarehouseID { get; set; }
         public int CreatedByID { get; set; }
@@ -29,32 +28,28 @@ namespace WBT.DL.Transaction
         public Nullable<decimal> LoadingUnloadingCharge { get; set; }
         public Nullable<decimal> OtherExpense { get; set; }
         public Nullable<decimal> DiscountPercentage { get; set; }
+        public decimal? DiscountAmt { get; set; }
         public Nullable<decimal> MaxQuantity { get; set; }
         public bool IsCorrectionRequired { get; set; }
-        /// <summary>
-        /// Created for Delete Line Item Validation
-        /// </summary>
+        
         public string SalesOrderStatus { get; set; }
-        //Added for Grid display in Sales Order
         public string Unit { get; set; }
-        //Added for Grid display in Sales Order
         public string ItemName { get; set; }
         public System.DateTime CreationDate { get; set; }
         public System.DateTime ModifiedDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-
         public Nullable<System.DateTime> DueDate { get; set; }
         public bool SoAdimApprove { get; set; }
         public Nullable<bool> IsRateInQuantls { get; set; }
         public Nullable<bool> IsDiscountRangeExceeded { get; set; }
         public List<DLSalesOrderItemWarehouseMapCreation> SalesOrderItemWarehouseMaps { get; set; }
-
-        //added for SO Save during compile All 26 AUG 2020 Devika
-        //public string branchid { get; set; }
         public decimal SupplyQty { get; set; }
-
-        //added on 29 AUG DEVIKA for data fetch baed on SO num
         public decimal DemandedQty { get; set; }
+        public Nullable<decimal> GSTPer { get; set; }
+        public Nullable<decimal> GSTValue { get; set; }
+        public string CGSTLedger { get; set; }
+        public string SGSTLedger { get; set; }
+        public string IGSTLedger { get; set; }
 
     }
 

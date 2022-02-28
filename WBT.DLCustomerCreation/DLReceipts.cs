@@ -29,7 +29,10 @@ namespace WBT.DLCustomerCreation
             }
         }
         public string CustomerName { get; set; }
-        // public string ReceiptNo { get; set; }
+        public string CustomerCity { get; set; }
+        public string CustomerState { get; set; }
+        public string CustomerArea { get; set; }
+        //public string ReceiptNo { get; set; }
         public Nullable<decimal> Amount { get; set; }
         public string BankOrCash { get; set; }
         public string PaymentType { get; set; }
@@ -242,7 +245,7 @@ namespace WBT.DLCustomerCreation
         public Receipts GetReceiptDetails(string ReceiptID)
         {
             MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
-            Receipts dlrd = new Receipts();
+            Receipts receipt = new Receipts();
             try
             {                
                 using (Entities = new MWBTCustomerAppEntities())
@@ -254,37 +257,40 @@ namespace WBT.DLCustomerCreation
                     {
                         tblAccountReceiptDetail tblAccountReceiptDetails = Entities.tblAccountReceiptDetails.AsNoTracking().Where(c => c.ReceiptID == ReceiptID.Trim()).FirstOrDefault();
 
-                        dlrd.ReceiptID = tblAccountReceiptDetails.ReceiptID;
-                        dlrd.OrgID = tblAccountReceiptDetails.OrgID;
-                        dlrd.Date = tblAccountReceiptDetails.ReceiptDatetime;
-                        dlrd.Amount = tblAccountReceiptDetails.Amount;                        
-                        dlrd.CreatedByID = tblAccountReceiptDetails.CreatedByID;
-                        dlrd.CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().FirmName;
-                        dlrd.VoucherTypeNo = tblAccountReceiptDetails.VoucherTypeNo;
-                        dlrd.LedgerID =  tblAccountReceiptDetails.LedgerID;
-                        dlrd.PaymentType = tblAccountReceiptDetails.PaymentType;
-                        dlrd.BankOrCash = tblAccountReceiptDetails.BankOrCash;
-                        dlrd.SalesManID = tblAccountReceiptDetails.SalesManID;
-                        dlrd.BankName = tblAccountReceiptDetails.BankName;
-                        dlrd.BranchName = tblAccountReceiptDetails.BranchName;
-                        dlrd.IFSC = tblAccountReceiptDetails.IFSC;
-                        dlrd.AccountNumber = tblAccountReceiptDetails.AccountNumber;
-                        dlrd.TransactionNumber = tblAccountReceiptDetails.TransactionNumber;
-                        dlrd.CheckDate = tblAccountReceiptDetails.CheckDate;
-                        dlrd.Status = tblAccountReceiptDetails.Status;
-                        dlrd.SignatureImage = tblAccountReceiptDetails.SignatureImage;
-                        dlrd.Comments = tblAccountReceiptDetails.Comments;
-                        dlrd.IsTallyUpdates = tblAccountReceiptDetails.IsTallyUpdates;
-                        dlrd.SourceOfUpdate = tblAccountReceiptDetails.SourceOfUpdate;
-                        dlrd.CustLocation = tblAccountReceiptDetails.CustLocation;
-                        dlrd.CreationDate = tblAccountReceiptDetails.CreationDate;
-                        dlrd.ModifiedByID = tblAccountReceiptDetails.ModifiedByID;
-                        dlrd.ModifiedByID = tblAccountReceiptDetails.ModifiedByID;
-                        dlrd.RecieverSignatureImage = tblAccountReceiptDetails.RecieverSignatureImage;
-                        dlrd.ReferenceImage = tblAccountReceiptDetails.ReferenceImage;
-                        dlrd.ReceiptDatetime = tblAccountReceiptDetails.ReceiptDatetime;
-                        dlrd.ReceiptDateStr = tblAccountReceiptDetails.ReceiptDatetime.Value.ToString("dd/MM/yyyy");
-                        dlrd.IsEdited = tblAccountReceiptDetails.IsEdited;
+                        receipt.ReceiptID = tblAccountReceiptDetails.ReceiptID;
+                        receipt.OrgID = tblAccountReceiptDetails.OrgID;
+                        receipt.Date = tblAccountReceiptDetails.ReceiptDatetime;
+                        receipt.Amount = tblAccountReceiptDetails.Amount;                        
+                        receipt.CreatedByID = tblAccountReceiptDetails.CreatedByID;
+                        receipt.CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().FirmName;
+                        receipt.CustomerState = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().BillingState;
+                        receipt.CustomerCity = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().BillingCity;
+                        receipt.CustomerArea = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().BillingArea;
+                        receipt.VoucherTypeNo = tblAccountReceiptDetails.VoucherTypeNo;
+                        receipt.LedgerID =  tblAccountReceiptDetails.LedgerID;
+                        receipt.PaymentType = tblAccountReceiptDetails.PaymentType;
+                        receipt.BankOrCash = tblAccountReceiptDetails.BankOrCash == "C" ? "Cash" : "Bank";
+                        receipt.SalesManID = tblAccountReceiptDetails.SalesManID;
+                        receipt.BankName = tblAccountReceiptDetails.BankName;
+                        receipt.BranchName = tblAccountReceiptDetails.BranchName;
+                        receipt.IFSC = tblAccountReceiptDetails.IFSC;
+                        receipt.AccountNumber = tblAccountReceiptDetails.AccountNumber;
+                        receipt.TransactionNumber = tblAccountReceiptDetails.TransactionNumber;
+                        receipt.CheckDate = tblAccountReceiptDetails.CheckDate;
+                        receipt.Status = tblAccountReceiptDetails.Status;
+                        receipt.SignatureImage = tblAccountReceiptDetails.SignatureImage;
+                        receipt.Comments = tblAccountReceiptDetails.Comments;
+                        receipt.IsTallyUpdates = tblAccountReceiptDetails.IsTallyUpdates;
+                        receipt.SourceOfUpdate = tblAccountReceiptDetails.SourceOfUpdate;
+                        receipt.CustLocation = tblAccountReceiptDetails.CustLocation;
+                        receipt.CreationDate = tblAccountReceiptDetails.CreationDate;
+                        receipt.ModifiedByID = tblAccountReceiptDetails.ModifiedByID;
+                        receipt.ModifiedByID = tblAccountReceiptDetails.ModifiedByID;
+                        receipt.RecieverSignatureImage = tblAccountReceiptDetails.RecieverSignatureImage;
+                        receipt.ReferenceImage = tblAccountReceiptDetails.ReferenceImage;
+                        receipt.ReceiptDatetime = tblAccountReceiptDetails.ReceiptDatetime;
+                        receipt.ReceiptDateStr = tblAccountReceiptDetails.ReceiptDatetime.Value.ToString("dd/MM/yyyy");
+                        receipt.IsEdited = tblAccountReceiptDetails.IsEdited;
 
                         var itemsList = (from a in Entities.tblAccountReceiptDetails
                                          join b in Entities.tblAccountReceiptWithBillDetails on a.ReceiptID.ToLower().Trim() equals b.ReceiptID.ToLower().Trim()
@@ -310,9 +316,9 @@ namespace WBT.DLCustomerCreation
                                              UpdatedDate = b.UpdatedDate
                                          }).Distinct().ToList();
 
-                        dlrd.ReceiptsDetails = itemsList.ToList();
+                        receipt.ReceiptsDetails = itemsList.ToList();
 
-                        return dlrd;
+                        return receipt;
                     }
                 }
             }

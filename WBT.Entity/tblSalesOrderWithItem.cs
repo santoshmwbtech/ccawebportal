@@ -46,6 +46,9 @@ namespace WBT.Entity
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<int> ModifiedByID { get; set; }
         public Nullable<bool> TallySync { get; set; }
+        public Nullable<decimal> DiscountAmt { get; set; }
+        public Nullable<decimal> GSTPer { get; set; }
+        public Nullable<decimal> GSTValue { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblDeliveryNoteItem> tblDeliveryNoteItems { get; set; }
