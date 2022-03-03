@@ -753,12 +753,12 @@ namespace WBT.DLCustomerCreation
                             try
                             {
                                 lSubCategory.IsActive = true;
-                                lSubCategory.SubCategoryName = this.mSubCategoryCreation.SubCategoryName;
-                                lSubCategory.CategoryID = this.mSubCategoryCreation.CategoryID;
+                                lSubCategory.SubCategoryName = mSubCategoryCreation.SubCategoryName;
+                                lSubCategory.CategoryID = mSubCategoryCreation.CategoryID;
                                 lSubCategory.IsTallyUpdated = false;
                                 lSubCategory.CreatedDate = DateTime.Now;
                                 lSubCategory.ModifiedDate = DateTime.Now;
-                                lSubCategory.CreatedByID = this.mSubCategoryCreation.CreatedByID;
+                                lSubCategory.CreatedByID = mSubCategoryCreation.CreatedByID;
                                 lSubCategory.OrgID = mSubCategoryCreation.OrgID;
                                 Entities.tblSubCategories.Add(lSubCategory);
                                 Entities.SaveChanges();

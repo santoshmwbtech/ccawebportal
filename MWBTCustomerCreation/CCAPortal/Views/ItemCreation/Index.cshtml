@@ -31,41 +31,37 @@
 @section scripts {
 
     <script>
-
-
         function FillSubCategory() {
             var categoryID = $("#CategoryID").val();
-
             if (categoryID != "" && categoryID != null) {
-            $("#progress").show();
-            $('option', $('#SubCategoryID')).each(function(element) {
-                $(this).removeAttr('selected').prop('selected', false);
-              });
-            $("#SubCategoryID").multiselect('refresh');
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("FillSubCategory", "ItemCreation")',
-                dataType: "json",
-                data: { CategoryID: categoryID },
-                success: function (response) {
-                    var data = [];
-                    data = [];
-                    array = { label: "Select Category", value: "" };
-                    data.push(array);
-
-                    for (var i = 0; i < response.length; i++) {
-                        array = { label: response[i].SubCategoryName, value: response[i].SubCategoryID };
+                $("#progress").show();
+                $('option', $('#SubCategoryID')).each(function(element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                  });
+                $("#SubCategoryID").multiselect('refresh');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("FillSubCategory", "ItemCreation")',
+                    dataType: "json",
+                    data: { CategoryID: categoryID },
+                    success: function (response) {
+                        var data = [];
+                        data = [];
+                        array = { label: "Select Category", value: "" };
                         data.push(array);
-                    }
-                    $("#SubCategoryID").multiselect('dataprovider', data);
-                    $("#progress").hide();
-                },
-                error: function () {
-                }
-            });
-        }
-        }
 
+                        for (var i = 0; i < response.length; i++) {
+                            array = { label: response[i].SubCategoryName, value: response[i].SubCategoryID };
+                            data.push(array);
+                        }
+                        $("#SubCategoryID").multiselect('dataprovider', data);
+                        $("#progress").hide();
+                    },
+                    error: function () {
+                    }
+                });
+            }
+        }
         function BagUnitChanged() {
 
             if ($("#PacketUOMID").val() != 0) {
@@ -75,7 +71,6 @@
                     var packetUnit = $('#PacketUOMID :selected').text();
                     var bagSize = $("#BagQTY").val();
                     var packetSize = $("#PacketQTY").val();
-
                     $("#progress").show();
                     $.ajax({
                         type: 'POST',
@@ -119,8 +114,6 @@
                             $("#progress").hide();
                         }
                     });
-
-
                 //}
                 //else {
                 //    Swal.fire({
@@ -148,15 +141,15 @@
                     text: 'Please select Packet Unit',
                     icon: 'error',
                 }).then((result) => {
-                                    $('option', $('#PacketUOMID')).each(function (element) {
-                                    $(this).removeAttr('selected').prop('selected', false);
-                                    });
-                                    $("#PacketUOMID").multiselect('refresh');
+                    $('option', $('#PacketUOMID')).each(function (element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                    });
+                    $("#PacketUOMID").multiselect('refresh');
 
-                                    $('option', $('#BagUOMID')).each(function (element) {
-                                    $(this).removeAttr('selected').prop('selected', false);
-                                    });
-                                    $("#BagUOMID").multiselect('refresh');
+                    $('option', $('#BagUOMID')).each(function (element) {
+                    $(this).removeAttr('selected').prop('selected', false);
+                    });
+                    $("#BagUOMID").multiselect('refresh');
                 });
             }
         }
@@ -173,16 +166,16 @@
                     title: 'Error',
                     text: 'Please select Packet Unit',
                     icon: 'error',
-                }).then((result) => {   $('option', $('#PacketUOMID')).each(function (element) {
-                                        $(this).removeAttr('selected').prop('selected', false);
-                                        });
-                                        $("#PacketUOMID").multiselect('refresh');
-
-                                        $('option', $('#BagUOMID')).each(function (element) {
-                                        $(this).removeAttr('selected').prop('selected', false);
-                                        });
-                                        $("#BagUOMID").multiselect('refresh');
-                                        return false;
+                }).then((result) => {
+                    $('option', $('#PacketUOMID')).each(function (element) {
+                        $(this).removeAttr('selected').prop('selected', false);
+                    });
+                    $("#PacketUOMID").multiselect('refresh');
+                    $('option', $('#BagUOMID')).each(function (element) {
+                        $(this).removeAttr('selected').prop('selected', false);
+                    });
+                    $("#BagUOMID").multiselect('refresh');
+                    return false;
                 });
             }
         }
@@ -201,21 +194,21 @@
             });
           }
         function onEditSuccess_Ajax(data) {
-
             Swal.fire({
-                //title: 'Success!!',
                 text: data.Message,
-                //icon: 'success',
             }).then((result) => {
                 $("#divCreate").load('@Url.Action("Create", "ItemCreation")');
                 $("#divList").load('@Url.Action("ItemList", "ItemCreation")');
-                //$("#dataGrid").dataTable().fnDestroy();
                 multiSelect();
-                loadDataTableWithButtons();
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadDataTableWithButtons();
+                }, 1000);
 
             });
     }
         function onEditSuccess() {
+            $("#ItemName").focus();
             AltChange();
     }
         function onBegin_Ajax(data) {
@@ -246,8 +239,6 @@
        // LoadListBox();
          $("#progress").hide();
     }
-
-
         jQuery(document).ready(function ($) {
 
             jQuery("a").tooltip();

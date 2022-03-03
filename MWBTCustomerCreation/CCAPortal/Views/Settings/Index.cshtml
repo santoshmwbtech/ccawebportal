@@ -132,8 +132,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                    @Html.CheckBoxFor(model => model.AutoSyncTally, new { @class = "custom-control-input", @id = "customSwitch3" })
-                                    <label class="custom-control-label" for="customSwitch3">Auto Sync to Tally</label>
+                                    @Html.CheckBoxFor(model => model.AutoSyncTally, new { @class = "custom-control-input", @id = "autoSyncTallySwitch" })
+                                    <label class="custom-control-label" for="autoSyncTallySwitch">Auto Sync to Tally (Only SO)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="custom-control custom-switch custom-switch-off-primary custom-switch-on-primary">
+                                    @Html.CheckBoxFor(model => model.PriceSyncType, new { @class = "custom-control-input", @id = "taxBifurcSwitch" })
+                                    <label class="custom-control-label" for="taxBifurcSwitch">SO Tally Sync with exclusive price</label>
                                 </div>
                             </div>
                         </div>

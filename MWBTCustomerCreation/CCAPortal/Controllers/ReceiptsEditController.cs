@@ -234,7 +234,7 @@ namespace CCAPortal.Controllers
                     xmlstc = xmlstc + "<VOUCHERNUMBER>" + item.ReceiptID + "</VOUCHERNUMBER>";
                     xmlstc = xmlstc + "<DATE>" + item.ReceiptDatetime.Value.ToString("dd/MM/yyyy") + "</DATE>";
                     xmlstc = xmlstc + "<EFFECTIVEDATE>" + item.ReceiptDatetime.Value.ToString("dd/MM/yyyy") + "</EFFECTIVEDATE>";
-                    xmlstc = xmlstc + "<NARRATION>" + item.Comments + "</NARRATION>";
+                    xmlstc = xmlstc + "<NARRATION> Recipt Number : " + item.ReceiptID + "  " + item.Comments + "</NARRATION>";
                     xmlstc = xmlstc + "<VOUCHERTYPENAME>" + VoucherType + "</VOUCHERTYPENAME>";
 
                     if (item.BankOrCash == "C")

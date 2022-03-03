@@ -1040,6 +1040,7 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="SORegister" Type="varchar" MaxLength="500" />
           <Property Name="GroupName" Type="varchar" MaxLength="500" />
+          <Property Name="PriceSyncType" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblArea">
           <Key>
@@ -20378,6 +20379,7 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="SORegister" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="GroupName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PriceSyncType" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_tblDepartment_DeptID">
           <End Type="MWBTCustomerAppModel.tblDepartment" Role="tblDepartment" Multiplicity="0..1">
@@ -24161,6 +24163,7 @@
           <EntitySetMapping Name="tblAdminSettings">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAdminSetting">
               <MappingFragment StoreEntitySet="tblAdminSettings">
+                <ScalarProperty Name="PriceSyncType" ColumnName="PriceSyncType" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="SORegister" ColumnName="SORegister" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />

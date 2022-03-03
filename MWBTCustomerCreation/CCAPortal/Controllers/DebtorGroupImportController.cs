@@ -64,7 +64,7 @@ namespace CCAPortal.Controllers
 
                         var excelFile = new ExcelQueryFactory(pathToExcelFile);
                         var debtorExcels = from debtors in excelFile.Worksheet<DebtorsDetails>(sheetName) select debtors;
-                        List<DebtorsDetails> debtorExcelFiles = debtorExcels.ToList();
+                        List<DebtorsDetails> debtorExcelFiles = debtorExcels.Where(d => !string.IsNullOrEmpty(d.DebtorName)).ToList();
 
                         string UserID = Session["UserID"].ToString();
                         List<DebtorsDetails> Result = DL.ImportExcel(debtorExcelFiles, UserID, customer.BranchID, Session["OrgID"].ToString());
