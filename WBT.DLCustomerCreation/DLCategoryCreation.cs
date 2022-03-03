@@ -195,7 +195,7 @@ namespace WBT.DLCustomerCreation
 
                                     lCategory.ParentCatId = mCategoryCreation.CategoryID;
                                     lCategory.IsActive = true;
-                                    lCategory.CategoryName = this.mCategoryCreation.CategoryName;
+                                    lCategory.CategoryName = mCategoryCreation.CategoryName;
                                     lCategory.AccOrInv = mCategoryCreation.AccOrInv;
                                     lCategory.CreatedDate = Common.Helper.GetCurrentDate;
                                     lCategory.ModifiedDate = Common.Helper.GetCurrentDate;

@@ -41,6 +41,7 @@ namespace WBT.DLCustomerCreation
                                     ModifiedDate = s.ModifiedDate,
                                     SORegister = s.SORegister,
                                     GroupName = s.GroupName,
+                                    PriceSyncType = s.PriceSyncType,
                                 }).FirstOrDefault();
                     if(settings == null)
                     {
@@ -82,6 +83,7 @@ namespace WBT.DLCustomerCreation
                         tblAdminSetting.OrgID = OrgID;
                         tblAdminSetting.CreatedDate = DateTimeNow;
                         tblAdminSetting.SORegister = settings.SORegister;
+                        tblAdminSetting.PriceSyncType = settings.PriceSyncType;
                         tblAdminSetting.GroupName = settings.GroupName;
 
                         Entities.tblAdminSettings.Add(tblAdminSetting);
@@ -111,6 +113,7 @@ namespace WBT.DLCustomerCreation
                         tblAdminSetting.CreatedDate = settings.CreatedDate;
                         tblAdminSetting.SORegister = settings.SORegister;
                         tblAdminSetting.GroupName = settings.GroupName;
+                        tblAdminSetting.PriceSyncType = settings.PriceSyncType;
                         Entities.tblAdminSettings.Add(tblAdminSetting);
                         Entities.Entry(tblAdminSetting).State = EntityState.Modified;
                         Entities.SaveChanges();
@@ -149,6 +152,7 @@ namespace WBT.DLCustomerCreation
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string SORegister { get; set; }
         public string GroupName { get; set; }
+        public bool PriceSyncType { get; set; }
 
     }
 }

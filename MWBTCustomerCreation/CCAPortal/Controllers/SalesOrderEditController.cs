@@ -26,6 +26,7 @@ namespace CCAPortal.Controllers
         bool IsCompanyOpen = false;
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         TallySync tallySync = new TallySync();
+        DLSettings dLSettings = new DLSettings();
         public ActionResult Index(string route)
         {
             if (Session["UserID"] != null && !string.IsNullOrEmpty(route))
@@ -291,7 +292,8 @@ namespace CCAPortal.Controllers
             {
                 SalesOrders IResult = new SalesOrders();
                 IResult.OrgID = SalesOrder.OrgID;
-
+                var PriceSyncType = dLSettings.GetSettings(SalesOrder.OrgID).PriceSyncType;
+                
                 string xmlfile = Helper.GetSystemFilePath() + @"\DataFiles";
                 Helper.LogError("IsCurrentCompanyOpen", xmlfile, null, "");
                 xmlFileString = Path.Combine(xmlfile, "IsCurrentCompanyOpen.xml");
@@ -493,6 +495,8 @@ namespace CCAPortal.Controllers
                         dL.Rate = dLo.Rate;
                         dL.Unit = dLo.Unit;
                         dL.Value = dLo.Value;
+                        dL.DiscountAmt = dLo.DiscountAmt;
+                        dL.DiscountPercentage = dLo.DiscountPercentage;
                         dL.TotalQTY = local.Where(i => i.ItemCode == item.Key.ItemCode).Sum(i => i.TotalQTY);
                         dL.GSTPer = dLo.GSTPer;
                         dL.CGSTLedger = dLo.CGSTLedger;
@@ -537,12 +541,26 @@ namespace CCAPortal.Controllers
                     //foreach (DLSalesInvoiceCreationItem dLSales in dLSalesInvoiceCreationItems)
                     foreach (DLSalesOrderWithItemCreation dLSales in TallyListOfitems)
                     {
-                        var tempTaxAmt = (dLSales.Rate * dLSales.GSTPer) / 100;
-                        var excludedPrice = dLSales.Rate - tempTaxAmt;
-                        var finalPrice = excludedPrice * SalesOrder.DLSalesOrderWithItemCreations.Where(d => d.ItemCode == dLSales.ItemCode).FirstOrDefault().TotalQTY;
+                        decimal discountAmt = 0, excludedPrice = 0, tempTaxAmt = 0;
+                        if (PriceSyncType)
+                        {
+                            discountAmt = dLSales.DiscountAmt == null ? 0 : dLSales.DiscountAmt.Value / dLSales.TotalQTY;
+                            excludedPrice = Math.Round(dLSales.Rate * 100 / (100 + dLSales.GSTPer.Value), 2);
+                            tempTaxAmt = ((excludedPrice - discountAmt) * dLSales.GSTPer.Value) / 100;
+                        }
+                        else
+                        {
+                            discountAmt = dLSales.DiscountAmt == null ? 0 : dLSales.DiscountAmt.Value / dLSales.TotalQTY;
+                            excludedPrice = Math.Round(dLSales.Rate, 2);
+                            tempTaxAmt = ((excludedPrice - discountAmt) * dLSales.GSTPer.Value) / 100;
+                        }
+                        //discountAmt = dLSales.DiscountAmt == null ? 0 : dLSales.DiscountAmt / dLSales.TotalQTY;
+                        //var excludedPrice = Math.Round(dLSales.Rate * 100 / (100 + dLSales.GSTPer.Value), 2);
+                        //var tempTaxAmt = ((excludedPrice - discountAmt) * dLSales.GSTPer) / 100;
+                        var finalPrice = (excludedPrice - discountAmt) * SalesOrder.DLSalesOrderWithItemCreations.Where(d => d.ItemCode == dLSales.ItemCode).FirstOrDefault().TotalQTY;
                         #region TAX DETAILS
                         decimal taxValue = dLSales.GSTPer.Value;
-                        decimal TaxAmount = tempTaxAmt.Value;
+                        decimal TaxAmount = tempTaxAmt * SalesOrder.DLSalesOrderWithItemCreations.Where(d => d.ItemCode == dLSales.ItemCode).FirstOrDefault().TotalQTY;
                         var lSalPurchAccountName = string.Empty;
 
                         if (SalesOrder.DLCustomerVendorDetail != null)
@@ -603,9 +621,9 @@ namespace CCAPortal.Controllers
                         xmlstc = xmlstc + "<ISTRACKCOMPONENT> No </ISTRACKCOMPONENT>";
                         xmlstc = xmlstc + "<ISTRACKPRODUCTION> No </ISTRACKPRODUCTION>";
                         xmlstc = xmlstc + "<ISPRIMARYITEM> No </ISPRIMARYITEM>";
-                        xmlstc = xmlstc + "<RATE>" + Math.Round(excludedPrice.Value, 2).ToString() + "</RATE>";
+                        xmlstc = xmlstc + "<RATE>" + Math.Round(excludedPrice, 2).ToString() + "</RATE>";
                         //xmlstc = xmlstc + "<AMOUNT>" + Math.Round((dLSales.TotalAmountAfrDiscount * dLSales.BilledQuantity), 2).ToString() + "</AMOUNT>";
-                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(finalPrice.Value, 2).ToString() + "</AMOUNT>";
+                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(finalPrice, 2).ToString() + "</AMOUNT>";
                         xmlstc = xmlstc + "<ACTUALQTY>" + dLSales.TotalQTY.ToString() + "</ACTUALQTY>"; /**/
                         xmlstc = xmlstc + "<BILLEDQTY>" + dLSales.TotalQTY.ToString() + dLSales.Unit + "</BILLEDQTY>";
                         xmlstc = xmlstc + "<DISCOUNT>" + dLSales.DiscountPercentage + "</DISCOUNT>";
@@ -622,9 +640,10 @@ namespace CCAPortal.Controllers
                         xmlstc = xmlstc + "<DESTINATIONGODOWNNAME>Main Location</DESTINATIONGODOWNNAME>";
                         xmlstc = xmlstc + "<MFDON>" + "20070401" + "</MFDON>";
                         xmlstc = xmlstc + "<EXPIRYPERIOD/>";
-                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(excludedPrice.Value, 2).ToString() + "</AMOUNT>";
+                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(finalPrice, 2).ToString() + "</AMOUNT>";
                         xmlstc = xmlstc + "<ACTUALQTY>" + dLSales.TotalQTY + "</ACTUALQTY>";
                         xmlstc = xmlstc + "<BILLEDQTY>" + dLSales.TotalQTY + "</BILLEDQTY>";
+                        xmlstc = xmlstc + "<ORDERDUEDATE>" + orderDate + "</ORDERDUEDATE>";
                         xmlstc = xmlstc + "<ORDERNO/>";
                         xmlstc = xmlstc + "</BATCHALLOCATIONS.LIST>";
 
@@ -662,54 +681,57 @@ namespace CCAPortal.Controllers
                         xmlstc = xmlstc + "<ISCAPVATNOTCLAIMED>No</ISCAPVATNOTCLAIMED>";
                         xmlstc = xmlstc + "<TAXCLASSIFICATIONNAME/>";
                         //xmlstc = xmlstc + "<AMOUNT>" + Math.Round((dLSales.TotalAmountAfrDiscount * dLSales.BilledQuantity), 2).ToString() + "</AMOUNT>";
-                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(dLSales.Value, 2).ToString() + "</AMOUNT>";
+                        xmlstc = xmlstc + "<AMOUNT>" + Math.Round(finalPrice, 2).ToString() + "</AMOUNT>";
                         xmlstc = xmlstc + "</ACCOUNTINGALLOCATIONS.LIST>";
                         xmlstc = xmlstc + "</ALLINVENTORYENTRIES.LIST>";
 
                         #endregion
 
                         #region sgST CGST
-                        if (SalesType.Trim().ToLower() == "local state" || SalesType.Trim().ToLower() == "branch local state") //0,5,12,18,24
+                        if (PriceSyncType)
                         {
-                            if (taxValue > 0.0M)
+                            if (SalesType.Trim().ToLower() == "local state" || SalesType.Trim().ToLower() == "branch local state") //0,5,12,18,24
+                            {
+                                if (taxValue > 0.0M)
+                                {
+                                    OutPutLedgersLst CGSTLedger = new OutPutLedgersLst();
+                                    //CGSTLedger.Amount = Math.Round((TaxAmount / 2), 2);
+                                    CGSTLedger.Amount = (TaxAmount / 2);
+                                    CGSTLedger.LedgerName = CGST_LEDGERNAME;
+                                    lstOutPutLedgers.Add(CGSTLedger);
+
+                                    OutPutLedgersLst SGSTledger = new OutPutLedgersLst();
+                                    SGSTledger.Amount = (TaxAmount / 2);
+                                    SGSTledger.LedgerName = SGST_LEDGERNAME;
+                                    lstOutPutLedgers.Add(SGSTledger);
+
+                                    //xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
+                                    //xmlstc = xmlstc + "<LEDGERNAME> " + CGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
+                                    //xmlstc = xmlstc + "<ISDEEMEDPOSITIVE> No </ISDEEMEDPOSITIVE>" + "\r\n";
+                                    //xmlstc = xmlstc + "<AMOUNT> " + Math.Round((TaxAmount / 2), 2) + " </AMOUNT>" + "\r\n";
+                                    //xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
+
+                                    //xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
+                                    //xmlstc = xmlstc + "<LEDGERNAME> " + SGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
+                                    //xmlstc = xmlstc + "<ISDEEMEDPOSITIVE > No </ISDEEMEDPOSITIVE>" + "\r\n";
+                                    //xmlstc = xmlstc + "<AMOUNT> " + Math.Round((TaxAmount / 2), 2) + " </AMOUNT> " + "\r\n";
+                                    //xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
+                                }
+                            }
+                            else if (SalesType.Trim().ToLower() == "inter state" || SalesType.Trim().ToLower() == "branch inter state") //0,5,12,18,24
                             {
                                 OutPutLedgersLst CGSTLedger = new OutPutLedgersLst();
-                                //CGSTLedger.Amount = Math.Round((TaxAmount / 2), 2);
-                                CGSTLedger.Amount = (TaxAmount / 2);
-                                CGSTLedger.LedgerName = CGST_LEDGERNAME;
+                                //CGSTLedger.Amount = Math.Round(TaxAmount, 2);
+                                CGSTLedger.Amount = TaxAmount;
+                                CGSTLedger.LedgerName = IGST_LEDGERNAME;
                                 lstOutPutLedgers.Add(CGSTLedger);
 
-                                OutPutLedgersLst SGSTledger = new OutPutLedgersLst();
-                                SGSTledger.Amount = (TaxAmount / 2);
-                                SGSTledger.LedgerName = SGST_LEDGERNAME;
-                                lstOutPutLedgers.Add(SGSTledger);
-
-                                xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
-                                xmlstc = xmlstc + "<LEDGERNAME> " + CGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
-                                xmlstc = xmlstc + "<ISDEEMEDPOSITIVE> No </ISDEEMEDPOSITIVE>" + "\r\n";
-                                xmlstc = xmlstc + "<AMOUNT> " + Math.Round((TaxAmount / 2), 2) + " </AMOUNT>" + "\r\n";
-                                xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
-
-                                xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
-                                xmlstc = xmlstc + "<LEDGERNAME> " + SGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
-                                xmlstc = xmlstc + "<ISDEEMEDPOSITIVE > No </ISDEEMEDPOSITIVE>" + "\r\n";
-                                xmlstc = xmlstc + "<AMOUNT> " + Math.Round((TaxAmount / 2), 2) + " </AMOUNT> " + "\r\n";
-                                xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
+                                //xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
+                                //xmlstc = xmlstc + "<LEDGERNAME> " + IGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
+                                //xmlstc = xmlstc + "<ISDEEMEDPOSITIVE> No </ISDEEMEDPOSITIVE>" + "\r\n";
+                                //xmlstc = xmlstc + "<AMOUNT> " + Math.Round(TaxAmount, 2) + " </AMOUNT> " + "\r\n";
+                                //xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
                             }
-                        }
-                        else if (SalesType.Trim().ToLower() == "inter state" || SalesType.Trim().ToLower() == "branch inter state") //0,5,12,18,24
-                        {
-                            OutPutLedgersLst CGSTLedger = new OutPutLedgersLst();
-                            //CGSTLedger.Amount = Math.Round(TaxAmount, 2);
-                            CGSTLedger.Amount = TaxAmount;
-                            CGSTLedger.LedgerName = IGST_LEDGERNAME;
-                            lstOutPutLedgers.Add(CGSTLedger);
-
-                            //xmlstc = xmlstc + "<LEDGERENTRIES.LIST> " + "\r\n";
-                            //xmlstc = xmlstc + "<LEDGERNAME> " + IGST_LEDGERNAME + " </LEDGERNAME>" + "\r\n";
-                            //xmlstc = xmlstc + "<ISDEEMEDPOSITIVE> No </ISDEEMEDPOSITIVE>" + "\r\n";
-                            //xmlstc = xmlstc + "<AMOUNT> " + Math.Round(TaxAmount, 2) + " </AMOUNT> " + "\r\n";
-                            //xmlstc = xmlstc + "</LEDGERENTRIES.LIST> " + "\r\n";
                         }
                         #endregion
                     }
@@ -760,6 +782,18 @@ namespace CCAPortal.Controllers
             {
                 SalesOrder.DisplayMessage = "Please open " + SalesOrder.BranchName + " in Tally";
                 return SalesOrder;
+            }
+        }
+        public ActionResult Invoiceprint(string SalesOrderNumber)
+        {
+            if (Session["UserID"] != null)
+            {
+                SalesOrders so = sorders.GetSalesOrderDetails(SalesOrderNumber);
+                return View("_InvoicePrint", so);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
         }
         private class OutPutLedgersLst

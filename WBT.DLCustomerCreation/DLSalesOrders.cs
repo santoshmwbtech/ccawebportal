@@ -35,7 +35,6 @@ namespace WBT.DLCustomerCreation
         public string SalesDateTime { get; set; }
         public string OrgID { get; set; }
         public string CustID { get; set; }
-        //public Nullable<int> SalesmanID { get; set; }
         public string SalesType { get; set; }
         public string Status { get; set; }
         public string FirmName { get; set; }
@@ -52,27 +51,17 @@ namespace WBT.DLCustomerCreation
         public string cstate { get; set; }
         public string ccity { get; set; }
         public string cdistrict { get; set; }
-        //public string salesmanName { get; set; }
         public string UserID { get; set; }
         public int createdByID { get; set; }
         public string BranchName { get; set; }
-        //public string ItemCode { get; set; }
-        //public string ItemName { get; set; }
-        //public string BagQty { get; set; }
-        //public decimal value { get; set; }
-        //public List<DLSalesOrderWithItemCreation> ItemsList { get; set; }
-
-        //public string SalesOrderWithItemID { get; set; }
         public string Photo1 { get; set; }
         public string Photo2 { get; set; }
         public string VoucherTypeID { get; set; }
-        //public int UserID { get; set; }
         public string SearchText { get; set; }
         public string CashRegistrationType { get; set; }
         public string OrderNumberCustName { get; set; }
         public string OrgName { get; set; }
         public string PurchaseOrderNumber { get; set; }
-
         public int? SalesmanID { get; set; }
         public string SignatureImage { get; set; }
         public bool TallySync { get; set; }
@@ -106,7 +95,7 @@ namespace WBT.DLCustomerCreation
         public Nullable<bool> IsCreditLimitExceeded { get; set; }
         public Nullable<bool> IsCreditDaysExceeded { get; set; }
         public Nullable<bool> IsBillsExceeded { get; set; }
-        public bool IsSelected { get; set; } // Created for GP screen order selection
+        public bool IsSelected { get; set; }
         public string SourceOfUpdate { get; set; }
         public Nullable<bool> IsBulkSale { get; set; }
         public string PANNumber { get; set; }
@@ -133,40 +122,31 @@ namespace WBT.DLCustomerCreation
         #endregion
 
         #region DEVIKA
-        //added on 17 aug
         public int? dcid { get; set; }
         public string RequisitionNumber { get; set; }
         public string ConvertToPO { get; set; }
         public string ViewSO { get; set; }
-        //public string BranchName { get; set; }
         public string emailID { get; set; }
         public string SalesmanName { get; set; }
-
         #endregion
-
         public string BusinessTypeName { get; set; }
         public Nullable<int> BusinessTypeId { get; set; }
         public Nullable<decimal> BusinessTypeValue { get; set; }
         public Nullable<int> CreditTypeId { get; set; }
         public Nullable<decimal> CreditTypeValue { get; set; }
 
-        //added on 29 AUG Devika
         public Nullable<int> DeliverycenterID { get; set; }
         public decimal TotalQtyAllocatedItems { get; set; }
-        //added on 2 NOV for GST of SO number
         public string GSTPR { get; set; }
         public decimal? GSTPer { get; set; }
         public Nullable<int> BrokerID { get; set; }
-        //for print needed added by sneha 5thNov2020
         public string OrgDetails { get; set; }
-        //NEEDED FOR PRINT IN 7TH DeC 2020
         public string CmpDeclaration { get; set; }
         public string CmpTermsAndConditions { get; set; }
         public string CmpPANNumber { get; set; }
         public string CmpAccNumber { get; set; }
         public string CmpBankName { get; set; }
         public string CmpIFSCODE { get; set; }
-        //public List<ItemNameDetail> itemlist { get; set; }
         public string BillingAddress { get; set; }
 
         public string VoucherTypeNo { get; set; }
@@ -196,6 +176,8 @@ namespace WBT.DLCustomerCreation
         public bool IsEdited { get; set; }
         public string CustomerState { get; set; }
         public string CompanyState { get; set; }
+        public BranchDetails BranchDetails { get; set; }
+        public string cpincode { get; set; }
     }
 
     public class DLSalesOrders
@@ -507,12 +489,13 @@ namespace WBT.DLCustomerCreation
                                                                                           Rate = i.Rate,
                                                                                           Value = i.Value,
                                                                                           DiscountPercentage = i.DiscountPercentage,
+                                                                                          DiscountAmt = i.DiscountAmt,
                                                                                           ItemName = i.tblItem.ItemName,
                                                                                           ItemCode = i.ItemCode,
                                                                                           GSTPer = item.GST,
-                                                                                          CGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST / 2).FirstOrDefault().Name,
-                                                                                          SGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST / 2).FirstOrDefault().Name,
-                                                                                          IGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST).FirstOrDefault().Name,
+                                                                                          CGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST / 2 && t.TaxType == "CGST").FirstOrDefault().Name,
+                                                                                          SGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST / 2 && t.TaxType == "SGST").FirstOrDefault().Name,
+                                                                                          IGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST && t.TaxType == "IGST").FirstOrDefault().Name,
                                                                                       }).ToList(),
                                                      DLCustomerVendorDetail = new DLCustomerVendorDetailCreation()
                                                      {
@@ -556,8 +539,9 @@ namespace WBT.DLCustomerCreation
 
                         salesOrder = (from tblsalesorders in Entities.tblSalesOrders
                                       join c in Entities.tblCustomerVendorDetails on tblsalesorders.CustID equals c.CustID
+                                      where tblsalesorders.SalesOrderNumber == OrderNumber
                                       select new SalesOrders
-                                      {
+                                      {                                         
                                           CustID = tblsalesorders.CustID,
                                           OrderNumber = tblsalesorders.SalesOrderNumber,
                                           SalesOrderNumber = tblsalesorders.SalesOrderNumber,
@@ -597,10 +581,21 @@ namespace WBT.DLCustomerCreation
                                           caddress = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingAddress) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingAddress : "NA",
                                           cstate = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingState) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingState : "NA",
                                           ccity = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingCity) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingCity : "NA",
+                                          cpincode = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().BillingPincode) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().BillingPincode : string.Empty,
                                           SalesDateTime = tblsalesorders.SalesDatetime,
                                           area = c.BillingArea,
                                           CustomerState = tblsalesorders.tblCustomerVendorDetail.BillingState,
                                           CompanyState = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.State,
+                                          BranchDetails = new BranchDetails
+                                          {
+                                              Name = tblsalesorders.tblSysBranch.Name,
+                                              Address = tblsalesorders.tblSysBranch.Address,
+                                              GST = tblsalesorders.tblSysBranch.GST,
+                                              Mobile = tblsalesorders.tblSysBranch.Mobile,
+                                              City = tblsalesorders.tblSysBranch.City,
+                                              State = tblsalesorders.tblSysBranch.State,
+                                              PinCode = tblsalesorders.tblSysBranch.PinCode,
+                                          },
                                       }).FirstOrDefault();
 
                         var itemsList = (from a in Entities.tblSalesOrderWithItems
@@ -626,6 +621,7 @@ namespace WBT.DLCustomerCreation
                                              CGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == c.GST).FirstOrDefault().Name,
                                              SGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == c.GST).FirstOrDefault().Name,
                                              IGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == c.GST).FirstOrDefault().Name,
+                                             DiscountAmt = a.DiscountAmt,
                                          }).Distinct().ToList();
                         salesOrder.DLSalesOrderWithItemCreations = itemsList.ToList();
                         return salesOrder;
@@ -872,7 +868,6 @@ namespace WBT.DLCustomerCreation
                                         item.ModifiedByID = mSalesOrder.ModifiedByID;// Convert.ToInt32(UserID);
                                         item.CreatedByID = mSalesOrder.createdByID;
                                         item.SalesOrderNumber = mSalesOrder.SalesOrderNumber;
-
                                         //List<SalesOrderItemWarehouseMapResult> SalesOrderItemWarehouseMapForCurrentLineItem = mSalesOrder.SalesOrderItemWarehouseMapResult.Where(salesOrderItemWarehouseMap => salesOrderItemWarehouseMap.ItemCode == item.ItemCode && salesOrderItemWarehouseMap.LineItemID == item.SalesOrderWithItemID).ToList<SalesOrderItemWarehouseMapResult>(); //&& salesOrderItemWarehouseMap.LineItemID == item.SalesOrderWithItemID
                                         //item.SalesOrderItemWarehouseMaps = new List<DLSalesOrderItemWarehouseMapCreation>();
 
@@ -1065,6 +1060,7 @@ namespace WBT.DLCustomerCreation
             oldLineItem.UpdateDate = Common.Helper.GetCurrentDate;
             oldLineItem.TotalQTY = updatedLineItem.TotalQTY;
             oldLineItem.Value = updatedLineItem.Value;
+            oldLineItem.DiscountAmt = updatedLineItem.DiscountAmt;
             oldLineItem.DiscountPercentage = updatedLineItem.DiscountPercentage;
             oldLineItem.IsDiscountRangeExceeded = updatedLineItem.IsDiscountRangeExceeded;
             oldLineItem.IsRateInQuantls = updatedLineItem.IsRateInQuantls;

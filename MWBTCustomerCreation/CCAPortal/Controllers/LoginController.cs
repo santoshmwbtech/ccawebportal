@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using WBT.Common;
 using WBT.DLCustomerCreation;
-using WBT.Entity;
 
 namespace CCAPortal.Controllers
 {
@@ -16,7 +13,6 @@ namespace CCAPortal.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            WBT.DLCustomerCreation.CustomerCreations customerCreation = new WBT.DLCustomerCreation.CustomerCreations();
             return View();
         }
         [HttpPost]

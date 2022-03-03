@@ -33,5 +33,6 @@ namespace WBT.Entity
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string SORegister { get; set; }
         public string GroupName { get; set; }
+        public bool PriceSyncType { get; set; }
     }
 }

@@ -167,7 +167,7 @@
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].SalesOrderWithItemID)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].BagQTY)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].IsRateInQuantls)
-                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage)
+                                            @*@Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage)*@
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].LoadingUnloadingCharge)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].ItemRowNumber)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].FrieghtCharge)
@@ -193,7 +193,7 @@
                                         <td>
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discPer_" + item.ItemCode + "", @onchange = "discountPerChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discPer_" + item.ItemCode + "", @onchange = "discountPerChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off" })
                                             }
                                             else
                                             {
@@ -203,11 +203,11 @@
                                         <td>
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discAmt_" + item.ItemCode + "", @onchange = "discountAmtChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discAmt_" + item.ItemCode + "", @onchange = "discountAmtChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off" })
                                             }
                                             else
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @id = "discAmt_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @id = "discAmt_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;", @autocomplete = "off" })
                                             }
                                         </td>
                                         <td>
@@ -226,11 +226,12 @@
                         @{
                             if (!Model.IsEdited)
                             {
-                                <button type="submit" class="btn btn-primary" id="btnUpdate">Update</button>
+                                <button type="submit" class="btn btn-primary" id="btnUpdate"><i class="fa fa-save"></i> Update</button>
                             }
                         }
-                        <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally">Sync To Tally</a>
-                        <a href='@Url.Action("Index", "SalesOrder")' class="btn btn-success" id="btnBack">Back</a>
+                        <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally"><i class="fa fa-sync"></i> Sync To Tally</a>
+                        <a href="javascript:void(0)" onclick="printSO(this);" id='@Model.SalesOrderNumber' class="btn btn-success" id="btnTally"><i class="fa fa-print"></i> Print</a>
+                        <a href='@Url.Action("Index", "SalesOrder")' class="btn btn-success" id="btnBack"><i class="fa fa-backspace"></i> Back</a>
                     </div>
                 </div>
             </div>
@@ -421,6 +422,10 @@
                     }).then(function () { });
                 }
             });
-    }
+        }
+        function printSO(element) {
+            var SalesOrderNumber = $(element).attr('id');
+            window.open('@Url.Action("Invoiceprint", "SalesOrderEdit")?SalesOrderNumber=' + SalesOrderNumber, "_blank", "width=650,height=800,TOOLBAR=no,MENUBAR=no,SCROLLBARS=no,RESIZABLE=no,LOCATION=no,DIRECTORIES=no,STATUS=no");
+        }
     </script>
 }
