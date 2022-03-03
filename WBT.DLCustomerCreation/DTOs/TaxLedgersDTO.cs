@@ -19,5 +19,7 @@ namespace WBT.DLCustomerCreation.DTOs
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string DisplayMsg { get; set; }
+        public bool IsTallyUpdated { get; set; }
+        public bool TallySync { get; set; }
     }
 }

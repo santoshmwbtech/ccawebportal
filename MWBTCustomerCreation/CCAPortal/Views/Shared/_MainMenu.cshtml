@@ -192,6 +192,16 @@
                                     </a>
                                 </li>
                             }
+                            @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "TaxLegdersMaster" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href='@Url.Action("Index", "TaxLegdersMaster")'>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Tax Ledgers</p>
+                                    </a>
+                                </li>
+                            }
+
                             @if (MenuMaster.Any(m => m.SubMenuName.ToLower() == "customercityswap" && m.IsView == true) || Session["RoleName"].ToString().ToLower() == "admin")
                             {
                                 <li class="nav-item">

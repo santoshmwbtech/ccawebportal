@@ -1,0 +1,237 @@
+﻿@model IEnumerable<WBT.DLCustomerCreation.DTOs.TaxLedgersDTO>
+@{
+    ViewBag.Title = "Tax Ledgers";
+}
+
+<div class="main-panel" id="MainDiv">
+    <div class="row">
+        @Html.Hidden("HID")
+        <div class="col-12 grid-margin">
+            <div id="divCreate">
+                @*class="card-body"*@
+                @Html.Action("Create")
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div id="divList">
+                @*class="card-body"*@
+                @Html.Action("TaxLedgerList")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="progress" class="modal">
+    <div class="center" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 45%; left: 45%;">
+            <span>Loading items, Please wait...</span> <img src="~/images/loading.gif" height="100" width="100" />
+        </p>
+    </div>
+</div>
+
+@section scripts {
+
+    <script>
+    function onCreateSuccess_Ajax(data) {
+        if (data.Message == "success") {
+            Swal.fire({
+                title: 'Success!!',
+                text: 'Tax Ledger Group Saved Successfully',
+                icon: 'success',
+            }).then((result) => {
+                $("#HID").val(data.ID);
+                $("#btnCreate").hide();
+                $("#btnTally").show();
+                $("#btnCancel").show();
+                $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadTable();
+                }, 1000);
+            });
+            $("#HID").val(data.ID);
+        }
+        else {
+            Swal.fire({
+                title: 'Error',
+                text: data.Message,
+                icon: 'error',
+            }).then((result) => {
+                $("#HID").val(data.ID);
+                $("#btnCreate").show();
+                $("#btnTally").hide();
+                $("#btnCancel").hide();
+                $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadTable();
+                }, 1000);
+            });
+        }
+    }
+    function onEditSuccess_Ajax(data) {
+        if (data.Message == "success") {
+            Swal.fire({
+                title: 'Success!!',
+                text: 'Tax Ledger Updated Successfully',
+                icon: 'success',
+            }).then((result) => {
+                $("#HID").val(data.ID);
+                $("#btnUpdate").hide();
+                $("#btnTally").show();
+                $("#btnCancel").show();
+                $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadTable();
+                }, 1000);
+            });
+            $("#HID").val(data.ID);
+        }
+        else {
+            Swal.fire({
+                title: 'Error',
+                text: data.Message,
+                icon: 'error',
+            }).then((result) => {
+                $('#divCreate').load('@Url.Action("Create", "TaxLegdersMaster")');
+                $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadTable();
+                }, 1000);
+            });
+        }
+        }
+        function onDeleteSuccess(data) {
+            if (data.url) {
+                window.location = '@Url.Action("Index", "Login")';
+            }
+            Swal.fire({
+                text: data,
+            }).then((result) => {
+                $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadDataTableWithButtons();
+                }, 1000);
+            });
+        }
+    function onBegin_Ajax(data) {
+    }
+    function onFailure_Ajax() {
+        Swal.fire({
+            title: 'Success!!',
+            text: 'Please try again later',
+            icon: 'success',
+        }).then((result) => { });
+    }
+    function Ajax_Edit_Failure(xhr, statusDescription) {
+        //swal(xhr.statusDescription);
+        Swal.fire({
+            title: 'Success!!',
+            text: xhr.statusDescription,
+            icon: 'success',
+        }).then((result) => { });
+    }
+    function onEditSuccess() {
+        $("#Name").focus();
+        LoadListBox();
+        document.getElementById("btnTally").style.display = "none";
+        //document.getElementById("btnCancel").style.display = "none";
+    }
+    function onEditCompleteCreate_Ajax() {
+
+    }
+    function Ajax_OnComplete() {
+
+    }
+    function onSaveCompleteCreate_Ajax() {
+
+    }
+    $(document).ready(function () {
+        document.getElementById("btnTally").style.display = "none";
+        document.getElementById("btnCancel").style.display = "none";
+    });
+    </script>
+    <script>
+    function btnCancel_Click() {
+        $('#divCreate').load('@Url.Action("Create", "TaxLegdersMaster")');
+        setTimeout(function () {
+            document.getElementById("btnTally").style.display = "none";
+            document.getElementById("btnCancel").style.display = "none";
+        }, 1000);
+    }
+    function LoadListBox() {
+        $('.listbox').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 450,
+        });
+    }
+        function TallySync(ID) {
+        $.ajax({
+                url: '@Url.Action("TallySync", "TaxLegdersMaster")',
+                data: "{ 'ID': '" + ID + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data == "0") {
+                        window.location = '@Url.Action("Index", "Login")';
+                    }
+                    else if (data == "1") {
+                        swal.fire("Please install the service and open tally software, wait for 10 seconds and click on Tally Sync button again");
+                    }
+                    else {
+                        if (data == "Tally Sync Successful!!") {
+                            Swal.fire({
+                                title: 'Success!!',
+                                text: 'Tally Sync Successful!!',
+                                icon: 'success',
+                            }).then((result) => {
+                                             $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
+                            setTimeout(function () {
+                                $("#dataGrid").dataTable().fnDestroy();
+                                loadDataTableWithButtons();
+                }, 1000);
+                            });
+                        }
+                        else {
+                            swal.fire(data);
+                        }
+                    }
+                },
+                error: function (response) {
+                    swal.fire(response.responseText);
+                },
+                failure: function (response) {
+                    swal.fire(response.responseText);
+                }
+            });
+    }
+    </script>
+
+
+    <script>
+        //jQuery(document).ready(function ($) {
+        //    jQuery("#dataGrid").DataTable({
+        //        "responsive": true, "lengthChange": false, "autoWidth": false,
+        //        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        //    }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
+        //});
+        function loadTable() {
+            jQuery("#dataGrid").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
+            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)'); /*, { extend: "colvis", className: "btn btn-secondary buttons-collection dropdown-toggle buttons-colvis" }*/
+        }
+        jQuery(document).ready(function ($) {
+            loadTable();
+        });
+    </script>
+
+}

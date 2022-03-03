@@ -1,0 +1,96 @@
+﻿@model WBT.DLCustomerCreation.DTOs.TaxLedgersDTO
+@using (Ajax.BeginForm("Save", "TaxLegdersMaster", null, new AjaxOptions
+{
+    //UpdateTargetId = "divList",
+    OnBegin = "onBegin_Ajax",
+    OnComplete = "onSaveCompleteCreate_Ajax",
+    OnSuccess = "onCreateSuccess_Ajax",
+    OnFailure = "onFailure_Ajax",
+    HttpMethod = "post",
+    LoadingElementId = "progress"
+}, new { @class = "form-sample" }))
+{
+    @Html.AntiForgeryToken()
+
+    <section>
+        <div>
+            <div>
+                <!-- left column -->
+                <div>
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Create Tax Ledgers</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label> Name </label>
+                                        <div class="input-group">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name", @autocomplete = "off", @required = "Required" } })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                              <label>Tax Type </label>
+                                    <div class="input-group">
+                                    @Html.DropDownListFor(model => model.TaxType, (SelectList)ViewBag.TaxTypeList, "Select Tax Type", new { @class = "form-control listbox", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.TaxType, "", new { @class = "text-danger" })
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tax percentage</label>
+                                        <div class="input-group">
+                                            @Html.EditorFor(model => model.TaxPercentage, new { htmlAttributes = new { @class = "form-control numberonly", @placeholder = "Tax Percentage", @Value = "0.00",@autocomplete = "off", @required = "Required", @onkeypress = "return isdecimalKey(event)" } })
+
+                                            @Html.ValidationMessageFor(model => model.TaxPercentage, "", new { @class = "text-danger" })
+                                            @*@Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control numberonly", @required = "Required", @Readonly = true } })*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary" id="btnCreate">Create</button>
+                                    <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally" style="display:none;">Sync To Tally</a>
+                                    <a href="javascript:void(0)" id="btnCancel" class="btn btn-danger" onclick="btnCancel_Click()">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+@section scripts{
+    <script>
+        function ddlParent_changed() {
+            //var ddlParentID = $("#DebtorName option:selected").val();
+            //$('#ParentDebtorID').val(ddlParentID);
+        }
+    </script>
+    <script>
+        $.validator.unobtrusive.parse(document);
+    </script>
+}

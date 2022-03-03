@@ -24,5 +24,7 @@ namespace WBT.Entity
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string OrgID { get; set; }
+        public bool TallySync { get; set; }
+        public bool IsTallyUpdated { get; set; }
     }
 }

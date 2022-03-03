@@ -1,0 +1,114 @@
+﻿@model IEnumerable<WBT.DLCustomerCreation.DTOs.TaxLedgersDTO>
+<section>
+    <div>
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"> Tax Ledgers List </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <table class="table table-bordered table-striped" id="dataGrid">
+                                    @*dataGrid*@
+                                    <thead>
+                                        <tr>
+                                            @*<th>ID</th>*@
+                                            <th> Name </th>
+                                            <th> Under </th>
+                                            <th> Tax Type </th>
+                                            <th> Tax Percentage </th>
+                                            @*<th> Created By </th>*@
+                                            <th> Created Date </th>
+                                            @*<th> Modified By </th>*@
+                                            <th> Modified Date </th>
+                                            <th> Action </th>
+                                            <th> Tally Sync</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            if (Model.Count() > 0)
+                                            {
+                                                foreach (var item in Model)
+                                                {
+                                        <tr>
+                                            <td>
+                                                @Html.HiddenFor(Model => item.ID)
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                @item.Under
+                                            </td>
+                                            <td>
+                                                @item.TaxType
+                                            </td>
+                                            <td>
+                                                @item.TaxPercentage
+                                            </td>
+                                            @*<td>
+            @item.CreatedBy
+        </td>*@
+                                            <td>
+                                                @item.CreatedDate.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            @*<td>
+            @item.ModifiedBy
+        </td>*@
+                                            <td>
+                                                @{
+                                                    if (@item.ModifiedDate != null)
+                                                    {
+                                                        @item.ModifiedDate.Value.ToString("dd/MM/yyyy");
+                                                    }
+                                                    else
+                                                    {
+                                                        @item.ModifiedDate;
+                                                    }
+                                                }
+                                            </td>
+
+                                            @*<td>
+            @item.CreatedByStr
+        </td>
+        <td>
+            @item.ModifiedByStr
+        </td>*@
+                                            <td>
+                                                @Ajax.ActionLink("Edit", "Edit", "TaxLegdersMaster", new { ID = item.ID }, new AjaxOptions { UpdateTargetId = "divCreate", HttpMethod = "get", OnComplete = "Ajax_OnComplete", OnFailure = "Ajax_Edit_Failure", OnSuccess = "onEditSuccess", LoadingElementId = "progress" }, new { @class = "btn btn-info btn-xs" }) |
+                                                @Ajax.ActionLink("Delete", "Delete", "TaxLegdersMaster", new { ID = item.ID }, new AjaxOptions { Confirm = "Are you sure you want to delete this Tax Ledger?", HttpMethod = "get", OnSuccess = "onDeleteSuccess", LoadingElementId = "progress" }, new { @class = "btn btn-danger btn-xs" })
+                                                
+
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (item.TallySync == true && item.IsTallyUpdated == false)
+                                                    {
+                                                        <label class="badge badge-info">Waiting to Sync</label>
+                                                    }
+                                                    if (item.TallySync == false && item.IsTallyUpdated != true)
+                                                    {
+                                                        <a href="javascript:void(0)" class="btn btn-xs btn-dark" onclick="TallySync('@item.ID')">Sync to Tally</a>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

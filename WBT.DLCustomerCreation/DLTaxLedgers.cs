@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,8 @@ namespace WBT.DLCustomerCreation
     {
         private MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        //DLTaxLedgers dLLedgerCreation = new DLTaxLedgers();
+        //private tblTaxLedger ledger = new tblTaxLedger();
         public List<TaxLedgersDTO> GetTaxLedgers(string OrgID)
         {
             try
@@ -33,7 +37,12 @@ namespace WBT.DLCustomerCreation
                                       ModifiedDate = taxLedger.ModifiedDate,
                                       TaxPercentage = taxLedger.TaxPercentage,
                                       TaxType = taxLedger.TaxType,
+                                      TallySync=taxLedger.TallySync,
+                                      IsTallyUpdated=taxLedger.IsTallyUpdated,
+
+                                      //TaxType = "Duty And Taxes",
                                       Under = taxLedger.Under,
+                                      
                                   }).OrderByDescending(x => x.Name).ToList();
                     return taxLedgers;
                 }
@@ -44,6 +53,137 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
+        
+        public TaxLedgersDTO GetTaxLedgerDetail(int? ID)
+        {
+            try
+            {
+                using (MWBTCustomerAppEntities dbContext = new MWBTCustomerAppEntities())
+                {
+                    var taxLedger = (from taxLedgers in dbContext.tblTaxLedgers
+                                     where taxLedgers.ID == ID
+                                     select new TaxLedgersDTO
+                                     {
+                                         ID = taxLedgers.ID,
+                                         OrgID = taxLedgers.OrgID,
+                                         Name = taxLedgers.Name.Trim(),                        
+                                         CreatedBy = taxLedgers.CreatedBy,
+                                         CreatedDate = taxLedgers.CreatedDate,
+                                         ModifiedBy = taxLedgers.ModifiedBy,
+                                         ModifiedDate = taxLedgers.ModifiedDate,
+                                         TaxPercentage = taxLedgers.TaxPercentage,
+                                         TaxType = "Duty And Taxes",
+                                         Under = taxLedgers.Under,
+                                         TallySync=taxLedgers.TallySync,
+                                         IsTallyUpdated=taxLedgers.IsTallyUpdated
+                                     }).FirstOrDefault();
+                    return taxLedger;
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return null;
+            }
+        }
+
+        public List<TaxLedgersDTO> GetTaxTypesList(string OrgID)
+        {
+            try
+            {
+                using (MWBTCustomerAppEntities dbContext = new MWBTCustomerAppEntities())
+                {
+                    List<TaxLedgersDTO> TaxTypesList = new List<TaxLedgersDTO>();
+                    TaxTypesList = (from u in dbContext.tblTaxLedgers
+                                   where u.OrgID == OrgID
+                                   select new TaxLedgersDTO
+                                   {
+                                       TaxType=u.TaxType,                                      
+                                   }).Distinct().OrderByDescending(x => x.TaxType).ToList();
+                    return TaxTypesList;
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return null;
+            }
+       }
+        public int SaveTaxLedger(TaxLedgersDTO TaxLedgersDetail, string UserID, string OrgID)
+            {
+            try
+            {
+                using (MWBTCustomerAppEntities dbContext = new MWBTCustomerAppEntities())
+                {
+                    DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+                    var IsExists = dbContext.tblTaxLedgers.AsNoTracking().Where(p => p.ID == TaxLedgersDetail.ID).FirstOrDefault();
+
+                    if (IsExists != null)
+                    {
+                        var IsTaxLedgerNameExists = dbContext.tblTaxLedgers.AsNoTracking().Where(p => p.Name.ToLower() == TaxLedgersDetail.Name.ToLower() && p.ID != TaxLedgersDetail.ID).FirstOrDefault();
+
+                        if (IsTaxLedgerNameExists != null)
+                        {
+                            return 0;
+                        }
+
+                        tblTaxLedger taxLedger = new tblTaxLedger();
+                        taxLedger.ID = IsExists.ID;
+                        taxLedger.OrgID = OrgID;
+                        taxLedger.Name = IsExists.Name.Trim();
+                        taxLedger.CreatedBy = IsExists.CreatedBy;
+                        taxLedger.CreatedDate = IsExists.CreatedDate;
+                        taxLedger.ModifiedBy = Convert.ToInt32(UserID);
+                        taxLedger.ModifiedDate = DateTimeNow;
+                        taxLedger.TaxPercentage = TaxLedgersDetail.TaxPercentage;
+                        taxLedger.TaxType = TaxLedgersDetail.TaxType;
+                        taxLedger.Under = "Duty And Taxes";
+                        taxLedger.TallySync = TaxLedgersDetail.TallySync;
+                        taxLedger.IsTallyUpdated = TaxLedgersDetail.IsTallyUpdated;
+                        dbContext.tblTaxLedgers.Add(taxLedger);
+                        dbContext.Entry(taxLedger).State = EntityState.Modified;
+                        dbContext.SaveChanges();
+                        return taxLedger.ID;
+                    }
+                    else
+                    {
+                        var IsTaxLedgerNameExists = dbContext.tblTaxLedgers.AsNoTracking().Where(p => p.Name.ToLower() == TaxLedgersDetail.Name.ToLower() && p.ID != TaxLedgersDetail.ID).FirstOrDefault();
+
+                        if (IsTaxLedgerNameExists != null)
+                        {
+                            return 0;
+                        }
+
+                        var IsTaxNameExists = dbContext.tblTaxLedgers.AsNoTracking().Where(p => p.Name.ToLower() == TaxLedgersDetail.Name.ToLower() && p.TaxPercentage == TaxLedgersDetail.TaxPercentage).FirstOrDefault();
+
+                        if (IsTaxLedgerNameExists != null)
+                        {
+                            return 0;
+                        }
+
+                        tblTaxLedger Ledger = new tblTaxLedger();
+                        Ledger.Name = TaxLedgersDetail.Name;
+                        Ledger.OrgID = OrgID;
+                        Ledger.CreatedBy = Convert.ToInt32(UserID);
+                        Ledger.CreatedDate = DateTimeNow;
+                        Ledger.TaxPercentage = TaxLedgersDetail.TaxPercentage;
+                        Ledger.TaxType=TaxLedgersDetail.TaxType;
+                        Ledger.Under = "Duty And Taxes";
+                        Ledger.TallySync = TaxLedgersDetail.TallySync;
+                        Ledger.IsTallyUpdated = TaxLedgersDetail.IsTallyUpdated;
+                        dbContext.tblTaxLedgers.Add(Ledger);
+                        dbContext.SaveChanges();
+                        return Ledger.ID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return 0;
+            }
+        }
+        
         public TaxLedgersDTO GetDebtorDetail(int? ID)
         {
             try
@@ -72,6 +212,84 @@ namespace WBT.DLCustomerCreation
             {
                 Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
                 return null;
+            }
+        }
+
+        public bool UpdateTallyStatus(TaxLedgersDTO Ledgers)
+        {
+            try
+            {
+                using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
+                {
+                    if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
+                        Entities.Database.Connection.Open();
+
+                    DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+
+                    using (var dbcxtransaction = Entities.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            tblTaxLedger tblTaxLedger = new tblTaxLedger();
+                            tblTaxLedger.ID = Ledgers.ID;
+                            tblTaxLedger.ModifiedDate = DateTimeNow;
+                            tblTaxLedger.IsTallyUpdated = false;
+                            tblTaxLedger.TallySync = true;
+                            Entities.tblTaxLedgers.Attach(tblTaxLedger);
+                            Entities.Entry(tblTaxLedger).Property(c => c.ModifiedDate).IsModified = true;
+                            Entities.Entry(tblTaxLedger).Property(c => c.TallySync).IsModified = true;
+                            Entities.Entry(tblTaxLedger).Property(c => c.IsTallyUpdated).IsModified = true;
+                            //Entities.Entry(tblTaxLedger).Property(c => c.TaxType).IsModified = true;
+                            Entities.SaveChanges();
+                            dbcxtransaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            dbcxtransaction.Rollback();
+                            Helper.LogError(ex.Message, ex.Source, ex.InnerException == null ? null : ex.InnerException, ex.StackTrace);
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException == null ? null : ex.InnerException, ex.StackTrace);
+                return false;
+            }
+        }
+        public DLRoleCreation DeleteTaxLedger(int ID, string OrgID, string UserID)
+        {
+            DLRoleCreation Result = new DLRoleCreation();
+            try
+            {
+                using (MWBTCustomerAppEntities Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
+                {
+                    if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
+                        Entities.Database.Connection.Open();
+
+                    var isValueExists = Entities.tblTaxLedgers.AsNoTracking().Where(u => u.ID == ID).FirstOrDefault();
+
+                    if (isValueExists == null)
+                    {
+                        Result.DisplayMessage = "Bad Request!!";
+                        return Result;
+                    }
+                    else
+                    {
+                        Entities.tblTaxLedgers.Remove(Entities.tblTaxLedgers.Where(r => r.ID == ID).FirstOrDefault());
+                        Entities.SaveChanges();
+                        Result.DisplayMessage = "Tax Ledger Deleted Successfully";
+                        return Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                Result.DisplayMessage = "Can not delete Debtor Group as it is being used in Customers";
+                return Result;
             }
         }
         //public int SaveTaxLedger(DebtorsDetails DebtorsDetail, string UserID, string OrgID)
@@ -219,7 +437,7 @@ namespace WBT.DLCustomerCreation
             }
             return Result;
         }
-        //public bool UpdateTallyStatus(DebtorsDetails debtors)
+        //public bool UpdateTallyStatus(TaxLedgersDTO Ledgers)
         //{
         //    try
         //    {
@@ -234,15 +452,15 @@ namespace WBT.DLCustomerCreation
         //            {
         //                try
         //                {
-        //                    tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
-        //                    tblDebtors.ID = debtors.ID;
-        //                    tblDebtors.ModifiedDate = DateTimeNow;
-        //                    tblDebtors.IsTallyUpdated = false;
-        //                    tblDebtors.TallySync = true;
-        //                    Entities.tblDebtorsDetails.Attach(tblDebtors);
-        //                    Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
-        //                    Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
-        //                    Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
+        //                    TaxLedgersDTO tblTaxLedgers = new TaxLedgersDTO();
+        //                    tblTaxLedgers.ID = Ledgers.ID;
+        //                    tblTaxLedgers.ModifiedDate = DateTimeNow;
+        //                    tblTaxLedgers.IsTallyUpdated = false;
+        //                    tblTaxLedgers.TallySync = true;
+        //                    Entities.tblTaxLedgers.Attach(tblTaxLedgers);
+        //                    Entities.Entry(tblTaxLedgers).Property(c => c.ModifiedDate).IsModified = true;
+        //                    Entities.Entry(tblTaxLedgers).Property(c => c.IsTallyUpdated).IsModified = true;
+        //                    Entities.Entry(tblTaxLedgers).Property(c => c.TallySync).IsModified = true;
         //                    Entities.SaveChanges();
         //                    dbcxtransaction.Commit();
         //                    return true;
@@ -262,68 +480,68 @@ namespace WBT.DLCustomerCreation
         //        return false;
         //    }
         //}
-        //public bool UpdateTallyStatusFromService(DebtorsDetails debtors, bool Error = false)
-        //{
-        //    try
-        //    {
-        //        using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
-        //        {
-        //            if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
-        //                Entities.Database.Connection.Open();
-        //            DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+        public bool UpdateTallyStatusFromService(DebtorsDetails debtors, bool Error = false)
+        {
+            try
+            {
+                using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
+                {
+                    if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
+                        Entities.Database.Connection.Open();
+                    DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
 
-        //            using (var dbcxtransaction = Entities.Database.BeginTransaction())
-        //            {
-        //                try
-        //                {
-        //                    if (Error)
-        //                    {
-        //                        tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
-        //                        tblDebtors.ID = debtors.ID;
-        //                        tblDebtors.ModifiedDate = DateTimeNow;
-        //                        tblDebtors.IsTallyUpdated = false;
-        //                        tblDebtors.TallySync = false;
-        //                        Entities.tblDebtorsDetails.Attach(tblDebtors);
-        //                        Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
-        //                        Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
-        //                        Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
-        //                        Entities.SaveChanges();
-        //                        dbcxtransaction.Commit();
-        //                        return true;
-        //                    }
-        //                    else
-        //                    {
-        //                        tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
-        //                        tblDebtors.ID = debtors.ID;
-        //                        tblDebtors.ModifiedDate = DateTimeNow;
-        //                        tblDebtors.IsTallyUpdated = true;
-        //                        tblDebtors.TallySync = false;
-        //                        tblDebtors.IsEdited = true;
-        //                        Entities.tblDebtorsDetails.Attach(tblDebtors);
-        //                        Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
-        //                        Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
-        //                        Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
-        //                        Entities.Entry(tblDebtors).Property(c => c.IsEdited).IsModified = true;
-        //                        Entities.SaveChanges();
-        //                        dbcxtransaction.Commit();
-        //                        return true;
-        //                    }
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    dbcxtransaction.Rollback();
-        //                    Helper.LogError(ex.Message, ex.Source, ex.InnerException == null ? null : ex.InnerException, ex.StackTrace);
-        //                    return false;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Helper.LogError(ex.Message, ex.Source, ex.InnerException == null ? null : ex.InnerException, ex.StackTrace);
-        //        return false;
-        //    }
-        //}
+                    using (var dbcxtransaction = Entities.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            if (Error)
+                            {
+                                tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
+                                tblDebtors.ID = debtors.ID;
+                                tblDebtors.ModifiedDate = DateTimeNow;
+                                tblDebtors.IsTallyUpdated = false;
+                                tblDebtors.TallySync = false;
+                                Entities.tblDebtorsDetails.Attach(tblDebtors);
+                                Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
+                            else
+                            {
+                                tblDebtorsDetail tblDebtors = new tblDebtorsDetail();
+                                tblDebtors.ID = debtors.ID;
+                                tblDebtors.ModifiedDate = DateTimeNow;
+                                tblDebtors.IsTallyUpdated = true;
+                                tblDebtors.TallySync = false;
+                                tblDebtors.IsEdited = true;
+                                Entities.tblDebtorsDetails.Attach(tblDebtors);
+                                Entities.Entry(tblDebtors).Property(c => c.ModifiedDate).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.IsTallyUpdated).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.TallySync).IsModified = true;
+                                Entities.Entry(tblDebtors).Property(c => c.IsEdited).IsModified = true;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                return true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            dbcxtransaction.Rollback();
+                            Helper.LogError(ex.Message, ex.Source, ex.InnerException == null ? null : ex.InnerException, ex.StackTrace);
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException == null ? null : ex.InnerException, ex.StackTrace);
+                return false;
+            }
+        }
         //public DLRoleCreation DeleteDebtorGroup(int DebtorID, string OrgID, string UserID)
         //{
         //    DLRoleCreation Result = new DLRoleCreation();
@@ -363,5 +581,8 @@ namespace WBT.DLCustomerCreation
         //    return GetDebtorsList(OrgID).Where(t => t.IsTallyUpdated == false && t.TallySync == true).ToList();
 
         //}
+
+
+
     }
 }

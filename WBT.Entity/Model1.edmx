@@ -3324,6 +3324,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="TallySync" Type="bit" Nullable="false" />
+          <Property Name="IsTallyUpdated" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblTemplateImage">
           <Key>
@@ -20538,6 +20540,8 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="OrgID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TallySync" Type="Boolean" Nullable="false" />
+          <Property Name="IsTallyUpdated" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tblWeekoff">
           <Key>
@@ -24296,6 +24300,8 @@
           <EntitySetMapping Name="tblTaxLedgers">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblTaxLedger">
               <MappingFragment StoreEntitySet="tblTaxLedgers">
+                <ScalarProperty Name="IsTallyUpdated" ColumnName="IsTallyUpdated" />
+                <ScalarProperty Name="TallySync" ColumnName="TallySync" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
