@@ -1041,6 +1041,7 @@
           <Property Name="SORegister" Type="varchar" MaxLength="500" />
           <Property Name="GroupName" Type="varchar" MaxLength="500" />
           <Property Name="PriceSyncType" Type="bit" Nullable="false" />
+          <Property Name="PaymentInfo" Type="varchar" MaxLength="2000" />
         </EntityType>
         <EntityType Name="tblArea">
           <Key>
@@ -11586,8 +11587,8 @@
           <EntitySet Name="tblOrgSystemDetails" EntityType="MWBTCustomerAppModel.tblOrgSystemDetail" />
           <EntitySet Name="tblTallySyncErrors" EntityType="MWBTCustomerAppModel.tblTallySyncError" />
           <EntitySet Name="tblReligions" EntityType="MWBTCustomerAppModel.tblReligion" />
-          <EntitySet Name="tblTaxLedgers" EntityType="MWBTCustomerAppModel.tblTaxLedger" />
           <EntitySet Name="tblWeekoffs" EntityType="MWBTCustomerAppModel.tblWeekoff" />
+          <EntitySet Name="tblTaxLedgers" EntityType="MWBTCustomerAppModel.tblTaxLedger" />
         </EntityContainer>
         <EntityType Name="AccountGroupDetail">
           <Key>
@@ -20380,6 +20381,7 @@
           <Property Name="SORegister" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="GroupName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PriceSyncType" Type="Boolean" Nullable="false" />
+          <Property Name="PaymentInfo" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_tblDepartment_DeptID">
           <End Type="MWBTCustomerAppModel.tblDepartment" Role="tblDepartment" Multiplicity="0..1">
@@ -20528,11 +20530,20 @@
           <Property Name="Religion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblWeekoff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WeekDayName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblTaxLedger">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrgID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Under" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="TaxType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
@@ -20541,17 +20552,8 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="OrgID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="TallySync" Type="Boolean" Nullable="false" />
           <Property Name="IsTallyUpdated" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="tblWeekoff">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WeekDayName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -24163,6 +24165,7 @@
           <EntitySetMapping Name="tblAdminSettings">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAdminSetting">
               <MappingFragment StoreEntitySet="tblAdminSettings">
+                <ScalarProperty Name="PaymentInfo" ColumnName="PaymentInfo" />
                 <ScalarProperty Name="PriceSyncType" ColumnName="PriceSyncType" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="SORegister" ColumnName="SORegister" />
@@ -24300,12 +24303,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblWeekoffs">
+            <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblWeekoff">
+              <MappingFragment StoreEntitySet="tblWeekoff">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="WeekDayName" ColumnName="WeekDayName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblTaxLedgers">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblTaxLedger">
               <MappingFragment StoreEntitySet="tblTaxLedgers">
                 <ScalarProperty Name="IsTallyUpdated" ColumnName="IsTallyUpdated" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />
-                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -24314,15 +24325,7 @@
                 <ScalarProperty Name="TaxType" ColumnName="TaxType" />
                 <ScalarProperty Name="Under" ColumnName="Under" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblWeekoffs">
-            <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblWeekoff">
-              <MappingFragment StoreEntitySet="tblWeekoff">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="WeekDayName" ColumnName="WeekDayName" />
+                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

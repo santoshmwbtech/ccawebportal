@@ -1,4 +1,5 @@
 ﻿@model WBT.DLCustomerCreation.SalesOrders
+@using WBT.Common
 
 @{
     Layout = null;
@@ -9,211 +10,280 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Sales Order</title>
-    <meta charset="utf-8" />
-    <style>
-        .invoice-title h2, .invoice-title h3 {
-            display: inline-block;
-        }
-
-        .table > tbody > tr > .no-line {
-            border-top: none;
-        }
-
-        .table > thead > tr > .no-line {
-            border-bottom: none;
-        }
-
-        .table > tbody > tr > .thick-line {
-            border-top: 2px solid;
-        }
-
-        table {
-            font-size: 16px !important;
-        }
-    </style>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
-<body onload="">
-    <div class="container" style="font-size:16px;">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="invoice-title">
-                    <h2>Sales Order</h2><h3 class="pull-right"> # @Model.SalesOrderNumber</h3>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col-xs-4">
-                        <address>
-                            <strong>From :</strong><br />
-                            @Model.BranchDetails.Name<br />
-                            @Model.BranchDetails.Address<br />
-                            @Model.BranchDetails.City<br />
-                            @Model.BranchDetails.State - @Model.BranchDetails.PinCode
-                        </address>
-                    </div>
-                    <div class="col-xs-4">
-                        <address>
-                            <strong>Billing Details :</strong><br />
-                            @Model.CustomerName<br />
-                            @Model.caddress<br />
-                            @Model.ccity<br />
-                            @Model.cstate - @Model.cpincode
-                        </address>
-                    </div>
-                    <div class="col-xs-4">
-                        <address>
-                            <strong>Shipping Details :</strong><br />
-                            @Model.CustomerName<br />
-                            @Model.caddress<br />
-                            @Model.ccity<br />
-                            @Model.cstate - @Model.cpincode
-                        </address>
-                    </div>
-                </div>
-                <div class="row">
-                    
-                </div>
-            </div>
-        </div>
-        @*<div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><strong>Order summary</strong></h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table">
-                            <table class="table table-condensed">
-                                <thead>
-                                    <tr>
-                                        <td><strong>Item</strong></td>
-                                        <td class="text-center"><strong>Description</strong></td>
-                                        <td class="text-right"><strong>Price</strong></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Product</td>
-                                        <td class="text-center">@Model.ProductName</td>
-                                        <td class="text-right">@Model.CategoryMatrix</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Advertisement Area</td>
-                                        <td class="text-center">@Model.AdvertisementAreaName</td>
-                                        <td class="text-right">@Model.AdAreaMatrix</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Advertisement Type</td>
-                                        <td class="text-center">@Model.AdvertisementType</td>
-                                        <td class="text-right">@Model.AdTypeMatrix</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total Days</td>
-                                        <td class="text-center">@Model.main.TotalDays</td>
-                                        <td class="text-right">@Model.main.TotalDays</td>
-                                    </tr>
+<body>
+    @*onload="window.print()"*@
+    <p>&nbsp;</p>
+    <table style="border-collapse: collapse; width: 100%; height: 184px;" border="1">
+        <tbody>
+            <tr style="height: 18px;">
+                <td style="width: 100%; height: 19px; text-align: center; padding-left: 40px;" colspan="4"><strong>Sales Order</strong></td>
+            </tr>
+            <tr style="height: 18px;">
+                <td style="width: 49.0248%; height: 10px; text-align: left;" colspan="2"><strong>@Model.BranchDetails.Name</strong></td>
+                <td style="width: 25.9752%; height: 10px;"><strong>Billing Details</strong></td>
+                <td style="width: 25%; height: 10px;"><strong>Shipping Details</strong></td>
+            </tr>
+            <tr style="height: 67px;">
+                <td style="width: 49.0248%; height: 67px;" colspan="2">
+                    @Model.BranchDetails.Address <br />
+                    GSTN : @Model.BranchDetails.GST  <br />
+                    Contact : @Model.BranchDetails.Mobile  <br />
+                    State : @Model.BranchDetails.State  <br />
+                    City : @Model.BranchDetails.City
+                </td>
+                <td style="width: 25.9752%; height: 67px;">
+                    @Model.customerInfo.FirmName <br />
+                    @Model.customerInfo.BillingAddress <br />
+                    @Model.customerInfo.BillingCity <br />
+                    @Model.customerInfo.BillingState <br />
+                    @Model.customerInfo.BillingPincode <br />
+                </td>
+                <td style="width: 25%; height: 67px;">
+                    @Model.customerInfo.FirmName <br />
+                    @Model.customerInfo.ShippingAddress <br />
+                    @Model.customerInfo.ShippingCity <br />
+                    @Model.customerInfo.ShippingState <br />
+                    @Model.customerInfo.ShippingPincode <br />
+                </td>
+            </tr>
+            <tr style="height: 18px;">
+                <td style="width: 25%; height: 18px;">Order Number:</td>
+                <td style="width: 24.0248%; height: 18px;">
+                    <p><strong>@Model.SalesOrderNumber </strong></p>
+                </td>
+                <td style="width: 25.9752%; height: 18px;">Order Date:</td>
+                <td style="width: 25%; height: 18px;"><strong>@Model.SalesDateTime</strong></td>
+            </tr>
+            <tr style="height: 18px;">
+                <td style="width: 25%; height: 10px;">Sales Person:</td>
+                <td style="width: 24.0248%; height: 10px;">
+                    <p><strong>@Model.SalesmanName </strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;" colspan="4">
+                    <p>Comments:</p>
+                    <p style="text-align: right;">@Model.Comments</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table style="border-collapse: collapse; width: 100.3%; height: 434px;" border="1">
+        <tbody>
+            <tr style="height: 18px;">
+                <td style="height: 18px; width: 193.451%;" colspan="9">&nbsp;</td>
+            </tr>
+            <tr style="height: 18px;">
+                <td style="width: 3%; height: 18px; text-align: center;"><strong>Sl No</strong></td>
+                <td style="width: 42%; height: 18px; text-align: center;"><strong>Item Description</strong></td>
+                <td style="width: 10%; height: 18px; text-align: center;"><strong>HSN/SAC</strong></td>
+                <td style="width: 4%; height: 18px; text-align: center;"><strong>Qty </strong></td>
+                <td style="width: 7%; height: 18px; text-align: center;"><strong>Rate (Per)</strong></td>
+                <td style="width: 3%; height: 18px; text-align: center;"><strong>Disc %</strong></td>
+                <td style="width: 7%; height: 18px; text-align: center;"><strong>Disc Amount</strong></td>
+                <td style="width: 3%; height: 18px; text-align: center;"><strong>GST%</strong></td>
+                <td style="width: 10%; text-align: center; height: 18px;"><strong>Total Amount</strong></td>
+            </tr>
+            @{
+                if (Model.DLSalesOrderWithItemCreations != null)
+                {
+                    if (Model.DLSalesOrderWithItemCreations.Count() > 0)
+                    {
+                        int i = 1;
+                        foreach (var item in Model.DLSalesOrderWithItemCreations)
+                        {
+                            <tr style="height: 18px;">
+                                <td style="width: 3%; height: 68px; text-align: center;">@i</td>
+                                <td style="width: 42%; height: 68px; text-align: center;">@item.ItemName</td>
+                                <td style="width: 10%; height: 68px; text-align: center;">@item.HSNCode</td>
+                                <td style="width: 4%; height: 68px; text-align: center;">@item.TotalQTY</td>
+                                <td style="width: 7%; height: 68px; text-align: center;">@item.Rate (@item.RatePerUnit)</td>
+                                <td style="width: 3%; height: 68px; text-align: center;">@item.DiscountPercentage</td>
+                                <td style="width: 7%; height: 68px; text-align: center;">@item.DiscountAmt</td>
+                                <td style="width: 3%; height: 68px; text-align: center;">@item.GSTPer</td>
+                                <td style="width: 10%; text-align: center; height: 68px;">@item.Value</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                }
+            }
+            <tr style="height: 18px;">
+                <td style="width: 48.9521%; height: 17px; text-align: center;" colspan="3"><strong>Total Value</strong></td>
+                <td style="width: 11.4521%; height: 17px; text-align: center;"><strong>@Model.DLSalesOrderWithItemCreations.Select(d => d.TotalQTY).Sum()</strong></td>
+                <td style="height: 17px;text-align:center"><strong>@Model.DLSalesOrderWithItemCreations.Select(d => d.Rate).Sum()</strong></td>
+                <td style="height: 17px; text-align: center"><strong>@Model.DLSalesOrderWithItemCreations.Select(d => d.DiscountPercentage).Sum()</strong></td>
+                <td style="height: 17px; text-align: center"><strong>@Model.DLSalesOrderWithItemCreations.Select(d => d.DiscountAmt).Sum()</strong></td>
+                <td></td>
+                <td style="width: 102.47%; height: 17px; text-align: center;"><strong>@Model.DLSalesOrderWithItemCreations.Select(d => d.Value).Sum()</strong></td>
+            </tr>
+            <tr style="height: 18px;">
+                <td style="height: 35px; width: 193.451%;" colspan="9"><strong>Amount (in words) : @Helper.ConvertNumbertoText(Convert.ToInt64(Model.DLSalesOrderWithItemCreations.Select(d => d.Value).Sum()))</strong></td>
+            </tr>
+            @{
+                if (Model.PriceSyncType)
+                {
+                    if (Model.SalesType.ToLower() == "local state")
+                    {
+                        <tr style="height: 18px;">
+                            <td style="height: 38px; text-align: center; width: 37.5%;" colspan="3" rowspan="2"><strong>HSN/SAC</strong></td>
+                            <td style="width: 11.4521%; height: 38px; text-align: center;" rowspan="2"><strong>Taxable Value</strong></td>
+                            <td style="width: 23.0536%; height: 20px; text-align: center;" colspan="2"><strong>Central Tax</strong></td>
+                            <td style="height: 20px; text-align: center; width: 18.9749%;" colspan="2"><strong>State Tax</strong></td>
+                            <td style="width: 102.47%; text-align: center; height: 38px;" rowspan="2"><strong>Total Tax Amount</strong></td>
+                        </tr>
+                        <tr style="height: 18px;">
+                            <td style="width: 11.4521%; height: 18px; text-align: center;"><strong>Rate</strong></td>
+                            <td style="width: 11.6015%; height: 18px; text-align: center;"><strong>Amount</strong></td>
+                            <td style="width: 10.1051%; height: 18px; text-align: center;"><strong>Rate</strong></td>
+                            <td style="width: 8.8698%; height: 18px; text-align: center;"><strong>Amount</strong></td>
+                        </tr>
+                        foreach (var gstItem in Model.DLSalesOrderWithItemCreations)
+                        {
+                            <tr style="height: 18px;">
+                                <td style="width: 37.5%; text-align: center; height: 18px;" colspan="3">@gstItem.HSNCode</td>
+                                <td style="width: 11.4521%; text-align: center; height: 18px;">@gstItem.Value</td>
+                                <td style="width: 11.4521%; text-align: center; height: 18px;">@(gstItem.GSTPer / 2)</td>
+                                <td style="width: 11.6015%; text-align: center; height: 18px;">@gstItem.CGSTValue</td>
+                                <td style="width: 10.1051%; text-align: center; height: 18px;">@(gstItem.GSTPer / 2)</td>
+                                <td style="width: 8.8698%; text-align: center; height: 18px;">@gstItem.SGSTValue</td>
+                                <td style="width: 102.47%; text-align: center; height: 18px;">@(Math.Round(gstItem.GSTValue.Value, 2))</td>
+                            </tr>
+                        }
+                        <tr style="height: 18px;">
+                            <td style="width: 37.5%; height: 18px; text-align: center;" colspan="3"><strong>Total</strong></td>
+                            <td style="width: 11.4521%; height: 18px; text-align: center;"><strong>@Math.Round(Model.DLSalesOrderWithItemCreations.Sum(d => d.Value), 2)</strong></td>
+                            <td style="width: 11.4521%; height: 18px;">&nbsp;</td>
+                            <td style="width: 11.6015%; height: 18px; text-align: center;"><strong>@Math.Round(Model.DLSalesOrderWithItemCreations.Sum(d => d.CGSTValue), 2)</strong></td>
+                            <td style="width: 10.1051%; height: 18px;">&nbsp;</td>
+                            <td style="width: 8.8698%; height: 18px; text-align: center;"><strong>@Math.Round(Model.DLSalesOrderWithItemCreations.Sum(d => d.SGSTValue), 2)</strong></td>
+                            <td style="width: 102.47%; text-align: center; height: 18px;"><strong> @Math.Round(Model.DLSalesOrderWithItemCreations.Sum(d => d.GSTValue.Value), 2)</strong></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="height: 18px;">
+                            <td style="height: 38px; text-align: center; width: 37.5%;" colspan="3" rowspan="2"><strong>HSN/SAC</strong></td>
+                            <td style="width: 11.4521%; height: 38px; text-align: center;" rowspan="2"><strong>Taxable Value</strong></td>
+                            <td style="width: 23.0536%; height: 20px; text-align: center;" colspan="4"><strong>Integrated Tax</strong></td>
+                            @*<td colspan="2"></td>*@
+                            <td style="width: 10%; text-align: center; height: 38px;" rowspan="2"><strong>Total Tax Amount</strong></td>
+                        </tr>
+                        <tr style="height: 18px;">
+                            <td style="width: 11.4521%; height: 18px; text-align: center;" colspan="2"><strong>Rate</strong></td>
+                            <td style="width: 11.6015%; height: 18px; text-align: center;" colspan="2"><strong>Amount</strong></td>
+                        </tr>
+                        foreach (var gstItem in Model.DLSalesOrderWithItemCreations)
+                        {
+                            <tr style="height: 18px;">
+                                <td style="width: 37.5%; text-align: center; height: 18px;" colspan="3">@gstItem.HSNCode</td>
+                                <td style="width: 11.4521%; text-align: center; height: 18px;">@gstItem.Value</td>
+                                <td style="width: 11.4521%; text-align: center; height: 18px;">@gstItem.GSTPer</td>
+                                <td style="width: 11.6015%; text-align: center; height: 18px;">@gstItem.GSTValue</td>
+                                <td colspan="2"></td>
+                                <td style="width: 10%; text-align: center; height: 18px;">@Math.Round(gstItem.GSTValue.Value, 2)</td>
+                            </tr>
+                        }
+                        <tr style="height: 18px;">
+                            <td style="width: 37.5%; height: 18px; text-align: center;" colspan="3"><strong>Total</strong></td>
+                            <td style="width: 11.4521%; height: 18px; text-align: center;"><strong>@Math.Round(Model.DLSalesOrderWithItemCreations.Sum(d => d.Value), 2)</strong></td>
+                            <td style="width: 11.4521%; height: 18px;"></td>
+                            <td style="width: 11.6015%; height: 18px; text-align: center;"><strong>@Math.Round(Model.DLSalesOrderWithItemCreations.Sum(d => d.IGSTValue), 2)</strong></td>
+                            <td style="width: 10.1051%; height: 18px;" colspan="2"></td>
+                            <td style="width: 102.47%; text-align: center; height: 18px;"><strong> @Math.Round(Model.DLSalesOrderWithItemCreations.Sum(d => d.GSTValue.Value), 2)</strong></td>
+                        </tr>
+                        <tr style="height: 18px;">
+                            <td style="height: 18px; width: 193.451%;" colspan="9"><strong>Tax Amount(in words) : @Helper.ConvertNumbertoText(Convert.ToInt64(Model.DLSalesOrderWithItemCreations.Select(d => d.GSTValue).Sum()))</strong></td>
+                        </tr>
+                    }
+                }
+                else
+                {
 
-                                    @{
-                                        if (Model.main.TotalStates != 0)
-                                        {
-                                            <tr>
-                                                <td>Total States</td>
-                                                <td class="text-center">@Model.TotalStates</td>
-                                                <td class="text-right">@Model.TotalStates</td>
-                                            </tr>
-                                        }
-                                        if (Model.TotalDistricts != 0)
-                                        {
-                                            <tr>
-                                                <td>Total Districts</td>
-                                                <td class="text-center">@Model.TotalDistricts</td>
-                                                <td class="text-right">@Model.TotalDistricts</td>
-                                            </tr>
-                                        }
-                                        if (Model.main.TotalCities != 0)
-                                        {
-                                            <tr>
-                                                <td>Total Cities</td>
-                                                <td class="text-center">@Model.TotalCities</td>
-                                                <td class="text-right">@Model.TotalCities</td>
-                                            </tr>
-                                        }
-                                        if (Model.AdvertisementType.ToLower() != "fullpagead")
-                                        {
-                                            <tr>
-                                                <td>Total Rotations</td>
-                                                <td class="text-center">@Model.main.TotalIntervals</td>
-                                                <td class="text-right">@Model.main.TotalIntervals</td>
-                                            </tr>
-                                        }
-                                    }
-                                    @{
-                                        if (Model.TimeSlots != null)
-                                        {
-                                            foreach (var item in Model.TimeSlots)
-                                            {
-                                                <tr>
-                                                    <td>Time Slot</td>
-                                                    <td class="text-center">
-                                                        @item.TimeSlotName
-                                                    </td>
-                                                    <td class="text-right">
-                                                        @item.TimeSlotMatrix
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    }
-                                    <tr>
-                                        <td class="thick-line"></td>
-                                        <td class="thick-line text-center"><strong>Subtotal</strong></td>
-                                        <td class="thick-line text-right">@Model.main.AdTotalPrice</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="no-line"></td>
-                                        <td class="no-line text-center"><strong>Discount Amount</strong></td>
-                                        <td class="no-line text-right">@Model.main.TotalDiscount</td>
-                                    </tr>
-                                    @{
-                                        if (Model.main.IGSTPer != 0)
-                                        {
-                                            <tr>
-                                                <td class="no-line"></td>
-                                                <td class="no-line text-center"><strong>IGST</strong>(@Model.main.IGSTPer)</td>
-                                                <td class="no-line text-right">@Model.main.IGSTAmount</td>
-                                            </tr>
-                                        }
-                                        if (Model.main.CGSTPer != 0)
-                                        {
-                                            <tr>
-                                                <td class="no-line"></td>
-                                                <td class="no-line text-center"><strong>CGST</strong>(@Model.main.CGSTPer)</td>
-                                                <td class="no-line text-right">@Model.main.CGSTAmount</td>
-                                            </tr>
-                                        }
-                                        if (Model.main.SGSTPer != 0)
-                                        {
-                                            <tr>
-                                                <td class="no-line"></td>
-                                                <td class="no-line text-center"><strong>SGST</strong>(@Model.main.SGSTPer)</td>
-                                                <td class="no-line text-right">@Model.main.SGSTAmount</td>
-                                            </tr>
-                                        }
-                                    }
-                                    <tr>
-                                        <td class="no-line"></td>
-                                        <td class="no-line text-center"><strong>Grand Total</strong></td>
-                                        <td class="no-line text-right">@Model.main.FinalPrice</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-    </div>
+                }
+            }
+            <tr style="height: 18px;">
+                <td style="width: 72.0057%; height: 18px;" colspan="6"><strong>Company's PAN : @Model.BranchDetails.PANNumber</strong></td>
+                <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong>Total Amount :</strong></td>
+                <td style="width: 102.47%; text-align: right; height: 18px;"><strong>@Model.DLSalesOrderWithItemCreations.Select(d => d.Value).Sum()</strong></td>
+            </tr>
+            @{
+                if (Model.PriceSyncType)
+                {
+                    if (Model.SalesType.ToLower() == "local state")
+                    {
+                        <tr style="height: 18px;">
+                            <td style="width: 72.0057%; height: 72px;" colspan="6" rowspan="4">@Model.PaymentInfo</td>
+
+                            <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong>CGST:</strong></td>
+                            <td style="width: 102.47%; text-align: right; height: 18px;"><strong>@Math.Round(Model.DLSalesOrderWithItemCreations.Select(d => d.GSTValue.Value / 2).Sum(), 2)</strong></td>
+                        </tr>
+                        <tr style="height: 18px;">
+                            <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong>SGST:</strong></td>
+                            <td style="width: 102.47%; text-align: right; height: 18px;"><strong>@Math.Round(Model.DLSalesOrderWithItemCreations.Select(d => d.GSTValue.Value / 2).Sum(), 2)</strong></td>
+                        </tr>
+                        <tr></tr>
+                    }
+                    else
+                    {
+                        <tr style="height: 18px;">
+                            <td style="width: 72.0057%; height: 72px;" colspan="6" rowspan="4">@Model.PaymentInfo</td>
+
+                            <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong>IGST:</strong></td>
+                            <td style="width: 102.47%; text-align: right; height: 18px;"><strong>@Model.DLSalesOrderWithItemCreations.Select(d => d.GSTValue).Sum()</strong></td>
+                        </tr>
+                        <tr style="height: 18px;">
+                            <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong></strong></td>
+                            <td style="width: 102.47%; text-align: right; height: 18px;"><strong></strong></td>
+                        </tr>
+                        <tr>
+                            
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr style="height: 18px;">
+                        <td style="width: 72.0057%; height: 72px;" colspan="6" rowspan="4">@Model.PaymentInfo</td>
+
+                        <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong></strong></td>
+                        <td style="width: 102.47%; text-align: right; height: 18px;"><strong></strong></td>
+                    </tr>
+                    <tr style="height: 18px;">
+                        <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong></strong></td>
+                        <td style="width: 102.47%; text-align: right; height: 18px;"><strong></strong></td>
+                    </tr>
+                    <tr></tr>
+                }
+            }
+            <tr style="height: 18px;">
+                <td style="height: 18px; text-align: right; width: 18.9749%;" colspan="2"><strong>Net Amount:</strong></td>
+                <td style="width: 102.47%; text-align: right; height: 18px;">
+                    <strong>
+                        @(Model.DLSalesOrderWithItemCreations.Sum(d => d.Value) + Model.DLSalesOrderWithItemCreations.Sum(d => d.GSTValue))
+                    </strong>
+                </td>
+            </tr>
+            <tr style="height: 18px;">
+                <td style="width: 72.0057%; height: 18px; text-align: center;" colspan="6"><strong>Terms and Conditions</strong></td>
+                <td style="height: 18px; text-align: center; width: 121.445%;" colspan="3">&nbsp;</td>
+            </tr>
+            <tr style="height: 10px;">
+                <td style="width: 72.0057%; height: 50px;" colspan="6" rowspan="3">
+                    Subject to @Model.CompanyCity Jurisdiction. <br />
+                    Our Responsibilities ceases as soon as the goods leave our premises. <br />
+                    Goods once sold will not be taken back. Delivery ex-premises.
+                </td>
+                <td style="height: 10px; width: 121.445%; text-align: center;" colspan="3"><strong>for @Model.BranchDetails.Name&nbsp;</strong></td>
+            </tr>
+            <tr style="height: 30px;">
+                <td style="height: 30px; width: 121.445%;" colspan="3">&nbsp;</td>
+            </tr>
+            <tr style="height: 10px;">
+                <td style="height: 10px; width: 121.445%; text-align: right;" colspan="3">Authorised Signature</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

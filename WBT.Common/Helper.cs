@@ -48,6 +48,11 @@ namespace WBT.Common
         BindAllData,
         WarehouseData
     }
+    public enum ConvertStyle
+    {
+        Asian,
+        English
+    }
 
     public class ApplicationActivate : IDataErrorInfo
     {
@@ -102,25 +107,6 @@ namespace WBT.Common
 
         public string this[string columnName] => throw new NotImplementedException();
 
-        //string IDataErrorInfo.this[string columnName]
-        //{
-        //    get
-        //    {
-        //        var validationResults = new List<ValidationResult>();
-
-        //        if (Validator.TryValidateProperty(
-        //                GetType().GetProperty(columnName).GetValue(this)
-        //                , new ValidationContext(this)
-        //                {
-        //                    MemberName = columnName
-        //                }
-        //                , validationResults))
-        //            return null;
-
-        //        return validationResults.First().ErrorMessage;
-        //    }
-        //}
-
         public static TransactionType RequiredData(string Message)
         {
             if (string.IsNullOrEmpty(Message))
@@ -128,7 +114,6 @@ namespace WBT.Common
             else
                 return TransactionType.Success;
         }
-
     }
 
     public abstract class BLActivate
@@ -637,6 +622,14 @@ namespace WBT.Common
             {
                 LogError(ex.Message, null, ex.InnerException, null);
             }
+        }
+
+        public static string ConvertNumbertoText(long number)
+        {
+            if (number != 0)
+                return new AmountConverter(number, AmountConverter.ConvertStyle.Asian).Convert();
+            else
+                return string.Empty;
         }
     }
 }

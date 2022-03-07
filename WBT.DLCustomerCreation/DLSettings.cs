@@ -42,6 +42,7 @@ namespace WBT.DLCustomerCreation
                                     SORegister = s.SORegister,
                                     GroupName = s.GroupName,
                                     PriceSyncType = s.PriceSyncType,
+                                    PaymentInfo = s.PaymentInfo,
                                 }).FirstOrDefault();
                     if(settings == null)
                     {
@@ -85,6 +86,7 @@ namespace WBT.DLCustomerCreation
                         tblAdminSetting.SORegister = settings.SORegister;
                         tblAdminSetting.PriceSyncType = settings.PriceSyncType;
                         tblAdminSetting.GroupName = settings.GroupName;
+                        tblAdminSetting.PaymentInfo = settings.PaymentInfo;
 
                         Entities.tblAdminSettings.Add(tblAdminSetting);
                         Entities.SaveChanges();
@@ -114,6 +116,7 @@ namespace WBT.DLCustomerCreation
                         tblAdminSetting.SORegister = settings.SORegister;
                         tblAdminSetting.GroupName = settings.GroupName;
                         tblAdminSetting.PriceSyncType = settings.PriceSyncType;
+                        tblAdminSetting.PaymentInfo = settings.PaymentInfo;
                         Entities.tblAdminSettings.Add(tblAdminSetting);
                         Entities.Entry(tblAdminSetting).State = EntityState.Modified;
                         Entities.SaveChanges();
@@ -153,6 +156,7 @@ namespace WBT.DLCustomerCreation
         public string SORegister { get; set; }
         public string GroupName { get; set; }
         public bool PriceSyncType { get; set; }
+        public string PaymentInfo { get; set; }
 
     }
 }

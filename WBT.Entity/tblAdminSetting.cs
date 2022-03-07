@@ -34,5 +34,6 @@ namespace WBT.Entity
         public string SORegister { get; set; }
         public string GroupName { get; set; }
         public bool PriceSyncType { get; set; }
+        public string PaymentInfo { get; set; }
     }
 }

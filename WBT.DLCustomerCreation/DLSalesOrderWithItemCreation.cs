@@ -20,10 +20,10 @@ namespace WBT.DL.Transaction
         public decimal TotalQTY { get; set; }
         public decimal Rate { get; set; }
         public decimal Value { get; set; }
-        public Nullable<int> ItemRowNumber { get; set; }
+        public int? ItemRowNumber { get; set; }
         public int WarehouseID { get; set; }
         public int CreatedByID { get; set; }
-        public Nullable<int> ModifiedByID { get; set; }
+        public int? ModifiedByID { get; set; }
         public Nullable<decimal> FrieghtCharge { get; set; }
         public Nullable<decimal> LoadingUnloadingCharge { get; set; }
         public Nullable<decimal> OtherExpense { get; set; }
@@ -31,7 +31,7 @@ namespace WBT.DL.Transaction
         public decimal? DiscountAmt { get; set; }
         public Nullable<decimal> MaxQuantity { get; set; }
         public bool IsCorrectionRequired { get; set; }
-        
+
         public string SalesOrderStatus { get; set; }
         public string Unit { get; set; }
         public string ItemName { get; set; }
@@ -50,7 +50,11 @@ namespace WBT.DL.Transaction
         public string CGSTLedger { get; set; }
         public string SGSTLedger { get; set; }
         public string IGSTLedger { get; set; }
-
+        public string HSNCode { get; set; }
+        public decimal CGSTValue { get; set; }
+        public decimal SGSTValue { get; set; }
+        public decimal IGSTValue { get; set; }
+        public string RatePerUnit { get; set; }
     }
 
     public class DLSalesOrderWithItem : WBT.Common.DLActivate
@@ -222,7 +226,7 @@ namespace WBT.DL.Transaction
 
                                 lSalesOrderWithItem.tblSalesOrderItemWarehouseMaps.Clear();
                                 Entities.Entry(lSalesOrderWithItem).State = EntityState.Deleted;
-                                
+
                                 Entities.SaveChanges();
                                 dbcxtransaction.Commit();
 
@@ -258,7 +262,7 @@ namespace WBT.DL.Transaction
         public object DeleteLineItemWarehouseMap(object Context)
         {
             List<Master.DLItemWarehouseMap.SalesOrderItemWarehouseMapResult> SalesOrderItemWarehouseMaps = (List<Master.DLItemWarehouseMap.SalesOrderItemWarehouseMapResult>)Context;
-           //mSalesOrderWithItem = ((DLSalesOrderWithItemCreation)Context);
+            //mSalesOrderWithItem = ((DLSalesOrderWithItemCreation)Context);
             try
             {
                 using (Entities = new Entity.MWBTCustomerAppEntities())
@@ -275,7 +279,7 @@ namespace WBT.DL.Transaction
                                 var stock = Entities.tblItemWarehouseMaps.AsNoTracking()
                                            .Where(e => e.WarehouseID == w.WarehouseID
                                             && e.BatchID == w.BatchID && e.ItemCode == w.ItemCode
-                                            && e.OrgID== w.OrgID).FirstOrDefault();
+                                            && e.OrgID == w.OrgID).FirstOrDefault();
 
                                 if (stock != null)
                                 {

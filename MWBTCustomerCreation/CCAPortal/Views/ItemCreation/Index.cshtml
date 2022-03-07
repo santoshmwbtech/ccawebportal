@@ -237,13 +237,10 @@
     }
     function onSaveCompleteCreate_Ajax() {
        // LoadListBox();
-         $("#progress").hide();
-    }
+         $("#progress").hide();    }
         jQuery(document).ready(function ($) {
-
             jQuery("a").tooltip();
             loadDataTableWithButtons();
-
             $('#AlternateUnit').change(function () {
                 var chk = document.getElementById('WhareDiv');
                 if ($("#AlternateUnit").val() != 0) {
@@ -253,9 +250,7 @@
                 else {
                     chk.style.display = 'none';
                 }
-
             });
-
              $('.numberonly').keypress(function (e) {
                   if (event.which != 46 && (event.which < 47 || event.which > 59))
                     {
@@ -266,7 +261,13 @@
                     }
             });
         });
+        function cancelEdit() {
+            $("#divCreate").load('@Url.Action("Create", "ItemCreation")');
+                multiSelect();
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadDataTableWithButtons();
+                }, 1000);
+        }
     </script>
-
-
 }

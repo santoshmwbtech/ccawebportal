@@ -196,7 +196,7 @@ namespace WBT.Entity
         public virtual DbSet<tblOrgSystemDetail> tblOrgSystemDetails { get; set; }
         public virtual DbSet<tblTallySyncError> tblTallySyncErrors { get; set; }
         public virtual DbSet<tblReligion> tblReligions { get; set; }
-        public virtual DbSet<tblTaxLedger> tblTaxLedgers { get; set; }
         public virtual DbSet<tblWeekoff> tblWeekoffs { get; set; }
+        public virtual DbSet<tblTaxLedger> tblTaxLedgers { get; set; }
     }
 }

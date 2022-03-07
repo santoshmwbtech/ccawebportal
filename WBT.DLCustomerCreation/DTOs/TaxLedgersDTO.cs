@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WBT.DLCustomerCreation.DTOs
 {
@@ -13,11 +9,11 @@ namespace WBT.DLCustomerCreation.DTOs
         public string Name { get; set; }
         public string Under { get; set; }
         public string TaxType { get; set; }
-        public Nullable<decimal> TaxPercentage { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
-        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public decimal? TaxPercentage { get; set; }
+        public int? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
         public string DisplayMsg { get; set; }
         public bool IsTallyUpdated { get; set; }
         public bool TallySync { get; set; }

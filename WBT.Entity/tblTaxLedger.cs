@@ -15,6 +15,7 @@ namespace WBT.Entity
     public partial class tblTaxLedger
     {
         public int ID { get; set; }
+        public string OrgID { get; set; }
         public string Name { get; set; }
         public string Under { get; set; }
         public string TaxType { get; set; }
@@ -23,7 +24,6 @@ namespace WBT.Entity
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public string OrgID { get; set; }
         public bool TallySync { get; set; }
         public bool IsTallyUpdated { get; set; }
     }

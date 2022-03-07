@@ -99,12 +99,10 @@ namespace WBT.DLCustomerCreation
         public string SourceOfUpdate { get; set; }
         public Nullable<bool> IsBulkSale { get; set; }
         public string PANNumber { get; set; }
-
         public string CmpCity { get; set; }
         public Nullable<bool> IsDiscountRangeExceeded { get; set; }
         public Nullable<decimal> DiscountAmt { get; set; }
         public Nullable<bool> IsDirectSO { get; set; }
-
         public bool SOSelected { get; set; }//Added for Multiso selection  for SO on 12032021
         public string SOWarehouseID { get; set; }//Added for Multiso selection  for SO on 12032021
         public string SOOrgID { get; set; }//Added for Multiso selection  for SO on 12032021
@@ -157,6 +155,7 @@ namespace WBT.DLCustomerCreation
         public List<DLSalesOrderWithItemCreation> DLSalesOrderWithItemCreations { get; set; }
         public List<DLSalesOrderWithItemCreation> CorrectedList { get; set; }
         public List<SalesOrderItemWarehouseMapResult> SalesOrderItemWarehouseMapResult { get; set; }
+        public CustomerCreation customerInfo { get; set; }
 
         public int[] StateList { get; set; }
         public int[] DistrictList { get; set; }
@@ -176,8 +175,12 @@ namespace WBT.DLCustomerCreation
         public bool IsEdited { get; set; }
         public string CustomerState { get; set; }
         public string CompanyState { get; set; }
+        public string CompanyCity { get; set; }
+        public string PaymentInfo { get; set; }
         public BranchDetails BranchDetails { get; set; }
         public string cpincode { get; set; }
+        public bool PriceSyncType { get; set; }
+        
     }
 
     public class DLSalesOrders
@@ -433,6 +436,8 @@ namespace WBT.DLCustomerCreation
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
 
+                    var taxLedgers = Entities.tblTaxLedgers.Where(d => d.OrgID == OrgID).ToList();
+
                     List<SalesOrders> soLists = (from so in Entities.tblSalesOrders
                                                  join cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
                                                  where so.OrgID == OrgID && so.TallySync == true && so.IsTallyUpdated == false
@@ -493,9 +498,10 @@ namespace WBT.DLCustomerCreation
                                                                                           ItemName = i.tblItem.ItemName,
                                                                                           ItemCode = i.ItemCode,
                                                                                           GSTPer = item.GST,
-                                                                                          CGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST / 2 && t.TaxType == "CGST").FirstOrDefault().Name,
-                                                                                          SGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST / 2 && t.TaxType == "SGST").FirstOrDefault().Name,
-                                                                                          IGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == item.GST && t.TaxType == "IGST").FirstOrDefault().Name,
+                                                                                          CGSTLedger = taxLedgers.Where(t => t.TaxPercentage == item.GST / 2 && t.TaxType == "CGST").FirstOrDefault().Name,
+                                                                                          SGSTLedger = taxLedgers.Where(t => t.TaxPercentage == item.GST / 2 && t.TaxType == "SGST").FirstOrDefault().Name,
+                                                                                          IGSTLedger = taxLedgers.Where(t => t.TaxPercentage == item.GST && t.TaxType == "IGST").FirstOrDefault().Name,
+                                                                                          RatePerUnit = i.tblItem.tblItemRate.tblUOM.Unit
                                                                                       }).ToList(),
                                                      DLCustomerVendorDetail = new DLCustomerVendorDetailCreation()
                                                      {
@@ -536,7 +542,6 @@ namespace WBT.DLCustomerCreation
 
                     using (var dbcxtransaction = Entities.Database.BeginTransaction())
                     {
-
                         salesOrder = (from tblsalesorders in Entities.tblSalesOrders
                                       join c in Entities.tblCustomerVendorDetails on tblsalesorders.CustID equals c.CustID
                                       where tblsalesorders.SalesOrderNumber == OrderNumber
@@ -575,26 +580,42 @@ namespace WBT.DLCustomerCreation
                                           CreditTypeId = tblsalesorders.CreditTypeId,
                                           BillingAddress = tblsalesorders.BillingAddress,
                                           IsEdited = tblsalesorders.IsEdited,
-                                          BranchName = Entities.tblSysBranches.Where(r => r.BranchID == tblsalesorders.BranchID).FirstOrDefault().Name,
-                                          CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().FirmName,
-                                          MobileNumber = Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().MobileNumber,
-                                          caddress = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingAddress) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingAddress : "NA",
-                                          cstate = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingState) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingState : "NA",
-                                          ccity = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingCity) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().ShippingCity : "NA",
-                                          cpincode = !string.IsNullOrEmpty(Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().BillingPincode) ? Entities.tblCustomerVendorDetails.Where(r => r.CustID == tblsalesorders.CustID).FirstOrDefault().BillingPincode : string.Empty,
+                                          BranchName = tblsalesorders.tblSysBranch.Name,
+                                          CustomerName = tblsalesorders.tblCustomerVendorDetail.FirmName,
+                                          MobileNumber = tblsalesorders.tblCustomerVendorDetail.MobileNumber,
+                                          caddress = !string.IsNullOrEmpty(tblsalesorders.tblCustomerVendorDetail.ShippingAddress) ? tblsalesorders.tblCustomerVendorDetail.ShippingAddress : "NA",
+                                          cstate = !string.IsNullOrEmpty(tblsalesorders.tblCustomerVendorDetail.ShippingState) ? tblsalesorders.tblCustomerVendorDetail.ShippingState : "NA",
+                                          ccity = !string.IsNullOrEmpty(tblsalesorders.tblCustomerVendorDetail.ShippingCity) ? tblsalesorders.tblCustomerVendorDetail.ShippingCity : "NA",
+                                          cpincode = !string.IsNullOrEmpty(tblsalesorders.tblCustomerVendorDetail.BillingPincode) ? tblsalesorders.tblCustomerVendorDetail.BillingPincode : string.Empty,
                                           SalesDateTime = tblsalesorders.SalesDatetime,
                                           area = c.BillingArea,
                                           CustomerState = tblsalesorders.tblCustomerVendorDetail.BillingState,
                                           CompanyState = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.State,
+                                          CompanyCity = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.City,
                                           BranchDetails = new BranchDetails
                                           {
                                               Name = tblsalesorders.tblSysBranch.Name,
-                                              Address = tblsalesorders.tblSysBranch.Address,
+                                              Address = tblsalesorders.tblSysBranch.BillingAddress,
                                               GST = tblsalesorders.tblSysBranch.GST,
                                               Mobile = tblsalesorders.tblSysBranch.Mobile,
                                               City = tblsalesorders.tblSysBranch.City,
                                               State = tblsalesorders.tblSysBranch.State,
                                               PinCode = tblsalesorders.tblSysBranch.PinCode,
+                                              PANNumber = tblsalesorders.tblSysBranch.PANNumber,
+                                          },
+                                          SalesmanName = tblsalesorders.tblSysUser3.FName,
+                                          PriceSyncType = Entities.tblAdminSettings.Where(d => d.OrgID == tblsalesorders.OrgID).FirstOrDefault().PriceSyncType,
+                                          customerInfo = new CustomerCreation
+                                          {
+                                              FirmName = tblsalesorders.tblCustomerVendorDetail.FirmName,
+                                              BillingAddress = tblsalesorders.tblCustomerVendorDetail.BillingAddress,
+                                              BillingPincode = tblsalesorders.tblCustomerVendorDetail.BillingPincode,
+                                              BillingCity = tblsalesorders.tblCustomerVendorDetail.BillingCity,
+                                              BillingState = tblsalesorders.tblCustomerVendorDetail.BillingState,
+                                              ShippingAddress = tblsalesorders.tblCustomerVendorDetail.ShippingAddress,
+                                              ShippingPincode = tblsalesorders.tblCustomerVendorDetail.ShippingPincode,
+                                              ShippingCity = tblsalesorders.tblCustomerVendorDetail.ShippingCity,
+                                              ShippingState = tblsalesorders.tblCustomerVendorDetail.ShippingState,
                                           },
                                       }).FirstOrDefault();
 
@@ -605,6 +626,7 @@ namespace WBT.DLCustomerCreation
                                          select new DLSalesOrderWithItemCreation
                                          {
                                              ItemName = c.ItemName,
+                                             HSNCode = c.HSNCode.ToString(),
                                              BagQTY = a.BagQTY,
                                              Value = a.Value,
                                              ItemCode = a.ItemCode,
@@ -621,8 +643,28 @@ namespace WBT.DLCustomerCreation
                                              CGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == c.GST).FirstOrDefault().Name,
                                              SGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == c.GST).FirstOrDefault().Name,
                                              IGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == c.GST).FirstOrDefault().Name,
-                                             DiscountAmt = a.DiscountAmt,
+                                             DiscountAmt = a.DiscountAmt == null ? 0 : a.DiscountAmt.Value,
+                                             RatePerUnit = a.tblItem.tblItemRate.tblUOM.Unit,
                                          }).Distinct().ToList();
+                        var adminSettings = Entities.tblAdminSettings.Where(d => d.OrgID == salesOrder.OrgID).FirstOrDefault();
+                        if (salesOrder.PriceSyncType)
+                        {
+                            foreach (var item in itemsList)
+                            {
+                                item.Rate = Math.Round(item.Rate * 100 / (100 + item.GSTPer.Value), 2);
+                                item.Value = Math.Round((item.Rate * item.TotalQTY) - item.DiscountAmt.Value, 2);
+                                item.GSTValue = Math.Round(((item.Rate - item.DiscountAmt.Value) * item.GSTPer.Value) / 100, 2);
+                                item.CGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
+                                item.SGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
+                                item.IGSTValue = Math.Round(item.GSTValue.Value, 2);
+                            }
+                        }
+                        else
+                        {
+                            itemsList.ForEach(d => d.GSTPer = 0);
+                        }
+                        salesOrder.PaymentInfo = adminSettings.PaymentInfo;
+                        salesOrder.SalesType = salesOrder.CustomerState.ToLower() == salesOrder.CompanyState.ToLower() ? "Local State" : "Inter State";
                         salesOrder.DLSalesOrderWithItemCreations = itemsList.ToList();
                         return salesOrder;
                     }
@@ -835,7 +877,7 @@ namespace WBT.DLCustomerCreation
                                     lSalesOrder.UpdateDate = Common.Helper.GetCurrentDate;
                                     lSalesOrder.DueDate = mSalesOrder.DueDate;
                                     lSalesOrder.Status = mSalesOrder.Status;
-                                    lSalesOrder.SalesType = mSalesOrder.SalesType;
+                                    lSalesOrder.SalesType = mSalesOrder.SalesType.ToLower() == "local state" ? "LS" : "IS";
                                     lSalesOrder.IsBulkSale = mSalesOrder.IsBulkSale;
                                     lSalesOrder.PANNumber = mSalesOrder.PANNumber;
                                     lSalesOrder.DiscountAmt = mSalesOrder.DiscountAmt;

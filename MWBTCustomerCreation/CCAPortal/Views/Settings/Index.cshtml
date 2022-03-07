@@ -131,6 +131,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label>Payment Information(Displayed in Sales Order Print)</label>
+                                @Html.EditorFor(model => model.PaymentInfo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Payment Info", @maxlength = "1000" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                     @Html.CheckBoxFor(model => model.AutoSyncTally, new { @class = "custom-control-input", @id = "autoSyncTallySwitch" })
                                     <label class="custom-control-label" for="autoSyncTallySwitch">Auto Sync to Tally (Only SO)</label>

@@ -17,7 +17,7 @@ namespace CustomerCreationAdminPortal.Controllers
         {
             if (Session["UserID"] != null)
             {
-                ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");                
+                ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateName", "StateName");                
                 ViewBag.CountryList = new SelectList(customerCreations.GetCountryList(), "CountryID", "CountryName");
                 SysOrganization sysOrganization = DAL.GetOrganizationDetails(Session["UserID"].ToString());
                 sysOrganization.Country = "79";

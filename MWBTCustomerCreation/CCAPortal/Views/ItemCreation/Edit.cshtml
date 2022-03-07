@@ -26,9 +26,7 @@
     @Html.HiddenFor(model => model.TallyItemName)
     @Html.HiddenFor(model => model.IsActive)
 
-    <!-- Main content -->
     <div class="row">
-        <!-- left column -->
         <div class="col-md-12">
             <!-- general form elements -->
             <div class="card card-primary">
@@ -43,9 +41,6 @@
                         </button>
                     </div>
                 </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -57,15 +52,6 @@
                                 @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        @*<div class="col-md-4">
-                            <div class="form-group">
-                                <label> &nbsp; </label>
-                                <div class="input-group">
-                                    @Html.EditorFor(model => model.ItemNameWithUnit, new { htmlAttributes = new { @class = "form-control ", @autocomplete = "off", @readonly = true } })
-                                    @Html.ValidationMessageFor(model => model.ItemNameWithUnit, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Item Code </label>
@@ -77,14 +63,12 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label> Item Alias </label>
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.ItemAlias, new { htmlAttributes = new { @class = "form-control ", @required = "Required", @autocomplete = "off", @MaxLength = "5" } })
-
                                 </div>
                                 @Html.ValidationMessageFor(model => model.ItemAlias, "", new { @class = "text-danger" })
                             </div>
@@ -94,7 +78,6 @@
                                 <label>Select Group </label>
                                 <div class="input-group">
                                     @Html.DropDownListFor(model => model.CategoryID, (SelectList)ViewBag.GroupList, "Select Group", new { @class = "form-control listbox", @placeholder = "Select Group", @required = "required", @onchange = "FillSubCategory()", @disabled = "disabled" })
-
                                 </div>
                                 @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
                             </div>
@@ -104,20 +87,17 @@
                                 <label>Select Category </label>
                                 <div class="input-group">
                                     @Html.DropDownListFor(model => model.SubCategoryID, (SelectList)ViewBag.SubCategoryList, "Select Category", new { @class = "form-control listbox", @disabled = "disabled", @required="required" })
-
                                 </div>
                                 @Html.ValidationMessageFor(model => model.SubCategoryID, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Select Company </label>
                                 <div class="input-group">
                                     @Html.DropDownListFor(model => model.ItemCompanyID, (SelectList)ViewBag.CompanyList, "Select Company", new { @class = "form-control listbox", @placeholder = "Select Company", @required = "required", @disabled = "disabled" })
-
                                 </div>
                                 @Html.ValidationMessageFor(model => model.ItemCompanyID, "", new { @class = "text-danger" })
                             </div>
@@ -142,7 +122,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group ">
@@ -154,14 +133,12 @@
                                 @Html.ValidationMessageFor(model => model.HSNSubCode, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Basic Unit </label>
                                 <div class="input-group">
                                     @Html.DropDownListFor(model => model.BaseUnit, (SelectList)ViewBag.uomList, "Select Basic Unit", new { @class = "form-control listbox", @placeholder = "Select Basic Unit", @disabled = "disabled",@onchange = "AltChange(this.value);" })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.BaseUnit, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
 
@@ -171,25 +148,20 @@
                                 <div class="input-group">
                                     @Html.DropDownListFor(model => model.AlternateUnit, (SelectList)ViewBag.uomList, "Select Alternate Unit", new { @class = "form-control listbox", @placeholder = "Select Alternate Unit",  @onchange = "AltChange(this.value);", @disabled = "disabled" })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.AlternateUnit, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
-
                     </div>
-
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Packet Size </label>
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.PacketQTY, new { htmlAttributes = new { @class = "form-control ", @autocomplete = "off", @readonly = "readonly" } })  &nbsp;&nbsp;
                                     @Html.DropDownListFor(model => model.PacketUOMID, (SelectList)ViewBag.uomList, "Select Unit", new { @class = "form-control listbox", @placeholder = "Select Unit",  @disabled = "disabled" })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.PacketQTY, "", new { @class = "text-danger" })
-                                @Html.ValidationMessageFor(model => model.PacketUOMID, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group ">
                                 <label> Bag Size </label>
                                 <div class="input-group">
@@ -197,12 +169,9 @@
                                     &nbsp;&nbsp;
                                     @Html.DropDownListFor(model => model.BagUOMID, (SelectList)ViewBag.uomList, "Select Unit", new { @class = "form-control listbox", @placeholder = "Select Unit",  @disabled = "disabled" })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.BagQTY, "", new { @class = "text-danger" })
-                                @Html.ValidationMessageFor(model => model.BagUOMID, "", new { @class = "text-danger" })*@
                             </div>
                         </div>                        
                     </div>
-
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -210,7 +179,6 @@
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.BasePKTValue, new { htmlAttributes = new { @class = "form-control ",  @autocomplete = "off", @Value = "1", @Readonly = true } })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.ItemCode, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -219,7 +187,6 @@
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.BaseUnitName, new { htmlAttributes = new { @class = "form-control ",  @autocomplete = "off", @readonly = true } })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.BaseUnitName, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -228,32 +195,26 @@
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.AlternatePKTValue, new { htmlAttributes = new { @class = "form-control",  @autocomplete = "off", @readonly = true } })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.AlternatePKTValue, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
-
                         <div class="col-md-3">
                             <div class="form-group ">
                                 <label> &nbsp; </label>
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.AlternateUnitName, new { htmlAttributes = new { @class = "form-control ",  @autocomplete = "off", @readonly = true } })
                                 </div>
-                                @*@Html.ValidationMessageFor(model => model.AlternateUnitName, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <b>Tax Details</b>
                     </div>
-
                     <div class="row">                        
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label> GST % </label>
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.GST, new { htmlAttributes = new { @class = "form-control ", @required = "Required", @autocomplete = "off" } })
-
                                 </div>
                                 @Html.ValidationMessageFor(model => model.GST, "", new { @class = "text-danger" })
                             </div>
@@ -269,35 +230,28 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <b>  Item Rate Details  </b>
                     </div>
-
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Base Rate </label>
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.BaseRateOther, new { htmlAttributes = new { @class = "form-control ", @required = "Required", @autocomplete = "off", @Readonly = true } })
-
                                 </div>
                                 @Html.ValidationMessageFor(model => model.BaseRateOther, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-
-                    <!-- /.card-body -->
-
                     <div class="card-footer">
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Update</button>
+                            <a href="javascript:void(0)" class="btn btn-danger" onclick="cancelEdit()">Cancel</a>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <!-- /.card -->
         </div>
     </div>
 }
