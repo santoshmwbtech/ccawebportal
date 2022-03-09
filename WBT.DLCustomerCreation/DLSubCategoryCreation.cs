@@ -97,7 +97,7 @@ namespace WBT.DLCustomerCreation
                 throw ex;
             }
         }
-        public List<tblCategory> GetCategoryList()
+        public List<tblCategory> GetCategoryList(string OrgID)
         {
             try
             {
@@ -107,10 +107,11 @@ namespace WBT.DLCustomerCreation
                     {
                         List<tblCategory> catgList = new List<tblCategory>();
                         catgList = (from s in Entities.tblCategories
+                                    where s.OrgID == OrgID
                                     orderby s.CategoryName
-                                    select s).ToList();
+                                    select s).OrderBy(a => a.CategoryName).ToList();
 
-                        return catgList.OrderBy(a=>a.CategoryName).ToList();//new line
+                        return catgList;
                     }
                 }
             }
@@ -120,40 +121,14 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-        //public List<DLSubCategoryCreation> GetPrimaryCategoryList()
-        //{
-        //    try
-        //    {
-        //        using (MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities())
-        //        {
-        //            using (var dbcxtransaction = Entities.Database.BeginTransaction())
-        //            {
-        //                List<tblCategory> catgList = new List<tblCategory>();
-        //                catgList = (from s in Entities.tblCategories
-        //                            select new ).ToList();
-
-        //                return catgList;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
-        //        return null;
-        //    }
-        //}
         public List<DLSubCategoryCreation> GetPrimaryCategoryList()
         {
             List<DLSubCategoryCreation> dLsubcLst = new List<DLSubCategoryCreation>();
             dLsubcLst = (from catgs in Entities.tblCategories.AsNoTracking()
                          select new DLSubCategoryCreation()
                          {
-                             ParentCatID = catgs.ParentCatId,                            
-                             
+                             ParentCatID = catgs.ParentCatId,
                              CategoryName =  Entities.tblCategories.Where(e => e.CategoryID.ToString() == catgs.ParentCatId.ToString()).FirstOrDefault().CategoryName 
-
-                             //  CategoryName = Entities.tblCategories.Where(e => e.CategoryID.ToString() == catgs.ParentCatId.HasValue.ToString() ? e.CategoryID == catgs.ParentCatId : e.CategoryID == catgs.CategoryID).FirstOrDefault().CategoryName
-
                          }).ToList();
             return dLsubcLst;
         }
@@ -165,7 +140,7 @@ namespace WBT.DLCustomerCreation
                 using (Entities = new WBT.Entity.MWBTCustomerAppEntities())
                 {
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
-                        Entities.Database.Connection.Open();                        //to open the connection if closed
+                        Entities.Database.Connection.Open();
 
 
                     lstSubCategoryCreation = (from gSubCategories in Entities.tblSubCategories.AsNoTracking()
@@ -179,7 +154,7 @@ namespace WBT.DLCustomerCreation
                                                   CategoryName = gSubCategories.tblCategory.CategoryName,
                                                   IsTallyUpdated = gSubCategories.IsTallyUpdated,
                                                   OrgID = gSubCategories.OrgID,
-                                                  ParentCatID = gSubCategories.tblCategory.ParentCatId,// gCategorys.ParentCatId
+                                                  ParentCatID = gSubCategories.tblCategory.ParentCatId,
                                               }).ToList();
 
                     lstSubCategoryCreation = lstSubCategoryCreation.Select(ac => new DLSubCategoryCreation()
@@ -196,20 +171,9 @@ namespace WBT.DLCustomerCreation
                         OrgID = ac.OrgID,
                         ParentCatID = ac.ParentCatID
                     }).Distinct().OrderBy(i => i.CategoryName).ToList();
-
-                    //commented on 25 FEB 2021
-                    //if (SearchValue != "Tally" && !string.IsNullOrEmpty(SearchValue))
-                    //    lstSubCategoryCreation = lstSubCategoryCreation.Where(c => c.CategoryName.ToLower().Trim().StartsWith(SearchValue.ToLower().Trim())
-                    //    || c.CategoryID.ToString().Trim() == SearchValue.ToLower().Trim()).ToList();
-                    // && c.OrgID.Trim() == OrgID).ToList();
-
+                    
                     if (!string.IsNullOrEmpty(OrgID))
                         lstSubCategoryCreation = lstSubCategoryCreation.Where(c => c.OrgID.Trim() == OrgID).ToList();
-
-                    //commented on 25 FEB 2021 so that all groups can be added to new company in tally irrespective of isTallyUpdated boolean
-                    //if (SearchValue == "Tally")
-                    //    lstSubCategoryCreation = lstSubCategoryCreation.Where(c => c.IsTallyUpdated == false).ToList();  
-                    //&& c.OrgID.Trim() == OrgID 21/12/2019
 
                     lstSubCategoryCreation = lstSubCategoryCreation.OrderBy(i => i.SubCategoryName).ToList();
                 }

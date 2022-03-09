@@ -30,7 +30,7 @@ namespace CCAPortal.Controllers
         {
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
-                ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(), "CategoryID", "CategoryName");
+                ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");
                 return PartialView();
             }
             else

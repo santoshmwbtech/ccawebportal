@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WBT.Common;
+using WBT.DLCustomerCreation.DTOs;
 //using WBT.DL.Admin;
 using WBT.Entity;
 
@@ -226,18 +227,13 @@ namespace WBT.DLCustomerCreation
     }
 
     #endregion
-
-    public class ItemCreation
-    {
-
-    }
-
     public class DLItem : WBT.Common.DLActivate
     {
         private MWBTCustomerAppEntities Entities = new Entity.MWBTCustomerAppEntities();
         private tblItem lItem = new tblItem();
         private List<DLItemCreation> lstItemCreation = new List<DLItemCreation>();
         private DLItemCreation mItemCreation = new DLItemCreation();
+        private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         public List<DLItemCreation> ItemCreation
         {
             get { return lstItemCreation; }
@@ -605,65 +601,6 @@ namespace WBT.DLCustomerCreation
                 throw;
             }
         }
-
-        //private object GetSingleItemData(object Context)
-        //{
-        //    DLItemCreation ItemCreation = new DLItemCreation();
-        //    try
-        //    {
-        //        using (Entities = new WBT.Entity.MWBTCustomerAppEntities())
-        //        {
-        //            DLItemCreation Criteria = (DLItemCreation)Context;
-
-        //            if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
-        //                Entities.Database.Connection.Open();
-
-        //            ItemCreation = (DLItemCreation)DLItemMapping.GetItemDetails(Criteria.OrgID, Criteria.BranchId, Criteria.ItemCode);
-
-        //            #region  to get list of mapped branches/ sis org for that item during edit
-
-        //            ItemCreation.lstBranches = (from b in Entities.ItemMappings.AsNoTracking()
-        //                                        where b.OrgID == Criteria.OrgID && b.BranchID != Criteria.BranchId
-        //                                        && b.ItemCode == Criteria.ItemCode
-        //                                        select new DLBranchCreation()
-        //                                        {
-        //                                            BranchID = b.BranchID,
-        //                                            Name = b.tblSysBranch.Name,
-        //                                            OrgID = b.OrgID
-        //                                        }).ToList();
-
-        //            ItemCreation.lstMappedOrganization = (from b in Entities.ItemMappings.AsNoTracking()
-        //                                                  where b.OrgID != Criteria.OrgID && b.ItemCode == Criteria.ItemCode
-        //                                                  select new LstMappedOrganization()
-        //                                                  {
-        //                                                      Itemcode = b.ItemCode,
-        //                                                      OrgName = b.tblSysOrganization.Name,
-        //                                                      OrgID = b.OrgID
-        //                                                  }).Distinct().ToList();
-        //            #endregion
-        //        }
-
-        //        return ItemCreation;
-        //    }
-        //    catch (System.Data.SqlClient.SqlException sqlex)
-        //    {
-        //        this.GetApplicationActivate.DataState = Common.TransactionType.SystemError;
-        //        this.GetApplicationActivate.GetErrormessages = sqlex.Message;
-        //        this.GetApplicationActivate.GetErrorSource = sqlex.Source;
-        //        this.GetApplicationActivate.GetErrorStackTrace = sqlex.StackTrace;
-        //        throw;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        this.GetApplicationActivate.DataState = Common.TransactionType.Error;
-        //        this.GetApplicationActivate.GetErrormessages = ex.Message;
-        //        this.GetApplicationActivate.GetErrorSource = ex.Source;
-        //        this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;
-        //        throw;
-        //    }
-        //}
-
-        //used during tally sync data call 19thFeb2021
         private object GetDataForTallySync(object Context)
         {
             lstItemCreation = new List<DLItemCreation>();
@@ -1267,7 +1204,7 @@ namespace WBT.DLCustomerCreation
                     //Item Search
                     if (!string.IsNullOrEmpty(Criteria.ItemName))
                         lstItemRateCreation = lstItemRateCreation.Where(j => j.ItemName.ToLower().Contains(Criteria.ItemName.ToLower())).ToList();
-                     
+
                     if (Criteria.CategoryID > 0)
                         lstItemRateCreation = lstItemRateCreation.Where(i => i.CategoryID == Criteria.CategoryID).ToList();
 
@@ -1443,55 +1380,6 @@ namespace WBT.DLCustomerCreation
                 throw;
             }
         }
-        //stock creation
-        //public object GetMappedOrgItems(object OrgIDList)
-        //{
-        //    lstItemCreation = new List<DLItemCreation>();
-        //    try
-        //    {
-        //        List<DLOrganizationMappingCreation> OrgsIdLst = (List<DLOrganizationMappingCreation>)OrgIDList;
-
-        //        using (Entities = new WBT.Entity.MWBTCustomerAppEntities())
-        //        {
-        //            if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
-        //                Entities.Database.Connection.Open();
-
-        //            foreach (var Getorgid in OrgsIdLst)
-        //            {
-        //                List<DLItemCreation> queryResult = (from i in Entities.tblItemMappings //.Items.AsNoTracking()
-        //                                                    where i.IsActive == true
-        //                                                    && i.OrgID == Getorgid.SisterOrgID
-        //                                                    orderby i.tblItem.ItemName
-        //                                                    select new DLItemCreation
-        //                                                    {
-        //                                                        ItemCode = i.ItemCode,
-        //                                                        ItemName = i.tblItem.ItemName,
-        //                                                        OrgID = i.OrgID
-        //                                                    }).OrderBy(i => i.ItemName).Distinct().ToList<DLItemCreation>();
-        //                lstItemCreation.AddRange(queryResult);
-        //            }
-        //            return lstItemCreation;
-        //        }
-        //    }
-        //    catch (System.Data.SqlClient.SqlException sqlex)
-        //    {
-        //        this.GetApplicationActivate.DataState = Common.TransactionType.SystemError;
-        //        this.GetApplicationActivate.GetErrormessages = sqlex.Message;
-        //        this.GetApplicationActivate.GetErrorSource = sqlex.Source;
-        //        this.GetApplicationActivate.GetErrorStackTrace = sqlex.StackTrace;
-        //        throw;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        this.GetApplicationActivate.DataState = Common.TransactionType.Error;
-        //        this.GetApplicationActivate.GetErrormessages = ex.Message;
-        //        this.GetApplicationActivate.GetErrorSource = ex.Source;
-        //        this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;
-        //        throw;
-        //    }
-        //}
-
-        //used in vendor mapping in cutomer creation screen
         private object GetItemData(object Context)
         {
             lstItemCreation = new List<DLItemCreation>();
@@ -1556,71 +1444,6 @@ namespace WBT.DLCustomerCreation
             return getItemLists;
         }
 
-        //private object GetItemData(object Context)
-        //{
-        //    GetAllItemDropDownsData getItemLists = new GetAllItemDropDownsData();
-        //    try
-        //    {
-        //        using (Entities = new Entity.MWBTechnologyEntities())
-        //        {
-        //            GetItemList CriteriaItem = (GetItemList)Context;
-        //            getItemLists.GetItemList = (from item in Entities.Items
-        //                                        where item.OrgID == CriteriaItem.OrgID
-        //                                        select new GetItemList
-        //                                        {
-        //                                            ID = item.ID,
-        //                                            ItemCode = item.ItemCode,
-        //                                            ItemName = item.ItemName,
-        //                                            CategoryId = item.CategoryID,
-        //                                            SubCategoryId = item.SubCategoryID,
-        //                                            Select = (from dcitm in Entities.ItemSupplierMappings
-        //                                                      where dcitm.DelivercenterID == CriteriaItem.dcno &&
-        //                                                      dcitm.ItemCode == item.ItemCode
-        //                                                      select dcitm).Count() > 0 ? true : false,
-        //                                            SelectVendor = (from dcitm in Entities.ItemSupplierMappings
-        //                                                            where dcitm.CustID == CriteriaItem.custid &&
-        //                                                            dcitm.ItemCode == item.ItemCode
-        //                                                            select dcitm).Count() > 0 ? true : false
-
-        //                                        }).Distinct().ToList();
-
-        //            if (CriteriaItem.CategoryId > 0)
-        //                getItemLists.GetItemList = getItemLists.GetItemList.Where(i => i.CategoryId == CriteriaItem.CategoryId).ToList();
-        //            if (CriteriaItem.SubCategoryId > 0)
-        //                getItemLists.GetItemList = getItemLists.GetItemList.Where(i => i.SubCategoryId == CriteriaItem.SubCategoryId).ToList();
-        //            if (!string.IsNullOrEmpty(CriteriaItem.ItemName))
-        //                getItemLists.GetItemList = getItemLists.GetItemList.Where(i => i.ItemName.ToLower().StartsWith(CriteriaItem.ItemName.ToLower())).ToList();
-
-        //            getItemLists.DLSubcategoryList = (from subcat in Entities.SubCategories.AsNoTracking()
-        //                                              where subcat.OrgID == CriteriaItem.OrgID
-        //                                              select new DLSubcategoryList()
-        //                                              {
-        //                                                  SubCategoryID = subcat.SubCategoryID,
-        //                                                  SubCategoryName = subcat.SubCategoryName.Trim(),
-        //                                              }).ToList();
-
-        //        }
-        //    }
-        //    catch (System.Data.SqlClient.SqlException sqlex)
-        //    {
-        //        this.GetApplicationActivate.DataState = Common.TransactionType.SystemError;
-        //        this.GetApplicationActivate.GetErrormessages = sqlex.Message;
-        //        this.GetApplicationActivate.GetErrorSource = sqlex.Source;
-        //        this.GetApplicationActivate.GetErrorStackTrace = sqlex.StackTrace;
-        //        throw;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        this.GetApplicationActivate.DataState = Common.TransactionType.Error;
-        //        this.GetApplicationActivate.GetErrormessages = ex.Message;
-        //        this.GetApplicationActivate.GetErrorSource = ex.Source;
-        //        this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;
-        //        throw;
-        //    }
-        //    return getItemLists;
-        //}
-
-        //item master to bind all dropdowns at one stretch
         private object GetAllDdlData(object Context)
         {
             GetAllItemDropDownsData getAllItemDropDownsData = new GetAllItemDropDownsData();
@@ -2533,9 +2356,7 @@ namespace WBT.DLCustomerCreation
             }
             return itemMappingPndg;
         }
-
-
-        public List<tblCategory> GetGroupList()
+        public List<tblCategory> GetGroupList(string OrgID)
         {
             try
             {
@@ -2545,9 +2366,10 @@ namespace WBT.DLCustomerCreation
                     {
                         List<tblCategory> catgList = new List<tblCategory>();
                         catgList = (from s in Entities.tblCategories
-                                    select s).ToList();
+                                    where s.OrgID == OrgID
+                                    select s).OrderBy(x => x.CategoryName).ToList();
 
-                        return catgList.OrderBy(x=>x.CategoryName).ToList();//new line
+                        return catgList;
                     }
                 }
             }
@@ -2557,8 +2379,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
-
         public List<DLSubCategoryCreation> GetSubCategoryList(int categoryId)
         {
             try
@@ -2586,7 +2406,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         public List<tblUOM> GetUOMList()
         {
             try
@@ -2608,8 +2427,7 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
-        public List<tblBrand> GetBrandList()
+        public List<tblBrand> GetBrandList(string OrgID)
         {
             try
             {
@@ -2619,8 +2437,9 @@ namespace WBT.DLCustomerCreation
                     {
                         List<tblBrand> brandList = new List<tblBrand>();
                         brandList = (from s in Entities.tblBrands
-                                     select s).ToList();
-                        return brandList.OrderBy(m=>m.BrandName).ToList();//new line
+                                     where s.OrgID == OrgID
+                                     select s).OrderBy(m => m.BrandName).ToList();
+                        return brandList;
                     }
                 }
             }
@@ -2630,8 +2449,7 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
-        public List<tblItemCompany> GetCompanyList()
+        public List<tblItemCompany> GetCompanyList(string OrgID)
         {
             try
             {
@@ -2641,8 +2459,9 @@ namespace WBT.DLCustomerCreation
                     {
                         List<tblItemCompany> cmpnyList = new List<tblItemCompany>();
                         cmpnyList = (from s in Entities.tblItemCompanies
-                                     select s).ToList();
-                        return cmpnyList.OrderBy(x=>x.CompanyName).ToList();//new line
+                                     where s.OrgID == OrgID
+                                     select s).OrderBy(x => x.CompanyName).ToList();
+                        return cmpnyList;
                     }
                 }
             }
@@ -2652,7 +2471,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         public DLItemCreation SaveItem(DLItemCreation dlitemcreation)
         {
             DLItemCreation dLItemCreation = new DLItemCreation();
@@ -2911,7 +2729,6 @@ namespace WBT.DLCustomerCreation
             }
             //return mItemCreation;
         }
-
         public List<DLItemCreation> GetItems(string SearchValue, string OrgID)
         {
             lstItemCreation = new List<DLItemCreation>();
@@ -3227,10 +3044,9 @@ namespace WBT.DLCustomerCreation
                 throw;
             }
         }
-
         public DLItemCreation GetItemsDetail(string SearchValue, string OrgID)
         {
-            DLItemCreation lstItemDetails = new DLItemCreation();
+            DLItemCreation itemDetails = new DLItemCreation();
             try
             {
                 using (Entities = new WBT.Entity.MWBTCustomerAppEntities())
@@ -3239,54 +3055,55 @@ namespace WBT.DLCustomerCreation
                         Entities.Database.Connection.Open();
 
 
-                    lstItemDetails = (from gItems in Entities.tblItems.AsNoTracking().Where(e => e.IsActive == true)
-                                      where gItems.OrgID == OrgID && gItems.ItemCode == SearchValue
-                                      orderby gItems.ItemName
-                                      select new DLItemCreation  //gCategories;
-                                      {
-                                          ID = gItems.ID,
-                                          ItemName = gItems.ItemName,
-                                          ItemCode = gItems.ItemCode,
-                                          ItemAlias = gItems.Alias,
-                                          OrgID = gItems.OrgID,
-                                          RateID = gItems.RateID,
-                                          BaseUnit = gItems.BaseUnit,
-                                          BaseRateOther = gItems.tblItemRate.BaseRateOther == null ? 0 : gItems.tblItemRate.BaseRateOther.Value,
-                                          BasePKTValue = gItems.BasePKTValue,
-                                          AlternateUnit = gItems.AlternateUnit,
-                                          AlternatePKTValue = gItems.AlternatePKTValue,
-                                          PacketUOMID = gItems.PacketUOMID,
-                                          PacketQTY = gItems.PacketQTY,
-                                          BagUOMID = gItems.BagUOMID,
-                                          BagQTY = gItems.BagQTY,
-                                          IsTallyUpdated = gItems.IsTallyUpdated,
-                                          IsParentTallyUpdated = gItems.IsParentTallyUpdated,
-                                          IsCESSMapped = gItems.IsCESSMapped,
-                                          CESSValue = gItems.CESSValue,
-                                          CESSEffectiveDate = gItems.CESSEffectiveDate,
-                                          BrandID = gItems.BrandID,
-                                          CategoryID = gItems.CategoryID,
-                                          SubCategoryID = gItems.SubCategoryID,
-                                          RackID = gItems.RackID,
-                                          ItemDetail = gItems.ItemDetail,
-                                          StorageSpace = gItems.StorageArea,
-                                          GST = gItems.tblItemMappings.Where(mp => mp.ItemCode == gItems.ItemCode).FirstOrDefault().GST.Value,
-                                          GSTEffectiveDate = gItems.tblItemMappings.Where(mp => mp.ItemCode == gItems.ItemCode).FirstOrDefault().GSTEffectiveDate,
-                                          ReOrderlevel = gItems.ReOrderlevel,
-                                          ReOrderQTY = gItems.ReOrderQTY,
-                                          IsReturnable = gItems.IsReturnable,
-                                          IsActive = gItems.IsActive,
-                                          DaysToRefill = gItems.DaysToRefill,
-                                          HSNCode = gItems.HSNCode,
-                                          HSNSubCode = gItems.HSNSubCode,
-                                          CreatedByID = gItems.CreatedByID,
-                                          CreatedDate = gItems.CreatedDate,
-                                          ModifiedByID = gItems.ModifiedByID,
-                                          ModifiedDate = gItems.ModifiedDate
-                                      }).FirstOrDefault();
+                    itemDetails = (from gItems in Entities.tblItems.AsNoTracking().Where(e => e.IsActive == true)
+                                   where gItems.OrgID == OrgID && gItems.ItemCode == SearchValue
+                                   orderby gItems.ItemName
+                                   select new DLItemCreation  //gCategories;
+                                   {
+                                       ID = gItems.ID,
+                                       ItemName = gItems.ItemName,
+                                       ItemCode = gItems.ItemCode,
+                                       ItemAlias = gItems.Alias,
+                                       OrgID = gItems.OrgID,
+                                       RateID = gItems.RateID,
+                                       BaseUnit = gItems.BaseUnit,
+                                       BaseRateOther = gItems.tblItemRate.BaseRateOther == null ? 0 : gItems.tblItemRate.BaseRateOther.Value,
+                                       BasePKTValue = gItems.BasePKTValue,
+                                       AlternateUnit = gItems.AlternateUnit,
+                                       AlternatePKTValue = gItems.AlternatePKTValue,
+                                       PacketUOMID = gItems.PacketUOMID,
+                                       PacketQTY = gItems.PacketQTY,
+                                       BagUOMID = gItems.BagUOMID,
+                                       BagQTY = gItems.BagQTY,
+                                       IsTallyUpdated = gItems.IsTallyUpdated,
+                                       IsParentTallyUpdated = gItems.IsParentTallyUpdated,
+                                       IsCESSMapped = gItems.IsCESSMapped,
+                                       CESSValue = gItems.CESSValue,
+                                       CESSEffectiveDate = gItems.CESSEffectiveDate,
+                                       BrandID = gItems.BrandID,
+                                       CategoryID = gItems.CategoryID,
+                                       SubCategoryID = gItems.SubCategoryID,
+                                       RackID = gItems.RackID,
+                                       ItemDetail = gItems.ItemDetail,
+                                       StorageSpace = gItems.StorageArea,
+                                       GST = gItems.tblItemMappings.Where(mp => mp.ItemCode == gItems.ItemCode).FirstOrDefault().GST.Value,
+                                       GSTEffectiveDate = gItems.tblItemMappings.Where(mp => mp.ItemCode == gItems.ItemCode).FirstOrDefault().GSTEffectiveDate,
+                                       ReOrderlevel = gItems.ReOrderlevel,
+                                       ReOrderQTY = gItems.ReOrderQTY,
+                                       IsReturnable = gItems.IsReturnable,
+                                       IsActive = gItems.IsActive,
+                                       DaysToRefill = gItems.DaysToRefill,
+                                       HSNCode = gItems.HSNCode,
+                                       HSNSubCode = gItems.HSNSubCode,
+                                       CreatedByID = gItems.CreatedByID,
+                                       CreatedDate = gItems.CreatedDate,
+                                       ModifiedByID = gItems.ModifiedByID,
+                                       ModifiedDate = gItems.ModifiedDate,
+                                       ItemCompanyID = gItems.tblBrand.ItemCompanyID,
+                                   }).FirstOrDefault();
                 }
 
-                return lstItemDetails;
+                return itemDetails;
             }
             catch (System.Data.SqlClient.SqlException sqlex)
             {
@@ -3305,7 +3122,6 @@ namespace WBT.DLCustomerCreation
                 throw;
             }
         }
-
         public DLItemCreation UpdateItem(DLItemCreation dlitemcreations, int UserID1, string OrgID)
         {
             mItemCreation = ((DLItemCreation)dlitemcreations);
@@ -3437,17 +3253,11 @@ namespace WBT.DLCustomerCreation
             }
             catch (Exception ex)
             {
-                //this.GetApplicationActivate.DataState = Common.TransactionType.Error;
-                //this.GetApplicationActivate.GetErrormessages = ex.Message;
-                //this.GetApplicationActivate.GetErrorSource = ex.Source;
-                //this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;
-                //throw;
                 mItemCreation.DisplayMessage = "Failed.. Please Contact Administrator";
                 return mItemCreation;
             }
             //return mItemCreation;
         }
-
         public string ConstructingUOMPacketNumber(decimal packetQTY, string packetUnit, decimal bagQTY, string bagUnit) //unitid, int bulkunit)
         {
             if (packetQTY != 0 && bagQTY != 0)
@@ -3476,7 +3286,6 @@ namespace WBT.DLCustomerCreation
             else
                 return null;
         }
-
         public int UnitCalculation(string packetUnitQTY, string bulkunit)
         {
             try
@@ -3539,6 +3348,61 @@ namespace WBT.DLCustomerCreation
             }
 
         }
+        public List<ItemDTO> ImportExcel(List<ItemDTO> itemExcelData, string UserID, string OrgID)
+        {
+            int ID = 0;
+            List<ItemDTO> Result = new List<ItemDTO>();
+            DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+            try
+            {
+                if (itemExcelData != null)
+                {
+                    foreach (var item in itemExcelData)
+                    {
+                        using (Entities = new MWBTCustomerAppEntities())
+                        {
+                            string DebtorName = string.Empty;
+                            if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
+                                Entities.Database.Connection.Open();
+
+                            if (!string.IsNullOrEmpty(item.ItemName))
+                            {
+                                tblItem IsValueexists = null;
+                                if (!string.IsNullOrEmpty(item.ItemName))
+                                {
+                                    IsValueexists = Entities.tblItems.AsNoTracking().Where(C => C.ItemName.ToLower() == item.ItemName.ToLower() && C.OrgID == OrgID).FirstOrDefault();
+                                    if (IsValueexists != null)
+                                        ID = IsValueexists.ID;
+                                }
+
+                                using (var dbcxtransaction = Entities.Database.BeginTransaction())
+                                {
+                                    ItemDTO ResultItem = new ItemDTO();
+                                    try
+                                    {
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ResultItem.ItemName = item.ItemName;
+                                        ResultItem.Status = ex.Message;
+                                        Result.Add(ResultItem);
+                                        dbcxtransaction.Rollback();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ItemDTO ResultItem = new ItemDTO();
+                ResultItem.Status = ex.Message;
+                Result.Add(ResultItem);
+            }
+            return Result;
+        }
     }
 
     public class DLItemMapping //: Common.DLActivate
@@ -3546,7 +3410,6 @@ namespace WBT.DLCustomerCreation
         private static MWBTCustomerAppEntities Entities = new Entity.MWBTCustomerAppEntities();
         public static DLItemCreation GetItemMapping { get; set; } = new DLItemCreation();
         public static List<DLItemCreation> GetListMappings { get; set; } = new List<DLItemCreation>();
-        //public static object SaveData(string BranchID, string COrgID, string ItemCode, string OrgID, bool IsActive)
         //save and edit of item mapping table
         public static object SaveData(DLItemCreation dLItemCreation, MWBTCustomerAppEntities Entities)
         {
@@ -3839,7 +3702,6 @@ namespace WBT.DLCustomerCreation
             }
             return GetListMappings;
         }
-
         public static object GetFewItemDetails()
         {
             GetListMappings = new List<DLItemCreation>();

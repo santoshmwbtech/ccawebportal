@@ -3,12 +3,8 @@
 @using (Ajax.BeginForm("UpdateItem", "ItemCreation", null, new AjaxOptions
 {
     UpdateTargetId = "divList",
-    //OnBegin = "onBegin_Ajax",    
-    //OnComplete = "onEditCompleteCreate_Ajax",
     OnSuccess = "onEditSuccess_Ajax",
-    //OnFailure = "onFailure_Ajax",
     HttpMethod = "post",
-    //LoadingElementId = "progress"
 
 }, new { @class = "form-sample" }))
 {
@@ -97,7 +93,7 @@
                             <div class="form-group">
                                 <label>Select Company </label>
                                 <div class="input-group">
-                                    @Html.DropDownListFor(model => model.ItemCompanyID, (SelectList)ViewBag.CompanyList, "Select Company", new { @class = "form-control listbox", @placeholder = "Select Company", @required = "required", @disabled = "disabled" })
+                                    @Html.DropDownListFor(model => model.ItemCompanyID, (SelectList)ViewBag.CompanyList, "Select Company", new { @class = "form-control listbox", @placeholder = "Select Company", @required = "required" })
                                 </div>
                                 @Html.ValidationMessageFor(model => model.ItemCompanyID, "", new { @class = "text-danger" })
                             </div>

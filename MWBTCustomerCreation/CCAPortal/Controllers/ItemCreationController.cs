@@ -36,11 +36,11 @@ namespace CCAPortal.Controllers
                 DLItemCreation dlitemcreation = new DLItemCreation();
                      
                 dlitemcreation.ItemCode = Convert.ToString(WBT.Common.Helper.GetUniqueNumber);
-                ViewBag.GroupList = new SelectList(dlItem.GetGroupList(), "CategoryID", "CategoryName");
+                ViewBag.GroupList = new SelectList(dlItem.GetGroupList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");
                 //ViewBag.SubCategoryList = new SelectList(dlItem.GetSubCategoryList(), "SubCategoryID", "SubCategoryName");
-                ViewBag.BrandList = new SelectList(dlItem.GetBrandList(), "BrandID", "BrandName");
+                ViewBag.BrandList = new SelectList(dlItem.GetBrandList(Session["OrgID"].ToString()), "BrandID", "BrandName");
                 ViewBag.uomList = new SelectList(dlItem.GetUOMList(), "UnitID", "Unit");
-                ViewBag.CompanyList = new SelectList(dlItem.GetCompanyList(), "ItemCompanyID", "CompanyName");
+                ViewBag.CompanyList = new SelectList(dlItem.GetCompanyList(Session["OrgID"].ToString()), "ItemCompanyID", "CompanyName");
                 return PartialView(dlitemcreation);
             }
         }
@@ -81,26 +81,6 @@ namespace CCAPortal.Controllers
                 dlitemcreation.CreatedByID = Convert.ToInt32(Session["UserID"].ToString());
                 DLItemCreation Result = dlItem.SaveItem(dlitemcreation);
                 return Json(Result.DisplayMessage);
-                //if (ID > 0)
-                //{
-                //    //ModelState.Clear();
-                //    return Json(new
-                //    {
-                //        ID = ID,
-                //        Message = "success",
-                //        AjaxReturn = PartialView("ItemList", dlItem.GetItems("", Session["OrgID"].ToString()).ToList()).RenderToString()
-                //    });
-                //}
-                //else
-                //{
-                //    return Json(new
-                //    {
-                //        ID = 0,
-                //        Message = "error",
-                //        AjaxReturn = PartialView("ItemList", dlItem.GetItems("", Session["OrgID"].ToString()).ToList()).RenderToString()
-                //    });
-                //}
-                //return PartialView("ItemList", dlItem.GetItemsDetail("", Session["OrgID"].ToString())); //"CategoryList", dlSubCategory.GetDatas("", Session["OrgID"].ToString()).ToList()
             }
             else
             {
@@ -142,10 +122,10 @@ namespace CCAPortal.Controllers
 
             ViewBag.SubCategoryList = new SelectList(dlItem.GetSubCategoryList(dlItemsDetails.CategoryID), "SubCategoryID", "SubCategoryName");
 
-            ViewBag.GroupList = new SelectList(dlItem.GetGroupList(), "CategoryID", "CategoryName");
-            ViewBag.BrandList = new SelectList(dlItem.GetBrandList(), "BrandID", "BrandName");
+            ViewBag.GroupList = new SelectList(dlItem.GetGroupList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");
+            ViewBag.BrandList = new SelectList(dlItem.GetBrandList(Session["OrgID"].ToString()), "BrandID", "BrandName");
             ViewBag.uomList = new SelectList(dlItem.GetUOMList(), "UnitID", "Unit");
-            ViewBag.CompanyList = new SelectList(dlItem.GetCompanyList(), "ItemCompanyID", "CompanyName");
+            ViewBag.CompanyList = new SelectList(dlItem.GetCompanyList(Session["OrgID"].ToString()), "ItemCompanyID", "CompanyName");
             return PartialView("Edit", dlItemsDetails);
         }
 

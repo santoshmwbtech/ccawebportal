@@ -156,6 +156,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ImportItemsController.cs" />
     <Compile Include="Controllers\ImportTaxesController.cs" />
     <Compile Include="Controllers\promotionController.cs" />
     <Compile Include="Controllers\TallySyncErrorRptController.cs" />
@@ -3927,6 +3928,7 @@
     <Content Include="Views\TaxLegdersMaster\Edit.cshtml" />
     <Content Include="Views\TaxLegdersMaster\Index.cshtml" />
     <Content Include="Views\TaxLegdersMaster\TaxLedgerList.cshtml" />
+    <Content Include="Views\ImportItems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
