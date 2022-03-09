@@ -363,7 +363,7 @@ namespace WBT.DLCustomerCreation
 
                     if (!string.IsNullOrEmpty(search.CustomerName) && !string.IsNullOrEmpty(search.CustomerName))
                     {
-                        soLists = soLists.Where(m => m.CustomerName == search.CustomerName).ToList();
+                        soLists = soLists.Where(m => m.CustomerName.ToLower().Contains(search.CustomerName.ToLower())).ToList();
                     }
 
                     if (search.BranchList != null && search.BranchList.Count() > 0)
@@ -617,6 +617,7 @@ namespace WBT.DLCustomerCreation
                                               ShippingCity = tblsalesorders.tblCustomerVendorDetail.ShippingCity,
                                               ShippingState = tblsalesorders.tblCustomerVendorDetail.ShippingState,
                                           },
+                                          
                                       }).FirstOrDefault();
 
                         var itemsList = (from a in Entities.tblSalesOrderWithItems
