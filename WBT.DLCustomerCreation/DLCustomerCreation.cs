@@ -2216,7 +2216,7 @@ namespace WBT.DLCustomerCreation
                                          where s.OrgId == OrgID
                                          select s).ToList();
 
-                        return CustomerTypes;
+                        return CustomerTypes.OrderBy(a=>a.BusinessTypeName).ToList();
                     }
                 }
             }
@@ -2615,7 +2615,7 @@ namespace WBT.DLCustomerCreation
                                                                       OrgID = c.OrgID,
                                                                       BranchID = c.BranchID,
                                                                       FirmName = c.FirmName,
-                                                                      CustomerType = c.CustomerTypeID == null ? "" : Entities.tblCustomerTypes.Where(ct => ct.CustomerTypeID == c.CustomerTypeID).FirstOrDefault().CustomerType,
+                                                                      CustomerType = c.CustomerTypeID == null ? "" : Entities.BusinessTypes.Where(ct => ct.BusinessTypeID == c.CustomerTypeID).FirstOrDefault().BusinessTypeName,
                                                                       AliasName = c.AliasName,
                                                                       BillingState = c.BillingState,
                                                                       BillingCity = c.BillingCity,

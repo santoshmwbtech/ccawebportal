@@ -32,57 +32,57 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <p class="card-description">
-                    @Html.HiddenFor(model => model.CustID)
-                    @Html.HiddenFor(model => model.BillingLatitude)
-                    @Html.HiddenFor(model => model.BillingLongitude)
-                    @Html.HiddenFor(model => model.ShippingLatitude)
-                    @Html.HiddenFor(model => model.ShippingLongitude)
-                    @Html.HiddenFor(model => model.ShippingGPSLocation)
-                    @Html.HiddenFor(model => model.OrgID)
-                    @Html.HiddenFor(model => model.BranchID)
-                    @Html.HiddenFor(model => model.PercStrctureID)
-                    @Html.HiddenFor(model => model.CreationDate)
-                    @Html.HiddenFor(model => model.CreatedByID)
-                    @Html.HiddenFor(model => model.ShopImage)
-                    @Html.HiddenFor(model => model.OwnerPhoto)
-                    @Html.HiddenFor(model => model.AadhaarPhoto)
-                    @Html.HiddenFor(model => model.GSTPhoto)
-                    @Html.HiddenFor(model => model.PANPhoto)
-                    @Html.HiddenFor(model => model.Country)
-                    @Html.HiddenFor(model => model.FaxNo)
-                    @Html.HiddenFor(model => model.CCEmail)
-                    @Html.HiddenFor(model => model.Website)
-                    @Html.HiddenFor(model => model.BillWiseYesNo)
-                    @Html.HiddenFor(model => model.Checkforcreditdaysduringvoucherentry)
-                    @Html.HiddenFor(model => model.OverrideCreditlimit)
-                    @Html.HiddenFor(model => model.Inventoryvaluesareaffected)
-                    @Html.HiddenFor(model => model.ActivateInterestCalculation)
-                    @Html.HiddenFor(model => model.CalculateInterestTransaction_by_Transaction)
-                    @Html.HiddenFor(model => model.OverrideParametersforeachtransaction)
-                    @Html.HiddenFor(model => model.BillingGPSLocation)
-                    @Html.HiddenFor(model => model.AlternateNumber)
-                    @Html.HiddenFor(model => model.SalesManID)
-                    @Html.HiddenFor(model => model.ApprovalStatus)
-                    @Html.HiddenFor(model => model.SourceOfUpdate)
-                    @Html.HiddenFor(model => model.Parent1)
-                    @Html.HiddenFor(model => model.Parent2)
-                    @Html.HiddenFor(model => model.Parent3)
-                    @Html.HiddenFor(model => model.Parent4)
-                    @Html.HiddenFor(model => model.OwnerPhoto)
-                    @Html.HiddenFor(model => model.ShopImage)
-                    @Html.HiddenFor(model => model.AadhaarPhoto)
-                    @Html.HiddenFor(model => model.PANPhoto)
-                    @Html.HiddenFor(model => model.GSTPhoto)
-                    @Html.HiddenFor(model => model.ShippingGPSLocation)
-                    @Html.HiddenFor(model => model.BillingGPSLocation)
-                    @Html.HiddenFor(model => model.ShippingLatitude)
-                    @Html.HiddenFor(model => model.ShippingLongitude)
-                    @Html.HiddenFor(model => model.BillingLatitude)
-                    @Html.HiddenFor(model => model.BillingLongitude)
-                    Created By : @Html.DisplayFor(model => model.CreatedByName) <br />
-                    Last Updated By : <b>@Html.DisplayFor(model => model.UpdatedByName)</b> on <b>@Html.DisplayFor(model => model.UpdatedDate)</b>
-                </p>
+                    <p class="card-description">
+                        @Html.HiddenFor(model => model.CustID)
+                        @Html.HiddenFor(model => model.BillingLatitude)
+                        @Html.HiddenFor(model => model.BillingLongitude)
+                        @Html.HiddenFor(model => model.ShippingLatitude)
+                        @Html.HiddenFor(model => model.ShippingLongitude)
+                        @Html.HiddenFor(model => model.ShippingGPSLocation)
+                        @Html.HiddenFor(model => model.OrgID)
+                        @Html.HiddenFor(model => model.BranchID)
+                        @Html.HiddenFor(model => model.PercStrctureID)
+                        @Html.HiddenFor(model => model.CreationDate)
+                        @Html.HiddenFor(model => model.CreatedByID)
+                        @Html.HiddenFor(model => model.ShopImage)
+                        @Html.HiddenFor(model => model.OwnerPhoto)
+                        @Html.HiddenFor(model => model.AadhaarPhoto)
+                        @Html.HiddenFor(model => model.GSTPhoto)
+                        @Html.HiddenFor(model => model.PANPhoto)
+                        @Html.HiddenFor(model => model.Country)
+                        @Html.HiddenFor(model => model.FaxNo)
+                        @Html.HiddenFor(model => model.CCEmail)
+                        @Html.HiddenFor(model => model.Website)
+                        @Html.HiddenFor(model => model.BillWiseYesNo)
+                        @Html.HiddenFor(model => model.Checkforcreditdaysduringvoucherentry)
+                        @Html.HiddenFor(model => model.OverrideCreditlimit)
+                        @Html.HiddenFor(model => model.Inventoryvaluesareaffected)
+                        @Html.HiddenFor(model => model.ActivateInterestCalculation)
+                        @Html.HiddenFor(model => model.CalculateInterestTransaction_by_Transaction)
+                        @Html.HiddenFor(model => model.OverrideParametersforeachtransaction)
+                        @Html.HiddenFor(model => model.BillingGPSLocation)
+                        @Html.HiddenFor(model => model.AlternateNumber)
+                        @Html.HiddenFor(model => model.SalesManID)
+                        @Html.HiddenFor(model => model.ApprovalStatus)
+                        @Html.HiddenFor(model => model.SourceOfUpdate)
+                        @Html.HiddenFor(model => model.Parent1)
+                        @Html.HiddenFor(model => model.Parent2)
+                        @Html.HiddenFor(model => model.Parent3)
+                        @Html.HiddenFor(model => model.Parent4)
+                        @Html.HiddenFor(model => model.OwnerPhoto)
+                        @Html.HiddenFor(model => model.ShopImage)
+                        @Html.HiddenFor(model => model.AadhaarPhoto)
+                        @Html.HiddenFor(model => model.PANPhoto)
+                        @Html.HiddenFor(model => model.GSTPhoto)
+                        @Html.HiddenFor(model => model.ShippingGPSLocation)
+                        @Html.HiddenFor(model => model.BillingGPSLocation)
+                        @Html.HiddenFor(model => model.ShippingLatitude)
+                        @Html.HiddenFor(model => model.ShippingLongitude)
+                        @Html.HiddenFor(model => model.BillingLatitude)
+                        @Html.HiddenFor(model => model.BillingLongitude)
+                        Created By : @Html.DisplayFor(model => model.CreatedByName) <br />
+                        Last Updated By : <b>@Html.DisplayFor(model => model.UpdatedByName)</b> on <b>@Html.DisplayFor(model => model.UpdatedDate)</b>
+                    </p>
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Basic Details</h3>
@@ -165,7 +165,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Customer Religion</label>
                                         <div class="col-sm-9">
-                                            <select id="ddlReligion" onchange="ddlReligionChanged()" class="form-control" name="ddlReligion" title="Please select Religion" >
+                                            <select id="ddlReligion" onchange="ddlReligionChanged()" class="form-control" name="ddlReligion" title="Please select Religion">
                                                 <option value="">Select Religion</option>
                                                 <option value="Hindu">Hindu</option>
                                                 <option value="Muslim">Muslim</option>
@@ -286,7 +286,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Shop Holiday</label>
                                         <div class="col-sm-9">
-                                            <select id="ddlWeekOffDay" onchange="ddlWeekOffDayChanged()" class="form-control" name="ddlWeekOffDay" title="Please select Shop Holiday" >
+                                            <select id="ddlWeekOffDay" onchange="ddlWeekOffDayChanged()" class="form-control" name="ddlWeekOffDay" title="Please select Shop Holiday">
                                                 <option value="">Select</option>
                                                 <option value="Sunday">Sunday</option>
                                                 <option value="Monday">Monday</option>
@@ -344,7 +344,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Building / Road Address</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.BillingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address",  @maxlength = "500" } })
+                                            @Html.EditorFor(model => model.BillingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Building / Road Address", @maxlength = "500" } })
                                         </div>
                                     </div>
                                 </div>
@@ -528,7 +528,9 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">GST Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number", @maxlength = "15", @onchange = "gst_pattern()" } })
+                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number (ex:29ABCDE1234F2Z5)", @maxlength = "15", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.GSTNumber, "", new { @class = "text-danger" })
+                                            @*<label id="GSTNumber" class="error" for="Please enter the correct format."></label>*@
                                         </div>
                                     </div>
                                 </div>
@@ -538,7 +540,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">PAN Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.PANNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "PAN Number", @maxlength = "10" } })
+                                            @Html.EditorFor(model => model.PANNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "PAN Number (ex:ABCDE1234A)", @maxlength = "10", @autocomplete = "off" } })
                                         </div>
                                     </div>
                                 </div>
@@ -574,7 +576,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Bank Account Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Bank Account Number", @maxlength = "50", @onkeypress = "return isNumber(event);" } })
+                                            @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Bank Account Number", @maxlength = "11"} })
                                         </div>
                                     </div>
                                 </div>
@@ -582,7 +584,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">IFSC Code</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.IFSCCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "IFSC Code", @maxlength = "50" } })
+                                            @Html.EditorFor(model => model.IFSCCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "IFSC Code (ex:ABCD0123456)", @maxlength = "11", @autocomplete = "off" } })
                                         </div>
                                     </div>
                                 </div>
@@ -901,7 +903,11 @@
     function ddlParent_changed() {
         var ddlParentID = $("#ParentDebtorID option:selected").text(); // $('#DebtorName').val();
         $('#Parent1').val(ddlParentID);
-    }
+        }
+
+        function gst_pattern() {
+        
+        }
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -945,4 +951,55 @@
             });
         })
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#GSTNumber").change(function () {
+                var inputvalues = $(this).val();
+                var gstinformat = new RegExp('^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]1}[1-9A-Z]{1}Z[0-9A-Z]{1}$');
+                if (gstinformat.test(inputvalues)) {
+                   
+                    return true;
+                } else {
+                    alert('Please Enter Valid GST Number');
+                    $("#GSTNumber").val('');
+                    $("#GSTNumber").focus();
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PANNumber").change(function () {
+                var inputvalues = $(this).val();
+                var regex = '[A-Z]{5}[0-9]{4}[A-Z]{1}$';
+                if (regex.test(inputvalues)) {
+                    return true;
+                } else {
+                    alert("Please enter valid PAN Number");
+                    $("#PANNumber").val("");
+                    $("#PANNumber").focus();
+                    return regex.test(inputvalues);
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#IFSCCode").change(function () {
+                var inputvalues = $(this).val();
+                var reg = '[A-Z|a-z]{4}[0][a-zA-Z0-9]{6}$';
+                if (inputvalues.match(reg)) {
+                    return true;
+                }
+                else {
+                    $("#IFSCCode").val("");
+                    alert("You entered invalid IFSC code");
+                    return false;
+                }
+            });
+        });
+    </script>   
 }
