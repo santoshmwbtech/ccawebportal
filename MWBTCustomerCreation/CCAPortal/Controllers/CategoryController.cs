@@ -28,7 +28,7 @@ namespace CCAPortal.Controllers
             {
                 return this.RedirectToAction("Index", "Login");
             }
-            ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(), "CategoryID", "CategoryName");            
+            ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");            
             return PartialView();
         }
 
@@ -79,7 +79,7 @@ namespace CCAPortal.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(), "CategoryID", "CategoryName");
+            ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");
             return PartialView("Edit", obj);
         }
 

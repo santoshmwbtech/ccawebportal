@@ -10,8 +10,14 @@ namespace CCAPortal.Controllers
 {
     public class GroupController : Controller
     {
-        DLCategory dlcc = new DLCategory();
-        DLSubCategory dlSubCategory = new DLSubCategory();
+        DLCategory _categoryRepository = new DLCategory();
+        DLSubCategory _subCategoryRepository = new DLSubCategory();
+
+        //public GroupController(DLCategory category, DLSubCategory subCategory)
+        //{
+        //    _categoryRepository = category;
+        //    _subCategoryRepository = subCategory;
+        //}
         // GET: Group
         public ActionResult Index()
         {
@@ -26,11 +32,11 @@ namespace CCAPortal.Controllers
             }
         }
 
-        public ActionResult Create(DLCategoryCreation dLCategory)
+        public ActionResult Create()
         {
             if (Session["UserID"] != null && Session["OrgID"] != null)
             {
-                ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");
+                ViewBag.CatgList = new SelectList(_subCategoryRepository.GetCategoryList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");
                 return PartialView();
             }
             else
@@ -50,17 +56,17 @@ namespace CCAPortal.Controllers
             {
                 dLCategoryCreation.OrgID = Session["OrgID"].ToString();
                 dLCategoryCreation.CreatedByID = Convert.ToInt32(Session["UserID"].ToString());
-                DLCategoryCreation Result = dlcc.SaveData(dLCategoryCreation);
+                DLCategoryCreation Result = _categoryRepository.SaveData(dLCategoryCreation);
                 return Json(Result.DisplayMessage);
             }             
         }
 
         public ActionResult GroupList()
         {
-            List<DLCategoryCreation> result = new List<DLCategoryCreation>();
+            var result = new List<DLCategoryCreation>();
             try
             {
-                result = dlcc.GetData("", Session["OrgID"].ToString());
+                result = _categoryRepository.GetData("", Session["OrgID"].ToString());
             }
             catch (Exception ex)
             {
@@ -80,18 +86,15 @@ namespace CCAPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             
-            DLCategoryCreation obj = dlcc.GetDetails(CategoryID, Session["OrgID"].ToString());
+            DLCategoryCreation categoryGroup = _categoryRepository.GetDetails(CategoryID, Session["OrgID"].ToString());
 
-            if (obj == null)
+            if (categoryGroup == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CatgList = new SelectList(dlSubCategory.GetCategoryList(), "CategoryID", "CategoryName");
-            //ViewBag.CatgList = new SelectList(dlSubCategory.GetPrimaryCategoryList(), "CategoryId", "CategoryName");
-            return PartialView("Edit", obj);
+            ViewBag.CatgList = new SelectList(_subCategoryRepository.GetCategoryList(Session["OrgID"].ToString()), "CategoryID", "CategoryName");
+            return PartialView("Edit", categoryGroup);
         }
-
-
         [HttpPost]
         public ActionResult UpdateGroup(DLCategoryCreation catg)
         {
@@ -101,11 +104,11 @@ namespace CCAPortal.Controllers
             }
             if (ModelState.IsValid)
             {
-                DLCategoryCreation Result = dlcc.SaveGroup(catg, Convert.ToInt32(Session["UserID"].ToString()), Session["OrgID"].ToString());
+                DLCategoryCreation Result = _categoryRepository.SaveGroup(catg, Convert.ToInt32(Session["UserID"].ToString()), Session["OrgID"].ToString());
                 return Json(new
                 {
                     Message = Result.DisplayMessage,
-                    AjaxReturn = PartialView("GroupList", dlcc.GetData("", Session["OrgID"].ToString()).ToList()).RenderToString()
+                    AjaxReturn = PartialView("GroupList", _categoryRepository.GetData("", Session["OrgID"].ToString()).ToList()).RenderToString()
                 });                
             }
             else
@@ -114,7 +117,7 @@ namespace CCAPortal.Controllers
                 return Json(new
                 {
                      Message = allErrors,
-                     AjaxReturn = PartialView("GroupList", dlcc.GetData("", Session["OrgID"].ToString()).ToList()).RenderToString()
+                     AjaxReturn = PartialView("GroupList", _categoryRepository.GetData("", Session["OrgID"].ToString()).ToList()).RenderToString()
                 });
             }
         }
