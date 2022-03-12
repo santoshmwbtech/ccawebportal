@@ -81,7 +81,13 @@
         //        $("#select_all").prop('checked', true);
         //    }
         //});
-
+        //$(document).ready(function){
+        //    var table = $('#datatable').DataTable();
+        //    var tableTools = new $.fn.DataTable.tableTools(table, {
+        //        'sSwfPath:'//cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf'
+        //    });
+        //    $(tableTools.fnContainer()).insertBefore('#datatable_wrapper');
+        //});
 
         $(document).ready(function ($) {
             // loadTable();
@@ -94,6 +100,8 @@
                 "buttons": [{ extend: "copy", extend: "csv", extend: "excel", extend: "pdf", extend: "print", extend: "colvis" }]
             }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
         }
+
+        
         function TallySync(SalesOrderNumber) {
             $("#progress").show();
         $.ajax({

@@ -530,7 +530,7 @@ namespace WBT.DLCustomerCreation
             }
         }
 
-        public SalesOrders GetSalesOrderDetails(string OrderNumber)
+        public SalesOrders GetSalesOrderDetails(string SalesOrderNumber)
         {
             SalesOrders salesOrder = new SalesOrders();
             try
@@ -544,7 +544,7 @@ namespace WBT.DLCustomerCreation
                     {
                         salesOrder = (from tblsalesorders in Entities.tblSalesOrders
                                       join c in Entities.tblCustomerVendorDetails on tblsalesorders.CustID equals c.CustID
-                                      where tblsalesorders.SalesOrderNumber == OrderNumber
+                                      where tblsalesorders.SalesOrderNumber == SalesOrderNumber
                                       select new SalesOrders
                                       {                                         
                                           CustID = tblsalesorders.CustID,
@@ -592,17 +592,7 @@ namespace WBT.DLCustomerCreation
                                           CustomerState = tblsalesorders.tblCustomerVendorDetail.BillingState,
                                           CompanyState = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.State,
                                           CompanyCity = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.City,
-                                          BranchDetails = new BranchDetails
-                                          {
-                                              Name = tblsalesorders.tblSysBranch.Name,
-                                              Address = tblsalesorders.tblSysBranch.BillingAddress,
-                                              GST = tblsalesorders.tblSysBranch.GST,
-                                              Mobile = tblsalesorders.tblSysBranch.Mobile,
-                                              City = tblsalesorders.tblSysBranch.City,
-                                              State = tblsalesorders.tblSysBranch.State,
-                                              PinCode = tblsalesorders.tblSysBranch.PinCode,
-                                              PANNumber = tblsalesorders.tblSysBranch.PANNumber,
-                                          },
+                                          
                                           SalesmanName = tblsalesorders.tblSysUser3.FName,
                                           PriceSyncType = Entities.tblAdminSettings.Where(d => d.OrgID == tblsalesorders.OrgID).FirstOrDefault().PriceSyncType,
                                           customerInfo = new CustomerCreation
@@ -620,10 +610,26 @@ namespace WBT.DLCustomerCreation
                                           
                                       }).FirstOrDefault();
 
+                        var branchDetails = (from b in Entities.tblSysBranches
+                                             join s in Entities.tblStates on b.State equals s.StateID.ToString()
+                                             where b.BranchID == salesOrder.BranchID
+                                             select new BranchDetails
+                                             {
+                                                 Name = b.Name,
+                                                 Address = b.BillingAddress,
+                                                 GST = b.GST,
+                                                 Mobile = b.Mobile,
+                                                 City = b.City,
+                                                 State = s.StateName,
+                                                 PinCode = b.PinCode,
+                                                 PANNumber = b.PANNumber,
+                                             }).FirstOrDefault();
+                        salesOrder.BranchDetails = branchDetails;
+
                         var itemsList = (from a in Entities.tblSalesOrderWithItems
                                          join b in Entities.tblSalesOrders on a.SalesOrderNumber.ToLower().Trim() equals b.SalesOrderNumber.ToLower().Trim()
                                          join c in Entities.tblItems on a.ItemCode.ToLower().Trim() equals c.ItemCode.ToLower().Trim()
-                                         where a.SalesOrderNumber == OrderNumber
+                                         where a.SalesOrderNumber == SalesOrderNumber
                                          select new DLSalesOrderWithItemCreation
                                          {
                                              ItemName = c.ItemName,

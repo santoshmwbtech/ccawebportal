@@ -459,9 +459,7 @@ namespace WBT.DLCustomerCreation.Reports
 
                                                                    }).ToList();
 
-                    mainCList.PendingRecords = customerCreationList.Where(m => search.BranchList.Contains(Convert.ToInt32(m.BranchID)) && m.CreatedByID.Value == TallyUserID && m.ModifiedByID.Value == 0).Count();
-                    mainCList.TotalRecords = customerCreationList.Where(v => search.BranchList.Contains(Convert.ToInt32(v.BranchID)) && v.CreatedByID == TallyUserID).Count();
-                    mainCList.UpdatedRecords = customerCreationList.Where(v => search.BranchList.Contains(Convert.ToInt32(v.BranchID)) && v.CreatedByID == TallyUserID && v.ModifiedByID.Value != 0).Count();
+                    
 
                     customerCreationList.ForEach(c => c.StateID = c.StateID == null ? 0 : c.StateID);
 
@@ -617,6 +615,10 @@ namespace WBT.DLCustomerCreation.Reports
                         List<tblTaxationType> taxationTypes = Entities.tblTaxationTypes.Where(c => search.TaxationTypeList.Contains(c.TaxationTypeID)).ToList();
                         customerCreationList = customerCreationList.Where(m => taxationTypes.Any(ct => ct.TaxationType == m.RegistrationType)).ToList();
                     }
+
+                    mainCList.PendingRecords = customerCreationList.Where(m => search.BranchList.Contains(Convert.ToInt32(m.BranchID)) && m.CreatedByID.Value == TallyUserID && m.ModifiedByID.Value == 0).Count();
+                    mainCList.TotalRecords = customerCreationList.Where(v => search.BranchList.Contains(Convert.ToInt32(v.BranchID)) && v.CreatedByID == TallyUserID).Count();
+                    mainCList.UpdatedRecords = customerCreationList.Where(v => search.BranchList.Contains(Convert.ToInt32(v.BranchID)) && v.CreatedByID == TallyUserID && v.ModifiedByID.Value != 0).Count();
 
                     mainCList.customerList = customerCreationList;
                     return mainCList;
