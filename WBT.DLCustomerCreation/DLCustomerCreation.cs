@@ -1904,7 +1904,12 @@ namespace WBT.DLCustomerCreation
                             lCustomerVendor.Parent1 = this.mCustomerVendorCreation.Parent1;
                             lCustomerVendor.Parent2 = this.mCustomerVendorCreation.Parent2;
                             lCustomerVendor.Parent3 = this.mCustomerVendorCreation.Parent3;
-                            lCustomerVendor.Parent4 = this.mCustomerVendorCreation.Parent4;
+                            var parentDebtor = string.Empty;
+                            if (mCustomerVendorCreation.ParentDebtorID != null)
+                                parentDebtor = Entities.tblDebtorsDetails.Where(d => d.ID == mCustomerVendorCreation.ParentDebtorID).FirstOrDefault().DebtorName;
+                            else
+                                parentDebtor = mCustomerVendorCreation.Parent4;
+                            lCustomerVendor.Parent4 = parentDebtor;
                             lCustomerVendor.ParentDebtorID = this.mCustomerVendorCreation.ParentDebtorID;
                             lCustomerVendor.LedgerTypeID = this.mCustomerVendorCreation.LedgerTypeID;
                             lCustomerVendor.CustomerTypeID = this.mCustomerVendorCreation.CustomerTypeID;
@@ -1913,7 +1918,7 @@ namespace WBT.DLCustomerCreation
                             lCustomerVendor.TaxationTypeID = this.mCustomerVendorCreation.TaxationTypeID;
                             lCustomerVendor.IsEdited = customer.IsTallyUpdated == true ? true : false;
 
-                            Entities.Entry(lCustomerVendor).State = System.Data.Entity.EntityState.Modified;
+                            Entities.Entry(lCustomerVendor).State = EntityState.Modified;
                             Entities.SaveChanges();
                             dbcxtransaction.Commit();
                             return true;
@@ -1921,7 +1926,7 @@ namespace WBT.DLCustomerCreation
                         catch (Exception ex)
                         {
                             dbcxtransaction.Rollback();
-                            this.GetApplicationActivate.DataState = Common.TransactionType.Error;
+                            this.GetApplicationActivate.DataState = TransactionType.Error;
                             this.GetApplicationActivate.GetErrormessages = ex.Message;
                             this.GetApplicationActivate.GetErrorSource = ex.Source;
                             this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;

@@ -146,8 +146,6 @@ namespace CCAPortal.Controllers
         public object AddCustomerSupplierToTally(CustomerCreation item, bool iswinservie = false)
         {
             IsTallyCompanyOpen(item, iswinservie);
-
-
             if (IsCompanyOpen == true)
             {
                 if (iswinservie == false)
@@ -191,23 +189,23 @@ namespace CCAPortal.Controllers
                         {
                             xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = "Sundry Debtors";
                         }
-                        else if ((!string.IsNullOrEmpty(item.Parent1)) && (string.IsNullOrEmpty(item.Parent2)) && (string.IsNullOrEmpty(item.Parent3)) && (string.IsNullOrEmpty(item.Parent4)))
-                        {
-                            xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent1;
-
-                        }
-                        else if ((string.IsNullOrEmpty(item.Parent1)) && (!string.IsNullOrEmpty(item.Parent2)))
-                        {
-                            xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent2;
-
-                        }
-                        else if ((string.IsNullOrEmpty(item.Parent1)) && (string.IsNullOrEmpty(item.Parent2)) && (!string.IsNullOrEmpty(item.Parent3)))
-                        {
-                            xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent3;
-                        }
-                        else if ((string.IsNullOrEmpty(item.Parent1)) && (string.IsNullOrEmpty(item.Parent2)) && (string.IsNullOrEmpty(item.Parent3)) && (!string.IsNullOrEmpty(item.Parent4)))
+                        else if (!string.IsNullOrEmpty(item.Parent4))
                         {
                             xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent4;
+
+                        }
+                        else if (!string.IsNullOrEmpty(item.Parent3))
+                        {
+                            xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent3;
+
+                        }
+                        else if (!string.IsNullOrEmpty(item.Parent2))
+                        {
+                            xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent2;
+                        }
+                        else if (string.IsNullOrEmpty(item.Parent1))
+                        {
+                            xmlDoc.SelectSingleNode(mxmlRootPath + "/PARENT").InnerText = item.Parent1;
 
                         }
 
@@ -257,13 +255,13 @@ namespace CCAPortal.Controllers
 
                     //if we edit it from app then refering to this old name it gets altered in tally
 
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/EMAIL").InnerText = item.EmailID.Trim();
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/LEDGERPHONE").InnerText = item.TelephoneNumber.Trim();
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/EMAIL").InnerText = !string.IsNullOrEmpty(item.EmailID) ? item.EmailID.Trim() : string.Empty;
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/LEDGERPHONE").InnerText = !string.IsNullOrEmpty(item.TelephoneNumber) ? item.TelephoneNumber.Trim() : string.Empty;
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/LEDGERMOBILE").InnerText = item.MobileNumber.Trim();
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/LEDGERCONTACT").InnerText = item.Name.Trim(); // mTelephone.Trim();
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/LEDGERFAX").InnerText = "";
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/STATENAME").InnerText = item.BillingState.Trim();
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/PINCODE").InnerText = item.BillingPincode.ToString();
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/STATENAME").InnerText = !string.IsNullOrEmpty(item.BillingState) ? item.BillingState.Trim() : string.Empty;
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/PINCODE").InnerText = !string.IsNullOrEmpty(item.BillingPincode) ? item.BillingPincode.Trim() : string.Empty; 
 
                     //if (item.PANNumber.Trim() != null || item.PANNumber.Trim() != string.Empty)
                     if (!string.IsNullOrEmpty(item.PANNumber))
@@ -292,10 +290,9 @@ namespace CCAPortal.Controllers
                         xmlDoc.SelectSingleNode(mxmlRootPath + "/BILLCREDITPERIOD").InnerText = item.CrDays.Trim();
 
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/ CREDITLIMIT ").InnerText = !string.IsNullOrEmpty(item.CrLimit) ? item.CrLimit.Trim() : string.Empty;    //Crredit Limit
-                                                                                                                                                                      //xmlDoc.SelectSingleNode(mxmlRootPath + "/SALESTAXNUMBER").InnerText = //mSalesTaxNumber.Trim();
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/NARRATION").InnerText = ""; //mNarration.Trim();
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/ADDRESS.LIST/ADDRESS").InnerText = item.BillingLandmark.Trim();
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/ADDRESS.LIST/ADDRESS").InnerText = item.BillingAddress.Trim() + " " + item.BillingArea.Trim() + " " + item.BillingLandmark.Trim() + item.Cityname;// + "GST NO:" + item.TINNumber.Trim();
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/ADDRESS.LIST/ADDRESS").InnerText = !string.IsNullOrEmpty(item.BillingLandmark) ? item.BillingLandmark.Trim() : string.Empty;
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/ADDRESS.LIST/ADDRESS").InnerText = item.BillingAddress + " " + item.BillingArea + " " + item.BillingLandmark + item.Cityname;// + "GST NO:" + item.TINNumber.Trim();
 
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/MAILINGNAME.LIST/MAILINGNAME").InnerText = item.FirmName.Trim();//item.Name.Trim();
 
@@ -310,10 +307,10 @@ namespace CCAPortal.Controllers
                     }
                     string tempLedger = xmlDoc.InnerXml;//.Replace("", "");
 
-                    tempLedger = tempLedger.Replace("[GST]", "" + item.GSTNumber.Trim());
+                    tempLedger = tempLedger.Replace("[GST]", "" + item.GSTNumber);
 
                     if (!string.IsNullOrEmpty(item.CustomerType))
-                        tempLedger = tempLedger.Replace("[PARTYTYPE]", "" + item.CustomerType.Trim());
+                        tempLedger = tempLedger.Replace("[PARTYTYPE]", "" + item.CustomerType);
 
                     if (item.RegistrationType == "Registered")
                         tempLedger = tempLedger.Replace("[IsRegistered]", "Regular");
@@ -323,21 +320,8 @@ namespace CCAPortal.Controllers
                     //    tempLedger = tempLedger.Replace("[IsRegistered]", "Composition");
                     else
                         tempLedger = tempLedger.Replace("[IsRegistered]", "Consumer");
-
-                    tempLedger = tempLedger.Replace("[Place]", "");
-
-                    //if (item.DLDebtorsPlaceDetailCreation != null)
-                    //{
-                    //    tempLedger = tempLedger.Replace("[Place]", item.DLDebtorsPlaceDetailCreation.Place.ToString());
-                    //}
-                    //else
-                    //{
-                    //    tempLedger = tempLedger.Replace("[Place]", "");
-                    //}
-
-
+                    tempLedger = tempLedger.Replace("[Place]", "");                    
                     string Result = XMLGetData(tempLedger);
-
                     #region Status
                     //if (Result.Contains("<CREATED>1"))
                     //{

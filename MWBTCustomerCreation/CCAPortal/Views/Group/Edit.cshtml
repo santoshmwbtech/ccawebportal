@@ -8,7 +8,6 @@
 }, new { @class = "form-sample" }))
 {
     @Html.AntiForgeryToken()
-
     @Html.HiddenFor(model => model.OrgID)
     @Html.HiddenFor(model => model.AccOrInv)
     @Html.HiddenFor(model => model.IsTallyUpdated)
@@ -18,9 +17,6 @@
     @Html.HiddenFor(model => model.ModifiedByID)
     @Html.HiddenFor(model => model.ModifiedDate)
     @Html.HiddenFor(model => model.IsActive)
-
-
-
     <div>
         <div class="card card-primary">
             <div class="card-header">
@@ -49,11 +45,10 @@
                             <div class="form-group">
                                 <label>Under </label>
                                 <div class="input-group">
-                                    @Html.DropDownListFor(model => model.ParentCatId, (SelectList)ViewBag.CatgList, "Select Under", new { @class = "form-control listbox" })                                    
+                                    @Html.DropDownListFor(model => model.ParentCatId, (SelectList)ViewBag.CatgList, "Select Under", new { @class = "form-control listbox" })
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="clearfix"></div>

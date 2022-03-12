@@ -622,7 +622,7 @@ namespace WBT.DLCustomerCreation
                         var itemsList = (from a in Entities.tblSalesOrderWithItems
                                          join b in Entities.tblSalesOrders on a.SalesOrderNumber.ToLower().Trim() equals b.SalesOrderNumber.ToLower().Trim()
                                          join c in Entities.tblItems on a.ItemCode.ToLower().Trim() equals c.ItemCode.ToLower().Trim()
-                                         where a.SalesOrderNumber == OrderNumber
+                                         where a.SalesOrderNumber == OrderNumber && a.Rate > 0
                                          select new DLSalesOrderWithItemCreation
                                          {
                                              ItemName = c.ItemName,

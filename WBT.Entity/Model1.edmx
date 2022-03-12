@@ -368,6 +368,7 @@
           <Property Name="CreatedById" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedByID" Type="int" />
+          <Property Name="FID" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="FuturisticBusinessTypes">
           <Key>
@@ -3156,6 +3157,12 @@
           <Property Name="IsServiceInstalled" Type="bit" />
           <Property Name="IsTallyUsing" Type="bit" />
           <Property Name="SubscriptionKey" Type="nvarchar(max)" />
+          <Property Name="NoOfUser" Type="int" />
+          <Property Name="SubscriptionDate" Type="datetime" />
+          <Property Name="FirstActivationDate" Type="datetime" />
+          <Property Name="IsTrialVersion" Type="bit" />
+          <Property Name="NoOfDays" Type="int" />
+          <Property Name="CityID" Type="int" />
         </EntityType>
         <EntityType Name="tblSysOrganizationMap">
           <Key>
@@ -3328,6 +3335,9 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="TallySync" Type="bit" Nullable="false" />
           <Property Name="IsTallyUpdated" Type="bit" Nullable="false" />
+          <Property Name="BranchID" Type="varchar" MaxLength="25" />
+          <Property Name="IsEdited" Type="bit" Nullable="false" />
+          <Property Name="OldName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tblTemplateImage">
           <Key>
@@ -3887,6 +3897,18 @@
             </Principal>
             <Dependent Role="DocumentUploads">
               <PropertyRef Name="GINID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FumigationDetails_FumigationDetails">
+          <End Role="FumigationDetails" Type="Self.FumigationDetails" Multiplicity="1" />
+          <End Role="FumigationDetails1" Type="Self.FumigationDetails" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FumigationDetails">
+              <PropertyRef Name="FuminID" />
+            </Principal>
+            <Dependent Role="FumigationDetails1">
+              <PropertyRef Name="FuminID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8450,6 +8472,10 @@
             <End Role="tblGoodsInwardNote" EntitySet="tblGoodsInwardNote" />
             <End Role="DocumentUploads" EntitySet="DocumentUploads" />
           </AssociationSet>
+          <AssociationSet Name="FK_FumigationDetails_FumigationDetails" Association="Self.FK_FumigationDetails_FumigationDetails">
+            <End Role="FumigationDetails" EntitySet="FumigationDetails" />
+            <End Role="FumigationDetails1" EntitySet="FumigationDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_FumigationDetails_FumigationItemWrhsDetails" Association="Self.FK_FumigationDetails_FumigationItemWrhsDetails">
             <End Role="FumigationDetails" EntitySet="FumigationDetails" />
             <End Role="FumigationItemWrhsDetails" EntitySet="FumigationItemWrhsDetails" />
@@ -11589,6 +11615,10 @@
           <EntitySet Name="tblReligions" EntityType="MWBTCustomerAppModel.tblReligion" />
           <EntitySet Name="tblWeekoffs" EntityType="MWBTCustomerAppModel.tblWeekoff" />
           <EntitySet Name="tblTaxLedgers" EntityType="MWBTCustomerAppModel.tblTaxLedger" />
+          <AssociationSet Name="FK_FumigationDetails_FumigationDetails" Association="MWBTCustomerAppModel.FK_FumigationDetails_FumigationDetails">
+            <End Role="FumigationDetail" EntitySet="FumigationDetails" />
+            <End Role="FumigationDetail1" EntitySet="FumigationDetails" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AccountGroupDetail">
           <Key>
@@ -11970,6 +12000,8 @@
           <Property Name="TotalValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="ImageCertificate" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="FumigationItemWrhsDetails" Relationship="MWBTCustomerAppModel.FK_FumigationDetails_FumigationItemWrhsDetails" FromRole="FumigationDetail" ToRole="FumigationItemWrhsDetail" />
+          <NavigationProperty Name="FumigationDetails1" Relationship="MWBTCustomerAppModel.FK_FumigationDetails_FumigationDetails" FromRole="FumigationDetail" ToRole="FumigationDetail1" />
+          <NavigationProperty Name="FumigationDetail1" Relationship="MWBTCustomerAppModel.FK_FumigationDetails_FumigationDetails" FromRole="FumigationDetail1" ToRole="FumigationDetail" />
         </EntityType>
         <EntityType Name="FumigationItemWrhsDetail">
           <Key>
@@ -11992,6 +12024,7 @@
           <NavigationProperty Name="FumigationDetail" Relationship="MWBTCustomerAppModel.FK_FumigationDetails_FumigationItemWrhsDetails" FromRole="FumigationItemWrhsDetail" ToRole="FumigationDetail" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_FumigationItemWrhsDetails_tblWarehouse" FromRole="FumigationItemWrhsDetail" ToRole="tblWarehouse" />
           <NavigationProperty Name="tblItem" Relationship="MWBTCustomerAppModel.FK_tblItem_FumigationItemWrhsDetails" FromRole="FumigationItemWrhsDetail" ToRole="tblItem" />
+          <Property Name="FID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="FuturisticBusinessType">
           <Key>
@@ -15083,6 +15116,12 @@
           <Property Name="IsServiceInstalled" Type="Boolean" />
           <Property Name="IsTallyUsing" Type="Boolean" />
           <Property Name="SubscriptionKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfUser" Type="Int32" />
+          <Property Name="SubscriptionDate" Type="DateTime" Precision="3" />
+          <Property Name="FirstActivationDate" Type="DateTime" Precision="3" />
+          <Property Name="IsTrialVersion" Type="Boolean" />
+          <Property Name="NoOfDays" Type="Int32" />
+          <Property Name="CityID" Type="Int32" />
         </EntityType>
         <EntityType Name="tblSysOrganizationMap">
           <Key>
@@ -20554,7 +20593,22 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="TallySync" Type="Boolean" Nullable="false" />
           <Property Name="IsTallyUpdated" Type="Boolean" Nullable="false" />
+          <Property Name="BranchID" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="IsEdited" Type="Boolean" Nullable="false" />
+          <Property Name="OldName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <Association Name="FK_FumigationDetails_FumigationDetails">
+          <End Type="MWBTCustomerAppModel.FumigationDetail" Role="FumigationDetail" Multiplicity="1" />
+          <End Type="MWBTCustomerAppModel.FumigationDetail" Role="FumigationDetail1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FumigationDetail">
+              <PropertyRef Name="FuminID" />
+            </Principal>
+            <Dependent Role="FumigationDetail1">
+              <PropertyRef Name="FuminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -20929,6 +20983,7 @@
           <EntitySetMapping Name="FumigationItemWrhsDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.FumigationItemWrhsDetail">
               <MappingFragment StoreEntitySet="FumigationItemWrhsDetails">
+                <ScalarProperty Name="FID" ColumnName="FID" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
@@ -23613,6 +23668,12 @@
           <EntitySetMapping Name="tblSysOrganizations">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSysOrganization">
               <MappingFragment StoreEntitySet="tblSysOrganization">
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="NoOfDays" ColumnName="NoOfDays" />
+                <ScalarProperty Name="IsTrialVersion" ColumnName="IsTrialVersion" />
+                <ScalarProperty Name="FirstActivationDate" ColumnName="FirstActivationDate" />
+                <ScalarProperty Name="SubscriptionDate" ColumnName="SubscriptionDate" />
+                <ScalarProperty Name="NoOfUser" ColumnName="NoOfUser" />
                 <ScalarProperty Name="SubscriptionKey" ColumnName="SubscriptionKey" />
                 <ScalarProperty Name="IsTallyUsing" ColumnName="IsTallyUsing" />
                 <ScalarProperty Name="IsServiceInstalled" ColumnName="IsServiceInstalled" />
@@ -24315,6 +24376,9 @@
           <EntitySetMapping Name="tblTaxLedgers">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblTaxLedger">
               <MappingFragment StoreEntitySet="tblTaxLedgers">
+                <ScalarProperty Name="OldName" ColumnName="OldName" />
+                <ScalarProperty Name="IsEdited" ColumnName="IsEdited" />
+                <ScalarProperty Name="BranchID" ColumnName="BranchID" />
                 <ScalarProperty Name="IsTallyUpdated" ColumnName="IsTallyUpdated" />
                 <ScalarProperty Name="TallySync" ColumnName="TallySync" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />

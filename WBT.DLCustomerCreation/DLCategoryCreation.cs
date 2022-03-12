@@ -189,7 +189,7 @@ namespace WBT.DLCustomerCreation
                         {
                             try
                             {
-                                var IsNameExists = Entities.tblCategories.AsNoTracking().Where(i => i.CategoryName.ToLower().Trim() == mCategoryCreation.CategoryName.ToLower().Trim()).FirstOrDefault();
+                                var IsNameExists = Entities.tblCategories.AsNoTracking().Where(i => i.CategoryName.ToLower().Trim() == mCategoryCreation.CategoryName.ToLower().Trim() && i.OrgID == mCategoryCreation.OrgID).FirstOrDefault();
                                 if (IsNameExists == null)
                                 {
 

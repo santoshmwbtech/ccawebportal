@@ -41,5 +41,7 @@ namespace WBT.Entity
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FumigationItemWrhsDetail> FumigationItemWrhsDetails { get; set; }
+        public virtual FumigationDetail FumigationDetails1 { get; set; }
+        public virtual FumigationDetail FumigationDetail1 { get; set; }
     }
 }

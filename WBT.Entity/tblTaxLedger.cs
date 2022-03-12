@@ -26,5 +26,8 @@ namespace WBT.Entity
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public bool TallySync { get; set; }
         public bool IsTallyUpdated { get; set; }
+        public string BranchID { get; set; }
+        public bool IsEdited { get; set; }
+        public string OldName { get; set; }
     }
 }

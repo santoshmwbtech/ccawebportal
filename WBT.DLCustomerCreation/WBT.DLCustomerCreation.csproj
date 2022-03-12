@@ -141,6 +141,7 @@
     <Compile Include="DLTemplates.cs" />
     <Compile Include="DLUCMappings.cs" />
     <Compile Include="DLUserCreation.cs" />
+    <Compile Include="DTOs\ItemCreationDTO.cs" />
     <Compile Include="DTOs\ItemDTO.cs" />
     <Compile Include="DTOs\TaxLedgersDTO.cs" />
     <Compile Include="Login.cs" />

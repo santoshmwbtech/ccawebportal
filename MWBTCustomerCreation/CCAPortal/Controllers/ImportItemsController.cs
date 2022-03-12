@@ -16,11 +16,11 @@ namespace CCAPortal.Controllers
     public class ImportItemsController : Controller
     {
         // GET: ImportItems
-        private readonly DLItem _itemRepository;
-        public ImportItemsController(DLItem itemRepository)
-        {
-            _itemRepository = itemRepository;
-        }
+        private readonly DLItem _itemRepository = new DLItem();
+        //public ImportItemsController(DLItem itemRepository)
+        //{
+        //    _itemRepository = itemRepository;
+        //}
         public ActionResult Index()
         {
             if (Session["UserID"] != null && Session["OrgID"] != null)
@@ -35,7 +35,7 @@ namespace CCAPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult UploadExcel(CustomerCreation customer, HttpPostedFileBase readExcelFile)
+        public JsonResult UploadExcel(HttpPostedFileBase readExcelFile)
         {
             List<string> result = new List<string>();
             if (Session["UserID"] != null && Session["OrgID"] != null)

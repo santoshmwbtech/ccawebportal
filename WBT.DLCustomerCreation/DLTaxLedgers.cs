@@ -15,8 +15,6 @@ namespace WBT.DLCustomerCreation
     {
         private MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-        //DLTaxLedgers dLLedgerCreation = new DLTaxLedgers();
-        //private tblTaxLedger ledger = new tblTaxLedger();
         public List<TaxLedgersDTO> GetTaxLedgers(string OrgID)
         {
             try
@@ -39,10 +37,7 @@ namespace WBT.DLCustomerCreation
                                       TaxType = taxLedger.TaxType,
                                       TallySync=taxLedger.TallySync,
                                       IsTallyUpdated=taxLedger.IsTallyUpdated,
-
-                                      //TaxType = "Duty And Taxes",
-                                      Under = taxLedger.Under,
-                                      
+                                      Under = taxLedger.Under,                                      
                                   }).OrderByDescending(x => x.Name).ToList();
                     return taxLedgers;
                 }
@@ -72,7 +67,7 @@ namespace WBT.DLCustomerCreation
                                          ModifiedBy = taxLedgers.ModifiedBy,
                                          ModifiedDate = taxLedgers.ModifiedDate,
                                          TaxPercentage = taxLedgers.TaxPercentage,
-                                         TaxType = "Duty And Taxes",
+                                         TaxType = taxLedgers.TaxType,
                                          Under = taxLedgers.Under,
                                          TallySync=taxLedgers.TallySync,
                                          IsTallyUpdated=taxLedgers.IsTallyUpdated
@@ -238,7 +233,7 @@ namespace WBT.DLCustomerCreation
                             Entities.tblTaxLedgers.Attach(tblTaxLedger);
                             Entities.Entry(tblTaxLedger).Property(c => c.ModifiedDate).IsModified = true;
                             Entities.Entry(tblTaxLedger).Property(c => c.TallySync).IsModified = true;
-                            Entities.Entry(tblTaxLedger).Property(c => c.IsTallyUpdated).IsModified = true;
+                            //Entities.Entry(tblTaxLedger).Property(c => c.IsTallyUpdated).IsModified = true;
                             //Entities.Entry(tblTaxLedger).Property(c => c.TaxType).IsModified = true;
                             Entities.SaveChanges();
                             dbcxtransaction.Commit();

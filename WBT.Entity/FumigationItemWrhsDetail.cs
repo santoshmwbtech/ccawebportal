@@ -28,6 +28,7 @@ namespace WBT.Entity
         public Nullable<int> CreatedById { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedByID { get; set; }
+        public string FID { get; set; }
     
         public virtual FumigationDetail FumigationDetail { get; set; }
         public virtual tblWarehouse tblWarehouse { get; set; }

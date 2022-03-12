@@ -6,7 +6,7 @@
     <div class="card-header">
         <h3 class="card-title">Import Items</h3>
     </div>
-    @using (Ajax.BeginForm("UploadExcel", "ImportCustomersExcel", null, new AjaxOptions
+    @using (Ajax.BeginForm("UploadExcel", "ImportItems", null, new AjaxOptions
     {
         OnSuccess = "onSuccess_Ajax",
         HttpMethod = "post",
@@ -21,7 +21,7 @@
                         <label for="exampleInputFile">Excel File</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="ExcelFile" name="ExcelFile" onchange="return check_extension(this.value);" required="required">
+                                <input type="file" class="custom-file-input" id="readExcelFile" name="readExcelFile" onchange="return check_extension(this.value);" required="required">
                                 <label class="custom-file-label" for="ExcelFile">Choose file</label>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                     Please select the branch before uploading the file
                 </li>
                 <li>
-                    Please note <b>Billing City, Billing State, Shipping City, Shipping State, Ledger Type, Customer Type, Type Of Category, Registration Type</b> fields are mandatory
+                    Please note <b>Item Code, Item Name, GroupName, Category, Brand, Rate, Company, Basic Unit</b> fields are mandatory
                 </li>
                 <li>
                     Please download sample file here - <a href="~/Docs/itemExcelFile.xlsx" class="btn btn-success btn-xs">Download Sample File</a>
