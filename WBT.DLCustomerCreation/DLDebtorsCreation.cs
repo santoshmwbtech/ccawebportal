@@ -74,7 +74,7 @@ namespace WBT.DLCustomerCreation
                                        IsTallyUpdated = u.IsTallyUpdated,
                                        IsEdited = u.IsEdited,
                                    }).OrderByDescending(x => x.IsDefault).ToList();
-                    return DebtorsList.OrderBy(a=>a.DebtorName).ToList();//new line
+                    return DebtorsList.OrderBy(a => a.DebtorName).ToList();//new line
                 }
             }
             catch (Exception ex)
@@ -127,9 +127,9 @@ namespace WBT.DLCustomerCreation
 
                     if (IsExists != null)
                     {
-                        var IsDebtorNameExists = dbContext.tblDebtorsDetails.AsNoTracking().Where(p => p.DebtorName.ToLower() == DebtorsDetail.DebtorName.ToLower() && p.ID != DebtorsDetail.ID).FirstOrDefault();
+                        var IsDebtorNameExists = dbContext.tblDebtorsDetails.AsNoTracking().Where(p => p.DebtorName.ToLower() == DebtorsDetail.DebtorName.ToLower() && p.ID != DebtorsDetail.ID && p.OrgID == OrgID).FirstOrDefault();
 
-                        if(IsDebtorNameExists != null)
+                        if (IsDebtorNameExists != null)
                         {
                             return 0;
                         }
@@ -192,9 +192,10 @@ namespace WBT.DLCustomerCreation
             {
                 if (ExcelData != null)
                 {
-                    foreach (var debtor in ExcelData)
+                    using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
                     {
-                        using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
+                        var debtors = Entities.tblDebtorsDetails.Where(d => d.OrgID == OrgID).AsNoTracking();
+                        foreach (var debtor in ExcelData)
                         {
                             string DebtorName = string.Empty;
                             if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
@@ -202,11 +203,11 @@ namespace WBT.DLCustomerCreation
 
                             if (!string.IsNullOrEmpty(debtor.DebtorName))
                             {
-                                int DebtorsCount = Convert.ToInt32(Entities.tblDebtorsDetails.Max(e => e.ID));
+                                int DebtorsCount = Convert.ToInt32(debtors.Max(e => e.ID));
                                 tblDebtorsDetail IsValueexists = null;
                                 if (!string.IsNullOrEmpty(debtor.DebtorName))
                                 {
-                                    IsValueexists = Entities.tblDebtorsDetails.AsNoTracking().Where(C => C.DebtorName.ToLower() == debtor.DebtorName.ToLower() && C.OrgID == OrgID).FirstOrDefault();
+                                    IsValueexists = debtors.Where(C => C.DebtorName.ToLower() == debtor.DebtorName.ToLower() && C.OrgID == OrgID).FirstOrDefault();
                                     if (IsValueexists != null)
                                         ID = IsValueexists.ID;
                                     else
@@ -222,7 +223,7 @@ namespace WBT.DLCustomerCreation
                                     DebtorsDetails ResultItem = new DebtorsDetails();
                                     try
                                     {
-                                        var ParentDebtor = Entities.tblDebtorsDetails.Where(d => d.DebtorName.ToLower() == debtor.ParentDebtorName.ToLower() && d.OrgID == OrgID).FirstOrDefault();
+                                        var ParentDebtor = debtors.Where(d => d.DebtorName.ToLower() == debtor.ParentDebtorName.ToLower() && d.OrgID == OrgID).FirstOrDefault();
                                         if (ParentDebtor != null)
                                         {
                                             string BranchNameInFile = debtor.BranchName.Trim();
@@ -234,25 +235,34 @@ namespace WBT.DLCustomerCreation
 
                                             if (isEqual)
                                             {
-                                                int ParentDebtorID = ParentDebtor.ID;
-                                                DebtorName = debtor.DebtorName;
-                                                tblDebtorsDetail debtorsDetail = new tblDebtorsDetail();
-                                                debtorsDetail.DebtorName = debtor.DebtorName;
-                                                debtorsDetail.ID = ID;
-                                                debtorsDetail.OrgID = OrgID;
-                                                debtorsDetail.ParentDebtorID = ParentDebtorID;
-                                                debtorsDetail.CreationDate = DateTimeNow;
-                                                debtorsDetail.CreatedByID = Convert.ToInt32(UserID);
-                                                debtorsDetail.IsDefault = 0;
-                                                debtorsDetail.IsEdited = false;
-                                                Entities.tblDebtorsDetails.Add(debtorsDetail);
-                                                Entities.SaveChanges();
-                                                dbcxtransaction.Commit();
+                                                if (IsValueexists != null)
+                                                {
+                                                    ResultItem.DebtorName = debtor.DebtorName;
+                                                    ResultItem.DisplayMessage = "Debtor Group Name already exists.";
+                                                    Result.Add(ResultItem);
+                                                }
+                                                else
+                                                {
+                                                    int ParentDebtorID = ParentDebtor.ID;
+                                                    DebtorName = debtor.DebtorName;
+                                                    tblDebtorsDetail debtorsDetail = new tblDebtorsDetail();
+                                                    debtorsDetail.DebtorName = debtor.DebtorName;
+                                                    debtorsDetail.ID = ID;
+                                                    debtorsDetail.OrgID = OrgID;
+                                                    debtorsDetail.ParentDebtorID = ParentDebtorID;
+                                                    debtorsDetail.CreationDate = DateTimeNow;
+                                                    debtorsDetail.CreatedByID = Convert.ToInt32(UserID);
+                                                    debtorsDetail.IsDefault = 0;
+                                                    debtorsDetail.IsEdited = false;
+                                                    Entities.tblDebtorsDetails.Add(debtorsDetail);
+                                                    Entities.SaveChanges();
+                                                    dbcxtransaction.Commit();
+                                                }
                                             }
                                             else
                                             {
                                                 ResultItem.DebtorName = debtor.DebtorName;
-                                                ResultItem.DisplayMessage = "You have selected Branch Name <strong>"+ BranchName + "</strong> from the dropdown and in the excel file it is <stong>" + debtor.BranchName + "</stong>.. Please change the branch name in excel file.";
+                                                ResultItem.DisplayMessage = "You have selected Branch Name <strong>" + BranchName + "</strong> from the dropdown and in the excel file it is <stong>" + debtor.BranchName + "</stong>.. Please change the branch name in excel file.";
                                                 Result.Add(ResultItem);
                                             }
                                         }

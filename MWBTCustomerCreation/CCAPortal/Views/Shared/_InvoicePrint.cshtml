@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Sales Order</title>
 </head>
-<body>
+<body onload="window.print()">
     @*onload="window.print()"*@
     <p>&nbsp;</p>
     <table style="border-collapse: collapse; width: 100%; height: 184px;" border="1">
@@ -63,8 +63,8 @@
             </tr>
             <tr>
                 <td style="width: 100%;" colspan="4">
-                    <p>Comments:</p>
-                    <p style="text-align: right;">@Model.Comments</p>
+                    <p>Comments:
+                    @Model.Comments</p>
                 </td>
             </tr>
         </tbody>

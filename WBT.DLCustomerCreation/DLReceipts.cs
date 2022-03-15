@@ -655,7 +655,7 @@ namespace WBT.DLCustomerCreation
                                 lReceiptDetails.UpdatedDate = mDLReceiptsCreation.CreationDate;
                                 lReceiptDetails.Status = mDLReceiptsCreation.Status;
                                 lReceiptDetails.LedgerID = mDLReceiptsCreation.LedgerID == "0" ? null : mDLReceiptsCreation.LedgerID;
-                                lReceiptDetails.BankOrCash = mDLReceiptsCreation.BankOrCash;
+                                lReceiptDetails.BankOrCash = mDLReceiptsCreation.BankOrCash.ToLower() == "cash" ? "C" : "B";
                                 lReceiptDetails.PaymentType = mDLReceiptsCreation.PaymentType;
                                 lReceiptDetails.Comments = mDLReceiptsCreation.Comments;
                                 lReceiptDetails.BankName = mDLReceiptsCreation.BankName;

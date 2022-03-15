@@ -88,21 +88,18 @@ namespace WBT.DLCustomerCreation
         public List<UserDetailsList> userDetailsList = new List<UserDetailsList>();
         public List<DebtorsDetailsList> debtorsDetailsList = new List<DebtorsDetailsList>();
         public List<CustomerVendorDetails> customerVenderDetailsList = new List<CustomerVendorDetails>();
-        private RouteMapping mAddUserCreation;
-        //public List<UserDetailsList> GetSalesManList(int RoleID)
         public List<UserDetailsList> GetSalesManList(string name, string OrgID)
-        //public SysRolesLst GetSalesManRoleId(string name)
         {
             try
             {
-                using (Entities = new WBT.Entity.MWBTCustomerAppEntities())
+                using (Entities = new MWBTCustomerAppEntities())
                 {
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
 
                     var sysRoleId = (from sysRole in Entities.tblSysRoles
                                      where sysRole.RoleName == name
-                                     && sysRole.OrgID == OrgID
+                                     //&& sysRole.OrgID == OrgID
                                      select sysRole.RoleID).FirstOrDefault();
 
 

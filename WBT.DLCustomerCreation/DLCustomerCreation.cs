@@ -1785,7 +1785,7 @@ namespace WBT.DLCustomerCreation
             try
             {
                 DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
-                using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
+                using (Entities = new WBT.Entity.MWBTCustomerAppEntities())
                 {
                     var customer = Entities.tblCustomerVendorDetails.AsNoTracking().Where(d => d.CustID == customerCreation.CustID).FirstOrDefault();
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
@@ -1912,7 +1912,7 @@ namespace WBT.DLCustomerCreation
                             lCustomerVendor.Parent4 = parentDebtor;
                             lCustomerVendor.ParentDebtorID = this.mCustomerVendorCreation.ParentDebtorID;
                             lCustomerVendor.LedgerTypeID = this.mCustomerVendorCreation.LedgerTypeID;
-                            lCustomerVendor.CustomerTypeID = this.mCustomerVendorCreation.CustomerTypeID;
+                            //lCustomerVendor.CustomerTypeID = this.mCustomerVendorCreation.CustomerTypeID;
                             lCustomerVendor.CompanyTypeID = this.mCustomerVendorCreation.CompanyTypeID;
                             lCustomerVendor.CategoryTypeID = this.mCustomerVendorCreation.CategoryTypeID;
                             lCustomerVendor.TaxationTypeID = this.mCustomerVendorCreation.TaxationTypeID;

@@ -35,7 +35,7 @@ namespace CCAPortal.Controllers
 
                 ViewBag.StateList = new SelectList(customerCreations.GetStateList(), "StateID", "StateName");
                 ViewBag.DistrictList = new SelectList(customerCreations.GetDistricts(), "DistrictID", "DistrictName");
-                ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["UserID"].ToString()), "StateWithCityID", "VillageLocalityName");
+                ViewBag.CityList = new SelectList(customerCreations.GetAllCities(Session["OrgID"].ToString(), Session["UserID"].ToString()), "StateWithCityID", "VillageLocalityName");
                 ViewBag.LedgerTypes = new SelectList(customerCreations.GetLedgerTypes(), "LedgerTypeID", "LedgerType");
                 ViewBag.CustomerTypes = new SelectList(customerCreations.GetCustomerTypes(Session["OrgID"].ToString()), "BusinessTypeID", "BusinessTypeName");
                 ViewBag.CompanyTypes = new SelectList(customerCreations.GetCompanyTypes(), "CompanyTypeID", "CompanyType");

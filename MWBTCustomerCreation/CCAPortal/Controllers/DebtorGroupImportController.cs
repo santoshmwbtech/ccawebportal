@@ -78,10 +78,22 @@ namespace CCAPortal.Controllers
                             }
                             data.Add("</ul>");
                             data.ToArray();
-                            return Json(data, JsonRequestBehavior.AllowGet);
+                            var result = new
+                            {
+                                success = false,
+                                data = data
+                            };
+                            return Json(result, JsonRequestBehavior.AllowGet);
                         }
                         else
-                            return Json("success", JsonRequestBehavior.AllowGet);
+                        {
+                            var result = new
+                            {
+                                success = true,
+                                data = data
+                            };
+                            return Json(result, JsonRequestBehavior.AllowGet);
+                        }   
                     }
                     else
                     {
@@ -90,7 +102,12 @@ namespace CCAPortal.Controllers
                         data.Add("<li>Only Excel file format is allowed</li>");
                         data.Add("</ul>");
                         data.ToArray();
-                        return Json(data, JsonRequestBehavior.AllowGet);
+                        var result = new
+                        {
+                            success = false,
+                            data = data
+                        };
+                        return Json(result, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else

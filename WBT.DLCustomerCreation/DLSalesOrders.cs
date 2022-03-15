@@ -363,7 +363,7 @@ namespace WBT.DLCustomerCreation
 
                     if (!string.IsNullOrEmpty(search.CustomerName) && !string.IsNullOrEmpty(search.CustomerName))
                     {
-                        soLists = soLists.Where(m => m.CustomerName == search.CustomerName).ToList();
+                        soLists = soLists.Where(m => m.CustomerName.ToLower().Contains(search.CustomerName.ToLower())).ToList();
                     }
 
                     if (search.BranchList != null && search.BranchList.Count() > 0)
@@ -530,7 +530,7 @@ namespace WBT.DLCustomerCreation
             }
         }
 
-        public SalesOrders GetSalesOrderDetails(string OrderNumber)
+        public SalesOrders GetSalesOrderDetails(string SalesOrderNumber, bool requestPrint = false)
         {
             SalesOrders salesOrder = new SalesOrders();
             try
@@ -544,7 +544,7 @@ namespace WBT.DLCustomerCreation
                     {
                         salesOrder = (from tblsalesorders in Entities.tblSalesOrders
                                       join c in Entities.tblCustomerVendorDetails on tblsalesorders.CustID equals c.CustID
-                                      where tblsalesorders.SalesOrderNumber == OrderNumber
+                                      where tblsalesorders.SalesOrderNumber == SalesOrderNumber
                                       select new SalesOrders
                                       {                                         
                                           CustID = tblsalesorders.CustID,
@@ -592,17 +592,7 @@ namespace WBT.DLCustomerCreation
                                           CustomerState = tblsalesorders.tblCustomerVendorDetail.BillingState,
                                           CompanyState = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.State,
                                           CompanyCity = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.City,
-                                          BranchDetails = new BranchDetails
-                                          {
-                                              Name = tblsalesorders.tblSysBranch.Name,
-                                              Address = tblsalesorders.tblSysBranch.BillingAddress,
-                                              GST = tblsalesorders.tblSysBranch.GST,
-                                              Mobile = tblsalesorders.tblSysBranch.Mobile,
-                                              City = tblsalesorders.tblSysBranch.City,
-                                              State = tblsalesorders.tblSysBranch.State,
-                                              PinCode = tblsalesorders.tblSysBranch.PinCode,
-                                              PANNumber = tblsalesorders.tblSysBranch.PANNumber,
-                                          },
+                                          
                                           SalesmanName = tblsalesorders.tblSysUser3.FName,
                                           PriceSyncType = Entities.tblAdminSettings.Where(d => d.OrgID == tblsalesorders.OrgID).FirstOrDefault().PriceSyncType,
                                           customerInfo = new CustomerCreation
@@ -617,12 +607,29 @@ namespace WBT.DLCustomerCreation
                                               ShippingCity = tblsalesorders.tblCustomerVendorDetail.ShippingCity,
                                               ShippingState = tblsalesorders.tblCustomerVendorDetail.ShippingState,
                                           },
+                                          
                                       }).FirstOrDefault();
+
+                        var branchDetails = (from b in Entities.tblSysBranches
+                                             join s in Entities.tblStates on b.State equals s.StateID.ToString()
+                                             where b.BranchID == salesOrder.BranchID
+                                             select new BranchDetails
+                                             {
+                                                 Name = b.Name,
+                                                 Address = b.BillingAddress,
+                                                 GST = b.GST,
+                                                 Mobile = b.Mobile,
+                                                 City = b.City,
+                                                 State = s.StateName,
+                                                 PinCode = b.PinCode,
+                                                 PANNumber = b.PANNumber,
+                                             }).FirstOrDefault();
+                        salesOrder.BranchDetails = branchDetails;
 
                         var itemsList = (from a in Entities.tblSalesOrderWithItems
                                          join b in Entities.tblSalesOrders on a.SalesOrderNumber.ToLower().Trim() equals b.SalesOrderNumber.ToLower().Trim()
                                          join c in Entities.tblItems on a.ItemCode.ToLower().Trim() equals c.ItemCode.ToLower().Trim()
-                                         where a.SalesOrderNumber == OrderNumber && a.Rate > 0
+                                         where a.SalesOrderNumber == SalesOrderNumber && a.Rate > 0
                                          select new DLSalesOrderWithItemCreation
                                          {
                                              ItemName = c.ItemName,
@@ -634,7 +641,7 @@ namespace WBT.DLCustomerCreation
                                              TotalQTY = a.TotalQTY,
                                              SalesOrderWithItemID = a.SalesOrderWithItemID,
                                              IsRateInQuantls = a.IsRateInQuantls,
-                                             DiscountPercentage = a.DiscountPercentage,
+                                             DiscountPercentage = a.DiscountPercentage.HasValue ? a.DiscountPercentage.Value : 0,
                                              LoadingUnloadingCharge = a.LoadingUnloadingCharge,
                                              ItemRowNumber = a.ItemRowNumber,
                                              FrieghtCharge = a.FrieghtCharge,
@@ -647,21 +654,30 @@ namespace WBT.DLCustomerCreation
                                              RatePerUnit = a.tblItem.tblItemRate.tblUOM.Unit,
                                          }).Distinct().ToList();
                         var adminSettings = Entities.tblAdminSettings.Where(d => d.OrgID == salesOrder.OrgID).FirstOrDefault();
-                        if (salesOrder.PriceSyncType)
+                        if (requestPrint)
                         {
-                            foreach (var item in itemsList)
+                            if (salesOrder.PriceSyncType)
                             {
-                                item.Rate = Math.Round(item.Rate * 100 / (100 + item.GSTPer.Value), 2);
-                                item.Value = Math.Round((item.Rate * item.TotalQTY) - item.DiscountAmt.Value, 2);
-                                item.GSTValue = Math.Round(((item.Rate - item.DiscountAmt.Value) * item.GSTPer.Value) / 100, 2);
-                                item.CGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
-                                item.SGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
-                                item.IGSTValue = Math.Round(item.GSTValue.Value, 2);
+                                foreach (var item in itemsList)
+                                {
+                                    if (item.Rate > 0)
+                                    {
+                                        item.Rate = Math.Round(item.Rate * 100 / (100 + item.GSTPer.Value), 2);
+                                        var totalValue = Math.Round(item.Rate * item.TotalQTY, 2);
+                                        var discountAmt = Math.Round((totalValue * item.DiscountPercentage.Value) / 100, 2);
+                                        item.DiscountAmt = discountAmt;
+                                        item.Value = Math.Round(totalValue - discountAmt, 2);
+                                        item.GSTValue = Math.Round(((item.Value - item.DiscountAmt.Value) * item.GSTPer.Value) / 100, 2);
+                                        item.CGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
+                                        item.SGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
+                                        item.IGSTValue = Math.Round(item.GSTValue.Value, 2);
+                                    }
+                                }
                             }
-                        }
-                        else
-                        {
-                            itemsList.ForEach(d => d.GSTPer = 0);
+                            else
+                            {
+                                itemsList.ForEach(d => d.GSTPer = 0);
+                            }
                         }
                         salesOrder.PaymentInfo = adminSettings.PaymentInfo;
                         salesOrder.SalesType = salesOrder.CustomerState.ToLower() == salesOrder.CompanyState.ToLower() ? "Local State" : "Inter State";

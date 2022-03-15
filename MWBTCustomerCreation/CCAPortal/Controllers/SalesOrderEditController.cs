@@ -788,7 +788,7 @@ namespace CCAPortal.Controllers
         {
             if (Session["UserID"] != null)
             {
-                SalesOrders so = sorders.GetSalesOrderDetails(SalesOrderNumber);
+                SalesOrders so = sorders.GetSalesOrderDetails(SalesOrderNumber, true);
                 return View("_InvoicePrint", so);
             }
             else
