@@ -47,10 +47,10 @@
                                     @{
                                         if (Model.RoleName == "Administrator" || Model.RoleName == "Admin")
                                         {
-                                            <th class="noExport">
+                                            <th class="notexport">
                                                 Action
                                             </th>
-                                            <th class="noExport text-center">@Html.CheckBox("CheckAll", false, new { id = "select_all" })</th>
+                                            <th class="notexport text-center">@Html.CheckBox("CheckAll", false, new { id = "select_all" })</th>
                                         }
                                     }
                                 </tr>

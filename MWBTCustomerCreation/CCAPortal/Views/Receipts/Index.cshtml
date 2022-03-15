@@ -73,29 +73,6 @@
 
         $(document).ready(function ($) {
             loadDataTableWithButtons();
-            //$("#dataGrid").DataTable({
-            //    "responsive": true, "lengthChange": false, "autoWidth": false,
-            //    "buttons": [{ extend: "copy", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }]
-            //}).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
-
-            // var table1 = $('.dataGrid').DataTable();
-
-            //$('#select_all').click(function () {
-            //    //var c = this.checked;
-            //    //$('.chkselect').prop('checked', c)
-            //    $(':checkbox', table1.rows().nodes()).prop('checked', this.checked);
-            //});
-
-            //$(".chkselect").click(function () {
-            //    if (!this.checked) {
-            //        $("#select_all").prop('checked', false);
-            //    }
-            //    else if ($(".chkselect").length == $(".chkselect:checked").length) {
-            //        $("#select_all").prop('checked', true);
-            //    }
-            //});
-
-
         });
     function TallySync(ReceiptID) {
         $.ajax({

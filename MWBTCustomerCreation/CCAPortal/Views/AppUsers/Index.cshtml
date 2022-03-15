@@ -125,12 +125,12 @@
     </script>
     <script>
         function onSuccess_Ajax() {
-            LoadTable();
+            loadDataTableWithButtons();
             var elmnt = document.getElementById("dvList");
             elmnt.scrollIntoView();
         }
         function pageChanged() {
-            LoadTable();
+            loadDataTableWithButtons();
         }
         var buttonCommon = {
             exportOptions: {
@@ -148,16 +148,10 @@
             }
         };
         function LoadTable() {
-            jQuery("#dataGrid").DataTable({
-                "lengthChange": false, "autoWidth": false,
-                "buttons": [{ extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "pdf", className: "btn btn-secondary buttons-copy buttons-html5" }, { extend: "print", className: "btn btn-secondary buttons-copy buttons-html5" }],
-            }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)');
-
+            loadDataTableWithButtons();
             var table1 = $('#dataGrid').DataTable();
 
             $('#select_all').click(function () {
-                //var c = this.checked;
-                //$('.chkselect').prop('checked', c)
                 $(':checkbox', table1.rows().nodes()).prop('checked', this.checked);
             });
 
@@ -193,6 +187,13 @@
             });
         }
     </script>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            loadDataTableWithButtons();
+        });
+    </script>
+
     <script>
     function StateChanged() {
         $('#hfStateSelected').val($('#StateList').val());

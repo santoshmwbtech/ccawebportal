@@ -125,8 +125,8 @@
         function onBegin_Ajax() {
         }
         function onSuccess_Ajax() {
-            //loadDataTableWithButtons();
-            LoadTable();
+            loadDataTableWithButtons();
+            //LoadTable();
             multiSelect();
             var elmnt = document.getElementById("divList");
             elmnt.scrollIntoView();
@@ -161,7 +161,7 @@
     </script>
     <script>
         $(document).ready(function () {
-            LoadTable();
+            loadDataTableWithButtons();
         });
         var buttonCommon = {
             exportOptions: {
@@ -180,52 +180,53 @@
         };
         function LoadTable() {
             $("#dataGrid").dataTable().fnDestroy();
-            var table = $('#dataGrid').DataTable({
-                dom: 'Blfrtip',
-                pageLength: 5,
-                buttons: [
-                    {
-                        extend: 'pdfHtml5',
-                        orientation: 'landscape',
-                        pageSize: 'A4',
-                        language: {
-                            infoEmpty: "No records available - Got it?",
-                        },
-                        text: '<b>Download</b> PDF',
-                        exportOptions: {
-                            format: {
-                                body: function (inner, rowidx, colidx, node) {
-                                    if ($(node).children("input").length > 0) {
-                                        return $(node).children("input").first().val();
-                                    } else {
-                                        return inner;
-                                    }
-                                }
-                            },
-                            columns: "thead th:not(.noExport)"
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        messageTop: 'Performance Report',
-                        language: {
-                            infoEmpty: "No records available - Got it?",
-                        },
-                        exportOptions: {
-                            format: {
-                                body: function (inner, rowidx, colidx, node) {
-                                    if ($(node).children("input").length > 0) {
-                                        return $(node).children("input").first().val();
-                                    } else {
-                                        return inner;
-                                    }
-                                }
-                            },
-                            columns: "thead th:not(.noExport)"
-                        }
-                    }
-                ]
-            });
+            loadDataTableWithButtons();
+            //var table = $('#dataGrid').DataTable({
+            //    dom: 'Blfrtip',
+            //    pageLength: 5,
+            //    buttons: [
+            //        {
+            //            extend: 'pdfHtml5',
+            //            orientation: 'landscape',
+            //            pageSize: 'A4',
+            //            language: {
+            //                infoEmpty: "No records available - Got it?",
+            //            },
+            //            text: '<b>Download</b> PDF',
+            //            exportOptions: {
+            //                format: {
+            //                    body: function (inner, rowidx, colidx, node) {
+            //                        if ($(node).children("input").length > 0) {
+            //                            return $(node).children("input").first().val();
+            //                        } else {
+            //                            return inner;
+            //                        }
+            //                    }
+            //                },
+            //                columns: "thead th:not(.noExport)"
+            //            }
+            //        },
+            //        {
+            //            extend: 'excel',
+            //            messageTop: 'Performance Report',
+            //            language: {
+            //                infoEmpty: "No records available - Got it?",
+            //            },
+            //            exportOptions: {
+            //                format: {
+            //                    body: function (inner, rowidx, colidx, node) {
+            //                        if ($(node).children("input").length > 0) {
+            //                            return $(node).children("input").first().val();
+            //                        } else {
+            //                            return inner;
+            //                        }
+            //                    }
+            //                },
+            //                columns: "thead th:not(.noExport)"
+            //            }
+            //        }
+            //    ]
+            }
 
             $('#select_all').click(function () {
                 //var c = this.checked;
@@ -262,7 +263,7 @@
                     }
                 });
             });
-        }
+        
     </script>
     <script>
     @*function BranchChanged() {
