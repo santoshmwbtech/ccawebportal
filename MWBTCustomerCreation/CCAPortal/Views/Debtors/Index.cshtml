@@ -48,9 +48,8 @@
                 $("#divList").load('@Url.Action("DebtorList", "Debtors")');
                 setTimeout(function () {
                     $("#dataGrid").dataTable().fnDestroy();
-                    loadTable();
+                    loadDataTableWithButtons();                 
                 }, 1000);
-
             });
         }
         else {
@@ -66,7 +65,7 @@
                 $("#divList").load('@Url.Action("DebtorList", "Debtors")');
                 setTimeout(function () {
                     $("#dataGrid").dataTable().fnDestroy();
-                    loadTable();
+                    loadDataTableWithButtons();
                 }, 1000);
             });
         }
@@ -85,7 +84,7 @@
                 $("#divList").load('@Url.Action("DebtorList", "Debtors")');
                 setTimeout(function () {
                     $("#dataGrid").dataTable().fnDestroy();
-                    loadTable();
+                    loadDataTableWithButtons();                   
                 }, 1000);
             });
         }
@@ -99,7 +98,7 @@
                 $("#divList").load('@Url.Action("DebtorList", "Debtors")');
                 setTimeout(function () {
                     $("#dataGrid").dataTable().fnDestroy();
-                    loadTable();
+                    loadDataTableWithButtons();
                 }, 1000);
             });
         }
@@ -226,7 +225,7 @@
             }).buttons().container().appendTo('#dataGrid_wrapper .col-md-6:eq(0)'); /*, { extend: "colvis", className: "btn btn-secondary buttons-collection dropdown-toggle buttons-colvis" }*/
         }
         jQuery(document).ready(function ($) {
-            loadTable();
+            loadDataTableWithButtons();
         });
     </script>
 
