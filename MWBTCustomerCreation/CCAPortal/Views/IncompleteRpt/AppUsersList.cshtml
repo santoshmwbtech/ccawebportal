@@ -67,29 +67,29 @@
                                             {
                                                 <tr>
                                                     <td style="width:100%!important">
-                                                        @Html.TextBoxFor(a => a.customerList[j].FirmName, new { @style = "border:none; width:100%!important" })
+                                                        @Html.TextBoxFor(a => a.customerList[j].FirmName, new { @style = "border:none; width:100%!important", @readonly = "readonly" })
                                                         @Html.HiddenFor(a => item.CustID)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(a => a.customerList[j].Name, new { @style = "border:none" })
+                                                        @Html.DisplayFor(a => a.customerList[j].Name, new { @style = "border:none", @readonly = "readonly" })
                                                     </td>
                                                     <td>
-                                                        @Html.TextBoxFor(a => a.customerList[j].MobileNumber, new { @style = "border:none" })
+                                                        @Html.TextBoxFor(a => a.customerList[j].MobileNumber, new { @style = "border:none", @readonly = "readonly" })
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(a => a.customerList[j].CityName, new { @style = "border:none" })
+                                                        @Html.DisplayFor(a => a.customerList[j].CityName, new { @style = "border:none", @readonly = "readonly" })
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(a => a.customerList[j].StateName, new { @style = "border:none" })
+                                                        @Html.DisplayFor(a => a.customerList[j].StateName, new { @style = "border:none", @readonly = "readonly" })
                                                     </td>
-                                                    <td class="noExport">
+                                                    <td class="notexport">
                                                         @Html.ActionLink(linkText: "Edit", actionName: "Index", controllerName: "EditAppUser", routeValues: new
                                                         {
                                                             route = Helper.Encrypt(item.CustID.ToString(), "sblw-3hn8-sqoy19")
                                                         },
                                                         htmlAttributes: new { @class = "btn btn-success btn-xs" })
                                                     </td>
-                                                    <td class="noExport text-center">
+                                                    <td class="notexport text-center">
                                                         @Html.CheckBoxFor(a => a.customerList[j].IsChecked, new { @class = "chkselect" })
                                                     </td>
                                                 </tr>

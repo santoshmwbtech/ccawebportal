@@ -37,6 +37,8 @@
                 <th>
                     Updated Date
                 </th>
+                <th class="notexport"> 
+                Action </th>
                 <th>
                     Ledger Type
                 </th>
@@ -58,9 +60,8 @@
                 <th>
                     Updated By
                 </th>
-                <th class="notexport"> Action </th>
-                
-                <th class="notexport text-center">@Html.CheckBox("CheckAll", false, new { id = "select_all" }) Check All</th>
+
+                @*<th class="notexport text-center">@Html.CheckBox("CheckAll", false, new { id = "select_all" }) Check All</th>*@
             </tr>
         </thead>
         <tbody>
@@ -71,64 +72,65 @@
                 {
                     foreach (var item in Model.customerList)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].FirmName, new { @style = "border:none" })
-                                @Html.HiddenFor(a => item.CustID)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].Name, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].MobileNumber, new { @style = "border:none" })
-                            </td>
-                            <td style="display:none">
-                                @Html.DisplayFor(a => a.customerList[j].EmailID, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].BillingCity, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].BillingState, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].CreationDate, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].UpdatedDate, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].LedgerType, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].CompanyType, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].CustomerType, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].TypeofCategory, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].RegistrationType, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].CreatedStr, new { @style = "border:none" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(a => a.customerList[j].UpdatedStr, new { @style = "border:none" })
-                            </td>
-                            <td class="noExport">
-                                @Html.ActionLink(linkText: "Edit", actionName: "Index", controllerName: "EditCustomer", routeValues: new
-                                {
-                                    route = Helper.Encrypt(item.CustID.ToString(), "sblw-3hn8-sqoy19")
-                                },
-                                htmlAttributes: new { @class = "btn btn-success btn-xs" })
-                            </td>
-                            <td class="noExport text-center">
-                                @Html.CheckBoxFor(a => a.customerList[j].IsChecked, new { @class = "chkselect" })
-                            </td>
-                        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].FirmName, new { @style = "border:none" })
+                    @Html.HiddenFor(a => item.CustID)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].Name, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].MobileNumber, new { @style = "border:none" })
+                </td>
+                <td style="display:none">
+                    @Html.DisplayFor(a => a.customerList[j].EmailID, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].BillingCity, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].BillingState, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].CreationDate, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].UpdatedDate, new { @style = "border:none" })
+                </td>
+                <td class="notexport">
+                    @Html.ActionLink(linkText: "Edit", actionName: "Index", controllerName: "EditCustomer", routeValues: new
+                    {
+                        route = Helper.Encrypt(item.CustID.ToString(), "sblw-3hn8-sqoy19")
+                    },
+                    htmlAttributes: new { @class = "btn btn-success btn-xs" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].LedgerType, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].CompanyType, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].CustomerType, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].TypeofCategory, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].RegistrationType, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].CreatedStr, new { @style = "border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.customerList[j].UpdatedStr, new { @style = "border:none" })
+                </td>
+
+                @*<td class="notexport text-center">
+                    @Html.CheckBoxFor(a => a.customerList[j].IsChecked, new { @class = "chkselect" })
+                </td>*@
+            </tr>
                         j++;
                     }
                 }

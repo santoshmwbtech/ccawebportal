@@ -148,7 +148,6 @@ function ValidateDelete() {
 
 }
 
-
 //delete message success
 function deletesuccess(data) {
     alert("Record deleted successfully");
@@ -193,20 +192,40 @@ function loadDataTableWithButtons() {
         "responsive": true, "lengthChange": false, "autoWidth": false,
         "buttons": [
             {
-                extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5", exportOptions: {
-                    columns: ':not(.notexport)'
-                }
-            },
-            {
-                extend: "excel", className: "btn btn-secondary buttons-copy buttons-html5", exportOptions: {
-                    columns: ':not(.notexport)'
-                }
-            },
-            {
-                extend: "pdf",
-                className: "btn btn-secondary buttons-copy buttons-html5",
+                extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5",
                 exportOptions: {
                     columns: ':not(.notexport)'
+                }
+            },
+            {
+                extend: "excelHtml5", className: "btn btn-secondary buttons-copy buttons-html5",
+                exportOptions: {
+                    columns: ':not(.notexport)',
+                    format: {
+                        body: function (inner, rowidx, colidx, node) {
+                            if ($(node).children("input").length > 0) {
+                                return $(node).children("input").first().val();
+                            } else {
+                                return inner;
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                extend: "pdfHtml5",
+                className: "btn btn-secondary buttons-copy buttons-html5",
+                exportOptions: {
+                    columns: ':not(.notexport)',
+                    format: {
+                        body: function (inner, rowidx, colidx, node) {
+                            if ($(node).children("input").length > 0) {
+                                return $(node).children("input").first().val();
+                            } else {
+                                return inner;
+                            }
+                        }
+                    }
                 },
                 customize: function (doc) {
                     doc.content[1].table.widths =

@@ -104,7 +104,7 @@
                                             foreach (var item in Model.customerList)
                                             {
                                                 <tr>
-                                                    <td class="noExport" style="display:none;">
+                                                    <td class="notexport" style="display:none;">
                                                         @Html.HiddenFor(a => a.customerList[j].CustID)
                                                     </td>
                                                     <td>
@@ -146,7 +146,7 @@
                                                     </td>
                                                     <td>@item.CreatedStr</td>
                                                     <td>@item.UpdatedStr</td>
-                                                    <td class="noExport text-center">
+                                                    <td class="notexport text-center">
                                                         @Html.CheckBoxFor(a => a.customerList[j].IsChecked, new { @class = "chhselect" })
                                                     </td>
                                                 </tr>
