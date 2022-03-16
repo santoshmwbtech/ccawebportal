@@ -2642,6 +2642,11 @@ namespace WBT.DLCustomerCreation
                                                                       CreatedStr = c.CreatedByID == 0 ? string.Empty : (Entities.tblSysUsers.Where(s => s.UserID == c.CreatedByID).FirstOrDefault().FName),
                                                                       UpdatedStr = c.ModifiedByID == null ? string.Empty : (Entities.tblSysUsers.Where(s => s.UserID == c.ModifiedByID).FirstOrDefault().FName),
                                                                       Religion = c.Religion == null ? "" : c.Religion,
+                                                                      CustomerTypeID = c.CustomerTypeID.HasValue ? c.CustomerTypeID.Value : 0,
+                                                                      CategoryTypeID = c.CategoryTypeID.HasValue ? c.CategoryTypeID.Value : 0,
+                                                                      TaxationTypeID = c.TaxationTypeID.HasValue ? c.TaxationTypeID.Value : 0,
+                                                                      LedgerTypeID = c.LedgerTypeID.HasValue ? c.LedgerTypeID.Value : 0,
+                                                                      CompanyTypeID = c.CompanyTypeID.HasValue ? c.CompanyTypeID.Value : 0,
                                                                   }).AsQueryable();
 
                     customerCreationList = QueryableList.ToList();
@@ -2738,8 +2743,6 @@ namespace WBT.DLCustomerCreation
                         DateTime FromDateTime = DateTime.ParseExact(Convert.ToDateTime(search.FromDate).ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
                         DateTime ToDateTime = DateTime.ParseExact(Convert.ToDateTime(search.ToDate).ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-                        //customerCreationList = customerCreationList.Where(c => Convert.ToDateTime(c.CreationDate.Value.ToString("yyyy-MM-dd")) >= FromDateTime && Convert.ToDateTime(c.CreationDate.Value.ToString("yyyy-MM-dd")) <= ToDateTime).ToList();
-
                         //created list
                         var customerCreationListCreated = customerCreationList.Where(c => Convert.ToDateTime(c.CreationDate.ToString("yyyy-MM-dd")) >= FromDateTime && Convert.ToDateTime(c.CreationDate.ToString("yyyy-MM-dd")) <= ToDateTime).ToList();
                         //updated list
@@ -2755,31 +2758,25 @@ namespace WBT.DLCustomerCreation
                     string LedgerType = string.Empty, CustomerType = string.Empty, CompanyType = string.Empty, CategoryType = string.Empty, TaxationType = string.Empty;
                     if (search.LedgerTypeID != null && search.LedgerTypeID != 0)
                     {
-                        LedgerType = Entities.tblLedgerTypes.Where(l => l.LedgerTypeID == search.LedgerTypeID).FirstOrDefault().LedgerType;
-                        customerCreationList = customerCreationList.Where(m => m.LedgerType == LedgerType).ToList();
+                        customerCreationList = customerCreationList.Where(m => m.LedgerTypeID == search.LedgerTypeID).ToList();
                     }
                     if (search.CustomerTypeList != null && search.CustomerTypeList.Count() > 0)
                     {
-                        List<tblCustomerType> customerTypes = Entities.tblCustomerTypes.Where(c => search.CustomerTypeList.Contains(c.CustomerTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => customerTypes.Any(ct => ct.CustomerType == m.CustomerType)).ToList();
+                        customerCreationList = customerCreationList.Where(m => search.CustomerTypeList.Contains(m.CustomerTypeID.Value)).ToList();
                     }
                     if (search.CompanyTypeList != null && search.CompanyTypeList.Count() > 0)
                     {
-                        List<tblCompanyType> companyTypes = Entities.tblCompanyTypes.Where(c => search.CompanyTypeList.Contains(c.CompanyTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => companyTypes.Any(ct => ct.CompanyType == m.CompanyType)).ToList();
+                        customerCreationList = customerCreationList.Where(c => search.CompanyTypeList.Contains(c.CompanyTypeID.Value)).ToList();
                     }
                     if (search.CategoryTypeList != null && search.CategoryTypeList.Count() > 0)
                     {
-                        List<tblCategoryType> categoryTypes = Entities.tblCategoryTypes.Where(c => search.CategoryTypeList.Contains(c.CategoryTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => categoryTypes.Any(ct => ct.CategoryType == m.TypeofCategory)).ToList();
+                        customerCreationList = customerCreationList.Where(c => search.CategoryTypeList.Contains(c.CategoryTypeID.Value)).ToList();
                     }
                     if (search.TaxationTypeList != null && search.TaxationTypeList.Count() > 0)
                     {
                         List<tblTaxationType> taxationTypes = Entities.tblTaxationTypes.Where(c => search.TaxationTypeList.Contains(c.TaxationTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => taxationTypes.Any(ct => ct.TaxationType == m.RegistrationType)).ToList();
+                        customerCreationList = customerCreationList.Where(c => search.TaxationTypeList.Contains(c.TaxationTypeID.Value)).ToList();
                     }
-
-
                     return customerCreationList;
                 }
             }

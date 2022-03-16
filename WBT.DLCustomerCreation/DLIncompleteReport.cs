@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -26,26 +27,24 @@ namespace WBT.DLCustomerCreation
 
                     using (var dbcxtransaction = Entities.Database.BeginTransaction())
                     {
-                        SearchOptions searchOptions = SearchOptions.None;
 
-                        int IUserID = Convert.ToInt32(UserID);
-                        string RoleName = (from u in Entities.tblSysUsers
+                        int iUserID = Convert.ToInt32(UserID);
+                        string roleName = (from u in Entities.tblSysUsers
                                            join s in Entities.tblSysRoles on u.RoleID equals s.RoleID
-                                           where u.UserID == IUserID
+                                           where u.UserID == iUserID
                                            select s.RoleName).FirstOrDefault();
-
-                        List < IncompleteCustomers > incompleteCustomers = new List<IncompleteCustomers>();
-                        incompleteCustomers = (from c in Entities.tblCustomerVendorDetails
+                        var incompleteCustomers = (from c in Entities.tblCustomerVendorDetails
                                                where c.OrgID == incomplete.OrgID
                                                select new IncompleteCustomers
                                                {
+                                                   OrgID = c.OrgID,
                                                    BranchID = c.BranchID == null ? "0" : c.BranchID,
                                                    CustID = c.CustID,
                                                    FirmName = c.FirmName,
                                                    Name = c.OwnerName,
                                                    CityName = c.BillingCity,
                                                    StateName = c.BillingState,
-                                                   RoleName = RoleName,
+                                                   RoleName = roleName,
                                                    MobileNumber = c.MobileNumber,
                                                    CityID = c.CityID,
                                                    StateID = c.StateID,
@@ -55,7 +54,15 @@ namespace WBT.DLCustomerCreation
                                                    GSTNumber = c.TINNumber,
                                                    PANNumber = c.PANNumber,
                                                    ShippingAddress = c.ShippingAddress,
+                                                   CreationDate = c.CreationDate,
                                                }).ToList();
+
+                        if (!string.IsNullOrEmpty(incomplete.FromDate) && !string.IsNullOrEmpty(incomplete.ToDate))
+                        {
+                            var fromDate = Convert.ToDateTime(incomplete.FromDate).Date;
+                            var toDate = Convert.ToDateTime(incomplete.ToDate).Date;
+                            incompleteCustomers = incompleteCustomers.Where(d => d.CreationDate.Date >= fromDate && d.CreationDate.Date <= toDate && d.OrgID == incomplete.OrgID).ToList();
+                        }
 
                         if (incomplete.BranchList != null && incomplete.BranchList.Count() > 0)
                         {
@@ -140,6 +147,7 @@ namespace WBT.DLCustomerCreation
         public string GPSLocation { get; set; }
         public string BillingAddress { get; set; }
         public string ShippingAddress { get; set; }
+        public DateTime CreationDate { get; set; }
 
     }
     public class IncompletePromotion

@@ -432,6 +432,11 @@ namespace WBT.DLCustomerCreation.Reports
                                                                        CompanyName = Entities.tblSysOrganizations.Where(o => o.OrgID == c.OrgID).FirstOrDefault().Name,
                                                                        FirmName = c.FirmName,
                                                                        CustomerType = c.CustomerTypeID == null ? "" : Entities.tblCustomerTypes.Where(ct => ct.CustomerTypeID == c.CustomerTypeID).FirstOrDefault().CustomerType,
+                                                                       CustomerTypeID = c.CustomerTypeID == null ? 0 : c.CustomerTypeID.Value,
+                                                                       CategoryTypeID = c.CategoryTypeID == null ? 0 : c.CategoryTypeID.Value,
+                                                                       TaxationTypeID = c.TaxationTypeID == null ? 0 : c.TaxationTypeID.Value,
+                                                                       LedgerTypeID = c.LedgerTypeID == null ? 0 : c.LedgerTypeID.Value,
+                                                                       CompanyTypeID = c.CompanyTypeID == null ? 0 : c.CompanyTypeID.Value,
                                                                        AliasName = c.AliasName,
                                                                        BillingState = c.BillingState,
                                                                        BillingCity = string.IsNullOrEmpty(c.BillingCity) == false ? c.BillingCity : "",
@@ -440,26 +445,20 @@ namespace WBT.DLCustomerCreation.Reports
                                                                        MobileNumber = c.MobileNumber,
                                                                        StateID = c.StateID == null ? 0 : c.StateID.Value,
                                                                        CityID = c.CityID == null ? 0 : c.CityID.Value,
-
                                                                        CreatedByID = c.CreatedByID,
                                                                        ModifiedByID = c.ModifiedByID == null ? 0 : c.ModifiedByID,
                                                                        CreationDate = c.CreationDate,
                                                                        UpdatedDate = c.UpdatedDate == null ? new DateTime() : c.UpdatedDate.Value,
-
                                                                        EmailID = c.EmailID,
                                                                        RegistrationType = c.RegistrationType,
                                                                        TypeofCategory = c.TypeofCategory,
                                                                        Name = c.OwnerName,
                                                                        CompanyType = c.CompanyType,
                                                                        SalesManID = c.SalesManID != null ? c.SalesManID : 0,
-
                                                                        CreatedStr = c.CreatedByID == 0 ? string.Empty : (Entities.tblSysUsers.Where(s => s.UserID == c.CreatedByID).FirstOrDefault().FName),
                                                                        UpdatedStr = c.ModifiedByID == null ? string.Empty : (Entities.tblSysUsers.Where(s => s.UserID == c.ModifiedByID).FirstOrDefault().FName),
                                                                        Religion = c.Religion == null ? "" : c.Religion,
-
                                                                    }).ToList();
-
-                    
 
                     customerCreationList.ForEach(c => c.StateID = c.StateID == null ? 0 : c.StateID);
 
@@ -522,7 +521,6 @@ namespace WBT.DLCustomerCreation.Reports
                         }
                         customerCreationList = new List<CustomerCreation>();
                         customerCreationList = UpdatedRecords;
-
                     }
 
                     if (search.SalesmanList != null && search.SalesmanList.Count() > 0)
@@ -592,28 +590,23 @@ namespace WBT.DLCustomerCreation.Reports
 
                     if (search.LedgerTypeID != null && search.LedgerTypeID != 0)
                     {
-                        LedgerType = Entities.tblLedgerTypes.Where(l => l.LedgerTypeID == search.LedgerTypeID).FirstOrDefault().LedgerType;
-                        customerCreationList = customerCreationList.Where(m => m.LedgerType == LedgerType).ToList();
+                        customerCreationList = customerCreationList.Where(m => m.LedgerTypeID == search.LedgerTypeID).ToList();
                     }
                     if (search.CustomerTypeList != null && search.CustomerTypeList.Count() > 0)
                     {
-                        List<tblCustomerType> customerTypes = Entities.tblCustomerTypes.Where(c => search.CustomerTypeList.Contains(c.CustomerTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => customerTypes.Any(ct => ct.CustomerType == m.CustomerType)).ToList();
+                        customerCreationList = customerCreationList.Where(ct => search.CustomerTypeList.Contains(ct.CustomerTypeID.Value)).ToList();
                     }
                     if (search.CompanyTypeList != null && search.CompanyTypeList.Count() > 0)
                     {
-                        List<tblCompanyType> companyTypes = Entities.tblCompanyTypes.Where(c => search.CompanyTypeList.Contains(c.CompanyTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => companyTypes.Any(ct => ct.CompanyType == m.CompanyType)).ToList();
+                        customerCreationList = customerCreationList.Where(m => search.CompanyTypeList.Contains(m.CompanyTypeID.Value)).ToList();
                     }
                     if (search.CategoryTypeList != null && search.CategoryTypeList.Count() > 0)
                     {
-                        List<tblCategoryType> categoryTypes = Entities.tblCategoryTypes.Where(c => search.CategoryTypeList.Contains(c.CategoryTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => categoryTypes.Any(ct => ct.CategoryType == m.TypeofCategory)).ToList();
+                        customerCreationList = customerCreationList.Where(m => search.CategoryTypeList.Contains(m.CategoryTypeID.Value)).ToList();
                     }
                     if (search.TaxationTypeList != null && search.TaxationTypeList.Count() > 0)
                     {
-                        List<tblTaxationType> taxationTypes = Entities.tblTaxationTypes.Where(c => search.TaxationTypeList.Contains(c.TaxationTypeID)).ToList();
-                        customerCreationList = customerCreationList.Where(m => taxationTypes.Any(ct => ct.TaxationType == m.RegistrationType)).ToList();
+                        customerCreationList = customerCreationList.Where(m => search.TaxationTypeList.Contains(m.TaxationTypeID.Value)).ToList();
                     }
 
                     mainCList.PendingRecords = customerCreationList.Where(m => search.BranchList.Contains(Convert.ToInt32(m.BranchID)) && m.CreatedByID.Value == TallyUserID && m.ModifiedByID.Value == 0).Count();

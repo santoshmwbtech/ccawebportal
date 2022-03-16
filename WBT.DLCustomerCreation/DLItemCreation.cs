@@ -3154,7 +3154,6 @@ namespace WBT.DLCustomerCreation
                                 lItem.ModifiedByID = mItemCreation.ModifiedByID;
                                 lItem.SourceOfUpdate = mItemCreation.SourceOfUpdate;
                                 lItem.DaysToRefill = mItemCreation.DaysToRefill;
-
                                 #region CreateParameterMapping
                                 if (mItemCreation.SelectedParameters != null && mItemCreation.SelectedParameters.Count > 0)
                                 {
@@ -3174,16 +3173,7 @@ namespace WBT.DLCustomerCreation
                                     lItem.tblItemParameterMaps.Clear();
                                     foreach (DLParameterCreation parameter in mItemCreation.SelectedParameters)
                                     {
-                                        lItem.tblItemParameterMaps.Add(new tblItemParameterMap
-                                        {
-                                            ItemCode = this.mItemCreation.ItemCode,
-                                            ParameterID = parameter.ParameterID,
-                                            CreatedByID = this.mItemCreation.CreatedByID,
-                                            ModifiedByID = this.mItemCreation.CreatedByID,
-                                            CreatedDate = DateTime.Now,
-                                            UpdatedDate = DateTime.Now,
-                                            IsActive = true
-                                        });
+                                        NewMethod(parameter);
                                     }
 
                                 }
@@ -3196,7 +3186,7 @@ namespace WBT.DLCustomerCreation
 
                                 Entities.tblItems.Add(lItem);
                                 Entities.Entry(lItem).State = EntityState.Modified;
-
+                                mItemCreation.RateID = lItem.RateID;
                                 DLItemMapping.SaveData(mItemCreation, Entities);
 
                                 Entities.SaveChanges();
@@ -3256,6 +3246,21 @@ namespace WBT.DLCustomerCreation
             }
             //return mItemCreation;
         }
+
+        private void NewMethod(DLParameterCreation parameter)
+        {
+            lItem.tblItemParameterMaps.Add(new tblItemParameterMap
+            {
+                ItemCode = this.mItemCreation.ItemCode,
+                ParameterID = parameter.ParameterID,
+                CreatedByID = this.mItemCreation.CreatedByID,
+                ModifiedByID = this.mItemCreation.CreatedByID,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                IsActive = true
+            });
+        }
+
         public string ConstructingUOMPacketNumber(decimal packetQTY, string packetUnit, decimal bagQTY, string bagUnit) //unitid, int bulkunit)
         {
             if (packetQTY != 0 && bagQTY != 0)
