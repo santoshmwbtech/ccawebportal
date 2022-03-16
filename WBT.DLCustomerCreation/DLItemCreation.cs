@@ -1164,28 +1164,26 @@ namespace WBT.DLCustomerCreation
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();                        //to open the connection if closed
 
-                    lstItemRateCreation = (from drow in Entities.tblItemMappings.AsNoTracking()
-                                           where drow.IsActive == true && drow.OrgID == Criteria.OrgID
+                    lstItemRateCreation = (from imap in Entities.tblItemMappings.AsNoTracking()
+                                           join item in Entities.tblItems on imap.ItemCode equals item.ItemCode
+                                           join irate in Entities.tblItemRates on item.RateID equals irate.RateID
+                                           where imap.IsActive == true && imap.OrgID == Criteria.OrgID
                                            select new DLItemRateCreation()
                                            {
-                                               BranchID = drow.BranchID,
-                                               OrgID = drow.OrgID,
-                                               RateID = drow.RateID != null ? drow.RateID.Value : 0,
-                                               ItemCode = drow.ItemCode,
-                                               ItemName = drow.tblItem.ItemName.Trim(),
-                                               CategoryID = drow.tblItem.CategoryID,
-                                               SubCategoryID = drow.tblItem.SubCategoryID,
-                                               CategoryName = drow.tblItem.tblCategory.CategoryName,
+                                               BranchID = imap.BranchID,
+                                               OrgID = imap.OrgID,
+                                               RateID = imap.RateID != null ? imap.RateID.Value : 0,
+                                               ItemCode = imap.ItemCode,
+                                               ItemName = imap.tblItem.ItemName.Trim(),
+                                               CategoryID = imap.tblItem.CategoryID,
+                                               SubCategoryID = imap.tblItem.SubCategoryID,
+                                               CategoryName = imap.tblItem.tblCategory.CategoryName,
                                                IsEdited = false,
-                                               IsOfferRate = drow.tblItemRate.IsOfferRate,
-                                               PerUnitRate = drow.tblItemRate.PerUnitRate,
-                                               PerUnitRateName = drow.tblItemRate.PerUnitRate == null ? "" : Entities.tblUOMs.Where(i => i.UnitID == drow.tblItemRate.PerUnitRate).FirstOrDefault().Unit,
-                                               BaseRateOther = drow.tblItemRate.BaseRateOther.Value,
-                                               //DiscountFrom = drow.tblItemRate.DiscountFrom == null
-                                               //? 0 : drow.tblItemRate.DiscountFrom,
-                                               //DiscountTo = drow.tblItemRate.DiscountTo == null
-                                               //? 0 : drow.tblItemRate.DiscountTo,
-                                               EffectiveDate = drow.tblItemRate.UpdateDate == null ? (DateTime?)null : drow.tblItemRate.UpdateDate.Value,
+                                               IsOfferRate = imap.tblItemRate.IsOfferRate,
+                                               PerUnitRate = imap.tblItemRate.PerUnitRate,
+                                               PerUnitRateName = imap.tblItemRate.PerUnitRate == null ? "" : Entities.tblUOMs.Where(i => i.UnitID == imap.tblItemRate.PerUnitRate).FirstOrDefault().Unit,
+                                               BaseRateOther = imap.tblItemRate.BaseRateOther.Value,
+                                               EffectiveDate = imap.tblItemRate.UpdateDate == null ? (DateTime?)null : imap.tblItemRate.UpdateDate.Value,
                                                LastUpdated = (from rates in Entities.RateTransactionDetails
                                                               where rates.OrgID == Criteria.OrgID
                                                               orderby rates.TransID descending
@@ -1198,9 +1196,8 @@ namespace WBT.DLCustomerCreation
                                                               where Item.OrgID == Criteria.OrgID
                                                               orderby Item.CreatedDate descending
                                                               select Item).FirstOrDefault().CreatedDate,
-                                           }).Distinct().ToList<DLItemRateCreation>();
+                                           }).Distinct().ToList();
 
-                    //lstItemRateCreation = lstItemRateCreation.Where(i => i.BranchID == Criteria.BranchID).ToList();
                     //Item Search
                     if (!string.IsNullOrEmpty(Criteria.ItemName))
                         lstItemRateCreation = lstItemRateCreation.Where(j => j.ItemName.ToLower().Contains(Criteria.ItemName.ToLower())).ToList();
@@ -1210,6 +1207,7 @@ namespace WBT.DLCustomerCreation
 
                     if (Criteria.SubCategoryID > 0)
                         lstItemRateCreation = lstItemRateCreation.Where(j => j.SubCategoryID == Criteria.SubCategoryID).ToList();
+                    lstItemRateCreation = lstItemRateCreation.Where(d => d.BaseRateOther > 0).ToList();
 
                 }
             }
@@ -3156,7 +3154,6 @@ namespace WBT.DLCustomerCreation
                                 lItem.ModifiedByID = mItemCreation.ModifiedByID;
                                 lItem.SourceOfUpdate = mItemCreation.SourceOfUpdate;
                                 lItem.DaysToRefill = mItemCreation.DaysToRefill;
-
                                 #region CreateParameterMapping
                                 if (mItemCreation.SelectedParameters != null && mItemCreation.SelectedParameters.Count > 0)
                                 {
@@ -3176,16 +3173,7 @@ namespace WBT.DLCustomerCreation
                                     lItem.tblItemParameterMaps.Clear();
                                     foreach (DLParameterCreation parameter in mItemCreation.SelectedParameters)
                                     {
-                                        lItem.tblItemParameterMaps.Add(new tblItemParameterMap
-                                        {
-                                            ItemCode = this.mItemCreation.ItemCode,
-                                            ParameterID = parameter.ParameterID,
-                                            CreatedByID = this.mItemCreation.CreatedByID,
-                                            ModifiedByID = this.mItemCreation.CreatedByID,
-                                            CreatedDate = DateTime.Now,
-                                            UpdatedDate = DateTime.Now,
-                                            IsActive = true
-                                        });
+                                        NewMethod(parameter);
                                     }
 
                                 }
@@ -3198,7 +3186,7 @@ namespace WBT.DLCustomerCreation
 
                                 Entities.tblItems.Add(lItem);
                                 Entities.Entry(lItem).State = EntityState.Modified;
-
+                                mItemCreation.RateID = lItem.RateID;
                                 DLItemMapping.SaveData(mItemCreation, Entities);
 
                                 Entities.SaveChanges();
@@ -3258,6 +3246,21 @@ namespace WBT.DLCustomerCreation
             }
             //return mItemCreation;
         }
+
+        private void NewMethod(DLParameterCreation parameter)
+        {
+            lItem.tblItemParameterMaps.Add(new tblItemParameterMap
+            {
+                ItemCode = this.mItemCreation.ItemCode,
+                ParameterID = parameter.ParameterID,
+                CreatedByID = this.mItemCreation.CreatedByID,
+                ModifiedByID = this.mItemCreation.CreatedByID,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                IsActive = true
+            });
+        }
+
         public string ConstructingUOMPacketNumber(decimal packetQTY, string packetUnit, decimal bagQTY, string bagUnit) //unitid, int bulkunit)
         {
             if (packetQTY != 0 && bagQTY != 0)
@@ -3348,9 +3351,9 @@ namespace WBT.DLCustomerCreation
             }
 
         }
-        public List<ItemDTO> ImportExcel(List<ItemDTO> itemExcelData, string UserID, string OrgID)
+        public List<ItemDTO> ImportExcel(List<ItemDTO> itemExcelData, string userID, string orgID)
         {
-            int ID = 0;
+            string itemCode = string.Empty;
             List<ItemDTO> Result = new List<ItemDTO>();
             DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             try
@@ -3361,25 +3364,103 @@ namespace WBT.DLCustomerCreation
                     {
                         using (Entities = new MWBTCustomerAppEntities())
                         {
-                            string DebtorName = string.Empty;
                             if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                                 Entities.Database.Connection.Open();
+
+                            var items = Entities.tblItems.AsNoTracking().Where(d => d.OrgID == orgID);
 
                             if (!string.IsNullOrEmpty(item.ItemName))
                             {
                                 tblItem IsValueexists = null;
                                 if (!string.IsNullOrEmpty(item.ItemName))
                                 {
-                                    IsValueexists = Entities.tblItems.AsNoTracking().Where(C => C.ItemName.ToLower() == item.ItemName.ToLower() && C.OrgID == OrgID).FirstOrDefault();
+                                    IsValueexists = Entities.tblItems.AsNoTracking().Where(C => C.ItemName.ToLower() == item.ItemName.ToLower() && C.OrgID == orgID).FirstOrDefault();
                                     if (IsValueexists != null)
-                                        ID = IsValueexists.ID;
+                                        itemCode = IsValueexists.ItemCode;
                                 }
 
                                 using (var dbcxtransaction = Entities.Database.BeginTransaction())
                                 {
                                     ItemDTO ResultItem = new ItemDTO();
+                                    var tblitem = new tblItem();
                                     try
                                     {
+                                        if (!string.IsNullOrEmpty(itemCode))
+                                            item.ItemCode = itemCode;
+
+                                        var AliasExists = (from gItems in items
+                                                           where gItems.Alias.ToLower().Trim() == item.Alias.ToLower().Trim()
+                                                           && gItems.OrgID == orgID
+                                                           select gItems.ItemName).ToList();
+                                        if (AliasExists != null && AliasExists.Count() > 0)
+                                        {
+                                            ResultItem.ItemName = item.ItemName;
+                                            ResultItem.Status = "Alias Name already exists";
+                                            Result.Add(ResultItem);
+                                        }
+                                        else
+                                        {
+                                            var IsItemCodeExist = (from gItems in items
+                                                                   where gItems.ItemCode == item.ItemCode
+                                                                   select gItems.ItemName).ToList();
+
+                                            tblitem.ItemCode = item.ItemCode;
+                                            if (IsItemCodeExist != null && IsItemCodeExist.Count() > 0)
+                                            {
+                                                tblitem.ItemCode = (Convert.ToInt64(item.ItemCode) + 1).ToString();
+                                            }
+
+                                            tblitem.ItemName = item.ItemName.Trim();
+                                            tblitem.OrgID = orgID;
+                                            tblitem.Alias = item.Alias;
+                                            tblitem.StorageArea = null;
+                                            tblitem.IsTallyUpdated = false;
+                                            tblitem.IsParentTallyUpdated = false;
+                                            tblitem.TallyItemName = item.TallyItemName.Trim();
+                                            tblitem.CategoryID = InsertCategory(item, userID, orgID, Entities);
+                                            item.CategoryID = tblitem.CategoryID;
+                                            tblitem.SubCategoryID = InsertSubCategory(item, userID, orgID, Entities);
+                                            tblitem.BrandID = InsertBrand(item, userID, orgID, Entities);
+                                            var bUItem = InsertBasicAltUnits(item, userID, orgID, Entities);
+                                            tblitem.BasePKTValue = bUItem.BasePKTValue;
+                                            tblitem.BaseUnit = bUItem.BaseUnit;
+                                            tblitem.AlternateUnit = bUItem.AlternateUnit;
+                                            tblitem.AlternatePKTValue = bUItem.AlternatePKTValue;
+                                            tblitem.RateID = InsertRate(item, userID, orgID, Entities);
+                                            var bagItem = InsertPacketUnits(item, userID, orgID, Entities);
+                                            tblitem.PacketUOMID = bagItem.PacketUOMID;
+                                            tblitem.BagUOMID = bagItem.BagUOMID;
+                                            tblitem.PacketQTY = bagItem.PacketQTY;
+                                            tblitem.BagQTY = bagItem.BagQTY;
+                                            tblitem.RackID = null;
+                                            tblitem.ItemDetail = item.ItemDescription;
+                                            if (!string.IsNullOrEmpty(item.GST))
+                                                tblitem.GST = Convert.ToDecimal(item.GST);
+                                            else
+                                                tblitem.GST = 0;
+                                            if (!string.IsNullOrEmpty(item.APMCCESS))
+                                            {
+                                                tblitem.CESSValue = Convert.ToDecimal(item.APMCCESS);
+                                                if (!string.IsNullOrEmpty(item.APMCCESSEffectiveDate))
+                                                    tblitem.CESSEffectiveDate = Convert.ToDateTime(item.APMCCESSEffectiveDate);
+                                                else
+                                                    tblitem.CESSEffectiveDate = null;
+                                                lItem.IsCESSMapped = true;
+                                            }
+                                            else
+                                            {
+                                                lItem.IsCESSMapped = false;
+                                            }
+                                            tblitem.CreatedDate = Helper.GetCurrentDate;
+                                            tblitem.CreatedByID = Convert.ToInt32(userID);
+                                            tblitem.isProcessItem = false;
+                                            tblitem.SourceOfUpdate = "P";
+                                            tblitem.HSNCode = !string.IsNullOrEmpty(item.CorrectedHSNCode) ? Convert.ToInt32(item.CorrectedHSNCode) : (int?)null;
+                                            tblitem.HSNSubCode = !string.IsNullOrEmpty(item.SubHSNCode) ? Convert.ToInt32(item.SubHSNCode) : (int?)null;
+                                            Entities.tblItems.Add(tblitem);
+                                            Entities.SaveChanges();
+                                            dbcxtransaction.Commit();
+                                        }
 
                                     }
                                     catch (Exception ex)
@@ -3402,6 +3483,286 @@ namespace WBT.DLCustomerCreation
                 Result.Add(ResultItem);
             }
             return Result;
+        }
+        private int InsertCategory(ItemDTO item, string userID, string orgID, MWBTCustomerAppEntities Entities)
+        {
+            try
+            {
+                var categoryID = 0;
+                //using (Entities = new MWBTCustomerAppEntities())
+                {
+                    tblCategory dBCategory = (from gCategory in Entities.tblCategories.AsNoTracking()
+                                              where gCategory.CategoryName.ToLower().Trim()
+                                              == item.GroupName.ToLower().Trim()
+                                              && gCategory.OrgID == orgID
+                                              select gCategory).FirstOrDefault();
+
+                    //Check If CategoryAlreadyExists
+                    if (dBCategory != null)
+                    {
+                        categoryID = dBCategory.CategoryID;
+                        return categoryID;
+                    }
+                    //Create New Category
+                    else
+                    {
+                        tblCategory lCategory = new tblCategory();
+                        lCategory.IsActive = true;
+                        lCategory.CategoryName = item.GroupName;
+                        lCategory.AccOrInv = true;
+                        lCategory.CreatedDate = Helper.GetCurrentDate;
+                        lCategory.ModifiedDate = Helper.GetCurrentDate;
+                        lCategory.IsTallyUpdated = false;
+                        lCategory.CreatedByID = Convert.ToInt32(userID);
+                        lCategory.ParentCatId = (from gCategory in Entities.tblCategories.AsNoTracking()
+                                                 where gCategory.CategoryName.ToLower().Trim()
+                                                 == "primary"
+                                                 select gCategory).Count() > 0 ? (from gCategory in Entities.tblCategories.AsNoTracking()
+                                                                                  where gCategory.CategoryName.ToLower().Trim()
+                                                                                  == "primary"
+                                                                                  select gCategory).FirstOrDefault().CategoryID : (int?)null;
+                        Entities.tblCategories.Add(lCategory);
+                        Entities.SaveChanges();
+
+                        categoryID = lCategory.CategoryID;
+                        return categoryID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return 0;
+            }
+        }
+        private int InsertSubCategory(ItemDTO item, string userID, string orgID, MWBTCustomerAppEntities Entities)
+        {
+            try
+            {
+                var subCategoryID = 0;
+                //using (Entities = new MWBTCustomerAppEntities())
+                {
+                    tblSubCategory dBSubCategory = (from gSubCategory in Entities.tblSubCategories.AsNoTracking()
+                                                    where gSubCategory.SubCategoryName.ToLower().Trim()
+                                                    == item.Category.ToLower().Trim()
+                                                    && gSubCategory.OrgID == orgID
+                                                    select gSubCategory).FirstOrDefault();
+
+                    //Check If CategoryAlreadyExists
+                    if (dBSubCategory != null)
+                    {
+                        subCategoryID = dBSubCategory.SubCategoryID;
+                        return subCategoryID;
+                    }
+                    //Create New Category
+                    else
+                    {
+                        tblSubCategory subCategory = new tblSubCategory();
+                        subCategory.IsActive = true;
+                        subCategory.SubCategoryName = item.Category;
+                        subCategory.CategoryID = item.CategoryID.Value;
+                        subCategory.CreatedDate = Helper.GetCurrentDate;
+                        subCategory.ModifiedDate = Helper.GetCurrentDate;
+                        subCategory.IsTallyUpdated = false;
+                        subCategory.CreatedByID = Convert.ToInt32(userID);
+                        Entities.tblSubCategories.Add(subCategory);
+                        Entities.SaveChanges();
+                        subCategoryID = subCategory.SubCategoryID;
+                        return subCategoryID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return 0;
+            }
+        }
+        private int InsertBrand(ItemDTO item, string userID, string orgID, MWBTCustomerAppEntities Entities)
+        {
+            try
+            {
+                //using (Entities = new MWBTCustomerAppEntities())
+                {
+                    var brandID = 0;
+                    tblItemCompany dBItemCompany = (from gItemCompany in Entities.tblItemCompanies.AsNoTracking()
+                                                    where gItemCompany.CompanyName.ToLower().Trim()
+                                                    == item.Company.ToLower().Trim()
+                                                    select gItemCompany).FirstOrDefault();
+
+                    ////Check the ItemCompany exists
+                    if (dBItemCompany != null)
+                    {
+                        #region Brand
+                        tblBrand DBBrand = (from gBrands in Entities.tblBrands.AsNoTracking()
+                                            where gBrands.BrandName.ToLower().Trim() == item.Brand.ToLower().Trim()
+                                            select gBrands).FirstOrDefault();
+                        if (DBBrand != null)
+                        {
+                            brandID = DBBrand.BrandID;
+                        }
+                        else
+                        {
+                            tblBrand lBrand = new tblBrand();
+                            lBrand.IsActive = true;
+                            lBrand.BrandName = item.Brand;
+                            lBrand.ItemCompanyID = dBItemCompany.ItemCompanyID;
+                            lBrand.IsTrademarkRegistered = false;
+                            lBrand.CreatedDate = Helper.GetCurrentDate;
+                            lBrand.ModifiedDate = Helper.GetCurrentDate;
+                            lBrand.CreatedByID = Convert.ToInt32(userID);
+                            Entities.tblBrands.Add(lBrand);
+                            Entities.SaveChanges();
+                            brandID = lBrand.BrandID;
+                        }
+                        return brandID;
+                        #endregion
+                    }
+                    //Create New Company
+                    else
+                    {
+                        tblItemCompany lItemCompany = new tblItemCompany();
+                        lItemCompany.CompanyName = item.Company;
+                        lItemCompany.IsActive = true;
+                        lItemCompany.CreatedDate = Helper.GetCurrentDate;
+                        lItemCompany.ModifiedDate = Helper.GetCurrentDate;
+                        lItemCompany.CreatedByID = Convert.ToInt32(userID);
+                        Entities.tblItemCompanies.Add(lItemCompany);
+                        Entities.SaveChanges();
+
+                        tblBrand lBrand = new tblBrand();
+                        lBrand.IsActive = true;
+                        lBrand.BrandName = item.Brand;
+                        lBrand.ItemCompanyID = lItemCompany.ItemCompanyID;
+                        lBrand.IsTrademarkRegistered = false;
+                        lBrand.CreatedDate = Helper.GetCurrentDate;
+                        lBrand.ModifiedDate = Helper.GetCurrentDate;
+                        lBrand.CreatedByID = Convert.ToInt32(userID);
+                        Entities.tblBrands.Add(lBrand);
+                        Entities.SaveChanges();
+                        brandID = lBrand.BrandID;
+                        return brandID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return 0;
+            }
+        }
+        private tblItem InsertBasicAltUnits(ItemDTO item, string userID, string orgID, MWBTCustomerAppEntities Entities)
+        {
+            try
+            {
+                //using (Entities = new MWBTCustomerAppEntities())
+                {
+                    lItem.BasePKTValue = Convert.ToDecimal(item.BasicUnitValue);
+                    var uoms = Entities.tblUOMs;
+                    var Basicunit = (from pUom in uoms
+                                     where pUom.Unit.ToLower().Trim() == item.BasicUnit.ToLower().Trim()
+                                     select pUom).FirstOrDefault();
+
+                    if (Basicunit != null)
+                    {
+                        lItem.BaseUnit = Basicunit.UnitID;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(item.AlternateUnit))
+                    {
+                        var Alternateunit = (from pUom in uoms
+                                             where pUom.Unit.ToLower().Trim() == item.AlternateUnit.ToLower().Trim()
+                                             select pUom).FirstOrDefault();
+
+                        if (Alternateunit != null)
+                        {
+                            lItem.AlternateUnit = Alternateunit.UnitID;
+                        }
+                        lItem.AlternatePKTValue = Convert.ToDecimal(item.AlternateUnitValue);
+                    }
+                    return lItem;
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return lItem;
+            }
+        }
+        private int InsertRate(ItemDTO item, string userID, string orgID, MWBTCustomerAppEntities Entities)
+        {
+            try
+            {
+                //using (Entities = new MWBTCustomerAppEntities())
+                {
+                    tblItemRate itemRate = new tblItemRate();
+                    int raterowCount = 0;
+                    var ItemsRates = Entities.tblItemRates.ToList();
+                    if (ItemsRates != null && ItemsRates.Count() > 0)
+                        raterowCount = Entities.tblItemRates.AsNoTracking().OrderByDescending(i => i.ID).FirstOrDefault().ID;
+                    else
+                        raterowCount = 0;
+
+                    itemRate.RateID = raterowCount + 1;
+                    itemRate.BaseRateOther = Convert.ToDecimal(item.Rate);
+                    //added on 14thJun2021 by sneha
+                    itemRate.PerUnitRate = lItem.BaseUnit;
+                    itemRate.CreatedByID = Convert.ToInt32(userID);
+                    itemRate.CreationDate = Helper.GetCurrentDate;
+                    itemRate.UpdateDate = Helper.GetCurrentDate;
+
+                    var rateExists = (from gRate in Entities.tblItemRates.AsNoTracking()
+                                      where gRate.RateID == itemRate.RateID
+                                      select gRate).ToList();
+
+                    if (rateExists != null && rateExists.Count() > 0)
+                    {
+                        itemRate.RateID = itemRate.RateID + 1;
+                    }
+                    Entities.tblItemRates.Add(itemRate);
+                    Entities.SaveChanges();
+                    return itemRate.RateID;
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return 0;
+            }
+        }
+        private tblItem InsertPacketUnits(ItemDTO item, string userID, string orgID, MWBTCustomerAppEntities Entities)
+        {
+            try
+            {
+                //using (Entities = new MWBTCustomerAppEntities())
+                {
+                    var packetuom = (from pUom in Entities.tblUOMs.AsNoTracking()
+                                     where pUom.Unit.ToLower().Trim() == item.PacketUnit.ToLower().Trim()
+                                     select pUom).FirstOrDefault();
+
+                    if (packetuom != null)
+                    {
+                        lItem.PacketUOMID = packetuom.UnitID;
+                    }
+                    var BagUOM = (from BUom in Entities.tblUOMs.AsNoTracking()
+                                  where BUom.Unit.ToLower().Trim() == item.BagUnit.ToLower().Trim()
+                                  select BUom).FirstOrDefault();
+
+                    if (BagUOM != null)
+                    {
+                        lItem.BagUOMID = BagUOM.UnitID;
+                    }
+
+                    lItem.PacketQTY = Convert.ToDecimal(item.PacketSize);
+                    lItem.BagQTY = Convert.ToDecimal(item.BagSize);
+                    return lItem;
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return lItem;
+            }
         }
     }
 

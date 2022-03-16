@@ -7,6 +7,7 @@ namespace WBT.DLCustomerCreation.DTOs
         public int ID { get; set; }
         public string OrgID { get; set; }
         public string Name { get; set; }
+        public string BranchName { get; set; }
         public string Under { get; set; }
         public string TaxType { get; set; }
         public decimal? TaxPercentage { get; set; }

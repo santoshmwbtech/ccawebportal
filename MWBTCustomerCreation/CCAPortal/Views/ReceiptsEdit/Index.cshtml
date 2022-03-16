@@ -38,6 +38,7 @@
     @Html.HiddenFor(model => model.ReferenceImage)
     @Html.HiddenFor(model => model.IsTallyUpdated)
     @Html.HiddenFor(model => model.ReceiptDatetime)
+    @Html.HiddenFor(model => model.IsEdited)
 
 
     <div class="row" id="divList">
@@ -218,7 +219,13 @@
 
                 <div class="card-footer">
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary" id="btnUpdate" onclick="return validating_price();">Update</button>
+                        @{
+                            if (!Model.IsEdited)
+                            {
+                                <button type="submit" class="btn btn-primary" id="btnUpdate" onclick="return validating_price();">Update</button>
+                            }
+                        }
+
                         <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally">Sync To Tally</a>
                         <a href='@Url.Action("Index", "Receipts")' class="btn btn-success" id="btnBack">Back</a>
                         @Html.ValidationSummary()

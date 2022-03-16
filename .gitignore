@@ -362,3 +362,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /MWBTCustomerCreation/CCAPortal/UserTemplates
 /MWBTCustomerCreation/CCAPortal/ErrorLog
+/MWBTCustomerCreation/CCAPortal/Uploads
+/MWBTCustomerCreation/debug/SOReceipts

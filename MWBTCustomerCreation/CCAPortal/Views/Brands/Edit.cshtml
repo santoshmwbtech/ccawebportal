@@ -37,10 +37,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Select Company </label>
+                                <label>Select Brand Manufacturer </label>
                                 <div class="input-group">
                                     <div class="input-group">
-                                        @Html.DropDownListFor(model => model.ItemCompanyID, (SelectList)ViewBag.ItemCompanies, "Select Company", new { @class = "form-control listbox", @required = "required" })
+                                        @Html.DropDownListFor(model => model.ItemCompanyID, (SelectList)ViewBag.ItemCompanies, "Select Brand Manufacturer", new { @class = "form-control listbox", @required = "required" })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.ItemCompanyID, "", new { @class = "text-danger" })
                                 </div>

@@ -173,45 +173,47 @@
         });
     }
         function TallySync(ID) {
+            var id = $("#ID").val();
         $.ajax({
-                url: '@Url.Action("TallySync", "TaxLegdersMaster")',
-                data: "{ 'ID': '" + ID + "'}",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    if (data == "0") {
-                        window.location = '@Url.Action("Index", "Login")';
-                    }
-                    else if (data == "1") {
-                        swal.fire("Please install the service and open tally software, wait for 10 seconds and click on Tally Sync button again");
-                    }
-                    else {
-                        if (data == "Tally Sync Successful!!") {
-                            Swal.fire({
-                                title: 'Success!!',
-                                text: 'Tally Sync Successful!!',
-                                icon: 'success',
-                            }).then((result) => {
-                                             $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
+            url: '@Url.Action("TallySync", "TaxLegdersMaster")',
+            data: "{ 'ID': '" + id + "'}",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == "0") {
+                    window.location = '@Url.Action("Index", "Login")';
+                }
+                else if (data == "1") {
+                    swal.fire("Please install the service and open tally software, wait for 10 seconds and click on Tally Sync button again");
+                }
+                else {
+                    if (data == "Tally Sync Successful!!") {
+                        Swal.fire({
+                            title: 'Success!!',
+                            text: 'Tally Sync Successful!!',
+                            icon: 'success',
+                        }).then((result) => {
+                            $('#divCreate').load('@Url.Action("Create", "TaxLegdersMaster")');
+                            $("#divList").load('@Url.Action("TaxLedgerList", "TaxLegdersMaster")');
                             setTimeout(function () {
-                                $("#dataGrid").dataTable().fnDestroy();
-                                loadDataTableWithButtons();
-                }, 1000);
+                                    $("#dataGrid").dataTable().fnDestroy();
+                                    loadDataTableWithButtons();
+                                }, 1000);
                             });
                         }
-                        else {
-                            swal.fire(data);
-                        }
+                    else {
+                        swal.fire(data);
                     }
-                },
-                error: function (response) {
-                    swal.fire(response.responseText);
-                },
-                failure: function (response) {
-                    swal.fire(response.responseText);
                 }
-            });
+            },
+            error: function (response) {
+                swal.fire(response.responseText);
+            },
+            failure: function (response) {
+                swal.fire(response.responseText);
+            }
+        });
     }
     </script>
 

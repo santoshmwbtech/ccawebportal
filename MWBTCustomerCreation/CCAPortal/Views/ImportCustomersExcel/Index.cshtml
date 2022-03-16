@@ -32,11 +32,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="exampleInputFile">Excel File</label>
+                        <label for="postedExcelFile">Excel File</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="ExcelFile" name="ExcelFile" onchange="return check_extension(this.value);" required="required">
-                                <label class="custom-file-label" for="ExcelFile">Choose file</label>
+                                <input type="file" id="postedExcelFile" name="postedExcelFile" onchange="return check_extension(this.value);" required="required">
                             </div>
                         </div>
                     </div>
@@ -85,8 +84,8 @@
 </div>
 @section scripts {
     <script>
-    function onSuccess_Ajax(data) {
-        if (data == "success") {
+    function onSuccess_Ajax(result) {
+        if (result.data == "success") {
             swal.fire({
                 title: "Success!",
                 text: "Excel file imported successfully!!",
@@ -96,15 +95,10 @@
                 window.location = '@Url.Action("Index", "ImportCustomersExcel")';
             });
         }
-        else if (data != "") {
-            swal.fire({
-                title: "Error!",
-                html: data,
-                type: "error",
-                icon: "error",
-            }).then(function () {
-                window.location = '@Url.Action("Index", "ImportCustomersExcel")';
-            });
+         else {
+            $("#errorList").show();
+            $("#errorBox").html(result.data);
+            $("#ExcelFile").val('');
         }
     }
     </script>

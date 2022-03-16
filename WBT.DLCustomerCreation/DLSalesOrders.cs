@@ -530,7 +530,7 @@ namespace WBT.DLCustomerCreation
             }
         }
 
-        public SalesOrders GetSalesOrderDetails(string SalesOrderNumber)
+        public SalesOrders GetSalesOrderDetails(string SalesOrderNumber, bool requestPrint = false)
         {
             SalesOrders salesOrder = new SalesOrders();
             try
@@ -629,7 +629,7 @@ namespace WBT.DLCustomerCreation
                         var itemsList = (from a in Entities.tblSalesOrderWithItems
                                          join b in Entities.tblSalesOrders on a.SalesOrderNumber.ToLower().Trim() equals b.SalesOrderNumber.ToLower().Trim()
                                          join c in Entities.tblItems on a.ItemCode.ToLower().Trim() equals c.ItemCode.ToLower().Trim()
-                                         where a.SalesOrderNumber == SalesOrderNumber
+                                         where a.SalesOrderNumber == SalesOrderNumber && a.Rate > 0
                                          select new DLSalesOrderWithItemCreation
                                          {
                                              ItemName = c.ItemName,
@@ -641,7 +641,7 @@ namespace WBT.DLCustomerCreation
                                              TotalQTY = a.TotalQTY,
                                              SalesOrderWithItemID = a.SalesOrderWithItemID,
                                              IsRateInQuantls = a.IsRateInQuantls,
-                                             DiscountPercentage = a.DiscountPercentage,
+                                             DiscountPercentage = a.DiscountPercentage.HasValue ? a.DiscountPercentage.Value : 0,
                                              LoadingUnloadingCharge = a.LoadingUnloadingCharge,
                                              ItemRowNumber = a.ItemRowNumber,
                                              FrieghtCharge = a.FrieghtCharge,
@@ -654,21 +654,30 @@ namespace WBT.DLCustomerCreation
                                              RatePerUnit = a.tblItem.tblItemRate.tblUOM.Unit,
                                          }).Distinct().ToList();
                         var adminSettings = Entities.tblAdminSettings.Where(d => d.OrgID == salesOrder.OrgID).FirstOrDefault();
-                        if (salesOrder.PriceSyncType)
+                        if (requestPrint)
                         {
-                            foreach (var item in itemsList)
+                            if (salesOrder.PriceSyncType)
                             {
-                                item.Rate = Math.Round(item.Rate * 100 / (100 + item.GSTPer.Value), 2);
-                                item.Value = Math.Round((item.Rate * item.TotalQTY) - item.DiscountAmt.Value, 2);
-                                item.GSTValue = Math.Round(((item.Rate - item.DiscountAmt.Value) * item.GSTPer.Value) / 100, 2);
-                                item.CGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
-                                item.SGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
-                                item.IGSTValue = Math.Round(item.GSTValue.Value, 2);
+                                foreach (var item in itemsList)
+                                {
+                                    if (item.Rate > 0)
+                                    {
+                                        item.Rate = Math.Round(item.Rate * 100 / (100 + item.GSTPer.Value), 2);
+                                        var totalValue = Math.Round(item.Rate * item.TotalQTY, 2);
+                                        var discountAmt = Math.Round((totalValue * item.DiscountPercentage.Value) / 100, 2);
+                                        item.DiscountAmt = discountAmt;
+                                        item.Value = Math.Round(totalValue - discountAmt, 2);
+                                        item.GSTValue = Math.Round(((item.Value - item.DiscountAmt.Value) * item.GSTPer.Value) / 100, 2);
+                                        item.CGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
+                                        item.SGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
+                                        item.IGSTValue = Math.Round(item.GSTValue.Value, 2);
+                                    }
+                                }
                             }
-                        }
-                        else
-                        {
-                            itemsList.ForEach(d => d.GSTPer = 0);
+                            else
+                            {
+                                itemsList.ForEach(d => d.GSTPer = 0);
+                            }
                         }
                         salesOrder.PaymentInfo = adminSettings.PaymentInfo;
                         salesOrder.SalesType = salesOrder.CustomerState.ToLower() == salesOrder.CompanyState.ToLower() ? "Local State" : "Inter State";

@@ -102,6 +102,7 @@ namespace WindowsService_TallyDebtors
         {
             try
             {
+                var _taxLedgerRepository = new DLTaxLedgers();
                 //Helper.TransactionLog("Step 1", true);
                 List<DebtorsDetails> lstdebtorsDetails = new List<DebtorsDetails>();
                 DLDebtorsCreation M_DebtorsCreation = new DLDebtorsCreation();
@@ -113,6 +114,16 @@ namespace WindowsService_TallyDebtors
                     foreach (var i in lstdebtorsDetails)
                     {
                         debtorsController.Debtor_TallySync(i.ID);
+                    }
+                }
+                //Sync Tax Ledgers
+                var taxLedgers = _taxLedgerRepository.GetTaxLedgers(OrgID);
+                if (taxLedgers.Count() > 0)
+                {
+                    var taxledgersMaster = new TaxLegdersMasterController();
+                    foreach (var i in taxLedgers)
+                    {
+                        taxledgersMaster.SaveTaxLedgerToTally(i, true);
                     }
                 }
             }

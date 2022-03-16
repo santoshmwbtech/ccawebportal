@@ -32,11 +32,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="exampleInputFile">Excel File</label>
+                        <label for="ExcelFile">Excel File</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="ExcelFile" name="ExcelFile" onchange="return check_extension(this.value);" required="required">
-                                <label class="custom-file-label" for="ExcelFile">Choose file</label>
+                                <input type="file" id="ExcelFile" name="ExcelFile" onchange="return check_extension(this.value);" required="required">
+                                @*<label class="custom-file-label" for="ExcelFile">Choose file</label>*@
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
         <h3 class="card-title">Errors</h3>
     </div>
     <div class="card-body" id="errorBox">
-        
+
     </div>
 </div>
 <div id="progress" class="modal">
@@ -85,24 +85,24 @@
 </div>
 @section scripts {
     <script>
-    function onSuccess_Ajax(data) {
-        if (data == "success") {
-            swal({
-                title: "Success!",
-                text: "Excel file imported successfully!!",
-                type: "success",
-                icon: "success",
-            }).then(function () {
-                window.location = '@Url.Action("Index", "DebtorGroupImport")';
-            });
+        function onSuccess_Ajax(result) {
+            if (result.success == true) {
+                swal.fire({
+                    title: "Success!",
+                    text: "Excel file imported successfully!!",
+                    type: "success",
+                    icon: "success",
+                }).then(function () {
+                    window.location = '@Url.Action("Index", "DebtorGroupImport")';
+                });
+            }
+            else {
+                $("#errorList").show();
+                $("#errorBox").html(result.data);
+                $("#ExcelFile").val('');
+                $("#ParentUserList option:selected").prop("selected", false);
+            }
         }
-        else {
-            $("#errorList").show();
-            $("#errorBox").html(data);
-            $("#ExcelFile").val('');
-            $("#ParentUserList option:selected").prop("selected", false);
-        }
-    }
     </script>
     <script>
         $(".form-sample").validate();
@@ -112,7 +112,6 @@
             '.xls': 1,
             '.xlsx': 1,
         };
-
         function check_extension(filename) {
             var re = /\..+$/;
             var ext = filename.match(re);

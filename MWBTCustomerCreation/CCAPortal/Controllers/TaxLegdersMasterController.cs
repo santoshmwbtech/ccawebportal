@@ -172,7 +172,7 @@ namespace CCAPortal.Controllers
             }
         }
 
-        public bool IsTallyCompanyOpen(DebtorsDetails item, string BranchName, bool iswinservice = false)
+        public bool IsTallyCompanyOpen(TaxLedgersDTO item, string BranchName, bool iswinservice = false)
         {
             //xmlFileString = System.IO.File.ReadAllText(@"DataFiles\IsCurrentCompanyOpen.xml");
             if (iswinservice == false)
@@ -201,12 +201,12 @@ namespace CCAPortal.Controllers
                 }
                 else if (Result.Contains("<DESC>Server company is not available!"))
                 {
-                    item.DisplayMessage = " Please Open Company " + BranchName + " In Tally";
+                    item.DisplayMsg = " Please Open Company " + BranchName + " In Tally";
                     IsCompanyOpen = false;
                 }
                 else
                 {
-                    item.DisplayMessage = Result;
+                    item.DisplayMsg = Result;
                 }
                 return IsCompanyOpen;
             }
@@ -315,7 +315,7 @@ namespace CCAPortal.Controllers
             }
         }
 
-        public DebtorsDetails SaveDebtorToTally(DebtorsDetails item, bool iswinservie = false)
+        public TaxLedgersDTO SaveTaxLedgerToTally(TaxLedgersDTO item, bool iswinservie = false)
         {
 
             IsTallyCompanyOpen(item, item.BranchName, iswinservie);
@@ -333,7 +333,7 @@ namespace CCAPortal.Controllers
                     xmlFileString = Path.Combine(xmlfile, "GroupDebtorDetails.xml");
                 }
 
-                DebtorsDetails IResult = new DebtorsDetails();
+                TaxLedgersDTO IResult = new TaxLedgersDTO();
 
                 xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlFileString);
@@ -343,32 +343,33 @@ namespace CCAPortal.Controllers
                     xmlDoc.SelectSingleNode(mxmlRootPath + "/DESC/STATICVARIABLES/SVCURRENTCOMPANY").InnerText = item.BranchName;
                     mxmlRootPath = mxmlRootPath + "/DATA/TALLYMESSAGE";
                     mxmlRootPath = mxmlRootPath + "/GROUPS";
-                    xmlDoc.SelectSingleNode(mxmlRootPath + "/NAME").InnerText = item.OldDebtorName.Trim();//item.SundryType.Trim();  
-                    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["NAME"].InnerText = item.DebtorName;
+                    xmlDoc.SelectSingleNode(mxmlRootPath + "/NAME").InnerText = item.Name.Trim();//item.SundryType.Trim();  
+                    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["NAME"].InnerText = item.Name;
 
-                    if (item.IsEdited)
-                    {
-                        xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Alter";
-                    }
-                    else
-                    {
-                        xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Create";
-                    }
+                    //if (item.IsEdited)
+                    //{
+                    //    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Alter";
+                    //}
+                    //else
+                    //{
+                    //    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Create";
+                    //}
+                    xmlDoc.SelectSingleNode(mxmlRootPath).Attributes["Action"].InnerText = "Create";
 
                     string tempLedger = xmlDoc.InnerXml.Replace("[Alias]", "<NAME>" + "" + "</NAME>");
 
-                    if (item.ParentDebtorName == "Primary")
-                        tempLedger = tempLedger.Replace("[Parent]", "" + item.ParentDebtorName);
+                    if (item.Under == "Duties and Taxes")
+                        tempLedger = tempLedger.Replace("[Parent]", "" + item.Under);
                     else
-                        tempLedger = tempLedger.Replace("[Parent]", item.ParentDebtorName);
+                        tempLedger = tempLedger.Replace("[Parent]", item.Under);
 
                     //Alies Name
                     string Result = XMLGetData(tempLedger);
 
-                    IResult.DisplayMessage = Result;
+                    IResult.DisplayMsg = Result;
                     IResult.ID = item.ID;
                     IResult.OrgID = item.OrgID;
-                    IResult.DebtorName = item.DebtorName;
+                    IResult.Name = item.Name;
                     return IResult;
                 }
                 catch (Exception ex)

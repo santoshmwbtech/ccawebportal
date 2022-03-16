@@ -15,8 +15,6 @@ namespace WBT.DLCustomerCreation
     {
         private MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-        //DLTaxLedgers dLLedgerCreation = new DLTaxLedgers();
-        //private tblTaxLedger ledger = new tblTaxLedger();
         public List<TaxLedgersDTO> GetTaxLedgers(string OrgID)
         {
             try
@@ -37,12 +35,9 @@ namespace WBT.DLCustomerCreation
                                       ModifiedDate = taxLedger.ModifiedDate,
                                       TaxPercentage = taxLedger.TaxPercentage,
                                       TaxType = taxLedger.TaxType,
-                                      TallySync=taxLedger.TallySync,
-                                      IsTallyUpdated=taxLedger.IsTallyUpdated,
-
-                                      //TaxType = "Duty And Taxes",
+                                      TallySync = taxLedger.TallySync,
+                                      IsTallyUpdated = taxLedger.IsTallyUpdated,
                                       Under = taxLedger.Under,
-                                      
                                   }).OrderByDescending(x => x.Name).ToList();
                     return taxLedgers;
                 }
@@ -53,7 +48,7 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-        
+
         public TaxLedgersDTO GetTaxLedgerDetail(int? ID)
         {
             try
@@ -66,16 +61,16 @@ namespace WBT.DLCustomerCreation
                                      {
                                          ID = taxLedgers.ID,
                                          OrgID = taxLedgers.OrgID,
-                                         Name = taxLedgers.Name.Trim(),                        
+                                         Name = taxLedgers.Name.Trim(),
                                          CreatedBy = taxLedgers.CreatedBy,
                                          CreatedDate = taxLedgers.CreatedDate,
                                          ModifiedBy = taxLedgers.ModifiedBy,
                                          ModifiedDate = taxLedgers.ModifiedDate,
                                          TaxPercentage = taxLedgers.TaxPercentage,
-                                         TaxType = "Duty And Taxes",
+                                         TaxType = taxLedgers.TaxType,
                                          Under = taxLedgers.Under,
-                                         TallySync=taxLedgers.TallySync,
-                                         IsTallyUpdated=taxLedgers.IsTallyUpdated
+                                         TallySync = taxLedgers.TallySync,
+                                         IsTallyUpdated = taxLedgers.IsTallyUpdated
                                      }).FirstOrDefault();
                     return taxLedger;
                 }
@@ -95,11 +90,11 @@ namespace WBT.DLCustomerCreation
                 {
                     List<TaxLedgersDTO> TaxTypesList = new List<TaxLedgersDTO>();
                     TaxTypesList = (from u in dbContext.tblTaxLedgers
-                                   where u.OrgID == OrgID
-                                   select new TaxLedgersDTO
-                                   {
-                                       TaxType=u.TaxType,                                      
-                                   }).Distinct().OrderByDescending(x => x.TaxType).ToList();
+                                    where u.OrgID == OrgID
+                                    select new TaxLedgersDTO
+                                    {
+                                        TaxType = u.TaxType,
+                                    }).Distinct().OrderByDescending(x => x.TaxType).ToList();
                     return TaxTypesList;
                 }
             }
@@ -108,9 +103,9 @@ namespace WBT.DLCustomerCreation
                 Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
                 return null;
             }
-       }
+        }
         public int SaveTaxLedger(TaxLedgersDTO TaxLedgersDetail, string UserID, string OrgID)
-            {
+        {
             try
             {
                 using (MWBTCustomerAppEntities dbContext = new MWBTCustomerAppEntities())
@@ -167,7 +162,7 @@ namespace WBT.DLCustomerCreation
                         Ledger.CreatedBy = Convert.ToInt32(UserID);
                         Ledger.CreatedDate = DateTimeNow;
                         Ledger.TaxPercentage = TaxLedgersDetail.TaxPercentage;
-                        Ledger.TaxType=TaxLedgersDetail.TaxType;
+                        Ledger.TaxType = TaxLedgersDetail.TaxType;
                         Ledger.Under = "Duty And Taxes";
                         Ledger.TallySync = TaxLedgersDetail.TallySync;
                         Ledger.IsTallyUpdated = TaxLedgersDetail.IsTallyUpdated;
@@ -183,7 +178,7 @@ namespace WBT.DLCustomerCreation
                 return 0;
             }
         }
-        
+
         public TaxLedgersDTO GetDebtorDetail(int? ID)
         {
             try
@@ -238,7 +233,7 @@ namespace WBT.DLCustomerCreation
                             Entities.tblTaxLedgers.Attach(tblTaxLedger);
                             Entities.Entry(tblTaxLedger).Property(c => c.ModifiedDate).IsModified = true;
                             Entities.Entry(tblTaxLedger).Property(c => c.TallySync).IsModified = true;
-                            Entities.Entry(tblTaxLedger).Property(c => c.IsTallyUpdated).IsModified = true;
+                            //Entities.Entry(tblTaxLedger).Property(c => c.IsTallyUpdated).IsModified = true;
                             //Entities.Entry(tblTaxLedger).Property(c => c.TaxType).IsModified = true;
                             Entities.SaveChanges();
                             dbcxtransaction.Commit();
@@ -367,10 +362,12 @@ namespace WBT.DLCustomerCreation
             {
                 if (ExcelData != null)
                 {
-                    foreach (var taxLedger in ExcelData)
+                    using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
                     {
-                        using (Entities = new WBT.Entity.MWBTCustomerAppEntities())// Entity.MWBTCustomerAppEntities())
+                        var taxLedgers = Entities.tblTaxLedgers.AsNoTracking().Where(d => d.OrgID == OrgID).ToList();
+                        foreach (var taxLedger in ExcelData)
                         {
+
                             string DebtorName = string.Empty;
                             if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                                 Entities.Database.Connection.Open();
@@ -380,7 +377,7 @@ namespace WBT.DLCustomerCreation
                                 bool isValueExists = false;
                                 if (!string.IsNullOrEmpty(taxLedger.Name))
                                 {
-                                    var txLedger = Entities.tblTaxLedgers.AsNoTracking().Where(C => C.Name.ToLower() == taxLedger.Name.ToLower() && C.OrgID == OrgID).FirstOrDefault();
+                                    var txLedger = taxLedgers.Where(C => C.Name.ToLower() == taxLedger.Name.ToLower() && C.OrgID == OrgID).FirstOrDefault();
                                     if (txLedger != null)
                                         isValueExists = true;
                                     else
@@ -406,6 +403,8 @@ namespace WBT.DLCustomerCreation
                                                 CreatedDate = DateTimeNow,
                                             };
                                             Entities.tblTaxLedgers.Add(tblTaxLedger);
+                                            Entities.SaveChanges();
+                                            dbcxtransaction.Commit();
                                         }
                                         else
                                         {
@@ -413,8 +412,6 @@ namespace WBT.DLCustomerCreation
                                             ResultItem.DisplayMsg = taxLedger.Name + " already exists";
                                             Result.Add(ResultItem);
                                         }
-                                        Entities.SaveChanges();
-                                        dbcxtransaction.Commit();
                                     }
                                     catch (Exception ex)
                                     {

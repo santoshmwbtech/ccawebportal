@@ -97,7 +97,7 @@ namespace CCAPortal.Controllers
                                 success = true,
                                 data = data
                             };
-                            return Json(data, JsonRequestBehavior.AllowGet);
+                            return Json(jsonResult, JsonRequestBehavior.AllowGet);
                         }   
                     }
                     else

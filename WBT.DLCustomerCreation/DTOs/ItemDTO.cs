@@ -11,10 +11,14 @@ namespace WBT.DLCustomerCreation.DTOs
         public string TallyItemName { get; set; }
         public string Brand { get; set; }
         public string ItemName { get; set; }
+        public string Rate { get; set; }
         public string Alias { get; set; }
         public string GroupName { get; set; }
+        public int? CategoryID { get; set; }
         public string Category { get; set; }
+        public int? SubCategoryID { get; set; }
         public string Company { get; set; }
+        public int? ItemCompanyID { get; set; }
         public string ItemDescription { get; set; }
         public string FromTallyHSNCode { get; set; }
         public string CorrectedHSNCode { get; set; }

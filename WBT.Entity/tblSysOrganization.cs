@@ -80,6 +80,12 @@ namespace WBT.Entity
         public Nullable<bool> IsServiceInstalled { get; set; }
         public Nullable<bool> IsTallyUsing { get; set; }
         public string SubscriptionKey { get; set; }
+        public Nullable<int> NoOfUser { get; set; }
+        public Nullable<System.DateTime> SubscriptionDate { get; set; }
+        public Nullable<System.DateTime> FirstActivationDate { get; set; }
+        public Nullable<bool> IsTrialVersion { get; set; }
+        public Nullable<int> NoOfDays { get; set; }
+        public Nullable<int> CityID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAccountLedger> tblAccountLedgers { get; set; }

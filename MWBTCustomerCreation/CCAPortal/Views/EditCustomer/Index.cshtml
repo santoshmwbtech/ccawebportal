@@ -34,6 +34,7 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <p class="card-description">
                         @Html.HiddenFor(model => model.CustID)
+                        @Html.HiddenFor(model => model.ID)
                         @Html.HiddenFor(model => model.BillingLatitude)
                         @Html.HiddenFor(model => model.BillingLongitude)
                         @Html.HiddenFor(model => model.ShippingLatitude)
@@ -528,7 +529,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">GST Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number (ex:29ABCDE1234F2Z5)", @maxlength = "15", @autocomplete = "off"} })
+                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number (ex:29ABCDE1234F2Z5)", @maxlength = "15", @autocomplete = "off", @onchange = "gst_pattern()" } })
                                             @Html.ValidationMessageFor(model => model.GSTNumber, "", new { @class = "text-danger" })
 
                                         </div>
@@ -905,14 +906,9 @@
         $('#Parent1').val(ddlParentID);
         }
 
-        //function gst_pattern() {
-        //    gst_no = document.getElementbyId("#GSTNumber").value;
-        //    var regex = /^[0-9]{2}[a-z]{5}[0-9]{4}[a-z]{1}[1-9a-z]{1}z[0-9a-z]{1}$/;
-        //    if (!regex.test(gst_no)) {
-        //        document.getElementbyId("#GSTNumber").value = '';
-        //        swal("Invalid GST No");
-        //    }
-        //}
+        function gst_pattern() {
+
+        }
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -958,26 +954,25 @@
     </script>
 
     <script type="text/javascript">
-            $(document).ready(function() {
-                $("#GSTNumber").change(function () {
-                    var inputvalues = $(this).val();
-                    var reggst = /^([0-9]){2}([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}([0-9]){1}([a-zA-Z]){1}([0-9]){1}?$/;
-                    if (!reggst.test(inputvalues) && inputvalues != '') {
-                        alert('GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format');
-                        $("#GSTNumber").focus();
-                    }
-                    //var gstinformat = new RegExp('[0-9]{2}[a-z]{4}([a-z]{1}|[0-9]{1}).[0-9]{3}[a-z]([a-z]|[0-9]){3}');
-                    //if (gstinformat.test(inputvalues)) {
-
-                    //    return true;
-                    //} else {
-                    //    alert('Please Enter Valid GST Number');
-                    //    $("#GSTNumber").val('');
-                    //    $("#GSTNumber").focus();
-                    //}
-                });
+        $(document).ready(function () {
+            $("#GSTNumber").change(function () {
+                var gstNumber = $(this).val();
+                var reggst = /^([0-9]){2}([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}([0-9]){1}([a-zA-Z]){1}([0-9]){1}?$/;
+                if (!reggst.test(gstNumber) && gstNumber != '') {
+                    swal.fire('GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format');
+                    swal.fire({
+                        title: "Enter valid GST Number",
+                        text: 'GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format',
+                        type: "success",
+                        icon: "success",
+                        }).then(function () {
+                            $("#GSTNumber").val('');
+                            $("#GSTNumber").focus();
+                        });
+                }
             });
-        </script>
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

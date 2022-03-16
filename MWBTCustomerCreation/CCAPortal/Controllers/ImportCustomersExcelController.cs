@@ -29,18 +29,18 @@ namespace CCAPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult UploadExcel(CustomerCreation customer, HttpPostedFileBase ExcelFile)
+        public JsonResult UploadExcel(CustomerCreation customer, HttpPostedFileBase postedExcelFile)
         {
             List<string> data = new List<string>();
-            if (ExcelFile != null)
+            if (postedExcelFile != null)
             {
                 CustomerCreations DL = new CustomerCreations();
                 // tdata.ExecuteCommand("truncate table OtherCompanyAssets");  
-                if (ExcelFile.ContentType == "application/vnd.ms-excel" || ExcelFile.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                if (postedExcelFile.ContentType == "application/vnd.ms-excel" || postedExcelFile.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {
-                    string filename = ExcelFile.FileName;
+                    string filename = postedExcelFile.FileName;
                     string targetpath = Server.MapPath("~/Uploads/");
-                    ExcelFile.SaveAs(targetpath + filename);
+                    postedExcelFile.SaveAs(targetpath + filename);
                     string pathToExcelFile = targetpath + filename;
                     var connectionString = "";
                     if (filename.EndsWith(".xls"))
@@ -61,7 +61,7 @@ namespace CCAPortal.Controllers
 
                     var excelFile = new ExcelQueryFactory(pathToExcelFile);
                     var customerExcels = from customers in excelFile.Worksheet<CustomerCreation>(sheetName) select customers;
-                    List<CustomerCreation> customerExcelFiles = customerExcels.ToList();
+                    List<CustomerCreation> customerExcelFiles = customerExcels.Where(d => !string.IsNullOrEmpty(d.FirmName)).ToList();
 
                     string UserID = Session["UserID"].ToString();
                     List<CustomerCreation> Result = DL.ImportExcel(customerExcelFiles, UserID, customer.BranchID, Session["OrgID"].ToString());
@@ -75,10 +75,23 @@ namespace CCAPortal.Controllers
                         }
                         data.Add("</ul>");
                         data.ToArray();
-                        return Json(data, JsonRequestBehavior.AllowGet);
+                        var jsonResult = new
+                        {
+                            success = false,
+                            data = data,
+                        };
+                        return Json(jsonResult, JsonRequestBehavior.AllowGet);
                     }
                     else
-                        return Json("success", JsonRequestBehavior.AllowGet);
+                    {
+                        var jsonResult = new
+                        {
+                            success = true,
+                            data = data,
+                        };
+                        return Json(jsonResult, JsonRequestBehavior.AllowGet);
+                    }
+                        
                 }
                 else
                 {
@@ -87,16 +100,26 @@ namespace CCAPortal.Controllers
                     data.Add("<li>Only Excel file format is allowed</li>");
                     data.Add("</ul>");
                     data.ToArray();
-                    return Json(data, JsonRequestBehavior.AllowGet);
+                    var jsonResult = new
+                    {
+                        success = false,
+                        data = data
+                    };
+                    return Json(jsonResult, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
                 data.Add("<ul>");
-                if (ExcelFile == null) data.Add("<li>Please choose Excel file</li>");
+                if (postedExcelFile == null) data.Add("<li>Please choose Excel file</li>");
                 data.Add("</ul>");
                 data.ToArray();
-                return Json(data, JsonRequestBehavior.AllowGet);
+                var jsonResult = new
+                {
+                    success = false,
+                    data = data
+                };
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
             }
         }
     }
