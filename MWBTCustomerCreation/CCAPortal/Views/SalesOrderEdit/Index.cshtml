@@ -193,7 +193,7 @@
                                         <td>
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discPer_" + item.ItemCode + "", @onchange = "discountPerChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discPer_" + item.ItemCode + "", @maxlength = "3", @onchange = "discountPerChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off" })
                                             }
                                             else
                                             {
@@ -284,9 +284,14 @@
         }
         //Discount
         function discountPerChanged(discountPerelement, price, totalValue, itemCode) {
-            $("#progress").show();
-
             var discountPer = discountPerelement.value;
+            if (discountPer > 100) {
+                CreateNotification("error", "Invalid Discount Percentage", "Discount must be less than or equal 100 %");
+                $("#progress").hide();
+                discountPerelement.value = "";
+                discountPerelement.focus();
+            }
+            $("#progress").show();
             price = document.getElementById("rate_" + itemCode).value;
             qty = document.getElementById("bqty_" + itemCode).value;
             var totalPrice = parseFloat(price) * parseFloat(qty);

@@ -74,7 +74,6 @@ namespace WBT.DLCustomerCreation
         public string SysBranchName { get; set; }
         public Nullable<DateTime> ModifiedDate { get; set; }
         public List<DLReceiptsBillDetailsCreation> DLReceiptsBillDetailsCreation { get; set; }
-        public List<Receipts> ReceiptsList = new List<Receipts>();
         public List<DLReceiptsBillDetailsCreation> ReceiptsDetails { get; set; }
         public bool IsChecked { get; set; }
         public int[] BranchList { get; set; }
@@ -152,7 +151,7 @@ namespace WBT.DLCustomerCreation
                     {
                         CustID = bv.FirstOrDefault().CustID,
                         ReceiptID = bv.FirstOrDefault().ReceiptID,
-                        BranchID= bv.FirstOrDefault().BranchID,
+                        BranchID = bv.FirstOrDefault().BranchID,
                         area = bv.FirstOrDefault().area,
                         OrgID = bv.FirstOrDefault().OrgID,
                         Date = bv.FirstOrDefault().Date,
@@ -241,13 +240,13 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-        
+
         public Receipts GetReceiptDetails(string ReceiptID)
         {
             MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
             Receipts receipt = new Receipts();
             try
-            {                
+            {
                 using (Entities = new MWBTCustomerAppEntities())
                 {
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
@@ -260,14 +259,14 @@ namespace WBT.DLCustomerCreation
                         receipt.ReceiptID = tblAccountReceiptDetails.ReceiptID;
                         receipt.OrgID = tblAccountReceiptDetails.OrgID;
                         receipt.Date = tblAccountReceiptDetails.ReceiptDatetime;
-                        receipt.Amount = tblAccountReceiptDetails.Amount;                        
+                        receipt.Amount = tblAccountReceiptDetails.Amount;
                         receipt.CreatedByID = tblAccountReceiptDetails.CreatedByID;
                         receipt.CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().FirmName;
                         receipt.CustomerState = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().BillingState;
                         receipt.CustomerCity = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().BillingCity;
                         receipt.CustomerArea = Entities.tblCustomerVendorDetails.Where(r => r.CustID == Entities.tblAccountReceiptWithBillDetails.Where(r1 => r1.ReceiptID == tblAccountReceiptDetails.ReceiptID).FirstOrDefault().CustID).FirstOrDefault().BillingArea;
                         receipt.VoucherTypeNo = tblAccountReceiptDetails.VoucherTypeNo;
-                        receipt.LedgerID =  tblAccountReceiptDetails.LedgerID;
+                        receipt.LedgerID = tblAccountReceiptDetails.LedgerID;
                         receipt.PaymentType = tblAccountReceiptDetails.PaymentType;
                         receipt.BankOrCash = tblAccountReceiptDetails.BankOrCash == "C" ? "Cash" : "Bank";
                         receipt.SalesManID = tblAccountReceiptDetails.SalesManID;
@@ -297,6 +296,7 @@ namespace WBT.DLCustomerCreation
                                          where a.ReceiptID == ReceiptID
                                          select new DLReceiptsBillDetailsCreation
                                          {
+                                             id = b.ID,
                                              Billdatetime = b.Billdatetime,
                                              Billamount = b.Credit,
                                              BillNo = b.BillNo,
@@ -323,7 +323,7 @@ namespace WBT.DLCustomerCreation
                 }
             }
             catch (Exception ex)
-            {               
+            {
                 Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
                 return null;
             }
@@ -569,6 +569,7 @@ namespace WBT.DLCustomerCreation
 
     public class DLReceiptsBillDetailsCreation
     {
+        public int id { get; set; }
         public string Refvalue { get; set; }
         public string CustomerName { get; set; }
         public System.Guid ReceiptWithBillID { get; set; }
@@ -678,7 +679,7 @@ namespace WBT.DLCustomerCreation
                                     {
                                         var getExistingBill = (from payBilll in Entities.tblAccountReceiptWithBillDetails
                                                                where
-                                                                payBilll.BillNo == item.BillNo &&
+                                                                payBilll.ID == item.id &&
                                                                 payBilll.ReceiptID == mDLReceiptsCreation.ReceiptID
                                                                && payBilll.ReceiptWithBillID == item.ReceiptWithBillID
                                                                select payBilll).FirstOrDefault();
@@ -695,13 +696,14 @@ namespace WBT.DLCustomerCreation
                                         List<tblAccountReceiptWithBillDetail> accountReceiptWithBillDetail = new List<tblAccountReceiptWithBillDetail>();
                                         var BillExist = (from payBilll in Entities.tblAccountReceiptWithBillDetails
                                                          where
-                                                         payBilll.BillNo == item.BillNo &&
+                                                         payBilll.ID == item.id &&
                                                           payBilll.ReceiptID == mDLReceiptsCreation.ReceiptID
                                                          && payBilll.ReceiptWithBillID == item.ReceiptWithBillID
                                                          select payBilll).FirstOrDefault();
 
                                         if (BillExist != null)
                                         {
+                                            BillExist.ID = item.id;
                                             BillExist.BillNo = string.IsNullOrEmpty(item.Name) ? item.BillNo : item.Name;
                                             BillExist.BillType = item.BillType;
                                             BillExist.Billamount = item.Billamount;

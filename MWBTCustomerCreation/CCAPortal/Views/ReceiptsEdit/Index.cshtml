@@ -173,6 +173,7 @@
                                 {
                                     <tr>
                                         <td style="text-align:center;">
+                                            @Html.HiddenFor(a => a.ReceiptsDetails[j].id)
                                             @Html.DisplayFor(a => a.ReceiptsDetails[j].Billdatetime)
                                             @Html.HiddenFor(a => a.ReceiptsDetails[j].ReceiptWithBillID)
                                             @Html.HiddenFor(a => a.ReceiptsDetails[j].ReceiptID)

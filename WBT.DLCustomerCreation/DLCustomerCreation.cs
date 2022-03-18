@@ -2774,7 +2774,6 @@ namespace WBT.DLCustomerCreation
                     }
                     if (search.TaxationTypeList != null && search.TaxationTypeList.Count() > 0)
                     {
-                        List<tblTaxationType> taxationTypes = Entities.tblTaxationTypes.Where(c => search.TaxationTypeList.Contains(c.TaxationTypeID)).ToList();
                         customerCreationList = customerCreationList.Where(c => search.TaxationTypeList.Contains(c.TaxationTypeID.Value)).ToList();
                     }
                     return customerCreationList;
@@ -2977,7 +2976,6 @@ namespace WBT.DLCustomerCreation
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
