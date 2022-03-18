@@ -91,7 +91,7 @@
                             <div class="form-group">
                                 <label>Customer Name </label>
                                 <div>
-                                    @Html.TextBoxFor(m => m.CustomerName, new { @readonly = "readonly",@class = "form-control" })
+                                    @Html.TextBoxFor(m => m.CustomerName, new { @readonly = "readonly", @class = "form-control" })
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                     </div>
                 </div>
 
-                <table class="table" id="tbl">
+                <table class="table" id="tblSalesOrderItem">
                     <thead style="text-align:center">
                         <tr>
                             <th>Item Name</th>
@@ -150,6 +150,7 @@
                             <th>Discount %</th>
                             <th>Discount Value</th>
                             <th>Total Price</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -203,7 +204,7 @@
                                         <td>
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discAmt_" + item.ItemCode + "", @onchange = "discountAmtChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountAmt, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discAmt_" + item.ItemCode + "", @onchange = "discountAmtChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off", @maxlength = "10" })
                                             }
                                             else
                                             {
@@ -212,6 +213,9 @@
                                         </td>
                                         <td>
                                             @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].Value, new { @class = "form-control numberonly", @id = "ttlp_" + item.ItemCode + "", @readonly = "readonly", @style = "text-align:right;" })
+                                        </td>
+                                        <td>
+                                            <button type="button" id='[@j].btndelete' name='[@j].btndelete' onclick="btndeleterow(this);" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                     j++;
@@ -249,6 +253,12 @@
 
 @section scripts {
     <script>
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-right',
+            showConfirmButton: false,
+            timer: 3000
+        });
         function calculating(qty, price, itemName, itemCode) {
             var p = document.getElementById("rate_" + itemCode).value;
             var discountPer = document.getElementById("discPer_" + itemCode).value;
@@ -267,35 +277,52 @@
         }
 
         function calculating_pricechg(price, itemCode1) {
-            var qty = document.getElementById("bqty_" + itemCode1).value;
-            var discountPer = document.getElementById("discPer_" + itemCode1).value;
-            var discountAmt = document.getElementById("discAmt_" + itemCode1).value;
-            var totalPrice = parseFloat(price.value) * parseFloat(qty);
-            if (discountPer) {
-                discountAmt = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
-                totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+            if (price.value > 0) {
+                var qty = document.getElementById("bqty_" + itemCode1).value;
+                var discountPer = document.getElementById("discPer_" + itemCode1).value;
+                var discountAmt = document.getElementById("discAmt_" + itemCode1).value;
+                var totalPrice = parseFloat(price.value) * parseFloat(qty);
+                if (discountPer) {
+                    discountAmt = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
+                    totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+                }
+                else if (discountAmt) {
+                    totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+                }
+                //var res = (parseFloat(totalPrice) * qty);
+                document.getElementById("ttlp_" + itemCode1).value = totalPrice.toFixed(2);
+                document.getElementById("discAmt_" + itemCode1).value = discountAmt.toFixed(2);
             }
-            else if (discountAmt) {
-                totalPrice = parseFloat(totalPrice) - parseFloat(discountAmt);
+            else {
+                Toast.fire({
+                    class: 'bg-error',
+                    icon: 'error',
+                    title: 'Price should not be zero'
+                })
+                price.value = "";
+                price.focus();
+                return false;
             }
-            //var res = (parseFloat(totalPrice) * qty);
-            document.getElementById("ttlp_" + itemCode1).value = totalPrice.toFixed(2);
-            document.getElementById("discAmt_" + itemCode1).value = discountAmt.toFixed(2);
         }
         //Discount
         function discountPerChanged(discountPerelement, price, totalValue, itemCode) {
             var discountPer = discountPerelement.value;
             if (discountPer > 100) {
-                CreateNotification("error", "Invalid Discount Percentage", "Discount must be less than or equal 100 %");
+                Toast.fire({
+                    class: 'bg-error',
+                    icon: 'error',
+                    title: 'Discount percentage must be less than or equal 100%'
+                })
                 $("#progress").hide();
                 discountPerelement.value = "";
                 discountPerelement.focus();
+                return false;
             }
             $("#progress").show();
             price = document.getElementById("rate_" + itemCode).value;
             qty = document.getElementById("bqty_" + itemCode).value;
             var totalPrice = parseFloat(price) * parseFloat(qty);
-            var discountAmt = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
+            var discountAmt  = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
             document.getElementById("ttlp_" + itemCode).value = totalPrice - discountAmt;
             document.getElementById("discAmt_" + itemCode).value = discountAmt;
             $("#progress").hide();
@@ -307,6 +334,17 @@
             document.getElementById("discPer_" + itemCode).value = "";
             var discountAmt = discountAmtelement.value;
             var totalPrice = parseFloat(price) * parseFloat(qty);
+            if (discountAmt > totalPrice) {
+                Toast.fire({
+                    class: 'bg-error',
+                    icon: 'error',
+                    title: 'Discount amount be less than or equal to ' + totalPrice.toFixed(2)
+                })
+                $("#progress").hide();
+                discountAmtelement.value = "";
+                discountAmtelement.focus();
+                return false;
+            }
             document.getElementById("ttlp_" + itemCode).value = totalPrice - discountAmt;
             $("#progress").hide();
         }
@@ -431,6 +469,21 @@
         function printSO(element) {
             var SalesOrderNumber = $(element).attr('id');
             window.open('@Url.Action("Invoiceprint", "SalesOrderEdit")?SalesOrderNumber=' + SalesOrderNumber, "_blank", "width=650,height=800,TOOLBAR=no,MENUBAR=no,SCROLLBARS=no,RESIZABLE=no,LOCATION=no,DIRECTORIES=no,STATUS=no");
+        }
+        function btndeleterow(element) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(element).closest('tr').remove();
+                }
+            })
         }
     </script>
 }
