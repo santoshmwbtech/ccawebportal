@@ -14,20 +14,10 @@ using WBT.DLCustomerCreation;
 using WBT.DL.Transaction;
 using static WBT.DL.Master.DLItemWarehouseMap;
 using System.Globalization;
+using System.Net;
 
 namespace WBT.DLCustomerCreation
 {
-
-    //public class DLGetAllSOBindData
-    //{
-    //    public List<DLBranchList> DLBranchList { get; set; } = new List<DLBranchList>();
-    //    public List<DLBusinessTypes> DLBusinessTypes { get; set; } = new List<DLBusinessTypes>();
-    //    public List<DLCreditTypes> DLCreditTypes { get; set; } = new List<DLCreditTypes>();
-    //    public List<DLSalesmanList> DLSalesPersonList { get; set; } = new List<DLSalesmanList>();
-    //    public List<DLSalesmanList> DLBrokerList { get; set; } = new List<DLSalesmanList>();
-    //    public List<DLVoucherTypes> DLVoucherTypesList { get; set; } = new List<DLVoucherTypes>();
-    //}
-
     public class SalesOrders
     {
         public int ID { get; set; }
@@ -86,7 +76,7 @@ namespace WBT.DLCustomerCreation
         public Nullable<bool> IsGatePassEntered { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public string RegistrationType { get; set; }
-        public Nullable<decimal> DiscountPercentage { get; set; }
+        public decimal? DiscountPercentage { get; set; }
         public Nullable<bool> IsDirectSale { get; set; }
         public string TallyStatus { get; set; }
         public virtual DLCustomerVendorDetailCreation DLCustomerVendorDetail { get; set; }
@@ -103,10 +93,10 @@ namespace WBT.DLCustomerCreation
         public Nullable<bool> IsDiscountRangeExceeded { get; set; }
         public Nullable<decimal> DiscountAmt { get; set; }
         public Nullable<bool> IsDirectSO { get; set; }
-        public bool SOSelected { get; set; }//Added for Multiso selection  for SO on 12032021
-        public string SOWarehouseID { get; set; }//Added for Multiso selection  for SO on 12032021
-        public string SOOrgID { get; set; }//Added for Multiso selection  for SO on 12032021
-        public string SOBranchID { get; set; }//Added for Multiso selection  for SO on 12032021
+        public bool SOSelected { get; set; }
+        public string SOWarehouseID { get; set; }
+        public string SOOrgID { get; set; }
+        public string SOBranchID { get; set; }
 
         #region used for so dashboard 8/1/2020
         public int CategoryID { get; set; }
@@ -116,7 +106,7 @@ namespace WBT.DLCustomerCreation
         public DateTime VisitedDate { get; set; }
         public int Quantity { get; set; }
         public DateTime FinancialYearStart { get; set; }
-        public Nullable<System.DateTime> FinancialYearEnd { get; set; }
+        public DateTime? FinancialYearEnd { get; set; }
         #endregion
 
         #region DEVIKA
@@ -146,7 +136,6 @@ namespace WBT.DLCustomerCreation
         public string CmpBankName { get; set; }
         public string CmpIFSCODE { get; set; }
         public string BillingAddress { get; set; }
-
         public string VoucherTypeNo { get; set; }
         public string DisplayMessage { get; set; }
         public bool IsChecked { get; set; }
@@ -180,7 +169,7 @@ namespace WBT.DLCustomerCreation
         public BranchDetails BranchDetails { get; set; }
         public string cpincode { get; set; }
         public bool PriceSyncType { get; set; }
-        
+        public HttpStatusCode statusCode { get; set; }
     }
 
     public class DLSalesOrders
@@ -250,7 +239,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         public List<SalesOrders> GetData(string OrgID, string Name = "")
         {
             try
@@ -277,7 +265,7 @@ namespace WBT.DLCustomerCreation
                                       IsTallyUpdated = so.IsTallyUpdated,
                                       TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
                                       TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
-                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum(),
+                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum() - (so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().HasValue ? so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().Value : 0),
                                       IsEdited = so.IsEdited,
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
@@ -297,7 +285,7 @@ namespace WBT.DLCustomerCreation
                                       IsTallyUpdated = so.IsTallyUpdated,
                                       TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
                                       TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
-                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum(),
+                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum() - (so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().HasValue ? so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().Value : 0),
                                       IsEdited = so.IsEdited,
                                   }).OrderByDescending(i => i.ID).ToList();
                     }
@@ -310,7 +298,6 @@ namespace WBT.DLCustomerCreation
 
             return SOList;
         }
-
         public List<SalesOrders> GetSOList(SalesOrders search)
         {
             try
@@ -319,6 +306,7 @@ namespace WBT.DLCustomerCreation
                 {
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
+                    var customers = Entities.tblCustomerVendorDetails.AsNoTracking();
 
                     //int TallyUserID = Entities.tblSysUsers.Where(s => s.FName.ToLower() == "tally upload").FirstOrDefault().UserID;
                     //List<tblSysUser> UserList = Entities.tblSysUsers.Where(u => u.RoleID == 3).ToList();
@@ -331,7 +319,7 @@ namespace WBT.DLCustomerCreation
                                                      CustID = so.CustID,
                                                      OrgID = so.OrgID,
                                                      BranchID = so.BranchID,
-                                                     SalesmanID = so.SalesmanID,
+                                                     SalesmanID = so.CreatedByID,
                                                      SalesOrderNumber = so.SalesOrderNumber,
                                                      FirmName = cust.FirmName,
                                                      OrderNumber = so.SalesOrderNumber,
@@ -339,12 +327,10 @@ namespace WBT.DLCustomerCreation
                                                      OrderDate = so.SalesDatetime,
                                                      createdByID = so.CreatedByID,
                                                      SalesDateTime = so.SalesDatetime,
-
-                                                     CustomerName = Entities.tblCustomerVendorDetails.Where(r => r.CustID == so.CustID).FirstOrDefault().FirmName,
-
-                                                     stateID = Entities.tblCustomerVendorDetails.Where(r => r.CustID == so.CustID).FirstOrDefault().StateID,
-                                                     cityID = Entities.tblCustomerVendorDetails.Where(r => r.CustID == so.CustID).FirstOrDefault().CityID,
-                                                     districtID = Entities.tblCustomerVendorDetails.Where(r => r.CustID == so.CustID).FirstOrDefault().DistrictID,
+                                                     CustomerName = customers.Where(r => r.CustID == so.CustID).FirstOrDefault().FirmName,
+                                                     stateID = customers.Where(r => r.CustID == so.CustID).FirstOrDefault().StateID,
+                                                     cityID = customers.Where(r => r.CustID == so.CustID).FirstOrDefault().CityID,
+                                                     districtID = customers.Where(r => r.CustID == so.CustID).FirstOrDefault().DistrictID,
                                                      CreationDate = so.CreationDate,
                                                      companyTypeID = cust.CompanyTypeID,
                                                      customerType = cust.CustomerTypeID,
@@ -529,7 +515,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         public SalesOrders GetSalesOrderDetails(string SalesOrderNumber, bool requestPrint = false)
         {
             SalesOrders salesOrder = new SalesOrders();
@@ -652,7 +637,7 @@ namespace WBT.DLCustomerCreation
                                              IGSTLedger = Entities.tblTaxLedgers.Where(t => t.TaxPercentage == c.GST).FirstOrDefault().Name,
                                              DiscountAmt = a.DiscountAmt == null ? 0 : a.DiscountAmt.Value,
                                              RatePerUnit = a.tblItem.tblItemRate.tblUOM.Unit,
-                                         }).Distinct().ToList();
+                                         }).Distinct().OrderBy(d => d.ItemName).ToList();
                         var adminSettings = Entities.tblAdminSettings.Where(d => d.OrgID == salesOrder.OrgID).FirstOrDefault();
                         if (requestPrint)
                         {
@@ -692,7 +677,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         public SalesOrders GetSalesOrderItems(string OrderNumber)
         {
             SalesOrders SsalesOrders = new SalesOrders();
@@ -741,7 +725,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         public bool UpdateTallyStatus(SalesOrders sOrders)
         {
             try
@@ -787,7 +770,6 @@ namespace WBT.DLCustomerCreation
                 return false;
             }
         }
-
         public bool UpdateTallyStatusFromService(SalesOrders sOrders, bool Error = false)
         {
             try
@@ -853,163 +835,147 @@ namespace WBT.DLCustomerCreation
                 return false;
             }
         }
-
         private SalesOrders mSalesOrder = new SalesOrders();
         private tblSalesOrder lSalesOrder = new tblSalesOrder();
         public SalesOrders updateSalesOrder(SalesOrders mSalesOrder)
         {
+            var result = new SalesOrders();
             try
             {
 
-                var IsValueexists = (from so in Entities.tblSalesOrders.AsNoTracking()
-                                     where so.SalesOrderNumber.ToLower().Trim().Equals(mSalesOrder.SalesOrderNumber.ToLower().Trim())
-                                      && so.ID != mSalesOrder.ID && so.IsActive == true
-                                     select so.SalesOrderNumber).FirstOrDefault();
+                lSalesOrder = (from so in Entities.tblSalesOrders.AsNoTracking()
+                               where so.SalesOrderNumber.ToLower().Trim() == mSalesOrder.SalesOrderNumber.ToLower().Trim()
+                               select so).FirstOrDefault();
 
-                if (IsValueexists != null && IsValueexists.Count() != 0)
+                if (lSalesOrder != null)
                 {
-                    //this.GetApplicationActivate.DataState = Common.TransactionType.DataExists;
-                }
-                else
-                {
-                    lSalesOrder = (from so in Entities.tblSalesOrders.AsNoTracking()
-                                   where so.SalesOrderNumber.ToLower().Trim() == mSalesOrder.SalesOrderNumber.ToLower().Trim()
-                                   select so).FirstOrDefault();
-
-                    if (lSalesOrder != null)
+                    using (Entities = new MWBTCustomerAppEntities())
                     {
-                        using (Entities = new Entity.MWBTCustomerAppEntities())
+                        using (var dbcxtransaction = Entities.Database.BeginTransaction())
                         {
-                            using (var dbcxtransaction = Entities.Database.BeginTransaction())
+                            try
                             {
-                                try
+                                #region SalesOrder
+                                lSalesOrder.VoucherTypeNo = mSalesOrder.VoucherTypeID;
+                                lSalesOrder.BrokerID = mSalesOrder.BrokerID;
+                                lSalesOrder.ModifiedByID = mSalesOrder.ModifiedByID;
+                                lSalesOrder.TotalItemCount = mSalesOrder.DLSalesOrderWithItemCreations.Count;
+
+                                lSalesOrder.UpdateDate = Common.Helper.GetCurrentDate;
+                                lSalesOrder.DueDate = mSalesOrder.DueDate;
+                                lSalesOrder.Status = mSalesOrder.Status;
+                                lSalesOrder.SalesType = mSalesOrder.SalesType.ToLower() == "local state" ? "LS" : "IS";
+                                lSalesOrder.IsBulkSale = mSalesOrder.IsBulkSale;
+                                lSalesOrder.PANNumber = mSalesOrder.PANNumber;
+                                lSalesOrder.DiscountAmt = mSalesOrder.DiscountAmt;
+                                lSalesOrder.DiscountPercentage = mSalesOrder.DiscountPercentage;
+                                lSalesOrder.IsDiscountRangeExceeded = mSalesOrder.IsDiscountRangeExceeded;
+                                lSalesOrder.BusinessTypeId = mSalesOrder.BusinessTypeId;
+                                lSalesOrder.BusinessTypeValue = mSalesOrder.BusinessTypeValue;
+                                lSalesOrder.CreditTypeValue = mSalesOrder.CreditTypeValue;
+                                lSalesOrder.CreditTypeId = mSalesOrder.CreditTypeId;
+                                lSalesOrder.BillingAddress = mSalesOrder.ShippingAdddress;
+                                lSalesOrder.BranchID = lSalesOrder.BranchID;
+                                lSalesOrder.IsEdited = mSalesOrder.IsTallyUpdated == true ? true : false;
+
+
+                                #endregion
+
+                                #region Edit Credit/cash Customer Shipping Address 12/12/2019
+                                if (mSalesOrder.DLCustomerVendorDetail != null)
                                 {
-                                    #region SalesOrder
-                                    lSalesOrder.VoucherTypeNo = mSalesOrder.VoucherTypeID;
-                                    lSalesOrder.BrokerID = mSalesOrder.BrokerID;
-                                    lSalesOrder.ModifiedByID = mSalesOrder.ModifiedByID;
-                                    lSalesOrder.TotalItemCount = mSalesOrder.DLSalesOrderWithItemCreations.Count;
+                                    tblCustomerVendorDetail customer = Entities.tblCustomerVendorDetails.Where(i => i.CustID == mSalesOrder.CustID).FirstOrDefault();
+                                    customer.ShippingAddress = mSalesOrder.DLCustomerVendorDetail.ShippingAddress;
+                                    Entities.tblCustomerVendorDetails.Attach(customer);
+                                    Entities.Entry(customer).State = EntityState.Modified;
+                                }
+                                #endregion
 
-                                    lSalesOrder.UpdateDate = Common.Helper.GetCurrentDate;
-                                    lSalesOrder.DueDate = mSalesOrder.DueDate;
-                                    lSalesOrder.Status = mSalesOrder.Status;
-                                    lSalesOrder.SalesType = mSalesOrder.SalesType.ToLower() == "local state" ? "LS" : "IS";
-                                    lSalesOrder.IsBulkSale = mSalesOrder.IsBulkSale;
-                                    lSalesOrder.PANNumber = mSalesOrder.PANNumber;
-                                    lSalesOrder.DiscountAmt = mSalesOrder.DiscountAmt;
-                                    lSalesOrder.DiscountPercentage = mSalesOrder.DiscountPercentage;
-                                    lSalesOrder.IsDiscountRangeExceeded = mSalesOrder.IsDiscountRangeExceeded;
-                                    lSalesOrder.BusinessTypeId = mSalesOrder.BusinessTypeId;
-                                    lSalesOrder.BusinessTypeValue = mSalesOrder.BusinessTypeValue;
-                                    lSalesOrder.CreditTypeValue = mSalesOrder.CreditTypeValue;
-                                    lSalesOrder.CreditTypeId = mSalesOrder.CreditTypeId;
-                                    lSalesOrder.BillingAddress = mSalesOrder.ShippingAdddress;
-                                    lSalesOrder.BranchID = lSalesOrder.BranchID;
-                                    lSalesOrder.IsEdited = mSalesOrder.IsTallyUpdated == true ? true : false;
+                                #region LineItem
+                                foreach (DLSalesOrderWithItemCreation item in mSalesOrder.DLSalesOrderWithItemCreations)
+                                {
+                                    item.ModifiedByID = mSalesOrder.ModifiedByID;// Convert.ToInt32(UserID);
+                                    item.CreatedByID = mSalesOrder.createdByID;
+                                    item.SalesOrderNumber = mSalesOrder.SalesOrderNumber;
+                                    //List<SalesOrderItemWarehouseMapResult> SalesOrderItemWarehouseMapForCurrentLineItem = mSalesOrder.SalesOrderItemWarehouseMapResult.Where(salesOrderItemWarehouseMap => salesOrderItemWarehouseMap.ItemCode == item.ItemCode && salesOrderItemWarehouseMap.LineItemID == item.SalesOrderWithItemID).ToList<SalesOrderItemWarehouseMapResult>(); //&& salesOrderItemWarehouseMap.LineItemID == item.SalesOrderWithItemID
+                                    //item.SalesOrderItemWarehouseMaps = new List<DLSalesOrderItemWarehouseMapCreation>();
+
+                                    //foreach (SalesOrderItemWarehouseMapResult s in SalesOrderItemWarehouseMapForCurrentLineItem)
+                                    //{
+                                    //    DLSalesOrderItemWarehouseMapCreation warehouseMap = new DLSalesOrderItemWarehouseMapCreation()
+                                    //    {
+                                    //        ID = s.ID,
+                                    //        ItemCode = s.ItemCode,
+                                    //        QuantityOrdered = s.Quantity,
+                                    //        TotalLinItemQuantity = s.QuantityAvailable,
+                                    //        SalesOrderNumber = item.SalesOrderNumber,
+                                    //        WarehouseID = s.WarehouseID,
+                                    //        ModifiedByID = item.ModifiedByID,
+                                    //        CreatedByID = item.CreatedByID,
+                                    //        UpdateDate = DateTime.Now,
+                                    //        SalesOrderWithItemID = item.SalesOrderWithItemID,
+                                    //        IsNegativeStock = s.IsNegativeStock,  // s.Quantity > s.QuantityAvailable,
+                                    //        IsFIFOSkipped = s.IsFiFOSkipped,   //26_12_2019
+                                    //        BatchID = s.BatchID,
+                                    //        OrgID = s.OrgID
+                                    //    };
+                                    //    item.SalesOrderItemWarehouseMaps.Add(warehouseMap);
+                                    //}
 
 
-                                    #endregion
+                                    //////Get Line Item from DB
+                                    //////If only QTY changed
+                                    var SOLWithOldQTY = Entities.tblSalesOrderWithItems.AsNoTracking()
+                                               .Where(e => e.SalesOrderWithItemID == item.SalesOrderWithItemID && e.ItemCode == item.ItemCode).FirstOrDefault();
+                                    //If ItemCode has changed
+                                    var SOLWithOldItemCode = Entities.tblSalesOrderWithItems.AsNoTracking()
+                                               .Where(e => e.SalesOrderWithItemID == item.SalesOrderWithItemID && e.ItemCode != item.ItemCode).FirstOrDefault();
 
-                                    #region Edit Credit/cash Customer Shipping Address 12/12/2019
-                                    if (mSalesOrder.DLCustomerVendorDetail != null)
+                                    #region If in existing QTY Changed
+                                    if (SOLWithOldQTY != null)
                                     {
-                                        tblCustomerVendorDetail customer = Entities.tblCustomerVendorDetails.Where(i => i.CustID == mSalesOrder.CustID).FirstOrDefault();
-                                        customer.ShippingAddress = mSalesOrder.DLCustomerVendorDetail.ShippingAddress;
-                                        Entities.tblCustomerVendorDetails.Attach(customer);
-                                        Entities.Entry(customer).State = EntityState.Modified;
+                                        //SOLWithOldQTY.tblSalesOrderItemWarehouseMaps = new List<tblSalesOrderItemWarehouseMap>();
+                                        //SOLWithOldQTY.BagQTY = 
+                                        //Increase/Decrease/Add entries to tblSalesOrderItemWarehouseMaps
+                                        //AdjustStockDetail(item, SOLWithOldQTY);
+                                        //Update Line Item i.e.. tblsalesorderwithitem
+                                        UpdateLineItem(item, SOLWithOldQTY);
                                     }
                                     #endregion
-
-                                    #region LineItem
-                                    foreach (DLSalesOrderWithItemCreation item in mSalesOrder.DLSalesOrderWithItemCreations)
+                                    #region If existing ItemCodeChanged
+                                    if (SOLWithOldItemCode != null)
                                     {
-                                        item.ModifiedByID = mSalesOrder.ModifiedByID;// Convert.ToInt32(UserID);
-                                        item.CreatedByID = mSalesOrder.createdByID;
-                                        item.SalesOrderNumber = mSalesOrder.SalesOrderNumber;
-                                        //List<SalesOrderItemWarehouseMapResult> SalesOrderItemWarehouseMapForCurrentLineItem = mSalesOrder.SalesOrderItemWarehouseMapResult.Where(salesOrderItemWarehouseMap => salesOrderItemWarehouseMap.ItemCode == item.ItemCode && salesOrderItemWarehouseMap.LineItemID == item.SalesOrderWithItemID).ToList<SalesOrderItemWarehouseMapResult>(); //&& salesOrderItemWarehouseMap.LineItemID == item.SalesOrderWithItemID
-                                        //item.SalesOrderItemWarehouseMaps = new List<DLSalesOrderItemWarehouseMapCreation>();
-
-                                        //foreach (SalesOrderItemWarehouseMapResult s in SalesOrderItemWarehouseMapForCurrentLineItem)
+                                        //if (item.SalesOrderItemWarehouseMaps != null && SOLWithOldItemCode.tblSalesOrderItemWarehouseMaps.Count > 0)
                                         //{
-                                        //    DLSalesOrderItemWarehouseMapCreation warehouseMap = new DLSalesOrderItemWarehouseMapCreation()
-                                        //    {
-                                        //        ID = s.ID,
-                                        //        ItemCode = s.ItemCode,
-                                        //        QuantityOrdered = s.Quantity,
-                                        //        TotalLinItemQuantity = s.QuantityAvailable,
-                                        //        SalesOrderNumber = item.SalesOrderNumber,
-                                        //        WarehouseID = s.WarehouseID,
-                                        //        ModifiedByID = item.ModifiedByID,
-                                        //        CreatedByID = item.CreatedByID,
-                                        //        UpdateDate = DateTime.Now,
-                                        //        SalesOrderWithItemID = item.SalesOrderWithItemID,
-                                        //        IsNegativeStock = s.IsNegativeStock,  // s.Quantity > s.QuantityAvailable,
-                                        //        IsFIFOSkipped = s.IsFiFOSkipped,   //26_12_2019
-                                        //        BatchID = s.BatchID,
-                                        //        OrgID = s.OrgID
-                                        //    };
-                                        //    item.SalesOrderItemWarehouseMaps.Add(warehouseMap);
+                                        //Delete the SalesOrderItemWarehouseMap  entries for the old item code
+                                        //DeleteWarehouseMapForOldLineItem(SOLWithOldItemCode);
+                                        //Insert the SalesOrderItemWarehouseMap  entries for the new item code
+                                        //AddWarehouseMapForUpdatedLineItem(item);
                                         //}
-
-
-                                        //////Get Line Item from DB
-                                        //////If only QTY changed
-                                        var SOLWithOldQTY = Entities.tblSalesOrderWithItems.AsNoTracking()
-                                                   .Where(e => e.SalesOrderWithItemID == item.SalesOrderWithItemID && e.ItemCode == item.ItemCode).FirstOrDefault();
-                                        //If ItemCode has changed
-                                        var SOLWithOldItemCode = Entities.tblSalesOrderWithItems.AsNoTracking()
-                                                   .Where(e => e.SalesOrderWithItemID == item.SalesOrderWithItemID && e.ItemCode != item.ItemCode).FirstOrDefault();
-
-                                        #region If in existing QTY Changed
-                                        if (SOLWithOldQTY != null)
-                                        {
-                                            //SOLWithOldQTY.tblSalesOrderItemWarehouseMaps = new List<tblSalesOrderItemWarehouseMap>();
-                                            //SOLWithOldQTY.BagQTY = 
-                                            //Increase/Decrease/Add entries to tblSalesOrderItemWarehouseMaps
-                                            //AdjustStockDetail(item, SOLWithOldQTY);
-                                            //Update Line Item i.e.. tblsalesorderwithitem
-                                            UpdateLineItem(item, SOLWithOldQTY);
-                                        }
-                                        #endregion
-                                        #region If existing ItemCodeChanged
-                                        if (SOLWithOldItemCode != null)
-                                        {
-                                            //if (item.SalesOrderItemWarehouseMaps != null && SOLWithOldItemCode.tblSalesOrderItemWarehouseMaps.Count > 0)
-                                            //{
-                                            //Delete the SalesOrderItemWarehouseMap  entries for the old item code
-                                            //DeleteWarehouseMapForOldLineItem(SOLWithOldItemCode);
-                                            //Insert the SalesOrderItemWarehouseMap  entries for the new item code
-                                            //AddWarehouseMapForUpdatedLineItem(item);
-                                            //}
-                                            //Update Line Item related data for the old Record
-                                            //UpdateLineItem(item, SOLWithOldItemCode);
-                                        }
-                                        #endregion
-                                        #region If new LineItemAdded
-                                        else if (SOLWithOldQTY == null && SOLWithOldItemCode == null)
-                                        {
-                                            //Insert the records to the Table
-                                            //tblSalesOrderWithItem lineItem = CreateSalesOrderLineItemAndUpdateStock(item);
-                                            //Add to SalesOrderWithItems so that it will be saved to DB
-                                            //Entities.tblSalesOrderWithItems.Add(lineItem);
-                                        }
-                                        #endregion
+                                        //Update Line Item related data for the old Record
+                                        //UpdateLineItem(item, SOLWithOldItemCode);
                                     }
                                     #endregion
-                                    Entities.Entry(lSalesOrder).State = EntityState.Modified;
-                                    Entities.SaveChanges();
-                                    dbcxtransaction.Commit();
-                                    //this.GetApplicationActivate.DataState = Common.TransactionType.Success;
+                                    #region If new LineItemAdded
+                                    else if (SOLWithOldQTY == null && SOLWithOldItemCode == null)
+                                    {
+                                        //Insert the records to the Table
+                                        //tblSalesOrderWithItem lineItem = CreateSalesOrderLineItemAndUpdateStock(item);
+                                        //Add to SalesOrderWithItems so that it will be saved to DB
+                                        //Entities.tblSalesOrderWithItems.Add(lineItem);
+                                    }
+                                    #endregion
                                 }
-                                catch (Exception ex)
-                                {
-                                    dbcxtransaction.Rollback();
-                                    //this.GetApplicationActivate.DataState = Common.TransactionType.Error;
-                                    //this.GetApplicationActivate.GetErrormessages = ex.Message;
-                                    //this.GetApplicationActivate.GetErrorSource = ex.Source;
-                                    //this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;
-                                    throw;
-                                }
+                                #endregion
+                                Entities.Entry(lSalesOrder).State = EntityState.Modified;
+                                Entities.SaveChanges();
+                                dbcxtransaction.Commit();
+                                result.statusCode = HttpStatusCode.OK;
+                            }
+                            catch (Exception ex)
+                            {
+                                result.statusCode = HttpStatusCode.InternalServerError;
+                                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
                             }
                         }
                     }
@@ -1017,15 +983,11 @@ namespace WBT.DLCustomerCreation
             }
             catch (Exception ex)
             {
-                //this.GetApplicationActivate.DataState = Common.TransactionType.Error;
-                //this.GetApplicationActivate.GetErrormessages = ex.Message;
-                //this.GetApplicationActivate.GetErrorSource = ex.Source;
-                //this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;
-                throw;
+                result.statusCode = HttpStatusCode.InternalServerError;
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
             }
-            return new SalesOrders();
+            return result;
         }
-
         private tblCustomerVendorDetail ConstructCustomer(DLCustomerVendorDetailCreation customer)
         {
             return new tblCustomerVendorDetail
@@ -1053,7 +1015,6 @@ namespace WBT.DLCustomerCreation
                 CustomerType = customer.CustomerType,
             };
         }
-
         public string GetCustomerState(string CustID)
         {
             try
@@ -1079,7 +1040,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         public string GetCompanyState(string OrgID)
         {
             try
@@ -1105,7 +1065,6 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-
         private void UpdateLineItem(DLSalesOrderWithItemCreation updatedLineItem, tblSalesOrderWithItem oldLineItem)
         {
             oldLineItem.SalesOrderWithItemID = updatedLineItem.SalesOrderWithItemID;
@@ -1125,8 +1084,37 @@ namespace WBT.DLCustomerCreation
             oldLineItem.tblSalesOrderItemWarehouseMaps.Clear();
             Entities.Entry(oldLineItem).State = EntityState.Modified;
         }
-    }
+        public string DeleteItem(string Id)
+        {
+            try
+            {
+                using (Entities = new MWBTCustomerAppEntities())
+                {
+                    if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
+                        Entities.Database.Connection.Open();
 
+                    var soItem = Entities.tblSalesOrderWithItems.Where(d => d.SalesOrderWithItemID.ToString() == Id).FirstOrDefault();
+                    if (soItem != null)
+                    {
+                        Entities.tblSalesOrderWithItems.Remove(soItem);
+                        Entities.SaveChanges();
+                        return "success";
+                    }
+                    else
+                        return "error";
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
+                return "error";
+            }
+        }
+    }
+    //public static class MessageTemplate
+    //{
+    //    public static string SALES_ORDER_ACCEPTED = "Dear {0} , I place order Number {1} i have sent confirmation. Thanks {2}";
+    //}
     //public class DLVoucherTypes
     //{
     //    public string VoucherID { get; set; }

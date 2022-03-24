@@ -5,7 +5,7 @@
 
 @using (Ajax.BeginForm("Update", "SalesOrderEdit", null, new AjaxOptions
 {
-    OnSuccess = "onPromoSuccess_Ajax",
+    OnSuccess = "onUpdateSuccess",
     OnFailure = "onFailure_Ajax",
     HttpMethod = "post",
     LoadingElementId = "progress"
@@ -150,7 +150,10 @@
                             <th>Discount %</th>
                             <th>Discount Value</th>
                             <th>Total Price</th>
-                            <th>Action</th>
+                            @if (!Model.IsEdited)
+                            {
+                                <th>Action</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -165,10 +168,9 @@
                                         <td>
                                             @Html.DisplayFor(a => a.DLSalesOrderWithItemCreations[j].ItemName)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].ItemCode)
-                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].SalesOrderWithItemID)
+                                            @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].SalesOrderWithItemID, new { @class = "hdnSOItemId" })
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].BagQTY)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].IsRateInQuantls)
-                                            @*@Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage)*@
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].LoadingUnloadingCharge)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].ItemRowNumber)
                                             @Html.HiddenFor(a => a.DLSalesOrderWithItemCreations[j].FrieghtCharge)
@@ -194,7 +196,7 @@
                                         <td>
                                             @if (Session["RoleName"].ToString() == "Admin")
                                             {
-                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discPer_" + item.ItemCode + "", @maxlength = "3", @onchange = "discountPerChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off" })
+                                                @Html.TextBoxFor(a => a.DLSalesOrderWithItemCreations[j].DiscountPercentage, new { @class = "form-control numberonly", @onkeypress = "return isdecimalKey(event)", @id = "discPer_" + item.ItemCode + "", @onchange = "discountPerChanged(this, " + item.Rate + ", " + item.Value + ",'" + item.ItemCode + "')", @style = "text-align:right;", @autocomplete = "off" })
                                             }
                                             else
                                             {
@@ -230,11 +232,22 @@
                         @{
                             if (!Model.IsEdited)
                             {
-                                <button type="submit" class="btn btn-primary" id="btnUpdate"><i class="fa fa-save"></i> Update</button>
+                                if (Convert.ToBoolean(Session["IsTallyUsing"].ToString()))
+                                {
+                                    <button type="submit" class="btn btn-primary" id="btnUpdateOnly" value="updateOnly" name="btnType"><i class="fa fa-save"></i> Update</button>
+                                    <button type="submit" class="btn btn-primary" id="btnUpdateSync" value="updateSync" name="btnType"><i class="fa fa-sync"></i> Update and Sync</button>
+                                    <button type="submit" class="btn btn-success" id="btnUpdatePrint" value="updatePrint" name="btnType"><i class="fa fa-print"></i> Update and Print</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary" id="btnUpdateOnly" value="updateOnly" name="btnType"><i class="fa fa-save"></i> Update</button>
+                                    <button type="submit" class="btn btn-success" id="btnUpdatePrint" value="updatePrint" name="btnType"><i class="fa fa-save"></i> Update and Print</button>
+                                }
                             }
                         }
-                        <a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally"><i class="fa fa-sync"></i> Sync To Tally</a>
-                        <a href="javascript:void(0)" onclick="printSO(this);" id='@Model.SalesOrderNumber' class="btn btn-success" id="btnTally"><i class="fa fa-print"></i> Print</a>
+                        @*<a href="javascript:void(0)" onclick="TallySync();" class="btn btn-success" id="btnTally"><i class="fa fa-sync"></i> Sync To Tally</a>*@
+                        @*<a href="javascript:void(0)" onclick="printSO(this);" id='@Model.SalesOrderNumber' class="btn btn-success" id="btnTally"><i class="fa fa-print"></i> Print</a>*@
+                        <a href='@Url.Action("DownloadPDF", "SalesOrderEdit", new { salesOrderNumber = Model.SalesOrderNumber })' class="btn btn-info"><i class="fa fa-download"></i> Download PDF</a>
                         <a href='@Url.Action("Index", "SalesOrder")' class="btn btn-success" id="btnBack"><i class="fa fa-backspace"></i> Back</a>
                     </div>
                 </div>
@@ -307,49 +320,87 @@
         //Discount
         function discountPerChanged(discountPerelement, price, totalValue, itemCode) {
             var discountPer = discountPerelement.value;
-            if (discountPer > 100) {
-                Toast.fire({
-                    class: 'bg-error',
-                    icon: 'error',
-                    title: 'Discount percentage must be less than or equal 100%'
-                })
+            if (discountPer > 0) {
+                if (discountPer > 100) {
+                    Toast.fire({
+                        class: 'bg-error',
+                        icon: 'error',
+                        title: 'Discount percentage must be less than or equal 100%'
+                    })
+                    $("#progress").hide();
+                    discountPerelement.value = "";
+                    discountPerelement.focus();
+                    return false;
+                }
+                $("#progress").show();
+                price = document.getElementById("rate_" + itemCode).value;
+                qty = document.getElementById("bqty_" + itemCode).value;
+                var totalPrice = parseFloat(price) * parseFloat(qty);
+                var discountAmt = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
+                document.getElementById("ttlp_" + itemCode).value = (totalPrice - discountAmt).toFixed(2);
+                document.getElementById("discAmt_" + itemCode).value = discountAmt.toFixed(2);
                 $("#progress").hide();
-                discountPerelement.value = "";
-                discountPerelement.focus();
-                return false;
             }
-            $("#progress").show();
-            price = document.getElementById("rate_" + itemCode).value;
-            qty = document.getElementById("bqty_" + itemCode).value;
-            var totalPrice = parseFloat(price) * parseFloat(qty);
-            var discountAmt  = parseFloat((parseFloat(totalPrice) * parseFloat(discountPer)) / parseFloat(100));
-            document.getElementById("ttlp_" + itemCode).value = totalPrice - discountAmt;
-            document.getElementById("discAmt_" + itemCode).value = discountAmt;
-            $("#progress").hide();
         }
         function discountAmtChanged(discountAmtelement, price, totalValue, itemCode) {
-            $("#progress").show();
             price = document.getElementById("rate_" + itemCode).value;
             qty = document.getElementById("bqty_" + itemCode).value;
             document.getElementById("discPer_" + itemCode).value = "";
             var discountAmt = discountAmtelement.value;
-            var totalPrice = parseFloat(price) * parseFloat(qty);
-            if (discountAmt > totalPrice) {
-                Toast.fire({
-                    class: 'bg-error',
-                    icon: 'error',
-                    title: 'Discount amount be less than or equal to ' + totalPrice.toFixed(2)
-                })
+            if (discountAmt > 0) {
+                $("#progress").show();
+                var totalPrice = parseFloat(price) * parseFloat(qty);
+                if (discountAmt > totalPrice) {
+                    Toast.fire({
+                        class: 'bg-error',
+                        icon: 'error',
+                        title: 'Discount amount be less than or equal to ' + totalPrice.toFixed(2)
+                    })
+                    $("#progress").hide();
+                    discountAmtelement.value = "";
+                    discountAmtelement.focus();
+                    return false;
+                }
+                document.getElementById("ttlp_" + itemCode).value = (totalPrice - discountAmt).toFixed(2);
                 $("#progress").hide();
-                discountAmtelement.value = "";
-                discountAmtelement.focus();
-                return false;
             }
-            document.getElementById("ttlp_" + itemCode).value = totalPrice - discountAmt;
-            $("#progress").hide();
         }
+        function onUpdateSuccess(result) {
+            if (result.sessionExpired) {
+                Swal.fire({
+                    title: 'Session Expired!!',
+                    text: 'Please click OK to login again',
+                    icon: 'error',
+                }).then((result) => {
+                    window.location = '@Url.Action("Index", "Login")';
+                });
+            }
+            if (result.success) {
+                if (result.istallySync) {
+                    TallySync();
+                }
+                else if (result.isPrint) {
+                    printSO();
+                }
+                else {
+                    Swal.fire({
+                        title: 'Success!!',
+                        text: 'Sales Order Updated Successfully',
+                        icon: 'success',
+                    }).then((result) => {
+                        window.location = '@Url.Action("Index", "SalesOrder")';
+                    });
+                }
+            }
+            else {
+                Swal.fire({
+                    title: 'Error!!',
+                    text: 'Failure updating Sales Order!! Please contact administrator',
+                    icon: 'error',
+                }).then((result) => {
 
-        function onPromoSuccess_Ajax() {
+                });
+            }
             Swal.fire({
                 title: 'Success!!',
                 text: 'Sales Order Updated Successfully',
@@ -466,9 +517,9 @@
                 }
             });
         }
-        function printSO(element) {
-            var SalesOrderNumber = $(element).attr('id');
-            window.open('@Url.Action("Invoiceprint", "SalesOrderEdit")?SalesOrderNumber=' + SalesOrderNumber, "_blank", "width=650,height=800,TOOLBAR=no,MENUBAR=no,SCROLLBARS=no,RESIZABLE=no,LOCATION=no,DIRECTORIES=no,STATUS=no");
+        function printSO() {
+            var salesOrderNumber = $("#txtsalesorderno").val();
+            window.open('@Url.Action("Invoiceprint", "SalesOrderEdit")?SalesOrderNumber=' + salesOrderNumber, "_blank", "width=650,height=800,TOOLBAR=no,MENUBAR=no,SCROLLBARS=no,RESIZABLE=no,LOCATION=no,DIRECTORIES=no,STATUS=no");
         }
         function btndeleterow(element) {
             Swal.fire({
@@ -481,7 +532,61 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(element).closest('tr').remove();
+                    var soItemId = $('.hdnSOItemId', $(element).closest("tr")).val();
+                    $.ajax({
+                        url: '@Url.Action("DeleteItem", "SalesOrderEdit")',
+                        data: "{ 'Id': '" + soItemId + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            if (result == "0") {
+                                Swal.fire({
+                                    title: "Session Expired!",
+                                    text: "Your session expired, please click OK to login again",
+                                    type: "warning",
+                                    icon: "warning",
+                                }).then(function () {
+                                    window.location = '@Url.Action("Index", "Login")';
+                                });
+                            }
+                            else if (result == "1") {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "There is an error, please contact administrator",
+                                    type: "error",
+                                    icon: "error",
+                                }).then(function () { });
+                            }
+                            else {
+                                $(element).closest('tr').remove();
+                                Swal.fire({
+                                    title: "Success!",
+                                    text: "Item deleted successfully!!",
+                                    type: "success",
+                                    icon: "success",
+                                }).then(function () {
+
+                                });
+                            }
+                        },
+                        error: function (result) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: result.Message,
+                                type: "error",
+                                icon: "error",
+                            }).then(function () { });
+                        },
+                        failure: function (result) {
+                             Swal.fire({
+                                title: "Error!",
+                                 text: result.Message,
+                                type: "error",
+                                icon: "error",
+                            }).then(function () { });
+                        }
+                    });
                 }
             })
         }

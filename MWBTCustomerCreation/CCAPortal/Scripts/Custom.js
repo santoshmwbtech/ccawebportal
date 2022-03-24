@@ -190,6 +190,7 @@ function loadDataTable() {
 function loadDataTableWithButtons() {
     jQuery("#dataGrid").DataTable({
         "responsive": true, "lengthChange": false, "autoWidth": false,
+        "ordering": false,
         "buttons": [
             {
                 extend: "csv", className: "btn btn-secondary buttons-copy buttons-html5",

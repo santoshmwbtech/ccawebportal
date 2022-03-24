@@ -79,6 +79,9 @@
     <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.3\lib\net461\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -2293,6 +2296,10 @@
     <Content Include="images\logo.svg" />
     <Content Include="images\mwb.png" />
     <Content Include="images\No_picture_available.png" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -2426,6 +2433,7 @@
     <Content Include="adminlte\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="adminlte\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="adminlte\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -3847,7 +3855,6 @@
     <Content Include="Views\AccessControl\Index.cshtml" />
     <Content Include="Views\AccessControl\AccessControlItemList.cshtml" />
     <Content Include="Views\Shared\_MainMenu.cshtml" />
-    <Content Include="Views\SalesOrderEdit\Index.cshtml" />
     <Content Include="Views\SalesOrder\Index.cshtml" />
     <Content Include="Views\SalesOrder\SalesOrdersList.cshtml" />
     <Content Include="Views\SalesOrder\Search.cshtml" />
@@ -3929,6 +3936,7 @@
     <Content Include="Views\TaxLegdersMaster\Index.cshtml" />
     <Content Include="Views\TaxLegdersMaster\TaxLedgerList.cshtml" />
     <Content Include="Views\ImportItems\Index.cshtml" />
+    <Content Include="Views\SalesOrderEdit\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

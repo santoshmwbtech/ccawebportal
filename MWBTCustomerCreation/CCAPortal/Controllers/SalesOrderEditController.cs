@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Rotativa;
+using Rotativa.Options;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -18,7 +20,7 @@ namespace CCAPortal.Controllers
     public class SalesOrderEditController : Controller
     {
         // GET: SalesOrderEdit
-        DLSalesOrders sorders = new DLSalesOrders();
+        DLSalesOrders _soRepository = new DLSalesOrders();
         MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
         public static string xmlFileString = string.Empty;
         static XmlDocument xmlDoc = new XmlDocument();
@@ -32,7 +34,7 @@ namespace CCAPortal.Controllers
             if (Session["UserID"] != null && !string.IsNullOrEmpty(route))
             {
                 string OrderNumber = Helper.Decrypt(route, "sblw-3hn8-sqoy19");
-                SalesOrders so = sorders.GetSalesOrderDetails(OrderNumber);
+                SalesOrders so = _soRepository.GetSalesOrderDetails(OrderNumber);
                 return View(so);
             }
             else
@@ -42,17 +44,68 @@ namespace CCAPortal.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(SalesOrders salesOrders)
+        public JsonResult Update(SalesOrders salesOrder, string btnType)
         {
             if (Session["UserID"] != null)
             {
                 DLSalesOrders dlSalesOrders = new DLSalesOrders();
-                dlSalesOrders.updateSalesOrder(salesOrders);
-                return Json("success", JsonRequestBehavior.AllowGet);
+                var soResult = dlSalesOrders.updateSalesOrder(salesOrder);
+                if(soResult.statusCode == HttpStatusCode.OK)
+                {
+                    if (btnType == "updateSync")
+                    {
+                        var result = new
+                        {
+                            sessionExpired = false,
+                            istallySync = true,
+                            isPrint = false,
+                            success = true
+                        };
+                        return Json(result);
+                    }
+                    if (btnType == "updatePrint")
+                    {
+                        var result = new
+                        {
+                            sessionExpired = false,
+                            istallySync = false,
+                            isPrint = true,
+                            success = true
+                        };
+                        return Json(result);
+                    }
+                    else
+                    {
+                        var result = new
+                        {
+                            sessionExpired = false,
+                            istallySync = false,
+                            isPrint = false,
+                            success = true
+                        };
+                        return Json(result);
+                    }
+                }
+                else
+                {
+                    var result = new
+                    {
+                        sessionExpired = false,
+                        istallySync = true,
+                        success = false
+                    };
+                    return Json(result);
+                }
             }
             else
             {
-                return Json("error", JsonRequestBehavior.AllowGet);
+                var result = new
+                {
+                    sessionExpired = true,
+                    istallySync = false,
+                    success = false
+                };
+                return Json(result);
             }
         }
 
@@ -164,7 +217,7 @@ namespace CCAPortal.Controllers
                     string Result = string.Empty;
                     DateTime DateTimeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
                     SalesOrders tallyResult = new SalesOrders();
-                    var so = sorders.GetSalesOrderDetails(ID);
+                    var so = _soRepository.GetSalesOrderDetails(ID);
                     tallyResult.ModifiedByID = Convert.ToInt32(Session["UserID"].ToString());
                     tallyResult.ModifiedDate = DateTimeNow;
                     tallyResult.SalesOrderNumber = ID;
@@ -186,7 +239,7 @@ namespace CCAPortal.Controllers
                     }
                     if (IsTallyRunning)
                     {
-                        if (sorders.UpdateTallyStatus(tallyResult))
+                        if (_soRepository.UpdateTallyStatus(tallyResult))
                         {
                             Result = "Tally Sync Successful!!";
                             Helper.LogError("DataBase Updated Successfully", null, null, null);
@@ -232,7 +285,7 @@ namespace CCAPortal.Controllers
                 tallyResult.SalesDateTime = salesOrders.SalesDateTime;
                 tallyResult.TransType = salesOrders.TransType;
                 tallyResult.SalesOrderNumber = salesOrders.SalesOrderNumber;
-                if (sorders.UpdateTallyStatusFromService(tallyResult))
+                if (_soRepository.UpdateTallyStatusFromService(tallyResult))
                 {
                     Helper.TallyServiceLog("Sales Order", tallyResult.SalesOrderNumber, tallyResult.CustomerName, Convert.ToDateTime(tallyResult.SalesDateTime), DateTimeNow, "Updated");
                     Helper.LogError("DataBase Updated Successfully", null, null, null);
@@ -249,7 +302,7 @@ namespace CCAPortal.Controllers
                 tallyResult.SalesDateTime = salesOrders.SalesDateTime;
                 tallyResult.TransType = salesOrders.TransType;
                 tallyResult.OrderNumber = salesOrders.OrderNumber;
-                if (sorders.UpdateTallyStatusFromService(tallyResult))
+                if (_soRepository.UpdateTallyStatusFromService(tallyResult))
                 {
                     Helper.TallyServiceLog("Sales Order", tallyResult.SalesOrderNumber, tallyResult.CustomerName, Convert.ToDateTime(tallyResult.SalesDateTime), DateTimeNow, "Updated");
                     Helper.LogError("DataBase Updated Successfully", null, null, null);
@@ -264,7 +317,7 @@ namespace CCAPortal.Controllers
             {
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage;
                 Helper.LogError("Tally Company is not open", null, null, null);
-                sorders.UpdateTallyStatusFromService(tallyResult, true);
+                _soRepository.UpdateTallyStatusFromService(tallyResult, true);
                 tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Sales Order Sync", tallyResult.SalesOrderNumber, tallyResult.DisplayMessage);
             }
             else if (tallyResult.DisplayMessage.Contains("<LINEERROR>"))
@@ -273,13 +326,13 @@ namespace CCAPortal.Controllers
                 int pTo = tallyResult.DisplayMessage.LastIndexOf("</LINEERROR>");
                 tallyResult.DisplayMessage = tallyResult.DisplayMessage.Substring(pFrom, pTo - pFrom);
                 Helper.LogError(tallyResult.DisplayMessage, null, null, null);
-                sorders.UpdateTallyStatusFromService(tallyResult, true);
+                _soRepository.UpdateTallyStatusFromService(tallyResult, true);
                 tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Sales Order Sync", tallyResult.SalesOrderNumber, tallyResult.DisplayMessage);
             }
             else
             {
                 Helper.LogError(tallyResult.DisplayMessage, null, null, null);
-                sorders.UpdateTallyStatusFromService(tallyResult, true);
+                _soRepository.UpdateTallyStatusFromService(tallyResult, true);
                 tallySync.InsertTallySyncErrors(tallyResult.OrgID, "Sales Order Sync", tallyResult.SalesOrderNumber, tallyResult.DisplayMessage);
             }
         }
@@ -788,13 +841,41 @@ namespace CCAPortal.Controllers
         {
             if (Session["UserID"] != null)
             {
-                SalesOrders so = sorders.GetSalesOrderDetails(SalesOrderNumber, true);
+                SalesOrders so = _soRepository.GetSalesOrderDetails(SalesOrderNumber, true);
                 return View("_InvoicePrint", so);
             }
             else
             {
                 return RedirectToAction("Index", "Login");
             }
+        }
+        [HttpPost]
+        public JsonResult DeleteItem(string Id)
+        {
+            var jsonResult = string.Empty;
+            if (Session["UserID"] != null && Session["OrgID"] != null)
+            {
+                var result = _soRepository.DeleteItem(Id);
+                if (result.Contains("error"))
+                    jsonResult = "1";
+                else
+                    jsonResult = "2";
+            }
+            else
+            {
+                jsonResult = "0";
+            }
+            return Json(jsonResult);
+        }
+        public ActionResult DownloadPDF(string salesOrderNumber)
+        {
+
+            SalesOrders so = _soRepository.GetSalesOrderDetails(salesOrderNumber, true);
+            return new ViewAsPdf("_InvoicePrint", so)
+            {
+                PageSize = Size.A4,
+                FileName = "SalesOrder_"+ salesOrderNumber +".pdf"
+            };
         }
         private class OutPutLedgersLst
         {
