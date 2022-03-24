@@ -214,6 +214,8 @@ function loadDataTableWithButtons() {
             },
             {
                 extend: "pdfHtml5",
+                orientation: 'landscape',
+                pageSize: 'A2',
                 className: "btn btn-secondary buttons-copy buttons-html5",
                 exportOptions: {
                     columns: ':not(.notexport)',

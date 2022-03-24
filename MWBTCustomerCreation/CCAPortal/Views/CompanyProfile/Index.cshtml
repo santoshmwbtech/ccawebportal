@@ -55,7 +55,8 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Phone Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @autocomplete = "off" } })
+                                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @required = "required", @autocomplete = "off",
+                                           @onkeypress = "return isNumber(event);" } })
                                             @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -64,7 +65,8 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Mobile Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mobile Number", @maxlength = "10", @required = "required", @autocomplete = "off" } })
+                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mobile Number", @maxlength = "10", @required = "required", @autocomplete = "off",
+                                           @onkeypress = "return isNumber(event);" } })
                                             @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -75,7 +77,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Email ID</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @maxlength = "100", @autocomplete = "off" } })
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @maxlength = "100", @autocomplete = "off" } })                                         
                                         </div>
                                     </div>
                                 </div>
@@ -93,7 +95,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">GST Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number", @maxlength = "100", @required = "required", @autocomplete = "off" } })
+                                            @Html.EditorFor(model => model.GSTNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "GST Number", @maxlength = "15", @required = "required", @autocomplete = "off" } })
                                             @Html.ValidationMessageFor(model => model.GSTNumber, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -167,7 +169,8 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Account Number</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Account Number", @required = "required", @maxlength = "50", @autocomplete = "off" } })
+                                            @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Account Number", @required = "required", @maxlength = "11", @autocomplete = "off",
+                                                @onkeypress = "return isNumber(event);"} })
                                             @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -258,4 +261,24 @@
             maxHeight: 450,
         });
     }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#GSTNumber").change(function () {
+            var gstNumber = $(this).val();
+            var reggst = /^([0-9]){2}([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}([0-9]){1}([a-zA-Z]){1}([0-9]){1}?$/;
+            if (!reggst.test(gstNumber) && gstNumber != '') {
+                swal.fire('GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format');
+                swal.fire({
+                    title: "Enter valid GST Number",
+                    text: 'GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format',
+                    type: "success",
+                    icon: "success",
+                }).then(function () {
+                    $("#GSTNumber").val('');
+                    $("#GSTNumber").focus();
+                });
+            }
+        });
+    });
 </script>
