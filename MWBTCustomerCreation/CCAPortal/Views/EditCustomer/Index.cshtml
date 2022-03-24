@@ -296,6 +296,8 @@
                                                 <option value="Thursday">Thursday</option>
                                                 <option value="Friday">Friday</option>
                                                 <option value="Saturday">Saturday</option>
+                                                <option value="No Holiday">No Holiday</option>
+
                                             </select>
                                             @Html.HiddenFor(model => model.WeekOffDay)
                                         </div>
@@ -682,55 +684,64 @@
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Aadhaar Document</label>
+
                                         <div class="col-sm-9 imgBox">
                                             @if (!string.IsNullOrEmpty(Model.AadhaarPhoto) && Model.AadhaarPhoto.Contains("http"))
                                             {
                                                 <a href='@Url.Content(Model.AadhaarPhoto)' class="js-img-viwer">
-                                                    <img src='@Url.Content(Model.AadhaarPhoto)' alt="aadhaar_image" class="img-responsive js-img-viwer" height="100" />
+                                                    <img id="aadharimage" src='@Url.Content(Model.AadhaarPhoto)' alt="aadhaar_image" class=" img-responsive js-img-viwer" height="50" width="50" />
                                                 </a>
                                             }
                                             else
                                             {
-                                                <img src="~/images/No_picture_available.png" alt="aadhaar_image" class="img-responsive" height="100" />
+                                                <img id="aadharimage" src="~/images/No_picture_available.png" alt="aadhaar_image" class="img-responsive" height="100" />
                                             }
                                         </div>
+
+                                        <input type="file" id="ExcelFile" name="ExcelFile" onchange="return uploadAadhar();">
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">GST Document</label>
+
                                         <div class="col-sm-9 imgBox">
                                             @if (!string.IsNullOrEmpty(Model.GSTPhoto) && Model.GSTPhoto.Contains("http"))
                                             {
                                                 <a href='@Url.Content(Model.GSTPhoto)' class="js-img-viwer">
-                                                    <img src='@Url.Content(Model.GSTPhoto)' alt="GST_image" class="img-responsive js-img-viwer" height="100" />
+                                                    <img id="gstimage" src='@Url.Content(Model.GSTPhoto)' alt="GST_image" class="img-responsive js-img-viwer" height="50" width="50" />
                                                 </a>
                                             }
                                             else
                                             {
-                                                <img src="~/images/No_picture_available.png" alt="GST_image" class="img-responsive" height="100" />
+                                                <img id="gstimage" src="~/images/No_picture_available.png" alt="GST_image" class="img-responsive" height="100" />
                                             }
                                         </div>
+                                        <input type="file" id="ExcelFile" name="ExcelFile" onchange="return         uploadGST();" >
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">PAN Document</label>
+
                                         <div class="col-sm-9 imgBox">
                                             @if (!string.IsNullOrEmpty(Model.PANPhoto) && Model.PANPhoto.Contains("http"))
                                             {
                                                 <a href='@Url.Content(Model.PANPhoto)' class="js-img-viwer">
-                                                    <img src='@Url.Content(Model.PANPhoto)' alt="PAN_image" class="img-responsive js-img-viwer" height="100" />
+                                                    <img id="panimage" src='@Url.Content(Model.PANPhoto)' alt="PAN_image" class="img-responsive js-img-viwer" height="50" width="50" />
                                                 </a>
                                             }
                                             else
                                             {
-                                                <img src="~/images/No_picture_available.png" alt="PAN_image" class="img-responsive" height="100" />
+                                                <img id="panimage" src="~/images/No_picture_available.png" alt="PAN_image" class="img-responsive" height="100" />
                                             }
 
                                         </div>
+                                        <input type="file" id="ExcelFile" name="ExcelFile" onchange="return uploadPAN();" >
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -740,15 +751,16 @@
                                             @if (!string.IsNullOrEmpty(Model.ShopImage) && Model.ShopImage.Contains("http"))
                                             {
                                                 <a href='@Url.Content(Model.ShopImage)' class="js-img-viwer">
-                                                    <img src='@Url.Content(Model.ShopImage)' alt="shop_image" class="img-responsive js-img-viwer" height="100" />
+                                                    <img id="shopimage" src='@Url.Content(Model.ShopImage)' alt="shop_image" class="img-responsive js-img-viwer" height="100" />
                                                 </a>
                                             }
                                             else
                                             {
-                                                <img src="~/images/No_picture_available.png" alt="shop_image" class="img-responsive" height="100" />
+                                                <img id="shopimage" src="~/images/No_picture_available.png" alt="shop_image" class="img-responsive" height="100" />
                                             }
 
                                         </div>
+                                        <input type="file" id="ExcelFile" name="ExcelFile" onchange="return uploadShop();">
                                     </div>
                                 </div>
                             </div>
@@ -756,19 +768,21 @@
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Owner Image</label>
+
                                         <div class="col-sm-9 imgBox">
                                             @if (!string.IsNullOrEmpty(Model.OwnerPhoto) && Model.OwnerPhoto.Contains("http"))
                                             {
                                                 <a href='@Url.Content(Model.OwnerPhoto)' class="js-img-viwer">
-                                                    <img src='@Url.Content(Model.OwnerPhoto)' alt="owner_image" class="img-responsive js-img-viwer" height="100" />
+                                                    <img id="ownerimage" src='@Url.Content(Model.OwnerPhoto)' alt="owner_image" class="img-responsive js-img-viwer" height="50" width="50" />
                                                 </a>
                                             }
                                             else
                                             {
-                                                <img src="~/images/No_picture_available.png" alt="owner_image" class="img-responsive" height="100" />
+                                                <img id="ownerimage" src="~/images/No_picture_available.png" alt="owner_image" class="img-responsive" height="100" />
                                             }
 
                                         </div>
+                                        <input type="file" id="ExcelFile" name="ExcelFile" onchange="return         uploadOwner();" >
                                     </div>
                                 </div>
                             </div>
@@ -797,6 +811,47 @@
     <script>
         $(".form-sample").validate();
     </script>
+
+    @*<script>
+            function readURL(input, imageType) {
+                if (input.files && input.files[0]) {
+                    if (imageType == "aadharimage") {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#imageType').attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            }
+        </script>*@
+
+    <script>
+        function uploadAadhar() {
+            aadharimage.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        function uploadGST() {
+            gstimage.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        function uploadPAN() {
+            panimage.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        function uploadShop() {
+            shopimage.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        function uploadOwner() {
+           ownerimage.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+
     <script>
         $(document).ready(function () {
             $("#btnUpdate").show();
@@ -909,6 +964,30 @@
         function gst_pattern() {
 
         }
+        function check_extension(filename) {
+            var re = /\..+$/;
+            var ext = filename.match(re);
+            if (hash[ext]) {
+                return true;
+            } else {
+                swal.fire("Error", "Invalid file, please upload excel file", "error");
+                $("#ExcelFile").val('');
+                return false;
+            }
+        }
+        function showPreview(event) {
+            var output = document.getElementById('output');
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(input).closest('tr').find('input.clsimagepreview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -965,10 +1044,10 @@
                         text: 'GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format',
                         type: "success",
                         icon: "success",
-                        }).then(function () {
-                            $("#GSTNumber").val('');
-                            $("#GSTNumber").focus();
-                        });
+                    }).then(function () {
+                        $("#GSTNumber").val('');
+                        $("#GSTNumber").focus();
+                    });
                 }
             });
         });
@@ -977,15 +1056,19 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#PANNumber").change(function () {
-                var inputvalues = $(this).val();
-                var regex = '[A-Z]{5}[0-9]{4}[A-Z]{1}$';
-                if (regex.test(inputvalues)) {
-                    return true;
-                } else {
-                    alert("Please enter valid PAN Number");
-                    $("#PANNumber").val("");
-                    $("#PANNumber").focus();
-                    return regex.test(inputvalues);
+                var panNumber = $(this).val();
+                var reggst = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+                if (!reggst.test(panNumber) && panNumber != '') {
+                    swal.fire('PAN Number is not valid. It should be in this "ABCDE1234A" format');
+                    swal.fire({
+                        title: "Enter valid PAN Number",
+                        text: 'PAN Number is not valid. It should be in this "ABCDE1234A" format',
+                        type: "success",
+                        icon: "success",
+                    }).then(function () {
+                        $("#PANNumber").val('');
+                        $("#PANNumber").focus();
+                    });
                 }
             });
         });
@@ -994,17 +1077,28 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#IFSCCode").change(function () {
-                var inputvalues = $(this).val();
-                var reg = '[A-Z|a-z]{4}[0][a-zA-Z0-9]{6}$';
-                if (inputvalues.match(reg)) {
-                    return true;
-                }
-                else {
-                    $("#IFSCCode").val("");
-                    alert("You entered invalid IFSC code");
-                    return false;
+                var ifscCode = $(this).val();
+                var reggst = /[A-Z|a-z]{4}[0][a-zA-Z0-9]{6}$/;
+                if (!reggst.test(ifscCode) && ifscCode != '') {
+                    swal.fire('IFSC Code is not valid. It should be in this "ABCD0123456" format');
+                    swal.fire({
+                        title: "Enter valid IFSC Code",
+                        text: 'IFSC Code is not valid. It should be in this "ABCD0123456" format',
+                        type: "success",
+                        icon: "success",
+                    }).then(function () {
+                        $("#IFSCCode").val('');
+                        $("#IFSCCode").focus();
+                    });
                 }
             });
         });
     </script>
+    <script>
+        window.addEventListener('load', function () {
+            new SmartPhoto(".js-img-viwer");
+            new SmartPhoto(".js-img-viwer-fit");
+        });
+    </script>
+
 }
