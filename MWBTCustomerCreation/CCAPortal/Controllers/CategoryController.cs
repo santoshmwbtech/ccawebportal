@@ -58,7 +58,10 @@ namespace CCAPortal.Controllers
                 dLSubCategoryCreation.OrgID = Session["OrgID"].ToString();
                 dLSubCategoryCreation.CreatedByID = Convert.ToInt32(Session["UserID"].ToString());
                 DLSubCategoryCreation Result = dlSubCategory.SaveDatas(dLSubCategoryCreation);
-                return Json(Result.DisplayMessage); //return  PartialView("CategoryList", dlSubCategory.GetDatas("", Session["OrgID"].ToString()).ToList());
+                return Json(new
+                {
+                    AjaxReturn = PartialView("CategoryList", dlSubCategory.GetDatas("", Session["OrgID"].ToString()).ToList()).RenderToString()
+                });
             }
         }
 

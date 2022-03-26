@@ -2776,7 +2776,7 @@ namespace WBT.DLCustomerCreation
                     {
                         customerCreationList = customerCreationList.Where(c => search.TaxationTypeList.Contains(c.TaxationTypeID.Value)).ToList();
                     }
-                    return customerCreationList;
+                    return customerCreationList.OrderByDescending(d => d.CreationDate).ToList();
                 }
             }
             catch (Exception ex)

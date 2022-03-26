@@ -23,35 +23,35 @@ namespace CCAPortal.Controllers
             try
             {
                 login.Password = Helper.Encrypt(login.Password);
-                WBT.DLCustomerCreation.CustomerCreations customerCreation = new WBT.DLCustomerCreation.CustomerCreations();
-                UserLogin User = customerCreation.Login(login);
-                if (User != null)
+                CustomerCreations customerCreation = new CustomerCreations();
+                UserLogin user = customerCreation.Login(login);
+                if (user != null)
                 {
-                    Session["UserID"] = User.UserId;
-                    Session["OrgID"] = User.OrgID;
-                    Session["UserName"] = User.FName;
-                    Session["IsTallyUsing"] = User.IsTallyUsing;
-                    Session["FirmName"] = User.OrgName;
+                    Session["UserID"] = user.UserId;
+                    Session["OrgID"] = user.OrgID;
+                    Session["UserName"] = user.FName;
+                    Session["IsTallyUsing"] = user.IsTallyUsing;
+                    Session["FirmName"] = user.OrgName;
 
                     DLGetRoleCreation dlRole = new DLGetRoleCreation();
-                    var role = dlRole.GetDeatil(User.RoleID);
+                    var role = dlRole.GetDeatil(user.RoleID);
 
                     Session["RoleName"] = role.RoleName;
-                    FormsAuthentication.SetAuthCookie(User.UserId.ToString(), login.RememberMe);
+                    FormsAuthentication.SetAuthCookie(user.UserId.ToString(), login.RememberMe);
 
                     DLAccessControl dL = new DLAccessControl();
-                    List<AccessControlItem> MenuList = dL.LoadAccessControlItems(User.RoleID);
+                    List<AccessControlItem> MenuList = dL.LoadAccessControlItems(user.RoleID);
                     Session["MenuMaster"] = MenuList;
 
-                    if(User.IsTallyUsing == true && User.IsServiceInstalled == false)
+                    if(user.IsTallyUsing == true && user.IsServiceInstalled == false)
                     {
                         ResultMsg = "Login Success!! Please install the tally service and configure to continue..";
                         var Result = new
                         {
                             resultmsg = ResultMsg,
                             success = true,
-                            IsTallyUsing = User.IsTallyUsing,
-                            IsServiceInstalled = User.IsServiceInstalled
+                            IsTallyUsing = user.IsTallyUsing,
+                            IsServiceInstalled = user.IsServiceInstalled
                         };
                         return Json(Result);
                     }
@@ -62,8 +62,8 @@ namespace CCAPortal.Controllers
                         {
                             resultmsg = ResultMsg,
                             success = true,
-                            IsTallyUsing = User.IsTallyUsing,
-                            IsServiceInstalled = User.IsServiceInstalled
+                            IsTallyUsing = user.IsTallyUsing,
+                            IsServiceInstalled = user.IsServiceInstalled
                         };
                         return Json(Result);
                     }
