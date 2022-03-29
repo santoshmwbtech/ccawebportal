@@ -1227,7 +1227,7 @@ namespace WBT.DLCustomerCreation
                 this.GetApplicationActivate.GetErrorStackTrace = ex.StackTrace;
                 throw;
             }
-            return lstItemRateCreation;
+            return lstItemRateCreation.OrderBy(a=>a.ItemName).ToList();
         }
 
         //Used In SalesOrder/pos for getting item details after selection of item

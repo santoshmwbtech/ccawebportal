@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WBT.Common;
 using WBT.Entity;
-
+using System.ComponentModel.DataAnnotations;
 namespace WBT.DLCustomerCreation
 {
     public class DLSubCategoryCreation
     {
+        /// <summary>
+        /// Get or Set the subcategory ID in int
+        /// </summary>
         public int SubCategoryID { get; set; }
-        [Required(ErrorMessage = "Please enter category name")]
+        [Required(ErrorMessage ="Please enter Catogery name")]  
         public string SubCategoryName { get; set; }
+       
         public string CategoryName { get; set; }
         public string OldSubCategoryName { get; set; }
-        [Required(ErrorMessage = "Please select Group")]
+        [Required(ErrorMessage = "Please select group")]
         public int CategoryID { get; set; }
         public int CreatedByID { get; set; }
         public Nullable<int> ModifiedByID { get; set; }
@@ -568,7 +571,7 @@ namespace WBT.DLCustomerCreation
                             select new DLSubCategoryCreation
                             {
                                 CategoryID = gSubCategories.CategoryID,
-                                CategoryName = dbContext.tblCategories.Where(i => i.CategoryID == gSubCategories.CategoryID).FirstOrDefault().CategoryName,
+                                CategoryName = dbContext.tblCategories.Where(i => i.CategoryID ==                 gSubCategories.CategoryID).FirstOrDefault().CategoryName,
                                 SubCategoryID = gSubCategories.SubCategoryID,
                                 SubCategoryName = gSubCategories.SubCategoryName,
                                 IsTallyUpdated = gSubCategories.IsTallyUpdated,
