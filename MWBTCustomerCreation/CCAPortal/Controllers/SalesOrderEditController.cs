@@ -839,15 +839,8 @@ namespace CCAPortal.Controllers
         }
         public ActionResult Invoiceprint(string SalesOrderNumber)
         {
-            if (Session["UserID"] != null)
-            {
-                SalesOrders so = _soRepository.GetSalesOrderDetails(SalesOrderNumber, true);
-                return View("_InvoicePrint", so);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Login");
-            }
+            SalesOrders so = _soRepository.GetSalesOrderDetails(SalesOrderNumber, true);
+            return View("_InvoicePrint", so);
         }
         [HttpPost]
         public JsonResult DeleteItem(string Id)

@@ -562,6 +562,27 @@
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblWeekoff" Width="1.5" PointX="3.375" PointY="26.75" />
         <EntityTypeShape EntityType="MWBTCustomerAppModel.tblTaxLedger" Width="1.5" PointX="26.375" PointY="3.75" />
         <AssociationConnector Association="MWBTCustomerAppModel.FK_FumigationDetails_FumigationDetails" />
+        <EntityTypeShape EntityType="MWBTCustomerAppModel.tblPrintItem" Width="1.5" PointX="5.375" PointY="26.75" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_DeliverycenterBranchMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysOrganization" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_DocumentUploads_DocumentsList" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblBatch_tblSalesOrderInvoiceItemDetail" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNote" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNoteItem" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblGatePass" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblItemMapping" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblitemwarehousemap_tblSysOrganization" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSysOrganization" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblPurchaseOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblPurchaseRequisition_tblSysOrganization" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrder" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderInvoice" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderItemWarehouseMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap2" />
+        <AssociationConnector Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblWarehouse" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

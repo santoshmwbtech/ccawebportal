@@ -133,5 +133,6 @@ namespace WBT.Entity
         public virtual ICollection<tblSysUser> tblSysUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserWarehouseMap> tblUserWarehouseMaps { get; set; }
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
     }
 }

@@ -42,5 +42,6 @@ namespace WBT.Entity
         public virtual tblItem tblItem { get; set; }
         public virtual tblItemRate tblItemRate { get; set; }
         public virtual tblSysBranch tblSysBranch { get; set; }
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
     }
 }

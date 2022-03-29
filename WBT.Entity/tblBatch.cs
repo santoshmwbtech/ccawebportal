@@ -27,6 +27,8 @@ namespace WBT.Entity
             this.tblSalesOrderItemWarehouseMaps = new HashSet<tblSalesOrderItemWarehouseMap>();
             this.tblStockTransferLineItems = new HashSet<tblStockTransferLineItem>();
             this.tblGoodsInwardNoteItems = new HashSet<tblGoodsInwardNoteItem>();
+            this.tblItemWarehouseMaps = new HashSet<tblItemWarehouseMap>();
+            this.tblSalesOrderInvoiceItemDetails = new HashSet<tblSalesOrderInvoiceItemDetail>();
         }
     
         public int BatchID { get; set; }
@@ -61,5 +63,9 @@ namespace WBT.Entity
         public virtual ICollection<tblGoodsInwardNoteItem> tblGoodsInwardNoteItems { get; set; }
         public virtual tblSysUser tblSysUser { get; set; }
         public virtual tblSysUser tblSysUser1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblItemWarehouseMap> tblItemWarehouseMaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSalesOrderInvoiceItemDetail> tblSalesOrderInvoiceItemDetails { get; set; }
     }
 }

@@ -27,5 +27,6 @@ namespace WBT.Entity
     
         public virtual tblSysBranch tblSysBranch { get; set; }
         public virtual tblWarehouse tblWarehouse { get; set; }
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
     }
 }

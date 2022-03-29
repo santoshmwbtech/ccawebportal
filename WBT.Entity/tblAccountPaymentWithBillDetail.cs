@@ -32,6 +32,12 @@ namespace WBT.Entity
         public Nullable<int> ModifiedByID { get; set; }
         public System.DateTime CreationDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<decimal> Debit { get; set; }
+        public Nullable<decimal> Credit { get; set; }
+        public string Status { get; set; }
+        public string ParentVoucherName { get; set; }
+        public Nullable<decimal> OrgValueDr { get; set; }
+        public string SRInvoiceNo { get; set; }
     
         public virtual tblAccountPaymentDetail tblAccountPaymentDetail { get; set; }
     }

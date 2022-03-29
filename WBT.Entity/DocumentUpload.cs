@@ -31,8 +31,12 @@ namespace WBT.Entity
         public Nullable<int> ModifiedByID { get; set; }
         public bool IsTallyUpdated { get; set; }
         public string SourceOfUpdate { get; set; }
+        public string SOTypeNum { get; set; }
+        public Nullable<int> DocumentTypeID { get; set; }
+        public Nullable<System.DateTime> DocumentExpiryDate { get; set; }
     
         public virtual tblGatePass tblGatePass { get; set; }
         public virtual tblGoodsInwardNote tblGoodsInwardNote { get; set; }
+        public virtual DocumentsList DocumentsList { get; set; }
     }
 }

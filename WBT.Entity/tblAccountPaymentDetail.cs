@@ -46,6 +46,10 @@ namespace WBT.Entity
         public Nullable<int> ModifiedByID { get; set; }
         public System.DateTime CreationDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<decimal> Debit { get; set; }
+        public Nullable<decimal> Credit { get; set; }
+        public string BranchID { get; set; }
+        public string RefValue { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAccountPaymentWithBillDetail> tblAccountPaymentWithBillDetails { get; set; }

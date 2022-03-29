@@ -198,5 +198,6 @@ namespace WBT.Entity
         public virtual DbSet<tblReligion> tblReligions { get; set; }
         public virtual DbSet<tblWeekoff> tblWeekoffs { get; set; }
         public virtual DbSet<tblTaxLedger> tblTaxLedgers { get; set; }
+        public virtual DbSet<tblPrintItem> tblPrintItems { get; set; }
     }
 }

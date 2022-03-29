@@ -53,6 +53,9 @@ namespace WBT.Entity
         public Nullable<decimal> NetInwardWeight { get; set; }
         public string UnitwiseQty { get; set; }
         public string VoucherTypeNo { get; set; }
+        public Nullable<decimal> TCSPercentage { get; set; }
+        public Nullable<decimal> TCSValue { get; set; }
+        public Nullable<decimal> InsuranceCharges { get; set; }
     
         public virtual tblCustomerVendorDetail tblCustomerVendorDetail { get; set; }
         public virtual tblGoodsInwardNote tblGoodsInwardNote { get; set; }
@@ -62,5 +65,6 @@ namespace WBT.Entity
         public virtual tblVoucherType tblVoucherType { get; set; }
         public virtual tblSysUser tblSysUser { get; set; }
         public virtual tblSysUser tblSysUser1 { get; set; }
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
     }
 }

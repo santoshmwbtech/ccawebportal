@@ -25,6 +25,7 @@ namespace WBT.Entity
         public string OrgID { get; set; }
         public string SourceOfUpdate { get; set; }
         public string SystemAccess { get; set; }
+        public Nullable<bool> IsEditable { get; set; }
     
         public virtual tblActivity tblActivity { get; set; }
         public virtual tblSysRole tblSysRole { get; set; }

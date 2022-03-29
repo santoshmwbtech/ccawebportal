@@ -28,5 +28,6 @@ namespace WBT.Entity
         public Nullable<bool> isTallyUpdated { get; set; }
         public Nullable<System.DateTime> TallyUpdatedDate { get; set; }
         public Nullable<int> TallyUpdatedByID { get; set; }
+        public string SourceOfUpdate { get; set; }
     }
 }

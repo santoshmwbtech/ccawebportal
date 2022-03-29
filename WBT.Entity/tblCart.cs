@@ -28,6 +28,7 @@ namespace WBT.Entity
         public Nullable<decimal> TotalValue { get; set; }
         public Nullable<int> CreatedByID { get; set; }
         public Nullable<int> UpdatedByID { get; set; }
+        public Nullable<int> CreditType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCartItem> tblCartItems { get; set; }

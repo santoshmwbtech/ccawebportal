@@ -223,6 +223,7 @@ namespace WBT.Entity
         public Nullable<int> DepartmentID { get; set; }
         public Nullable<bool> IsServiceInstalled { get; set; }
         public Nullable<bool> isFirstLogin { get; set; }
+        public Nullable<bool> RememberPassword { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiscrepencyDetail> DiscrepencyDetails { get; set; }

@@ -27,5 +27,8 @@ namespace WBT.Entity
         public Nullable<System.DateTime> ModifiedDatetime { get; set; }
         public Nullable<int> ModifiedByID { get; set; }
         public string SourceOfUpdate { get; set; }
+    
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
+        public virtual tblSysOrganization tblSysOrganization1 { get; set; }
     }
 }

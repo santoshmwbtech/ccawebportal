@@ -23,6 +23,7 @@ namespace WBT.Entity
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedByID { get; set; }
+        public string BranchID { get; set; }
     
         public virtual tblSysUser tblSysUser { get; set; }
         public virtual tblSysUser tblSysUser1 { get; set; }

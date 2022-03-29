@@ -48,6 +48,7 @@ namespace WBT.Entity
         public string Comments { get; set; }
         public string Status { get; set; }
         public string SourceOfUpdate { get; set; }
+        public Nullable<System.DateTime> InvoiceDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }

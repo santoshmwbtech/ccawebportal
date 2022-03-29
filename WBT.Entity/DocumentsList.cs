@@ -18,6 +18,7 @@ namespace WBT.Entity
         public DocumentsList()
         {
             this.DocumentsSettings = new HashSet<DocumentsSetting>();
+            this.DocumentUploads = new HashSet<DocumentUpload>();
         }
     
         public int Id { get; set; }
@@ -27,8 +28,12 @@ namespace WBT.Entity
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedById { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public bool IsEditable { get; set; }
+        public string ScreenName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentsSetting> DocumentsSettings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
     }
 }

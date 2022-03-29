@@ -59,5 +59,6 @@ namespace WBT.Entity
         public virtual ICollection<tblSalesOrderInvoice> tblSalesOrderInvoices { get; set; }
         public virtual tblSysUser tblSysUser { get; set; }
         public virtual tblSysUser tblSysUser1 { get; set; }
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
     }
 }

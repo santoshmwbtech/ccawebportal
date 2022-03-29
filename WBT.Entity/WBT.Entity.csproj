@@ -417,6 +417,9 @@
     <Compile Include="tblPOQuotationSupplier.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblPrintItem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblProcessitem_Master.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

@@ -161,6 +161,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ImportItemsController.cs" />
     <Compile Include="Controllers\ImportTaxesController.cs" />
+    <Compile Include="Controllers\PController.cs" />
     <Compile Include="Controllers\promotionController.cs" />
     <Compile Include="Controllers\TallySyncErrorRptController.cs" />
     <Compile Include="Controllers\TaxLegdersMasterController.cs" />
@@ -3942,6 +3943,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="TemplateDesign\card\SaveCard\" />
     <Folder Include="Views\Logout\" />
+    <Folder Include="Views\P\" />
     <Folder Include="Views\TemplateImages\" />
   </ItemGroup>
   <ItemGroup>

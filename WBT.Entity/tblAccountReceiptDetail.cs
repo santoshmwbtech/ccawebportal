@@ -54,6 +54,8 @@ namespace WBT.Entity
         public string BranchID { get; set; }
         public string RefValue { get; set; }
         public bool IsEdited { get; set; }
+        public string ReceiverName { get; set; }
+        public string StoreIncharge { get; set; }
     
         public virtual tblAccountLedger tblAccountLedger { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

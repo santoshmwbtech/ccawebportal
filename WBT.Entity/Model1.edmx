@@ -23,6 +23,7 @@
           <Property Name="isTallyUpdated" Type="bit" />
           <Property Name="TallyUpdatedDate" Type="datetime" />
           <Property Name="TallyUpdatedByID" Type="int" />
+          <Property Name="SourceOfUpdate" Type="char" MaxLength="2" />
         </EntityType>
         <EntityType Name="BasicExpensesDetails">
           <Key>
@@ -253,6 +254,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedById" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsEditable" Type="bit" Nullable="false" />
+          <Property Name="ScreenName" Type="char" MaxLength="4" />
         </EntityType>
         <EntityType Name="DocumentsSetting">
           <Key>
@@ -290,6 +293,9 @@
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="IsTallyUpdated" Type="bit" Nullable="false" />
           <Property Name="SourceOfUpdate" Type="char" MaxLength="1" />
+          <Property Name="SOTypeNum" Type="nvarchar" MaxLength="200" />
+          <Property Name="DocumentTypeID" Type="int" />
+          <Property Name="DocumentExpiryDate" Type="datetime" />
         </EntityType>
         <EntityType Name="FranchiseMarginDetails">
           <Key>
@@ -566,6 +572,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedByID" Type="int" />
+          <Property Name="ActivityID" Type="int" />
+          <Property Name="IsEditable" Type="bit" />
         </EntityType>
         <EntityType Name="tblAccountContraBillWithDetails">
           <Key>
@@ -868,6 +876,29 @@
           <Property Name="IsTallyUpdated" Type="bit" />
           <Property Name="TallyUpdatedDate" Type="datetime" />
           <Property Name="TallyUpdatedByID" Type="int" />
+          <Property Name="Name" Type="nchar" MaxLength="10" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="GSTN" Type="nvarchar" MaxLength="25" />
+          <Property Name="PANNumber" Type="nvarchar" MaxLength="25" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="StateID" Type="int" />
+          <Property Name="Pincode" Type="nchar" MaxLength="10" />
+          <Property Name="ContactPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="MobileNumber" Type="nvarchar" MaxLength="15" />
+          <Property Name="FaxNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Website" Type="nvarchar" MaxLength="100" />
+          <Property Name="ActivateIntrestCalculation" Type="nvarchar" MaxLength="10" />
+          <Property Name="RateOfIntrestPer" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Per" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccHolderName" Type="nvarchar" MaxLength="100" />
+          <Property Name="AccNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="IFSCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="150" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="150" />
+          <Property Name="BSRCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="SourceOfUpdate" Type="char" MaxLength="2" />
         </EntityType>
         <EntityType Name="tblAccountPaymentDetails">
           <Key>
@@ -899,6 +930,10 @@
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="Debit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Credit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BranchID" Type="nvarchar" MaxLength="50" />
+          <Property Name="RefValue" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblAccountPaymentWithBillDetails">
           <Key>
@@ -915,6 +950,8 @@
           <Property Name="Billdatetime" Type="nvarchar" MaxLength="20" />
           <Property Name="TallyAmount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Discountamount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Debit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Credit" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Billamount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IsTallyUpdated" Type="bit" />
           <Property Name="SourceOfUpdate" Type="char" MaxLength="1" />
@@ -922,6 +959,10 @@
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="ParentVoucherName" Type="char" MaxLength="3" />
+          <Property Name="OrgValueDr" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SRInvoiceNo" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="tblAccountReceiptDetails">
           <Key>
@@ -961,6 +1002,8 @@
           <Property Name="BranchID" Type="varchar" MaxLength="100" />
           <Property Name="RefValue" Type="nvarchar(max)" />
           <Property Name="IsEdited" Type="bit" Nullable="false" />
+          <Property Name="ReceiverName" Type="varchar" MaxLength="500" />
+          <Property Name="StoreIncharge" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tblAccountReceiptWithBillDetails">
           <Key>
@@ -1017,6 +1060,7 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedByID" Type="int" />
+          <Property Name="BranchID" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="tblAdminSettings">
           <Key>
@@ -1111,6 +1155,7 @@
           <Property Name="TotalValue" Type="decimal" Precision="18" Scale="0" />
           <Property Name="CreatedByID" Type="int" />
           <Property Name="UpdatedByID" Type="int" />
+          <Property Name="CreditType" Type="int" />
         </EntityType>
         <EntityType Name="tblCartItems">
           <Key>
@@ -1539,6 +1584,7 @@
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="SOType" Type="nvarchar" MaxLength="50" />
           <Property Name="SOTypeNum" Type="nvarchar" MaxLength="200" />
+          <Property Name="UnloadPriority" Type="int" />
         </EntityType>
         <EntityType Name="tblGoodsInwardNote">
           <Key>
@@ -1570,6 +1616,7 @@
           <Property Name="Comments" Type="nvarchar" MaxLength="250" />
           <Property Name="Status" Type="nchar" MaxLength="10" />
           <Property Name="SourceOfUpdate" Type="char" MaxLength="2" />
+          <Property Name="InvoiceDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblGoodsInwardNoteItem">
           <Key>
@@ -2253,6 +2300,14 @@
           <Property Name="ModifiedByID" Type="int" />
           <Property Name="SourceOfUpdate" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="tblPrintItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderNo" Type="varchar(max)" />
+          <Property Name="ClickCount" Type="int" />
+        </EntityType>
         <EntityType Name="tblProcessitem_Master">
           <Key>
             <PropertyRef Name="ItemCode" />
@@ -2380,6 +2435,9 @@
           <Property Name="NetInwardWeight" Type="decimal" Precision="18" Scale="2" />
           <Property Name="UnitwiseQty" Type="nvarchar" MaxLength="50" />
           <Property Name="VoucherTypeNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="TCSPercentage" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="TCSValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="InsuranceCharges" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblPurchaseOrderInvoiceItemDetail">
           <Key>
@@ -2780,6 +2838,8 @@
           <Property Name="Remark" Type="varchar" MaxLength="500" />
           <Property Name="SIType" Type="nvarchar" MaxLength="50" />
           <Property Name="SITypeNum" Type="nvarchar" MaxLength="200" />
+          <Property Name="BatchId" Type="int" />
+          <Property Name="SalesOrderWithItemID" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="tblSalesOrderItemWarehouseMap">
           <Key>
@@ -2975,6 +3035,7 @@
           <Property Name="OrgID" Type="varchar" MaxLength="10" />
           <Property Name="SourceOfUpdate" Type="char" MaxLength="1" />
           <Property Name="SystemAccess" Type="char" MaxLength="1" />
+          <Property Name="IsEditable" Type="bit" />
         </EntityType>
         <EntityType Name="tblSysBranch">
           <Key>
@@ -3282,6 +3343,7 @@
           <Property Name="DepartmentID" Type="int" />
           <Property Name="IsServiceInstalled" Type="bit" />
           <Property Name="isFirstLogin" Type="bit" />
+          <Property Name="RememberPassword" Type="bit" />
         </EntityType>
         <EntityType Name="tblTallySyncErrors">
           <Key>
@@ -3828,6 +3890,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DiscrepencyDetails_tblSysOrganization">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="DiscrepencyDetails" Type="Self.DiscrepencyDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="DiscrepencyDetails">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DiscrepencyDetails_tblSysUserCrID">
           <End Role="tblSysUser" Type="Self.tblSysUser" Multiplicity="1" />
           <End Role="DiscrepencyDetails" Type="Self.DiscrepencyDetails" Multiplicity="*" />
@@ -3873,6 +3947,18 @@
             </Principal>
             <Dependent Role="DocumentsSetting">
               <PropertyRef Name="DocumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentUploads_DocumentsList">
+          <End Role="DocumentsList" Type="Self.DocumentsList" Multiplicity="0..1" />
+          <End Role="DocumentUploads" Type="Self.DocumentUploads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentsList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentUploads">
+              <PropertyRef Name="DocumentTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4581,6 +4667,30 @@
             </Principal>
             <Dependent Role="tblItemStockTransferSource">
               <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBatch_tblItemWarehouseMap">
+          <End Role="tblBatch" Type="Self.tblBatch" Multiplicity="0..1" />
+          <End Role="tblItemWarehouseMap" Type="Self.tblItemWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBatch">
+              <PropertyRef Name="BatchID" />
+            </Principal>
+            <Dependent Role="tblItemWarehouseMap">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBatch_tblSalesOrderInvoiceItemDetail">
+          <End Role="tblBatch" Type="Self.tblBatch" Multiplicity="0..1" />
+          <End Role="tblSalesOrderInvoiceItemDetail" Type="Self.tblSalesOrderInvoiceItemDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBatch">
+              <PropertyRef Name="BatchID" />
+            </Principal>
+            <Dependent Role="tblSalesOrderInvoiceItemDetail">
+              <PropertyRef Name="BatchId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5330,6 +5440,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblitemwarehousemap_tblSysOrganization">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="1" />
+          <End Role="tblItemWarehouseMap" Type="Self.tblItemWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblItemWarehouseMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblNotification_tblSysUser">
           <End Role="tblSysUser" Type="Self.tblSysUser" Multiplicity="1" />
           <End Role="tblNotification" Type="Self.tblNotification" Multiplicity="*" />
@@ -5447,6 +5569,18 @@
             </Principal>
             <Dependent Role="tblPurchaseOrder">
               <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPurchaseOrder_tblSysOrganization">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblPurchaseOrder" Type="Self.tblPurchaseOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblPurchaseOrder">
+              <PropertyRef Name="OrgId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5579,6 +5713,18 @@
             </Principal>
             <Dependent Role="tblPurchaseRequisitionItemsDetail">
               <PropertyRef Name="RequisitionNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPurchaseRequisition_tblSysOrganization">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblPurchaseRequisition" Type="Self.tblPurchaseRequisition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblPurchaseRequisition">
+              <PropertyRef Name="OrgID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6061,6 +6207,162 @@
             </Principal>
             <Dependent Role="tblSysChannelPartner">
               <PropertyRef Name="ChannelTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_DeliverycenterBranchMap">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="1" />
+          <End Role="DeliverycenterBranchMap" Type="Self.DeliverycenterBranchMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="DeliverycenterBranchMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblDeliveryNote">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblDeliveryNote" Type="Self.tblDeliveryNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblDeliveryNote">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblDeliveryNoteItem">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblDeliveryNoteItem" Type="Self.tblDeliveryNoteItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblDeliveryNoteItem">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblGatePass">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblGatePass" Type="Self.tblGatePass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblGatePass">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblItemMapping">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblItemMapping" Type="Self.tblItemMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblItemMapping">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblOrganizationMap">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="1" />
+          <End Role="tblSysOrganizationMap" Type="Self.tblSysOrganizationMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSysOrganizationMap">
+              <PropertyRef Name="ParentOrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblOrganizationMap2">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="1" />
+          <End Role="tblSysOrganizationMap" Type="Self.tblSysOrganizationMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSysOrganizationMap">
+              <PropertyRef Name="SisterOrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblOrganizationWarehouseMap">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="1" />
+          <End Role="tblOrganizationWarehouseMap" Type="Self.tblOrganizationWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblOrganizationWarehouseMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblPurchaseOrderInvoice">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblPurchaseOrderInvoice" Type="Self.tblPurchaseOrderInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblPurchaseOrderInvoice">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblSalesOrder">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblSalesOrder" Type="Self.tblSalesOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSalesOrder">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblSalesOrderInvoice">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblSalesOrderInvoice" Type="Self.tblSalesOrderInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSalesOrderInvoice">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblSalesOrderItemWarehouseMap">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblSalesOrderItemWarehouseMap" Type="Self.tblSalesOrderItemWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSalesOrderItemWarehouseMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblWarehouse">
+          <End Role="tblSysOrganization" Type="Self.tblSysOrganization" Multiplicity="0..1" />
+          <End Role="tblWarehouse" Type="Self.tblWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblWarehouse">
+              <PropertyRef Name="OrgID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7998,6 +8300,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblWarehouse_DeliverycenterBranchMap">
+          <End Role="tblWarehouse" Type="Self.tblWarehouse" Multiplicity="1" />
+          <End Role="DeliverycenterBranchMap" Type="Self.DeliverycenterBranchMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblWarehouse">
+              <PropertyRef Name="WarehouseID" />
+            </Principal>
+            <Dependent Role="DeliverycenterBranchMap">
+              <PropertyRef Name="DelivercenterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblWarehouse_tblDeliveryNoteItem">
           <End Role="tblWarehouse" Type="Self.tblWarehouse" Multiplicity="1" />
           <End Role="tblDeliveryNoteItem" Type="Self.tblDeliveryNoteItem" Multiplicity="*" />
@@ -8314,6 +8628,7 @@
           <EntitySet Name="tblPNCN" EntityType="Self.tblPNCN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPOQuotation" EntityType="Self.tblPOQuotation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPOQuotationSuppliers" EntityType="Self.tblPOQuotationSuppliers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPrintItems" EntityType="Self.tblPrintItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProcessitem_Master" EntityType="Self.tblProcessitem_Master" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPurchaseOrder" EntityType="Self.tblPurchaseOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPurchaseOrderInvoice" EntityType="Self.tblPurchaseOrderInvoice" Schema="dbo" store:Type="Tables" />
@@ -8448,6 +8763,10 @@
             <End Role="tblSysBranch" EntitySet="tblSysBranch" />
             <End Role="DiscrepencyDetails" EntitySet="DiscrepencyDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_DiscrepencyDetails_tblSysOrganization" Association="Self.FK_DiscrepencyDetails_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="DiscrepencyDetails" EntitySet="DiscrepencyDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_DiscrepencyDetails_tblSysUserCrID" Association="Self.FK_DiscrepencyDetails_tblSysUserCrID">
             <End Role="tblSysUser" EntitySet="tblSysUser" />
             <End Role="DiscrepencyDetails" EntitySet="DiscrepencyDetails" />
@@ -8463,6 +8782,10 @@
           <AssociationSet Name="FK_DocumentsList_DocumentsSetting" Association="Self.FK_DocumentsList_DocumentsSetting">
             <End Role="DocumentsList" EntitySet="DocumentsList" />
             <End Role="DocumentsSetting" EntitySet="DocumentsSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentUploads_DocumentsList" Association="Self.FK_DocumentUploads_DocumentsList">
+            <End Role="DocumentsList" EntitySet="DocumentsList" />
+            <End Role="DocumentUploads" EntitySet="DocumentUploads" />
           </AssociationSet>
           <AssociationSet Name="FK_DocumentUploads_tblGatePass" Association="Self.FK_DocumentUploads_tblGatePass">
             <End Role="tblGatePass" EntitySet="tblGatePass" />
@@ -8699,6 +9022,14 @@
           <AssociationSet Name="FK_tblBatch_tblItemStockTransferSource" Association="Self.FK_tblBatch_tblItemStockTransferSource">
             <End Role="tblBatch" EntitySet="tblBatch" />
             <End Role="tblItemStockTransferSource" EntitySet="tblItemStockTransferSource" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBatch_tblItemWarehouseMap" Association="Self.FK_tblBatch_tblItemWarehouseMap">
+            <End Role="tblBatch" EntitySet="tblBatch" />
+            <End Role="tblItemWarehouseMap" EntitySet="tblItemWarehouseMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBatch_tblSalesOrderInvoiceItemDetail" Association="Self.FK_tblBatch_tblSalesOrderInvoiceItemDetail">
+            <End Role="tblBatch" EntitySet="tblBatch" />
+            <End Role="tblSalesOrderInvoiceItemDetail" EntitySet="tblSalesOrderInvoiceItemDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_tblBatch_tblSalesOrderItemWarehouseMap" Association="Self.FK_tblBatch_tblSalesOrderItemWarehouseMap">
             <End Role="tblBatch" EntitySet="tblBatch" />
@@ -8948,6 +9279,10 @@
             <End Role="tblGRN" EntitySet="tblGRN" />
             <End Role="tblItemWarehouseMap" EntitySet="tblItemWarehouseMap" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblitemwarehousemap_tblSysOrganization" Association="Self.FK_tblitemwarehousemap_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblItemWarehouseMap" EntitySet="tblItemWarehouseMap" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblNotification_tblSysUser" Association="Self.FK_tblNotification_tblSysUser">
             <End Role="tblSysUser" EntitySet="tblSysUser" />
             <End Role="tblNotification" EntitySet="tblNotification" />
@@ -8986,6 +9321,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_tblPurchaseOrder_tblSysBranch" Association="Self.FK_tblPurchaseOrder_tblSysBranch">
             <End Role="tblSysBranch" EntitySet="tblSysBranch" />
+            <End Role="tblPurchaseOrder" EntitySet="tblPurchaseOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPurchaseOrder_tblSysOrganization" Association="Self.FK_tblPurchaseOrder_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
             <End Role="tblPurchaseOrder" EntitySet="tblPurchaseOrder" />
           </AssociationSet>
           <AssociationSet Name="FK_tblPurchaseOrder_tblSysUser" Association="Self.FK_tblPurchaseOrder_tblSysUser">
@@ -9031,6 +9370,10 @@
           <AssociationSet Name="FK_tblPurchaseRequisition_tblPurchaseRequisitionItemsDetail" Association="Self.FK_tblPurchaseRequisition_tblPurchaseRequisitionItemsDetail">
             <End Role="tblPurchaseRequisition" EntitySet="tblPurchaseRequisition" />
             <End Role="tblPurchaseRequisitionItemsDetail" EntitySet="tblPurchaseRequisitionItemsDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPurchaseRequisition_tblSysOrganization" Association="Self.FK_tblPurchaseRequisition_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblPurchaseRequisition" EntitySet="tblPurchaseRequisition" />
           </AssociationSet>
           <AssociationSet Name="FK_tblPurchaseRequisition_tblSysUser" Association="Self.FK_tblPurchaseRequisition_tblSysUser">
             <End Role="tblSysUser" EntitySet="tblSysUser" />
@@ -9191,6 +9534,58 @@
           <AssociationSet Name="FK_tblSysChannelPartner_ChannelTypeID" Association="Self.FK_tblSysChannelPartner_ChannelTypeID">
             <End Role="tblSalesChannelType" EntitySet="tblSalesChannelType" />
             <End Role="tblSysChannelPartner" EntitySet="tblSysChannelPartner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_DeliverycenterBranchMap" Association="Self.FK_tblSysOrganization_DeliverycenterBranchMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="DeliverycenterBranchMap" EntitySet="DeliverycenterBranchMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblDeliveryNote" Association="Self.FK_tblSysOrganization_tblDeliveryNote">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblDeliveryNote" EntitySet="tblDeliveryNote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblDeliveryNoteItem" Association="Self.FK_tblSysOrganization_tblDeliveryNoteItem">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblDeliveryNoteItem" EntitySet="tblDeliveryNoteItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblGatePass" Association="Self.FK_tblSysOrganization_tblGatePass">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblGatePass" EntitySet="tblGatePass" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblItemMapping" Association="Self.FK_tblSysOrganization_tblItemMapping">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblItemMapping" EntitySet="tblItemMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblOrganizationMap" Association="Self.FK_tblSysOrganization_tblOrganizationMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblSysOrganizationMap" EntitySet="tblSysOrganizationMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblOrganizationMap2" Association="Self.FK_tblSysOrganization_tblOrganizationMap2">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblSysOrganizationMap" EntitySet="tblSysOrganizationMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblOrganizationWarehouseMap" Association="Self.FK_tblSysOrganization_tblOrganizationWarehouseMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblOrganizationWarehouseMap" EntitySet="tblOrganizationWarehouseMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblPurchaseOrderInvoice" Association="Self.FK_tblSysOrganization_tblPurchaseOrderInvoice">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblPurchaseOrderInvoice" EntitySet="tblPurchaseOrderInvoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblSalesOrder" Association="Self.FK_tblSysOrganization_tblSalesOrder">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblSalesOrder" EntitySet="tblSalesOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblSalesOrderInvoice" Association="Self.FK_tblSysOrganization_tblSalesOrderInvoice">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblSalesOrderInvoice" EntitySet="tblSalesOrderInvoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblSalesOrderItemWarehouseMap" Association="Self.FK_tblSysOrganization_tblSalesOrderItemWarehouseMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblSalesOrderItemWarehouseMap" EntitySet="tblSalesOrderItemWarehouseMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblWarehouse" Association="Self.FK_tblSysOrganization_tblWarehouse">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganization" />
+            <End Role="tblWarehouse" EntitySet="tblWarehouse" />
           </AssociationSet>
           <AssociationSet Name="FK_tblSysRole_Departments" Association="Self.FK_tblSysRole_Departments">
             <End Role="Departments" EntitySet="Departments" />
@@ -9835,6 +10230,10 @@
           <AssociationSet Name="FK_tblVoucherTypeDisplayCol_tblVoucherTypeNo" Association="Self.FK_tblVoucherTypeDisplayCol_tblVoucherTypeNo">
             <End Role="tblVoucherType" EntitySet="tblVoucherType" />
             <End Role="tblVoucherType1" EntitySet="tblVoucherType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblWarehouse_DeliverycenterBranchMap" Association="Self.FK_tblWarehouse_DeliverycenterBranchMap">
+            <End Role="tblWarehouse" EntitySet="tblWarehouse" />
+            <End Role="DeliverycenterBranchMap" EntitySet="DeliverycenterBranchMap" />
           </AssociationSet>
           <AssociationSet Name="FK_tblWarehouse_tblDeliveryNoteItem" Association="Self.FK_tblWarehouse_tblDeliveryNoteItem">
             <End Role="tblWarehouse" EntitySet="tblWarehouse" />
@@ -11619,6 +12018,87 @@
             <End Role="FumigationDetail" EntitySet="FumigationDetails" />
             <End Role="FumigationDetail1" EntitySet="FumigationDetails" />
           </AssociationSet>
+          <EntitySet Name="tblPrintItems" EntityType="MWBTCustomerAppModel.tblPrintItem" />
+          <AssociationSet Name="FK_tblSysOrganization_DeliverycenterBranchMap" Association="MWBTCustomerAppModel.FK_tblSysOrganization_DeliverycenterBranchMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="DeliverycenterBranchMap" EntitySet="DeliverycenterBranchMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiscrepencyDetails_tblSysOrganization" Association="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="DiscrepencyDetail" EntitySet="DiscrepencyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentUploads_DocumentsList" Association="MWBTCustomerAppModel.FK_DocumentUploads_DocumentsList">
+            <End Role="DocumentsList" EntitySet="DocumentsLists" />
+            <End Role="DocumentUpload" EntitySet="DocumentUploads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBatch_tblItemWarehouseMap" Association="MWBTCustomerAppModel.FK_tblBatch_tblItemWarehouseMap">
+            <End Role="tblBatch" EntitySet="tblBatches" />
+            <End Role="tblItemWarehouseMap" EntitySet="tblItemWarehouseMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBatch_tblSalesOrderInvoiceItemDetail" Association="MWBTCustomerAppModel.FK_tblBatch_tblSalesOrderInvoiceItemDetail">
+            <End Role="tblBatch" EntitySet="tblBatches" />
+            <End Role="tblSalesOrderInvoiceItemDetail" EntitySet="tblSalesOrderInvoiceItemDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblDeliveryNote" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNote">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblDeliveryNote" EntitySet="tblDeliveryNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblDeliveryNoteItem" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNoteItem">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblDeliveryNoteItem" EntitySet="tblDeliveryNoteItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblGatePass" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblGatePass">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblGatePass" EntitySet="tblGatePasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblItemMapping" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblItemMapping">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblItemMapping" EntitySet="tblItemMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblitemwarehousemap_tblSysOrganization" Association="MWBTCustomerAppModel.FK_tblitemwarehousemap_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblItemWarehouseMap" EntitySet="tblItemWarehouseMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblOrganizationWarehouseMap" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationWarehouseMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblOrganizationWarehouseMap" EntitySet="tblOrganizationWarehouseMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPurchaseOrder_tblSysOrganization" Association="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblPurchaseOrder" EntitySet="tblPurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblPurchaseOrderInvoice" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblPurchaseOrderInvoice">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblPurchaseOrderInvoice" EntitySet="tblPurchaseOrderInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPurchaseRequisition_tblSysOrganization" Association="MWBTCustomerAppModel.FK_tblPurchaseRequisition_tblSysOrganization">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblPurchaseRequisition" EntitySet="tblPurchaseRequisitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblSalesOrder" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrder">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblSalesOrder" EntitySet="tblSalesOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblSalesOrderInvoice" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderInvoice">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblSalesOrderInvoice" EntitySet="tblSalesOrderInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblSalesOrderItemWarehouseMap" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderItemWarehouseMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblSalesOrderItemWarehouseMap" EntitySet="tblSalesOrderItemWarehouseMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblOrganizationMap" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblSysOrganizationMap" EntitySet="tblSysOrganizationMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblOrganizationMap2" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap2">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblSysOrganizationMap" EntitySet="tblSysOrganizationMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSysOrganization_tblWarehouse" Association="MWBTCustomerAppModel.FK_tblSysOrganization_tblWarehouse">
+            <End Role="tblSysOrganization" EntitySet="tblSysOrganizations" />
+            <End Role="tblWarehouse" EntitySet="tblWarehouses" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AccountGroupDetail">
           <Key>
@@ -11638,6 +12118,7 @@
           <Property Name="isTallyUpdated" Type="Boolean" />
           <Property Name="TallyUpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="TallyUpdatedByID" Type="Int32" />
+          <Property Name="SourceOfUpdate" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="BasicExpensesDetail">
           <Key>
@@ -11805,6 +12286,7 @@
           <Property Name="UpdatedDatetime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tblSysBranch" Relationship="MWBTCustomerAppModel.FK_tblSysSysBranch_DeliverycenterBranchMap" FromRole="DeliverycenterBranchMap" ToRole="tblSysBranch" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_DeliverycenterBranchMap" FromRole="DeliverycenterBranchMap" ToRole="tblWarehouse" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_DeliverycenterBranchMap" FromRole="DeliverycenterBranchMap" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="DenominationMapWithTran">
           <Key>
@@ -11885,6 +12367,7 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysUserCrID" FromRole="DiscrepencyDetail" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysUserMdID" FromRole="DiscrepencyDetail" ToRole="tblSysUser" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblWarehouse" FromRole="DiscrepencyDetail" ToRole="tblWarehouse" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysOrganization" FromRole="DiscrepencyDetail" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="DocumentsList">
           <Key>
@@ -11898,6 +12381,9 @@
           <Property Name="ModifiedById" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="DocumentsSettings" Relationship="MWBTCustomerAppModel.FK_DocumentsList_DocumentsSetting" FromRole="DocumentsList" ToRole="DocumentsSetting" />
+          <Property Name="IsEditable" Type="Boolean" Nullable="false" />
+          <Property Name="ScreenName" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="DocumentUploads" Relationship="MWBTCustomerAppModel.FK_DocumentUploads_DocumentsList" FromRole="DocumentsList" ToRole="DocumentUpload" />
         </EntityType>
         <EntityType Name="DocumentsSetting">
           <Key>
@@ -11938,6 +12424,10 @@
           <Property Name="SourceOfUpdate" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="tblGatePass" Relationship="MWBTCustomerAppModel.FK_DocumentUploads_tblGatePass" FromRole="DocumentUpload" ToRole="tblGatePass" />
           <NavigationProperty Name="tblGoodsInwardNote" Relationship="MWBTCustomerAppModel.FK_DocumentUploads_tblGoodsInwardNote" FromRole="DocumentUpload" ToRole="tblGoodsInwardNote" />
+          <Property Name="SOTypeNum" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentTypeID" Type="Int32" />
+          <Property Name="DocumentExpiryDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DocumentsList" Relationship="MWBTCustomerAppModel.FK_DocumentUploads_DocumentsList" FromRole="DocumentUpload" ToRole="DocumentsList" />
         </EntityType>
         <EntityType Name="FranchiseMarginDetail">
           <Key>
@@ -12211,6 +12701,8 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblsysUser_tblAccessRights" FromRole="tblAccessRight" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblAccessRights" FromRole="tblAccessRight" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser2" Relationship="MWBTCustomerAppModel.FK_tblSysUser2_tblAccessRights" FromRole="tblAccessRight" ToRole="tblSysUser" />
+          <Property Name="ActivityID" Type="Int32" />
+          <Property Name="IsEditable" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblAccountContraBillWithDetail">
           <Key>
@@ -12539,6 +13031,29 @@
           <Property Name="TallyUpdatedByID" Type="Int32" />
           <NavigationProperty Name="tblAccountReceiptDetails" Relationship="MWBTCustomerAppModel.FK_tblAccountLedger_tblAccountReceiptDetails" FromRole="tblAccountLedger" ToRole="tblAccountReceiptDetail" />
           <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblAccountLedger_tblSysOrganization" FromRole="tblAccountLedger" ToRole="tblSysOrganization" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GSTN" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="PANNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StateID" Type="Int32" />
+          <Property Name="Pincode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ContactPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="FaxNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ActivateIntrestCalculation" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="RateOfIntrestPer" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Per" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccHolderName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IFSCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="BankName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Branch" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="BSRCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SourceOfUpdate" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="tblAccountPaymentDetail">
           <Key>
@@ -12571,6 +13086,10 @@
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tblAccountPaymentWithBillDetails" Relationship="MWBTCustomerAppModel.FK_tblAccountPaymentWithBillDetails_tblAccountPaymentDetails" FromRole="tblAccountPaymentDetail" ToRole="tblAccountPaymentWithBillDetail" />
+          <Property Name="Debit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Credit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BranchID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RefValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblAccountPaymentWithBillDetail">
           <Key>
@@ -12595,6 +13114,12 @@
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tblAccountPaymentDetail" Relationship="MWBTCustomerAppModel.FK_tblAccountPaymentWithBillDetails_tblAccountPaymentDetails" FromRole="tblAccountPaymentWithBillDetail" ToRole="tblAccountPaymentDetail" />
+          <Property Name="Debit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Credit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ParentVoucherName" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="OrgValueDr" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SRInvoiceNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tblAccountReceiptDetail">
           <Key>
@@ -12637,6 +13162,8 @@
           <Property Name="BranchID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="RefValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsEdited" Type="Boolean" Nullable="false" />
+          <Property Name="ReceiverName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="StoreIncharge" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tblAccountReceiptWithBillDetail">
           <Key>
@@ -12700,6 +13227,7 @@
           <Property Name="ModifiedByID" Type="Int32" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblsysUser_tblAdminConfiguration" FromRole="tblAdminConfiguration" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblAdminConfiguration" FromRole="tblAdminConfiguration" ToRole="tblSysUser" />
+          <Property Name="BranchID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tblArea">
           <Key>
@@ -12739,6 +13267,8 @@
           <NavigationProperty Name="tblGoodsInwardNoteItems" Relationship="MWBTCustomerAppModel.FK_tblGoodsInwardNoteItem_tblBatch" FromRole="tblBatch" ToRole="tblGoodsInwardNoteItem" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblsysUser_tblBatch" FromRole="tblBatch" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblBatch" FromRole="tblBatch" ToRole="tblSysUser" />
+          <NavigationProperty Name="tblItemWarehouseMaps" Relationship="MWBTCustomerAppModel.FK_tblBatch_tblItemWarehouseMap" FromRole="tblBatch" ToRole="tblItemWarehouseMap" />
+          <NavigationProperty Name="tblSalesOrderInvoiceItemDetails" Relationship="MWBTCustomerAppModel.FK_tblBatch_tblSalesOrderInvoiceItemDetail" FromRole="tblBatch" ToRole="tblSalesOrderInvoiceItemDetail" />
         </EntityType>
         <EntityType Name="tblBrand">
           <Key>
@@ -12774,6 +13304,7 @@
           <Property Name="UpdatedByID" Type="Int32" />
           <NavigationProperty Name="tblCartItems" Relationship="MWBTCustomerAppModel.FK_tblAddtoCartChild_tblAddtoCartParent" FromRole="tblCart" ToRole="tblCartItem" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblAddtoCartParent_tblSysUser" FromRole="tblCart" ToRole="tblSysUser" />
+          <Property Name="CreditType" Type="Int32" />
         </EntityType>
         <EntityType Name="tblCartItem">
           <Key>
@@ -13112,6 +13643,7 @@
           <NavigationProperty Name="tblSalesOrder" Relationship="MWBTCustomerAppModel.FK_tblSalesOrder_tblDeliveryNote" FromRole="tblDeliveryNote" ToRole="tblSalesOrder" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblDeliveryNote" FromRole="tblDeliveryNote" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblGatePassItem" FromRole="tblDeliveryNote" ToRole="tblSysUser" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNote" FromRole="tblDeliveryNote" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblDeliveryNoteItem">
           <Key>
@@ -13144,6 +13676,7 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblDeliveryNoteItem" FromRole="tblDeliveryNoteItem" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblDeliveryNoteItem" FromRole="tblDeliveryNoteItem" ToRole="tblSysUser" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblDeliveryNoteItem" FromRole="tblDeliveryNoteItem" ToRole="tblWarehouse" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNoteItem" FromRole="tblDeliveryNoteItem" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblDepartment">
           <Key>
@@ -13229,6 +13762,7 @@
           <NavigationProperty Name="tblSalesOrderInvoices" Relationship="MWBTCustomerAppModel.FK_tblSalesOrderInvoice_tblGatePass" FromRole="tblGatePass" ToRole="tblSalesOrderInvoice" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblGatePass" FromRole="tblGatePass" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblGatePass" FromRole="tblGatePass" ToRole="tblSysUser" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblGatePass" FromRole="tblGatePass" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblGatePassItem">
           <Key>
@@ -13263,6 +13797,7 @@
           <NavigationProperty Name="tblSalesOrderWithItem" Relationship="MWBTCustomerAppModel.FK_tblSalesOrderWithItem_tblGatePassItem" FromRole="tblGatePassItem" ToRole="tblSalesOrderWithItem" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblGatePassItem" FromRole="tblGatePassItem" ToRole="tblSysUser" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblGatePassItem" FromRole="tblGatePassItem" ToRole="tblWarehouse" />
+          <Property Name="UnloadPriority" Type="Int32" />
         </EntityType>
         <EntityType Name="tblGoodsInwardNote">
           <Key>
@@ -13302,6 +13837,7 @@
           <NavigationProperty Name="tblPurchaseOrder" Relationship="MWBTCustomerAppModel.FK_Table_1_tblPurchaseOrder" FromRole="tblGoodsInwardNote" ToRole="tblPurchaseOrder" />
           <NavigationProperty Name="tblPurchaseOrderInvoices" Relationship="MWBTCustomerAppModel.FK_tblGoodsInwardNote_tblPurchaseOrderInvoice" FromRole="tblGoodsInwardNote" ToRole="tblPurchaseOrderInvoice" />
           <NavigationProperty Name="tblVoucherType" Relationship="MWBTCustomerAppModel.FK_tblGoodsInwardNote_tblVoucherType" FromRole="tblGoodsInwardNote" ToRole="tblVoucherType" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="tblGoodsInwardNoteItem">
           <Key>
@@ -13669,6 +14205,7 @@
           <NavigationProperty Name="tblItem" Relationship="MWBTCustomerAppModel.FK_tblItem_tblItemMapping" FromRole="tblItemMapping" ToRole="tblItem" />
           <NavigationProperty Name="tblItemRate" Relationship="MWBTCustomerAppModel.FK_tblItemRate_tblItemMapping" FromRole="tblItemMapping" ToRole="tblItemRate" />
           <NavigationProperty Name="tblSysBranch" Relationship="MWBTCustomerAppModel.FK_tblSysBranch_tblItemMapping" FromRole="tblItemMapping" ToRole="tblSysBranch" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblItemMapping" FromRole="tblItemMapping" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblItemMappingWithCESS">
           <Key>
@@ -13910,6 +14447,8 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblsysUser_tblItemWarehouseMap" FromRole="tblItemWarehouseMap" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblItemWarehouseMap" FromRole="tblItemWarehouseMap" ToRole="tblSysUser" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblItemWarehouseMap" FromRole="tblItemWarehouseMap" ToRole="tblWarehouse" />
+          <NavigationProperty Name="tblBatch" Relationship="MWBTCustomerAppModel.FK_tblBatch_tblItemWarehouseMap" FromRole="tblItemWarehouseMap" ToRole="tblBatch" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblitemwarehousemap_tblSysOrganization" FromRole="tblItemWarehouseMap" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblLedgerType">
           <Key>
@@ -13950,6 +14489,7 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser_tblOrganizationWarehouseMap" FromRole="tblOrganizationWarehouseMap" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblOrganizationWarehouseMap" FromRole="tblOrganizationWarehouseMap" ToRole="tblSysUser" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblOrganizationWarehouseMap" FromRole="tblOrganizationWarehouseMap" ToRole="tblWarehouse" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationWarehouseMap" FromRole="tblOrganizationWarehouseMap" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblPacketSizeDetail">
           <Key>
@@ -14223,6 +14763,7 @@
           <NavigationProperty Name="tblSysUser2" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseOrder" FromRole="tblPurchaseOrder" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser3" Relationship="MWBTCustomerAppModel.FK_tblUser_tblPurchaseOrder" FromRole="tblPurchaseOrder" ToRole="tblSysUser" />
           <Property Name="PurchaseType" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSysOrganization" FromRole="tblPurchaseOrder" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblPurchaseOrderInvoice">
           <Key>
@@ -14268,6 +14809,10 @@
           <NavigationProperty Name="tblVoucherType" Relationship="MWBTCustomerAppModel.FK_tblPurchaseOrderInvoice_tblVoucherType" FromRole="tblPurchaseOrderInvoice" ToRole="tblVoucherType" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseOrderInvoice" FromRole="tblPurchaseOrderInvoice" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblPurchaseOrderInvoice" FromRole="tblPurchaseOrderInvoice" ToRole="tblSysUser" />
+          <Property Name="TCSPercentage" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="TCSValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="InsuranceCharges" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblPurchaseOrderInvoice" FromRole="tblPurchaseOrderInvoice" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblPurchaseOrderInvoiceItemDetail">
           <Key>
@@ -14365,6 +14910,7 @@
           <NavigationProperty Name="tblSysBranch" Relationship="MWBTCustomerAppModel.FK_tblSysBranch_tblPurchaseRequisition" FromRole="tblPurchaseRequisition" ToRole="tblSysBranch" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser_tblPurchaseRequisition" FromRole="tblPurchaseRequisition" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser2" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblPurchaseRequisition" FromRole="tblPurchaseRequisition" ToRole="tblSysUser" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblPurchaseRequisition_tblSysOrganization" FromRole="tblPurchaseRequisition" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblPurchaseRequisitionItemsDetail">
           <Key>
@@ -14630,6 +15176,7 @@
           <Property Name="IGSTAmt" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="SGSTAmt" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="CGSTAmt" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrder" FromRole="tblSalesOrder" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblSalesOrderCashTransaction">
           <Key>
@@ -14699,6 +15246,7 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderInvoice" FromRole="tblSalesOrderInvoice" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderInvoice" FromRole="tblSalesOrderInvoice" ToRole="tblSysUser" />
           <NavigationProperty Name="tblVoucherType" Relationship="MWBTCustomerAppModel.FK_tblVoucherType_tblSalesOrderInvoice" FromRole="tblSalesOrderInvoice" ToRole="tblVoucherType" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderInvoice" FromRole="tblSalesOrderInvoice" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblSalesOrderInvoiceItemDetail">
           <Key>
@@ -14733,6 +15281,9 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderInvoiceItemDetail" FromRole="tblSalesOrderInvoiceItemDetail" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderInvoiceItemDetail" FromRole="tblSalesOrderInvoiceItemDetail" ToRole="tblSysUser" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblSalesOrderInvoiceItemDetail" FromRole="tblSalesOrderInvoiceItemDetail" ToRole="tblWarehouse" />
+          <Property Name="BatchId" Type="Int32" />
+          <Property Name="SalesOrderWithItemID" Type="Guid" />
+          <NavigationProperty Name="tblBatch" Relationship="MWBTCustomerAppModel.FK_tblBatch_tblSalesOrderInvoiceItemDetail" FromRole="tblSalesOrderInvoiceItemDetail" ToRole="tblBatch" />
         </EntityType>
         <EntityType Name="tblSalesOrderItemWarehouseMap">
           <Key>
@@ -14765,6 +15316,7 @@
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblSalesOrderItemWarehouseMap" FromRole="tblSalesOrderItemWarehouseMap" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblUser_tblSalesOrderItemWarehouseMap" FromRole="tblSalesOrderItemWarehouseMap" ToRole="tblSysUser" />
           <NavigationProperty Name="tblWarehouse" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblSalesOrderItemWarehouseMap" FromRole="tblSalesOrderItemWarehouseMap" ToRole="tblWarehouse" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderItemWarehouseMap" FromRole="tblSalesOrderItemWarehouseMap" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblSalesOrderWithItem">
           <Key>
@@ -14958,6 +15510,7 @@
           <NavigationProperty Name="tblSysSubMenu" Relationship="MWBTCustomerAppModel.FK_tblSysSubMenu_tblSubMenuRoleMap" FromRole="tblSubMenuRoleMap" ToRole="tblSysSubMenu" />
           <NavigationProperty Name="tblSysUser" Relationship="MWBTCustomerAppModel.FK_tblsysUser_tblSubMenuRoleMap" FromRole="tblSubMenuRoleMap" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblSubMenuRoleMap" FromRole="tblSubMenuRoleMap" ToRole="tblSysUser" />
+          <Property Name="IsEditable" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblSysBranch">
           <Key>
@@ -15122,6 +15675,23 @@
           <Property Name="IsTrialVersion" Type="Boolean" />
           <Property Name="NoOfDays" Type="Int32" />
           <Property Name="CityID" Type="Int32" />
+          <NavigationProperty Name="DeliverycenterBranchMaps" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_DeliverycenterBranchMap" FromRole="tblSysOrganization" ToRole="DeliverycenterBranchMap" />
+          <NavigationProperty Name="DiscrepencyDetails" Relationship="MWBTCustomerAppModel.FK_DiscrepencyDetails_tblSysOrganization" FromRole="tblSysOrganization" ToRole="DiscrepencyDetail" />
+          <NavigationProperty Name="tblDeliveryNotes" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNote" FromRole="tblSysOrganization" ToRole="tblDeliveryNote" />
+          <NavigationProperty Name="tblDeliveryNoteItems" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblDeliveryNoteItem" FromRole="tblSysOrganization" ToRole="tblDeliveryNoteItem" />
+          <NavigationProperty Name="tblGatePasses" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblGatePass" FromRole="tblSysOrganization" ToRole="tblGatePass" />
+          <NavigationProperty Name="tblItemMappings" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblItemMapping" FromRole="tblSysOrganization" ToRole="tblItemMapping" />
+          <NavigationProperty Name="tblItemWarehouseMaps" Relationship="MWBTCustomerAppModel.FK_tblitemwarehousemap_tblSysOrganization" FromRole="tblSysOrganization" ToRole="tblItemWarehouseMap" />
+          <NavigationProperty Name="tblOrganizationWarehouseMaps" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationWarehouseMap" FromRole="tblSysOrganization" ToRole="tblOrganizationWarehouseMap" />
+          <NavigationProperty Name="tblPurchaseOrders" Relationship="MWBTCustomerAppModel.FK_tblPurchaseOrder_tblSysOrganization" FromRole="tblSysOrganization" ToRole="tblPurchaseOrder" />
+          <NavigationProperty Name="tblPurchaseOrderInvoices" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblPurchaseOrderInvoice" FromRole="tblSysOrganization" ToRole="tblPurchaseOrderInvoice" />
+          <NavigationProperty Name="tblPurchaseRequisitions" Relationship="MWBTCustomerAppModel.FK_tblPurchaseRequisition_tblSysOrganization" FromRole="tblSysOrganization" ToRole="tblPurchaseRequisition" />
+          <NavigationProperty Name="tblSalesOrders" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrder" FromRole="tblSysOrganization" ToRole="tblSalesOrder" />
+          <NavigationProperty Name="tblSalesOrderInvoices" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderInvoice" FromRole="tblSysOrganization" ToRole="tblSalesOrderInvoice" />
+          <NavigationProperty Name="tblSalesOrderItemWarehouseMaps" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblSalesOrderItemWarehouseMap" FromRole="tblSysOrganization" ToRole="tblSalesOrderItemWarehouseMap" />
+          <NavigationProperty Name="tblSysOrganizationMaps" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap" FromRole="tblSysOrganization" ToRole="tblSysOrganizationMap" />
+          <NavigationProperty Name="tblSysOrganizationMaps1" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap2" FromRole="tblSysOrganization" ToRole="tblSysOrganizationMap" />
+          <NavigationProperty Name="tblWarehouses" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblWarehouse" FromRole="tblSysOrganization" ToRole="tblWarehouse" />
         </EntityType>
         <EntityType Name="tblSysOrganizationMap">
           <Key>
@@ -15140,6 +15710,8 @@
           <Property Name="ModifiedDatetime" Type="DateTime" Precision="3" />
           <Property Name="ModifiedByID" Type="Int32" />
           <Property Name="SourceOfUpdate" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap" FromRole="tblSysOrganizationMap" ToRole="tblSysOrganization" />
+          <NavigationProperty Name="tblSysOrganization1" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblOrganizationMap2" FromRole="tblSysOrganizationMap" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblSysRole">
           <Key>
@@ -15418,6 +15990,7 @@
           <NavigationProperty Name="tblDepartment" Relationship="MWBTCustomerAppModel.FK_tblDepartment_DeptID" FromRole="tblSysUser" ToRole="tblDepartment" />
           <Property Name="IsServiceInstalled" Type="Boolean" />
           <Property Name="isFirstLogin" Type="Boolean" />
+          <Property Name="RememberPassword" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblTaxationType">
           <Key>
@@ -15687,6 +16260,7 @@
           <NavigationProperty Name="tblSysUser1" Relationship="MWBTCustomerAppModel.FK_tblSysUser1_tblWarehouse" FromRole="tblWarehouse" ToRole="tblSysUser" />
           <NavigationProperty Name="tblSysUsers" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblsysUser" FromRole="tblWarehouse" ToRole="tblSysUser" />
           <NavigationProperty Name="tblUserWarehouseMaps" Relationship="MWBTCustomerAppModel.FK_tblWarehouse_tblUserWarehouseMap" FromRole="tblWarehouse" ToRole="tblUserWarehouseMap" />
+          <NavigationProperty Name="tblSysOrganization" Relationship="MWBTCustomerAppModel.FK_tblSysOrganization_tblWarehouse" FromRole="tblWarehouse" ToRole="tblSysOrganization" />
         </EntityType>
         <EntityType Name="tblWarehouseToWarehouseTracking">
           <Key>
@@ -20609,6 +21183,254 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblPrintItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClickCount" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_tblSysOrganization_DeliverycenterBranchMap">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="1" />
+          <End Type="MWBTCustomerAppModel.DeliverycenterBranchMap" Role="DeliverycenterBranchMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="DeliverycenterBranchMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiscrepencyDetails_tblSysOrganization">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.DiscrepencyDetail" Role="DiscrepencyDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="DiscrepencyDetail">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentUploads_DocumentsList">
+          <End Type="MWBTCustomerAppModel.DocumentsList" Role="DocumentsList" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.DocumentUpload" Role="DocumentUpload" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentsList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentUpload">
+              <PropertyRef Name="DocumentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBatch_tblItemWarehouseMap">
+          <End Type="MWBTCustomerAppModel.tblBatch" Role="tblBatch" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblItemWarehouseMap" Role="tblItemWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBatch">
+              <PropertyRef Name="BatchID" />
+            </Principal>
+            <Dependent Role="tblItemWarehouseMap">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBatch_tblSalesOrderInvoiceItemDetail">
+          <End Type="MWBTCustomerAppModel.tblBatch" Role="tblBatch" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblSalesOrderInvoiceItemDetail" Role="tblSalesOrderInvoiceItemDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBatch">
+              <PropertyRef Name="BatchID" />
+            </Principal>
+            <Dependent Role="tblSalesOrderInvoiceItemDetail">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblDeliveryNote">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblDeliveryNote" Role="tblDeliveryNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblDeliveryNote">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblDeliveryNoteItem">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblDeliveryNoteItem" Role="tblDeliveryNoteItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblDeliveryNoteItem">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblGatePass">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblGatePass" Role="tblGatePass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblGatePass">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblItemMapping">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblItemMapping" Role="tblItemMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblItemMapping">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblitemwarehousemap_tblSysOrganization">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="1" />
+          <End Type="MWBTCustomerAppModel.tblItemWarehouseMap" Role="tblItemWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblItemWarehouseMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblOrganizationWarehouseMap">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="1" />
+          <End Type="MWBTCustomerAppModel.tblOrganizationWarehouseMap" Role="tblOrganizationWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblOrganizationWarehouseMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPurchaseOrder_tblSysOrganization">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblPurchaseOrder" Role="tblPurchaseOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblPurchaseOrder">
+              <PropertyRef Name="OrgId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblPurchaseOrderInvoice">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblPurchaseOrderInvoice" Role="tblPurchaseOrderInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblPurchaseOrderInvoice">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPurchaseRequisition_tblSysOrganization">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblPurchaseRequisition" Role="tblPurchaseRequisition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblPurchaseRequisition">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblSalesOrder">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblSalesOrder" Role="tblSalesOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSalesOrder">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblSalesOrderInvoice">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblSalesOrderInvoice" Role="tblSalesOrderInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSalesOrderInvoice">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblSalesOrderItemWarehouseMap">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblSalesOrderItemWarehouseMap" Role="tblSalesOrderItemWarehouseMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSalesOrderItemWarehouseMap">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblOrganizationMap">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="1" />
+          <End Type="MWBTCustomerAppModel.tblSysOrganizationMap" Role="tblSysOrganizationMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSysOrganizationMap">
+              <PropertyRef Name="ParentOrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblOrganizationMap2">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="1" />
+          <End Type="MWBTCustomerAppModel.tblSysOrganizationMap" Role="tblSysOrganizationMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblSysOrganizationMap">
+              <PropertyRef Name="SisterOrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSysOrganization_tblWarehouse">
+          <End Type="MWBTCustomerAppModel.tblSysOrganization" Role="tblSysOrganization" Multiplicity="0..1" />
+          <End Type="MWBTCustomerAppModel.tblWarehouse" Role="tblWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSysOrganization">
+              <PropertyRef Name="OrgID" />
+            </Principal>
+            <Dependent Role="tblWarehouse">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -20618,6 +21440,7 @@
           <EntitySetMapping Name="AccountGroupDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.AccountGroupDetail">
               <MappingFragment StoreEntitySet="AccountGroupDetails">
+                <ScalarProperty Name="SourceOfUpdate" ColumnName="SourceOfUpdate" />
                 <ScalarProperty Name="TallyUpdatedByID" ColumnName="TallyUpdatedByID" />
                 <ScalarProperty Name="TallyUpdatedDate" ColumnName="TallyUpdatedDate" />
                 <ScalarProperty Name="isTallyUpdated" ColumnName="isTallyUpdated" />
@@ -20869,6 +21692,8 @@
           <EntitySetMapping Name="DocumentsLists">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.DocumentsList">
               <MappingFragment StoreEntitySet="DocumentsList">
+                <ScalarProperty Name="ScreenName" ColumnName="ScreenName" />
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -20898,6 +21723,9 @@
           <EntitySetMapping Name="DocumentUploads">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.DocumentUpload">
               <MappingFragment StoreEntitySet="DocumentUploads">
+                <ScalarProperty Name="DocumentExpiryDate" ColumnName="DocumentExpiryDate" />
+                <ScalarProperty Name="DocumentTypeID" ColumnName="DocumentTypeID" />
+                <ScalarProperty Name="SOTypeNum" ColumnName="SOTypeNum" />
                 <ScalarProperty Name="SourceOfUpdate" ColumnName="SourceOfUpdate" />
                 <ScalarProperty Name="IsTallyUpdated" ColumnName="IsTallyUpdated" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
@@ -21170,6 +21998,8 @@
           <EntitySetMapping Name="tblAccessRights">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAccessRight">
               <MappingFragment StoreEntitySet="tblAccessRights">
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
+                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -21477,6 +22307,29 @@
           <EntitySetMapping Name="tblAccountLedgers">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAccountLedger">
               <MappingFragment StoreEntitySet="tblAccountLedger">
+                <ScalarProperty Name="SourceOfUpdate" ColumnName="SourceOfUpdate" />
+                <ScalarProperty Name="BSRCode" ColumnName="BSRCode" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="IFSCode" ColumnName="IFSCode" />
+                <ScalarProperty Name="AccNumber" ColumnName="AccNumber" />
+                <ScalarProperty Name="AccHolderName" ColumnName="AccHolderName" />
+                <ScalarProperty Name="Per" ColumnName="Per" />
+                <ScalarProperty Name="RateOfIntrestPer" ColumnName="RateOfIntrestPer" />
+                <ScalarProperty Name="ActivateIntrestCalculation" ColumnName="ActivateIntrestCalculation" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PANNumber" ColumnName="PANNumber" />
+                <ScalarProperty Name="GSTN" ColumnName="GSTN" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="TallyUpdatedByID" ColumnName="TallyUpdatedByID" />
                 <ScalarProperty Name="TallyUpdatedDate" ColumnName="TallyUpdatedDate" />
                 <ScalarProperty Name="IsTallyUpdated" ColumnName="IsTallyUpdated" />
@@ -21498,6 +22351,10 @@
           <EntitySetMapping Name="tblAccountPaymentDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAccountPaymentDetail">
               <MappingFragment StoreEntitySet="tblAccountPaymentDetails">
+                <ScalarProperty Name="RefValue" ColumnName="RefValue" />
+                <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
@@ -21530,6 +22387,12 @@
           <EntitySetMapping Name="tblAccountPaymentWithBillDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAccountPaymentWithBillDetail">
               <MappingFragment StoreEntitySet="tblAccountPaymentWithBillDetails">
+                <ScalarProperty Name="SRInvoiceNo" ColumnName="SRInvoiceNo" />
+                <ScalarProperty Name="OrgValueDr" ColumnName="OrgValueDr" />
+                <ScalarProperty Name="ParentVoucherName" ColumnName="ParentVoucherName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
@@ -21554,6 +22417,8 @@
           <EntitySetMapping Name="tblAccountReceiptDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAccountReceiptDetail">
               <MappingFragment StoreEntitySet="tblAccountReceiptDetails">
+                <ScalarProperty Name="StoreIncharge" ColumnName="StoreIncharge" />
+                <ScalarProperty Name="ReceiverName" ColumnName="ReceiverName" />
                 <ScalarProperty Name="IsEdited" ColumnName="IsEdited" />
                 <ScalarProperty Name="RefValue" ColumnName="RefValue" />
                 <ScalarProperty Name="BranchID" ColumnName="BranchID" />
@@ -21638,6 +22503,7 @@
           <EntitySetMapping Name="tblAdminConfigurations">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblAdminConfiguration">
               <MappingFragment StoreEntitySet="tblAdminConfiguration">
+                <ScalarProperty Name="BranchID" ColumnName="BranchID" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -21697,6 +22563,7 @@
           <EntitySetMapping Name="tblCarts">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblCart">
               <MappingFragment StoreEntitySet="tblCart">
+                <ScalarProperty Name="CreditType" ColumnName="CreditType" />
                 <ScalarProperty Name="UpdatedByID" ColumnName="UpdatedByID" />
                 <ScalarProperty Name="CreatedByID" ColumnName="CreatedByID" />
                 <ScalarProperty Name="TotalValue" ColumnName="TotalValue" />
@@ -22118,6 +22985,7 @@
           <EntitySetMapping Name="tblGatePassItems">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblGatePassItem">
               <MappingFragment StoreEntitySet="tblGatePassItem">
+                <ScalarProperty Name="UnloadPriority" ColumnName="UnloadPriority" />
                 <ScalarProperty Name="SOTypeNum" ColumnName="SOTypeNum" />
                 <ScalarProperty Name="SOType" ColumnName="SOType" />
                 <ScalarProperty Name="ModifiedByID" ColumnName="ModifiedByID" />
@@ -22145,6 +23013,7 @@
           <EntitySetMapping Name="tblGoodsInwardNotes">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblGoodsInwardNote">
               <MappingFragment StoreEntitySet="tblGoodsInwardNote">
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
                 <ScalarProperty Name="SourceOfUpdate" ColumnName="SourceOfUpdate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
@@ -22959,6 +23828,9 @@
           <EntitySetMapping Name="tblPurchaseOrderInvoices">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblPurchaseOrderInvoice">
               <MappingFragment StoreEntitySet="tblPurchaseOrderInvoice">
+                <ScalarProperty Name="InsuranceCharges" ColumnName="InsuranceCharges" />
+                <ScalarProperty Name="TCSValue" ColumnName="TCSValue" />
+                <ScalarProperty Name="TCSPercentage" ColumnName="TCSPercentage" />
                 <ScalarProperty Name="VoucherTypeNo" ColumnName="VoucherTypeNo" />
                 <ScalarProperty Name="UnitwiseQty" ColumnName="UnitwiseQty" />
                 <ScalarProperty Name="NetInwardWeight" ColumnName="NetInwardWeight" />
@@ -23375,6 +24247,8 @@
           <EntitySetMapping Name="tblSalesOrderInvoiceItemDetails">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSalesOrderInvoiceItemDetail">
               <MappingFragment StoreEntitySet="tblSalesOrderInvoiceItemDetail">
+                <ScalarProperty Name="SalesOrderWithItemID" ColumnName="SalesOrderWithItemID" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="SITypeNum" ColumnName="SITypeNum" />
                 <ScalarProperty Name="SIType" ColumnName="SIType" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
@@ -23581,6 +24455,7 @@
           <EntitySetMapping Name="tblSubMenuRoleMaps">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSubMenuRoleMap">
               <MappingFragment StoreEntitySet="tblSubMenuRoleMap">
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
                 <ScalarProperty Name="SystemAccess" ColumnName="SystemAccess" />
                 <ScalarProperty Name="SourceOfUpdate" ColumnName="SourceOfUpdate" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
@@ -23810,6 +24685,7 @@
           <EntitySetMapping Name="tblSysUsers">
             <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblSysUser">
               <MappingFragment StoreEntitySet="tblSysUser">
+                <ScalarProperty Name="RememberPassword" ColumnName="RememberPassword" />
                 <ScalarProperty Name="isFirstLogin" ColumnName="isFirstLogin" />
                 <ScalarProperty Name="IsServiceInstalled" ColumnName="IsServiceInstalled" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
@@ -24391,6 +25267,15 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPrintItems">
+            <EntityTypeMapping TypeName="MWBTCustomerAppModel.tblPrintItem">
+              <MappingFragment StoreEntitySet="tblPrintItems">
+                <ScalarProperty Name="ClickCount" ColumnName="ClickCount" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

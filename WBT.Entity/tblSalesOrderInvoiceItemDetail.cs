@@ -38,11 +38,14 @@ namespace WBT.Entity
         public string Remark { get; set; }
         public string SIType { get; set; }
         public string SITypeNum { get; set; }
+        public Nullable<int> BatchId { get; set; }
+        public Nullable<System.Guid> SalesOrderWithItemID { get; set; }
     
         public virtual tblItem tblItem { get; set; }
         public virtual tblSalesOrderInvoice tblSalesOrderInvoice { get; set; }
         public virtual tblSysUser tblSysUser { get; set; }
         public virtual tblSysUser tblSysUser1 { get; set; }
         public virtual tblWarehouse tblWarehouse { get; set; }
+        public virtual tblBatch tblBatch { get; set; }
     }
 }

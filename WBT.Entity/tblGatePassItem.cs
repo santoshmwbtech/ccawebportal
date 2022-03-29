@@ -35,6 +35,7 @@ namespace WBT.Entity
         public Nullable<int> ModifiedByID { get; set; }
         public string SOType { get; set; }
         public string SOTypeNum { get; set; }
+        public Nullable<int> UnloadPriority { get; set; }
     
         public virtual tblBatch tblBatch { get; set; }
         public virtual tblGatePass tblGatePass { get; set; }

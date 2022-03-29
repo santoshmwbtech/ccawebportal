@@ -1,15 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
+using System.Xml;
 
 namespace WBT.Common
 {
@@ -630,6 +636,71 @@ namespace WBT.Common
                 return new AmountConverter(number, AmountConverter.ConvertStyle.Asian).Convert();
             else
                 return string.Empty;
+        }
+        public static string ShortenURL(string userName, string bitlyUrl, string apiKey, string longUrl)
+        {
+            try
+            {
+                StringBuilder uri = new StringBuilder(bitlyUrl);
+                uri.Append("version=2.0.1");
+                uri.Append("&format=xml");
+                uri.Append("&longUrl=");
+                uri.Append(HttpUtility.UrlEncode(longUrl));
+                uri.Append("&login=");
+                uri.Append(HttpUtility.UrlEncode(userName));
+                uri.Append("&apiKey=");
+                uri.Append(HttpUtility.UrlEncode(apiKey));
+
+                HttpWebRequest request = WebRequest.Create(uri.ToString()) as HttpWebRequest;
+                request.Method = "GET";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ServicePoint.Expect100Continue = false;
+                request.ContentLength = 0;
+                WebResponse objResponse = request.GetResponse();
+                XmlDocument objXML = new XmlDocument();
+                objXML.Load(objResponse.GetResponseStream());
+                XmlNode nShortUrl = objXML.SelectSingleNode("//url");
+                return nShortUrl.InnerText;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public static async Task<string> ShortenUrl(string _bitlyUrl, string _url, string _bitlyToken)
+        {
+            using (var client = new HttpClient())
+            {
+                var jsoncontent = new
+                {
+                    long_url = _url,
+                    domain = "bit.ly"
+                };
+                var stringContent = new StringContent(jsoncontent.ToString(), Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(_bitlyUrl),
+                    Method = HttpMethod.Post,
+                    Content = stringContent
+                };
+
+                var httpContent = new StringContent(jsoncontent.ToString(), Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _bitlyToken);
+                try
+                {
+                    var response = await client.PostAsync("https://api-ssl.bitly.com/v4/shorten", httpContent);
+                    var statusCheck1 = response.Content.ReadAsStringAsync().Result;
+                    return statusCheck1;
+                }
+                catch(Exception ex)
+                {
+                    return string.Empty;
+                }
+
+               
+                
+            }
         }
     }
 }

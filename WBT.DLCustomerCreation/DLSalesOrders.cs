@@ -15,6 +15,8 @@ using WBT.DL.Transaction;
 using static WBT.DL.Master.DLItemWarehouseMap;
 using System.Globalization;
 using System.Net;
+using System.Configuration;
+using WBT.Common.Constants;
 
 namespace WBT.DLCustomerCreation
 {
@@ -174,9 +176,15 @@ namespace WBT.DLCustomerCreation
 
     public class DLSalesOrders
     {
-        public MWBTCustomerAppEntities Entities = new MWBTCustomerAppEntities();
+        private MWBTCustomerAppEntities Entities;
+        private List<SalesOrders> salesOrders;
+        public DLSalesOrders()
+        {
+            Entities = new MWBTCustomerAppEntities();
+            salesOrders = new List<SalesOrders>();
+        }
 
-        public List<SalesOrders> SOList = new List<SalesOrders>();
+        
         public List<tblSysUser> GetSalesmanList()
         {
             try
@@ -248,56 +256,47 @@ namespace WBT.DLCustomerCreation
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
 
-                    if (!string.IsNullOrEmpty(Name))
-                    {
-                        SOList = (from so in Entities.tblSalesOrders
-                                  join cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
-                                  where so.BranchID.ToLower().Contains(Name)
-                                  && so.OrgID == OrgID
-                                  select new SalesOrders
-                                  {
-                                      ID = so.ID,
-                                      SalesOrderNumber = so.SalesOrderNumber,
-                                      FirmName = cust.FirmName,
-                                      OrderNumber = so.SalesOrderNumber,
-                                      BranchName = Entities.tblSysBranches.Where(r => r.BranchID == so.BranchID).FirstOrDefault().Name,
-                                      OrderDate = so.SalesDatetime,
-                                      IsTallyUpdated = so.IsTallyUpdated,
-                                      TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
-                                      TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
-                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum() - (so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().HasValue ? so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().Value : 0),
-                                      IsEdited = so.IsEdited,
-                                  }).OrderByDescending(i => i.ID).ToList();
-                    }
-                    else
-                    {
-                        SOList = (from so in Entities.tblSalesOrders
-                                  join cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
-                                  where so.OrgID == OrgID
-                                  select new SalesOrders
-                                  {
-                                      ID = so.ID,
-                                      SalesOrderNumber = so.SalesOrderNumber,
-                                      FirmName = cust.FirmName,
-                                      OrderNumber = so.SalesOrderNumber,
-                                      BranchName = Entities.tblSysBranches.Where(r => r.BranchID == so.BranchID).FirstOrDefault().Name,
-                                      OrderDate = so.SalesDatetime,
-                                      IsTallyUpdated = so.IsTallyUpdated,
-                                      TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
-                                      TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
-                                      TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum() - (so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().HasValue ? so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().Value : 0),
-                                      IsEdited = so.IsEdited,
-                                  }).OrderByDescending(i => i.ID).ToList();
-                    }
+
+                    return GetSalesOrders(OrgID, Entities, Name);
+
                 }
             }
             catch (Exception ex)
             {
 
             }
-
-            return SOList;
+            return salesOrders;
         }
+
+        private List<SalesOrders> GetSalesOrders(string OrgID, MWBTCustomerAppEntities Entities, string name)
+        {
+            string query = $"{OrgID}";
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = $"{OrgID} && so.BranchID.ToLower().Contains({name})";
+            }
+
+            salesOrders = (from so in Entities.tblSalesOrders
+                      join cust in Entities.tblCustomerVendorDetails on so.CustID equals cust.CustID
+                      where so.OrgID == query
+                      select new SalesOrders
+                      {
+                          ID = so.ID,
+                          SalesOrderNumber = so.SalesOrderNumber,
+                          FirmName = cust.FirmName,
+                          OrderNumber = so.SalesOrderNumber,
+                          BranchName = Entities.tblSysBranches.Where(r => r.BranchID == so.BranchID).FirstOrDefault().Name,
+                          OrderDate = so.SalesDatetime,
+                          IsTallyUpdated = so.IsTallyUpdated,
+                          TallySync = so.TallySync.HasValue ? so.TallySync.Value : false,
+                          TallyStatus = so.IsTallyUpdated ? "Synced" : "Pending",
+                          TotalAmount = so.tblSalesOrderWithItems.Select(c => c.Value).Sum() - (so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().HasValue ? so.tblSalesOrderWithItems.Select(d => d.DiscountAmt).Sum().Value : 0),
+                          IsEdited = so.IsEdited,
+                      }).OrderByDescending(i => i.ID).ToList();
+           
+            return salesOrders;
+        }
+
         public List<SalesOrders> GetSOList(SalesOrders search)
         {
             try
@@ -515,7 +514,7 @@ namespace WBT.DLCustomerCreation
                 return null;
             }
         }
-        public SalesOrders GetSalesOrderDetails(string SalesOrderNumber, bool requestPrint = false)
+        public SalesOrders GetSalesOrderDetails(string SalesOrderNumber, bool requestPrint = false, bool requestPrintPage = false)
         {
             SalesOrders salesOrder = new SalesOrders();
             try
@@ -525,13 +524,18 @@ namespace WBT.DLCustomerCreation
                     if (Entities.Database.Connection.State == System.Data.ConnectionState.Closed)
                         Entities.Database.Connection.Open();
 
+                    if (requestPrintPage)
+                    {
+                        SalesOrderNumber = Entities.tblPrintItems.Where(d => d.Id.ToString() == SalesOrderNumber).FirstOrDefault().OrderNo;
+                    }
+
                     using (var dbcxtransaction = Entities.Database.BeginTransaction())
                     {
                         salesOrder = (from tblsalesorders in Entities.tblSalesOrders
                                       join c in Entities.tblCustomerVendorDetails on tblsalesorders.CustID equals c.CustID
                                       where tblsalesorders.SalesOrderNumber == SalesOrderNumber
                                       select new SalesOrders
-                                      {                                         
+                                      {
                                           CustID = tblsalesorders.CustID,
                                           OrderNumber = tblsalesorders.SalesOrderNumber,
                                           SalesOrderNumber = tblsalesorders.SalesOrderNumber,
@@ -577,7 +581,7 @@ namespace WBT.DLCustomerCreation
                                           CustomerState = tblsalesorders.tblCustomerVendorDetail.BillingState,
                                           CompanyState = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.State,
                                           CompanyCity = tblsalesorders.tblCustomerVendorDetail.tblSysOrganization.City,
-                                          
+
                                           SalesmanName = tblsalesorders.tblSysUser3.FName,
                                           PriceSyncType = Entities.tblAdminSettings.Where(d => d.OrgID == tblsalesorders.OrgID).FirstOrDefault().PriceSyncType,
                                           customerInfo = new CustomerCreation
@@ -592,7 +596,7 @@ namespace WBT.DLCustomerCreation
                                               ShippingCity = tblsalesorders.tblCustomerVendorDetail.ShippingCity,
                                               ShippingState = tblsalesorders.tblCustomerVendorDetail.ShippingState,
                                           },
-                                          
+
                                       }).FirstOrDefault();
 
                         var branchDetails = (from b in Entities.tblSysBranches
@@ -652,7 +656,7 @@ namespace WBT.DLCustomerCreation
                                         var discountAmt = Math.Round((totalValue * item.DiscountPercentage.Value) / 100, 2);
                                         item.DiscountAmt = discountAmt;
                                         item.Value = Math.Round(totalValue - discountAmt, 2);
-                                        item.GSTValue = Math.Round(((item.Value - item.DiscountAmt.Value) * item.GSTPer.Value) / 100, 2);
+                                        item.GSTValue = Math.Round(((totalValue - item.DiscountAmt.Value) * item.GSTPer.Value) / 100, 2);
                                         item.CGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
                                         item.SGSTValue = Math.Round(item.GSTValue.Value / 2, 2);
                                         item.IGSTValue = Math.Round(item.GSTValue.Value, 2);
@@ -880,11 +884,10 @@ namespace WBT.DLCustomerCreation
 
 
                                 #endregion
-
+                                var customer = Entities.tblCustomerVendorDetails.Where(i => i.CustID == mSalesOrder.CustID).FirstOrDefault();
                                 #region Edit Credit/cash Customer Shipping Address 12/12/2019
                                 if (mSalesOrder.DLCustomerVendorDetail != null)
                                 {
-                                    tblCustomerVendorDetail customer = Entities.tblCustomerVendorDetails.Where(i => i.CustID == mSalesOrder.CustID).FirstOrDefault();
                                     customer.ShippingAddress = mSalesOrder.DLCustomerVendorDetail.ShippingAddress;
                                     Entities.tblCustomerVendorDetails.Attach(customer);
                                     Entities.Entry(customer).State = EntityState.Modified;
@@ -970,6 +973,24 @@ namespace WBT.DLCustomerCreation
                                 Entities.Entry(lSalesOrder).State = EntityState.Modified;
                                 Entities.SaveChanges();
                                 dbcxtransaction.Commit();
+                                string baseURL = ConfigurationManager.AppSettings["BaseURL"].ToString();
+                                string apiKEY = ConfigurationManager.AppSettings["SMSAPIKey"].ToString();
+                                string senderID = ConfigurationManager.AppSettings["SenderID"].ToString();
+                                string portalUrl = ConfigurationManager.AppSettings["PortalURL"].ToString();
+                                string bitlyToken = ConfigurationManager.AppSettings["bitlyToken"].ToString();
+                                string bitlyUserName = ConfigurationManager.AppSettings["bitlyUserName"].ToString();
+
+                                string bitlyUrl = ConfigurationManager.AppSettings["bitlyUrl"].ToString();
+                                string urlParameter = saveUrl(mSalesOrder.SalesOrderNumber, Entities);
+
+                                portalUrl = portalUrl + "p/pi?N=" + urlParameter;
+                                var shortUrl = Helper.ShortenUrl(bitlyUrl, portalUrl, bitlyToken).Result;
+                                var otpMsg = messageTemplates.SALES_ORDER_APPROVED;
+                                otpMsg = otpMsg.Replace("{0}", customer.FirmName);
+                                otpMsg = otpMsg.Replace("{1}", mSalesOrder.SalesOrderNumber);
+                                otpMsg = otpMsg.Replace("{2}", shortUrl);
+                                Helper.SendMessage(baseURL, apiKEY, customer.MobileNumber, otpMsg, senderID);
+
                                 result.statusCode = HttpStatusCode.OK;
                             }
                             catch (Exception ex)
@@ -1108,6 +1129,23 @@ namespace WBT.DLCustomerCreation
             {
                 Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
                 return "error";
+            }
+        }
+        private string saveUrl(string salesOrderNo, MWBTCustomerAppEntities dbContext)
+        {
+            try
+            {
+                var tblPrintItems = new tblPrintItem
+                {
+                    OrderNo = salesOrderNo,
+                };
+                dbContext.tblPrintItems.Add(tblPrintItems);
+                dbContext.SaveChanges();
+                return tblPrintItems.Id.ToString();
+            }
+            catch (Exception ex)
+            {
+                return "0";
             }
         }
     }

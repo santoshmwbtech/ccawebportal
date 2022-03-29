@@ -118,5 +118,6 @@ namespace WBT.Entity
         public virtual tblSysUser tblSysUser2 { get; set; }
         public virtual tblSysUser tblSysUser3 { get; set; }
         public virtual tblVoucherType tblVoucherType { get; set; }
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
     }
 }

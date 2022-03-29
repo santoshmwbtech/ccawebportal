@@ -23,6 +23,23 @@ namespace WBT.Entity
             this.tblChannelPartnerMappings = new HashSet<tblChannelPartnerMapping>();
             this.tblCustomerVendorDetails = new HashSet<tblCustomerVendorDetail>();
             this.tblSysUsers = new HashSet<tblSysUser>();
+            this.DeliverycenterBranchMaps = new HashSet<DeliverycenterBranchMap>();
+            this.DiscrepencyDetails = new HashSet<DiscrepencyDetail>();
+            this.tblDeliveryNotes = new HashSet<tblDeliveryNote>();
+            this.tblDeliveryNoteItems = new HashSet<tblDeliveryNoteItem>();
+            this.tblGatePasses = new HashSet<tblGatePass>();
+            this.tblItemMappings = new HashSet<tblItemMapping>();
+            this.tblItemWarehouseMaps = new HashSet<tblItemWarehouseMap>();
+            this.tblOrganizationWarehouseMaps = new HashSet<tblOrganizationWarehouseMap>();
+            this.tblPurchaseOrders = new HashSet<tblPurchaseOrder>();
+            this.tblPurchaseOrderInvoices = new HashSet<tblPurchaseOrderInvoice>();
+            this.tblPurchaseRequisitions = new HashSet<tblPurchaseRequisition>();
+            this.tblSalesOrders = new HashSet<tblSalesOrder>();
+            this.tblSalesOrderInvoices = new HashSet<tblSalesOrderInvoice>();
+            this.tblSalesOrderItemWarehouseMaps = new HashSet<tblSalesOrderItemWarehouseMap>();
+            this.tblSysOrganizationMaps = new HashSet<tblSysOrganizationMap>();
+            this.tblSysOrganizationMaps1 = new HashSet<tblSysOrganizationMap>();
+            this.tblWarehouses = new HashSet<tblWarehouse>();
         }
     
         public string OrgID { get; set; }
@@ -99,5 +116,39 @@ namespace WBT.Entity
         public virtual ICollection<tblCustomerVendorDetail> tblCustomerVendorDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblSysUser> tblSysUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DeliverycenterBranchMap> DeliverycenterBranchMaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiscrepencyDetail> DiscrepencyDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblDeliveryNote> tblDeliveryNotes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblDeliveryNoteItem> tblDeliveryNoteItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblGatePass> tblGatePasses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblItemMapping> tblItemMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblItemWarehouseMap> tblItemWarehouseMaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblOrganizationWarehouseMap> tblOrganizationWarehouseMaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblPurchaseOrder> tblPurchaseOrders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblPurchaseOrderInvoice> tblPurchaseOrderInvoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblPurchaseRequisition> tblPurchaseRequisitions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSalesOrder> tblSalesOrders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSalesOrderInvoice> tblSalesOrderInvoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSalesOrderItemWarehouseMap> tblSalesOrderItemWarehouseMaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSysOrganizationMap> tblSysOrganizationMaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSysOrganizationMap> tblSysOrganizationMaps1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblWarehouse> tblWarehouses { get; set; }
     }
 }

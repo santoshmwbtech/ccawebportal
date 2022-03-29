@@ -48,5 +48,6 @@ namespace WBT.Entity
         public virtual tblSysBranch tblSysBranch { get; set; }
         public virtual tblSysUser tblSysUser1 { get; set; }
         public virtual tblSysUser tblSysUser2 { get; set; }
+        public virtual tblSysOrganization tblSysOrganization { get; set; }
     }
 }
