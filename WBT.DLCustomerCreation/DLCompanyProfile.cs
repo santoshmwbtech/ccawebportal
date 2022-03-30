@@ -44,7 +44,7 @@ namespace WBT.DLCustomerCreation
                                   Logo = o.Logo,
                                   LogoBase64 = string.Empty,
                                   UpdatedByName = o.tblSysUsers.FirstOrDefault().FName,
-                                  UpdatedDatetime = o.ModifiedDatetime.Value
+                                  UpdatedDatetime = o.ModifiedDatetime,
                               }).FirstOrDefault();
 
                     return result;
@@ -176,7 +176,7 @@ namespace WBT.DLCustomerCreation
         public int CreatedByID { get; set; }
         public System.DateTime CreatedDatetime { get; set; }
         public int UpdatedBy { get; set; }
-        public System.DateTime UpdatedDatetime { get; set; }
+        public DateTime? UpdatedDatetime { get; set; }
         public Nullable<int> ModifiedByID { get; set; }
         public string SourceOfUpdate { get; set; }
         public string UpdatedByName { get; set; }
