@@ -2631,7 +2631,7 @@ namespace WBT.DLCustomerCreation
                                                                       CreatedByID = c.CreatedByID,
                                                                       ModifiedByID = c.ModifiedByID == null ? 0 : c.ModifiedByID,
                                                                       CreationDate = c.CreationDate,
-                                                                      UpdatedDate = c.UpdatedDate == null ? new DateTime() : c.UpdatedDate,
+                                                                      UpdatedDate = c.UpdatedDate,
                                                                       BillingArea = string.IsNullOrEmpty(c.BillingArea) == true ? "" : c.BillingArea,
                                                                       EmailID = c.EmailID,
                                                                       RegistrationType = c.RegistrationType,

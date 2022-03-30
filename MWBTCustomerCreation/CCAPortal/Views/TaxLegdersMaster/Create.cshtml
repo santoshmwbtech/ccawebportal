@@ -55,10 +55,8 @@
                                     <div class="form-group">
                                         <label>Tax percentage</label>
                                         <div class="input-group">
-                                            @Html.EditorFor(model => model.TaxPercentage, new { htmlAttributes = new { @class = "form-control numberonly", @placeholder = "Tax Percentage", @Value = "0.00",@autocomplete = "off", @required = "Required", @onkeypress = "return isdecimalKey(event)" } })
-
-                                            @Html.ValidationMessageFor(model => model.TaxPercentage, "", new { @class = "text-danger" })
-                                            @*@Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control numberonly", @required = "Required", @Readonly = true } })*@
+                                            @Html.EditorFor(model => model.TaxPercentage, new { htmlAttributes = new { @class = "form-control numberonly", @placeholder = "Tax Percentage", @Value = "0.00", @required = "Required", @onkeypress = "return isdecimalKey(event)" } })
+                                            @Html.ValidationMessageFor(model => model.TaxPercentage, "", new { @class = "text-danger" })                                          
                                         </div>
                                     </div>
                                 </div>

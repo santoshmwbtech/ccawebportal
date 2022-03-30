@@ -40,7 +40,7 @@ namespace WBT.DLCustomerCreation
         public Nullable<bool> AccOrInv { get; set; }
         public string OrgID { get; set; }
 
-        public string ParentCatId { get; set; }
+        public int? ParentCatId { get; set; }
         public virtual DLItemCreation tblItems { get; set; }
         public virtual DLSubCategoryCreation tblSubCategories { get; set; }
         public string DisplayMessage { get; set; }
@@ -193,7 +193,7 @@ namespace WBT.DLCustomerCreation
                                 if (IsNameExists == null)
                                 {
 
-                                    lCategory.ParentCatId = mCategoryCreation.CategoryID;
+                                    lCategory.ParentCatId = mCategoryCreation.ParentCatId;
                                     lCategory.IsActive = true;
                                     lCategory.CategoryName = mCategoryCreation.CategoryName;
                                     lCategory.AccOrInv = mCategoryCreation.AccOrInv;
@@ -454,7 +454,7 @@ namespace WBT.DLCustomerCreation
                                   CreatedByID = gCategories.CreatedByID,
                                   OrgID = gCategories.OrgID,
                                   IsActive = gCategories.IsActive,
-                                  ParentCatId = gCategories.ParentCatId.ToString(),
+                                  ParentCatId = gCategories.ParentCatId,
                                   stringIsTallyUpdated = gCategories.IsTallyUpdated == true ? "Yes" : "No",
                               }).FirstOrDefault();
                     return catg;

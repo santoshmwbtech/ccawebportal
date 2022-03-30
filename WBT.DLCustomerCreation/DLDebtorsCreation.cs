@@ -20,6 +20,7 @@ namespace WBT.DLCustomerCreation
         [Required(ErrorMessage = "Enter Debtor Name")]
         public string DebtorName { get; set; }
         public string Description { get; set; }
+        [Required(ErrorMessage = "Enter parent Debtor Name")]
         public string ParentDebtorName { get; set; }
         public Nullable<int> ParentDebtorID { get; set; }
         public string CompanyName { get; set; }

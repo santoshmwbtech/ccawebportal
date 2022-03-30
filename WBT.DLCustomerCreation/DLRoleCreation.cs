@@ -11,17 +11,18 @@ namespace WBT.DLCustomerCreation
     public class DLRoleCreation
     {
         public int RoleID { get; set; }
-        // [Required(ErrorMessage = "Enter RoleName")]
+        [Required(ErrorMessage = "Enter RoleName")]
         public string RoleName { get; set; }
         //  [Required(ErrorMessage = "Enter RoleDescription")]
         public string RoleDescription { get; set; }
         public int? ParentRoleID { get; set; }
         public string ParentRoleName { get; set; }
         public int UnderRoleId { get; set; }
-        // [Required(ErrorMessage = "Select Department")]
+        //[Required(ErrorMessage = "Select Department")]
         public string Department { get; set; }
         public DateTime CreatedDate { get; set; }
         public string DisplayMessage { get; set; }
+        [Required(ErrorMessage = "Select Department")]
         public int? DepartmentID { get; set; }
     }
 

@@ -86,7 +86,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Fax Number</label>
-                                    @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", @placeholder = "Fax Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return allowNumericSpaceSpclChar(event);", @maxlength = "15" })
+                                    @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", @placeholder = "Fax Number", @autocomplete = "new-password", @onkeypress = "return allowNumericSpaceSpclChar(event);", @maxlength = "15" })
                                     @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -113,8 +113,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Account Number:</label>
-                                    @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", @placeholder = "Account Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "50" })
+                                    <label>Account Number</label>
+                                    @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", @placeholder = "Account Number", @required = "required", @autocomplete = "new-password", @onkeypress = "return isNumber(event);", @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -284,7 +284,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                         <h4 class="card-title"><b>QR Code Document Upload</b></h4><br />
                         <div class="row">

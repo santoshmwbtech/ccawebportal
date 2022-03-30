@@ -754,6 +754,27 @@
     }
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PanNumber").change(function () {
+                var panNumber = $(this).val();
+                var reggst = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+                if (!reggst.test(panNumber) && panNumber != '') {
+                    swal.fire('PAN Number is not valid. It should be in this "ABCDE1234A" format');
+                    swal.fire({
+                        title: "Enter valid PAN Number",
+                        text: 'PAN Number is not valid. It should be in this "ABCDE1234A" format',
+                        type: "warning",
+                        icon: "warning",
+                    }).then(function () {
+                        $("#PanNumber").val('');
+                        $("#PanNumber").focus();
+                    });
+                }
+            });
+        });
+    </script>
+
     <script>
         jQuery(document).ready(function ($) {
             loadDataTableWithButtons();

@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WBT.Common;
-using WBT.Entity;
-using System.Web.Mvc;
-using static WBT.DLCustomerCreation.DLUserCreation;
-using WBT.DLCustomerCreation.Reports;
 using System.Web;
+using WBT.Common;
+using WBT.DLCustomerCreation.Reports;
+using WBT.Entity;
 
 namespace WBT.DLCustomerCreation
 {
@@ -103,6 +99,7 @@ namespace WBT.DLCustomerCreation
                 mPassword = value;// WBT.Common.DataSecurity.Decrypt(value);
             }
         }
+        [Required(ErrorMessage ="Please select role")]
         public int RoleID { get; set; }
         public string OrgName { get; set; }
         public Nullable<int> WarehouseID { get; set; }
