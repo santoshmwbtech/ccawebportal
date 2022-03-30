@@ -972,8 +972,6 @@ namespace WBT.DLCustomerCreation
                     {
                         List<tblState> stateList = new List<tblState>();
                         stateList = (from s in Entities.tblStates
-                                     join c in Entities.tblCustomerVendorDetails on s.StateID equals c.StateID
-                                     where c.OrgID == OrgID
                                      select s).Distinct().ToList();
 
                         return stateList;

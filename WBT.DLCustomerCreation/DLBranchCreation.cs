@@ -115,7 +115,7 @@ namespace WBT.DLCustomerCreation
         [Required(ErrorMessage = "Enter PAN Number")]
         [StringLength(10, ErrorMessage = "PANNumber 10 digits.")]
         public string PANNumber { get; set; }
-        [Required(ErrorMessage = "Enter City")]
+        [Required(ErrorMessage = "Enter City Name")]
         [RegularExpression(@"^[a-zA-Z]+[ a-zA-Z-_]*$", ErrorMessage = "Use Characters only")]
         public string ShippingCity { get; set; }
         [Required(ErrorMessage = "Enter State")]
