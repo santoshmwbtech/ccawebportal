@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,9 +12,13 @@ namespace WBT.DLCustomerCreation
 {
     public class DLCompanyProfile
     {
-        public MWBTCustomerAppEntities Entities = new Entity.MWBTCustomerAppEntities();
-        private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-
+        private MWBTCustomerAppEntities Entities;
+        private static TimeZoneInfo INDIAN_ZONE;
+        public DLCompanyProfile()
+        {
+            Entities = new Entity.MWBTCustomerAppEntities();
+            INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        }
         public SysOrganization GetOrganizationDetails(string UserID)
         {
             try
@@ -44,7 +49,7 @@ namespace WBT.DLCustomerCreation
                                   Logo = o.Logo,
                                   LogoBase64 = string.Empty,
                                   UpdatedByName = o.tblSysUsers.FirstOrDefault().FName,
-                                  UpdatedDatetime = o.ModifiedDatetime.Value
+                                  UpdatedDatetime = o.ModifiedDatetime
                               }).FirstOrDefault();
 
                     return result;
@@ -176,7 +181,7 @@ namespace WBT.DLCustomerCreation
         public int CreatedByID { get; set; }
         public System.DateTime CreatedDatetime { get; set; }
         public int UpdatedBy { get; set; }
-        public System.DateTime UpdatedDatetime { get; set; }
+        public System.DateTime? UpdatedDatetime { get; set; }
         public Nullable<int> ModifiedByID { get; set; }
         public string SourceOfUpdate { get; set; }
         public string UpdatedByName { get; set; }
