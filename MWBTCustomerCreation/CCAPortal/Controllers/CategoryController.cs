@@ -60,6 +60,7 @@ namespace CCAPortal.Controllers
                 DLSubCategoryCreation Result = dlSubCategory.SaveDatas(dLSubCategoryCreation);
                 return Json(new
                 {
+                    success = Result.StatusCode == HttpStatusCode.OK ? true : false,
                     Message = Result.DisplayMessage,
                     AjaxReturn = PartialView("CategoryList", dlSubCategory.GetDatas("", Session["OrgID"].ToString()).ToList()).RenderToString()
                 });

@@ -59,7 +59,6 @@
                                 <label>Role Description  </label>
                                 <div class="input-group">
                                     @Html.EditorFor(model => model.RoleDescription, new { htmlAttributes = new { @class = "form-control", @required = "Required", @placeholder = "Role Description", @maxlength = "128", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.RoleDescription, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>

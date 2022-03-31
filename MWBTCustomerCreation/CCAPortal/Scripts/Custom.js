@@ -263,17 +263,17 @@ function multiSelect() {
         };
 
     function check_extension(element) {
-            var re = /\..+$/;
+        var re = /\..+$/;
         var ext = element.value.match(re);
-    if (hash[ext]) {
-                return true;
-            } else {
-        Toast.fire({
-            class: 'bg-error',
-            icon: 'error',
-            title: 'please upload image files'
-        })
-        $(element).val('');
-    return false;
-            }
-}
+        if (hash[ext]) {
+            return true;
+        } else {
+            Toast.fire({
+                class: 'bg-error',
+                icon: 'error',
+                title: 'please upload image files'
+            })
+            $(element).val('');
+            return false;
+        }
+    }

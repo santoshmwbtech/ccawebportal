@@ -14,7 +14,6 @@
 {
     @Html.AntiForgeryToken()
 
-    <!-- Main content -->
     <section>
         <div>
             <div class="row">
@@ -33,9 +32,6 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -50,10 +46,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group ">
                                         <label>Role Name </label>
-                                        <div class="input-group">
-                                            @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control ", @required = "Required", @placeholder = "Role Name", @maxlength = "50", @autocomplete = "off" } })
-                                            @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
-                                        </div>
+                                        @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control ", @required = "Required", @placeholder = "Role Name", @maxlength = "50", @autocomplete = "off" } })
+                                        @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -68,15 +62,10 @@
                                 <div class="col-md-6">
                                     <div class="form-group ">
                                         <label>Role Description  </label>
-                                        <div class="input-group">
-                                            @Html.EditorFor(model => model.RoleDescription, new { htmlAttributes = new { @class = "form-control", @required = "Required", @maxlength = "128", @placeholder = "Role Description", @autocomplete = "off" } })
-                                            @Html.ValidationMessageFor(model => model.RoleDescription, "", new { @class = "text-danger" })
-                                        </div>
+                                        @Html.EditorFor(model => model.RoleDescription, new { htmlAttributes = new { @class = "form-control", @required = "Required", @maxlength = "128", @placeholder = "Role Description", @autocomplete = "off" } })
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.card-body -->
-
                             <div class="card-footer">
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Save</button>
@@ -85,7 +74,6 @@
 
                         </div>
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
         </div>

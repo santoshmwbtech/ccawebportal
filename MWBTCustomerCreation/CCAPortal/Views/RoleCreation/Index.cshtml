@@ -39,7 +39,10 @@
             }).then((result) => {
                 $("#divCreate").load('@Url.Action("Create", "RoleCreation")');
                 $("#divList").load('@Url.Action("RoleList", "RoleCreation")');
-                loadDataTableWithButtons();
+                setTimeout(function () {
+                    $("#dataGrid").dataTable().fnDestroy();
+                    loadDataTableWithButtons();
+                }, 1000);
             });
         }
         function onEditSuccess_Ajax(data) {
@@ -51,7 +54,10 @@
                 }).then((result) => {
                     $("#divCreate").load('@Url.Action("Create", "RoleCreation")');
                     $("#divList").load('@Url.Action("RoleList", "RoleCreation")');
-                    loadDataTableWithButtons();
+                    setTimeout(function () {
+                        $("#dataGrid").dataTable().fnDestroy();
+                        loadDataTableWithButtons();
+                    }, 1000);
                 });
             }
             else {
