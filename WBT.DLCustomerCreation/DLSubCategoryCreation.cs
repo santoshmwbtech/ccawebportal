@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using WBT.Common;
 using WBT.Entity;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
+
 namespace WBT.DLCustomerCreation
 {
     public class DLSubCategoryCreation
@@ -35,6 +37,7 @@ namespace WBT.DLCustomerCreation
         public string SerachText { get; set; }
         public int? ParentCatID { get; set; }
         public string DisplayMessage { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
     }
     public class DLGroupData
     {
@@ -705,6 +708,7 @@ namespace WBT.DLCustomerCreation
                     {
                         this.GetApplicationActivate.DataState = Common.TransactionType.DataExists;
                         mSubCategoryCreation.DisplayMessage = "Category Name Already Exists";
+                        mSubCategoryCreation.StatusCode = HttpStatusCode.Conflict;
                         return mSubCategoryCreation;
                     }
                     else
@@ -726,6 +730,7 @@ namespace WBT.DLCustomerCreation
                                 Entities.SaveChanges();
                                 dbcxtransaction.Commit();
                                 this.GetApplicationActivate.DataState = Common.TransactionType.Success;
+                                mSubCategoryCreation.StatusCode = HttpStatusCode.OK;
                                 mSubCategoryCreation.DisplayMessage = "Category Saved Successfully";
                                 return mSubCategoryCreation;
                             }
@@ -739,6 +744,7 @@ namespace WBT.DLCustomerCreation
                                 //throw;
                                 Helper.LogError(ex.Message, ex.Source, ex.InnerException, ex.StackTrace);
                                 mSubCategoryCreation.DisplayMessage = "Error.. Please contact administrator";
+                                mSubCategoryCreation.StatusCode = HttpStatusCode.InternalServerError;
                                 return mSubCategoryCreation;
                             }
                         }

@@ -31,16 +31,28 @@
 @section scripts {
     <script>
         function onCreateSuccess_Ajax(data) {
-             Swal.fire({
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
                     text: data.Message,
-             }).then((result) => {
+                }).then((result) => {
                     $("#divCreate").load('@Url.Action("Create", "Category")');
                     $("#divList").html(data.AjaxReturn);
                     setTimeout(function () {
-                            loadDataTableWithButtons();
-                            multiSelect();
-                        }, 1000);
-                    });
+                        loadDataTableWithButtons();
+                        multiSelect();
+                    }, 1000);
+                });
+            }
+            else {
+                Swal.fire({
+                    text: data.Message,
+                    icon: "error"
+                }).then((result) => {
+                    
+                });
+            }
+
         }
         function onEditSuccess_Ajax(data) {
             Swal.fire({
