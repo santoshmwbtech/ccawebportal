@@ -121,7 +121,7 @@
                             <div class="form-group">
                                 <label>HSN Code </label>
                                 <div class="input-group">
-                                    @Html.EditorFor(model => model.HSNCode, new { htmlAttributes = new { @class = "form-control", @required = "required", @autocomplete = "off" } })
+                                    @Html.EditorFor(model => model.HSNCode, new { htmlAttributes = new { @class = "form-control", @required = "required", @autocomplete = "off" , @MaxLength = "6" } })
                                 </div>
                                 @Html.ValidationMessageFor(model => model.HSNCode, "", new { @class = "text-danger" })
                             </div>
@@ -133,7 +133,7 @@
                             <div class="form-group ">
                                 <label>HSN Subcode </label>
                                 <div class="input-group">
-                                    @Html.EditorFor(model => model.HSNSubCode, new { htmlAttributes = new { @class = "form-control ", @required = "Required", @autocomplete = "off" } })
+                                    @Html.EditorFor(model => model.HSNSubCode, new { htmlAttributes = new { @class = "form-control ", @required = "Required", @autocomplete = "off", @MaxLength = "6" } })
                                 </div>
                                 @Html.ValidationMessageFor(model => model.HSNSubCode, "", new { @class = "text-danger" })
                             </div>

@@ -46,7 +46,7 @@
                                                 <td>
                                                     @item.RoleDescription
                                                 </td>
-                                                <td>
+                                                <td class="noExport">
                                                     @Ajax.ActionLink("Edit", "Edit", "RoleCreation", new { RoleID = item.RoleID }, new AjaxOptions { UpdateTargetId = "divCreate", HttpMethod = "get", OnComplete = "Ajax_OnComplete", OnFailure = "Ajax_Edit_Failure", OnSuccess = "onEditSuccess", LoadingElementId = "progress" }, new { @class = "btn btn-info btn-xs" }) |
                                                     @Ajax.ActionLink("Delete", "Delete", "RoleCreation", new { RoleID = item.RoleID }, new AjaxOptions { Confirm = "Are you sure you want to do this Role?", HttpMethod = "get", OnSuccess = "onDeleteSuccess", LoadingElementId = "progress" }, new { @class = "btn btn-danger btn-xs" })
                                                 </td>

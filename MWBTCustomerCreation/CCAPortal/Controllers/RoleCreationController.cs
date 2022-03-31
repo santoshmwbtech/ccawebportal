@@ -74,6 +74,7 @@ namespace CCAPortal.Controllers
             }
             return PartialView(result);
         }
+
         public ActionResult Edit(int RoleID)
         {
             if (Session["UserID"] == null || Session["OrgID"] == null)

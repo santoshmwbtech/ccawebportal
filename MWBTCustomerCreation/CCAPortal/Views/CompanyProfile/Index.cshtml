@@ -44,7 +44,8 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Contact Person Name</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Name", @maxlength = "100", @required = "required", @autocomplete = "off" } })
+                                            @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contact Person Name", @maxlength = "100", @required = "required", @autocomplete = "off",
+                                           @onkeypress = "return isCharacter(event);"} })
                                             @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -66,7 +67,7 @@
                                         <label class="col-sm-3 col-form-label">Mobile Number</label>
                                         <div class="col-sm-9">
                                             @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mobile Number", @maxlength = "10", @required = "required", @autocomplete = "off",
-                                           @onkeypress = "return isNumber(event);" } })
+                                                @onkeypress = "return isNumber(event);" } })
                                             @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -77,7 +78,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Email ID</label>
                                         <div class="col-sm-9">
-                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @maxlength = "100", @autocomplete = "off" } })                                         
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email ID", @maxlength = "100", @autocomplete = "off" } })
                                         </div>
                                     </div>
                                 </div>
