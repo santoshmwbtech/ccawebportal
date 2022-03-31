@@ -16,6 +16,13 @@ function isCharacter(evt) {
     }
     return true;
 }
+var Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-right',
+    showConfirmButton: false,
+    timer: 3000
+});
+
 //decimal validation
 function isdecimalKey(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -247,4 +254,26 @@ function multiSelect() {
         enableCaseInsensitiveFiltering: true,
         maxHeight: 450,
     });
+}
+
+    var hash = {
+        '.jpg': 1,
+        '.png': 1,
+    '.jpeg':1,
+        };
+
+    function check_extension(element) {
+            var re = /\..+$/;
+        var ext = element.value.match(re);
+    if (hash[ext]) {
+                return true;
+            } else {
+        Toast.fire({
+            class: 'bg-error',
+            icon: 'error',
+            title: 'please upload image files'
+        })
+        $(element).val('');
+    return false;
+            }
 }

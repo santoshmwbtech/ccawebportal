@@ -13,15 +13,11 @@ namespace WBT.DLCustomerCreation
     public class DLSubCategoryCreation
     {
         public int SubCategoryID { get; set; }
-        /// <summary>
-        /// Get or Set the subcategory name in string 
-        /// </summary>   
+       
         public string SubCategoryName { get; set; }
-        /// <summary>
-        /// Get or Set the reference of category to subcategory layer
-        /// </summary>
         public string CategoryName { get; set; }
         public string OldSubCategoryName { get; set; }
+        [Required(ErrorMessage = "Please select group")]
         public int CategoryID { get; set; }
         public int CreatedByID { get; set; }
         public Nullable<int> ModifiedByID { get; set; }

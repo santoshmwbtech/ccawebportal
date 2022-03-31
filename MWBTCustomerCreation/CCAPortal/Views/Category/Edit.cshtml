@@ -45,8 +45,8 @@
                             <div class="form-group">
                                 <label>Group </label>
                                 <div class="input-group">
-                                    @Html.DropDownListFor(model => model.ParentCatID, (SelectList)ViewBag.CatgList, "Select Group", new { @class = "form-control listbox" })
-                                    @Html.ValidationMessageFor(model => model.ParentCatID, "", new { @class = "text-danger" })
+                                    @Html.DropDownListFor(model => model.CategoryID, (SelectList)ViewBag.CatgList, "Select Group", new { @class = "form-control listbox" })
+                                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
 
                                 </div>
                             </div>

@@ -227,7 +227,8 @@
                                                     </td>
 
                                                     <td>
-                                                        @Html.TextBoxFor(a => a.userDocs[j].DocFile, null, new { @class = "form-control clsdocfile", @id = "[" + j + "].docfile", @type = "file", @required = "required" })
+                                                        @Html.TextBoxFor(a => a.userDocs[j].DocFile, null, new { @class = "form-control clsdocfile", @id = "[" + j + "].docfile", @type = "file", @required = "required",
+                                                       @onchange = "return check_extension(this);document.getElementById('[" + j + "].preview').src = window.URL.createObjectURL(this.files[0])" })
                                                         @Html.ValidationMessageFor(a => a.userDocs[j].DocFile, "", new { @class = "text-danger clsdocfileinvalid" })
                                                     </td>
                                                     @*@onchange="document.getElementById('["+ j +"].preview').src = window.URL.createObjectURL(this.files[0])"*@

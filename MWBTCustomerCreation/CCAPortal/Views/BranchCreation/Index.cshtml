@@ -421,8 +421,8 @@
                     swal.fire({
                         title: "Enter valid GST Number",
                         text: 'GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format',
-                        type: "success",
-                        icon: "success",
+                        type: "warning",
+                        icon: "warning",
                     }).then(function () {
                         $("#GST").val('');
                         $("#GST").focus();
@@ -441,8 +441,8 @@
                     swal.fire({
                         title: "Enter valid PAN Number",
                         text: 'PAN Number is not valid. It should be in this "ABCDE1234A" format',
-                        type: "success",
-                        icon: "success",
+                        type: "warning",
+                        icon: "warning",
                     }).then(function () {
                         $("#PANNumber").val('');
                         $("#PANNumber").focus();
@@ -462,8 +462,8 @@
                     swal.fire({
                         title: "Enter valid IFSC Code",
                         text: 'IFSC Code is not valid. It should be in this "ABCD0123456" format',
-                        type: "success",
-                        icon: "success",
+                        type: "warning",
+                        icon: "warning",
                     }).then(function () {
                         $("#IFSCCode").val('');
                         $("#IFSCCode").focus();
@@ -475,6 +475,22 @@
     <script>
         jQuery(document).ready(function ($) {
             loadDataTableWithButtons();
+        });
+    </script>
+    <script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            $("#qrDocs").validate({
+                errorLabelContainer: "#message_box", wrapper: "li",
+
+                rules: {
+                    image: { required: true, accept: "jpg|jpeg|png|gif" }
+                },
+                messages: {
+                    image: { required: 'Required!', accept: 'Not an image!' }
+                }
+            })
         });
     </script>
 }

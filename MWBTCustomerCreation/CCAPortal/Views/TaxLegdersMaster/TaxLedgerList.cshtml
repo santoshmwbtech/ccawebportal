@@ -80,14 +80,14 @@
         <td>
             @item.ModifiedByStr
         </td>*@
-                                            <td>
+                                            <td class="noExport">
                                                 @Ajax.ActionLink("Edit", "Edit", "TaxLegdersMaster", new { ID = item.ID }, new AjaxOptions { UpdateTargetId = "divCreate", HttpMethod = "get", OnComplete = "Ajax_OnComplete", OnFailure = "Ajax_Edit_Failure", OnSuccess = "onEditSuccess", LoadingElementId = "progress" }, new { @class = "btn btn-info btn-xs" }) |
                                                 @Ajax.ActionLink("Delete", "Delete", "TaxLegdersMaster", new { ID = item.ID }, new AjaxOptions { Confirm = "Are you sure you want to delete this Tax Ledger?", HttpMethod = "get", OnSuccess = "onDeleteSuccess", LoadingElementId = "progress" }, new { @class = "btn btn-danger btn-xs" })
                                                 
 
                                             </td>
-                                            <td>
-                                                @{
+                                            <td class="noExport">
+                                                {
                                                     if (item.TallySync == true && item.IsTallyUpdated == false)
                                                     {
                                                         <label class="badge badge-info">Waiting to Sync</label>
