@@ -364,3 +364,8 @@ FodyWeavers.xsd
 /MWBTCustomerCreation/CCAPortal/ErrorLog
 /MWBTCustomerCreation/CCAPortal/Uploads
 /MWBTCustomerCreation/debug/SOReceipts
+/Debug
+/MWBTCustomerCreation/CCAPortal/bin
+/MWBTCustomerCreation/debug
+/MWBTCustomerCreation/CCAPortal/App_Browsers/qt.browser
+/WBT.Common/bitly.cs
